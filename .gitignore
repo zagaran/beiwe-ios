@@ -1,0 +1,6 @@
+.DS_Store
+UserInterfaceState.xcuserstate
+.idea
+xcuserdata/
+#Podfile.lock
+Pods/
