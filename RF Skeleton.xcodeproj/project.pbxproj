@@ -20,7 +20,7 @@
 		3553E4BA8EC1FCD145CC27CC /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		4D73594BB9D98FBE3AA1E023 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		78E8D8BEA9B2CD2BDA96DF26 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
-		83F98C361C923C3600E0B64B /* RF SkeletonDebug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RF SkeletonDebug.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		83F98C361C923C3600E0B64B /* RF SkeletonDbg.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RF SkeletonDbg.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		83F98C391C923C3600E0B64B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		83F98C3B1C923C3600E0B64B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		83F98C3E1C923C3600E0B64B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -74,7 +74,7 @@
 		83F98C371C923C3600E0B64B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				83F98C361C923C3600E0B64B /* RF SkeletonDebug.app */,
+				83F98C361C923C3600E0B64B /* RF SkeletonDbg.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -115,7 +115,7 @@
 			);
 			name = "RF Skeleton";
 			productName = "RF Skeleton";
-			productReference = 83F98C361C923C3600E0B64B /* RF SkeletonDebug.app */;
+			productReference = 83F98C361C923C3600E0B64B /* RF SkeletonDbg.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -207,7 +207,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "./Fabric.framework/run bd1fd4714dfa3611e3a300de6411aa10dbcbedf8 f329661d3a49a5b03432f774465bf86c6b4ab019817331674abb1d3a29a2faec";
+			shellScript = "\"${PODS_ROOT}/Fabric/run\" bd1fd4714dfa3611e3a300de6411aa10dbcbedf8 f329661d3a49a5b03432f774465bf86c6b4ab019817331674abb1d3a29a2faec";
 		};
 		83F98C501C925F2500E0B64B /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
