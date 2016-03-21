@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "83F98C351C923C3600E0B64B"
-               BuildableName = "RF Skeleton.app"
-               BlueprintName = "RF Skeleton"
-               ReferencedContainer = "container:RF Skeleton.xcodeproj">
+               BuildableName = "Beiwe.app"
+               BlueprintName = "Beiwe"
+               ReferencedContainer = "container:Beiwe.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "83F98C351C923C3600E0B64B"
-            BuildableName = "RF Skeleton.app"
-            BlueprintName = "RF Skeleton"
-            ReferencedContainer = "container:RF Skeleton.xcodeproj">
+            BuildableName = "Beiwe.app"
+            BlueprintName = "Beiwe"
+            ReferencedContainer = "container:Beiwe.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -56,9 +56,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "83F98C351C923C3600E0B64B"
-            BuildableName = "RF Skeleton.app"
-            BlueprintName = "RF Skeleton"
-            ReferencedContainer = "container:RF Skeleton.xcodeproj">
+            BuildableName = "Beiwe.app"
+            BlueprintName = "Beiwe"
+            ReferencedContainer = "container:Beiwe.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -75,9 +75,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "83F98C351C923C3600E0B64B"
-            BuildableName = "RF Skeleton.app"
-            BlueprintName = "RF Skeleton"
-            ReferencedContainer = "container:RF Skeleton.xcodeproj">
+            BuildableName = "Beiwe.app"
+            BlueprintName = "Beiwe"
+            ReferencedContainer = "container:Beiwe.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

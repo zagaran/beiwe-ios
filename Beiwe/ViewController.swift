@@ -1,6 +1,6 @@
 //
 //  ViewController.swift
-//  RF Skeleton
+//  Beiwe
 //
 //  Created by Keary Griffin on 3/10/16.
 //  Copyright © 2016 Rocketfarm Studios. All rights reserved.
