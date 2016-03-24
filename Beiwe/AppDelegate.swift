@@ -23,6 +23,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Fabric.with([Crashlytics.self])
         print("AppUUID: \(PersistentAppUUID.sharedInstance.uuid)");
 
+        print("Test: \(Configuration.sharedInstance.settings["test"])");
+        print("Test2: \(Configuration.sharedInstance.settings["test2"])");
+
         return true
     }
 

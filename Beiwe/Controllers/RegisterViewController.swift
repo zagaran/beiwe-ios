@@ -10,8 +10,6 @@ import UIKit
 import Eureka
 import SwiftValidator
 import PKHUD
-import libPhoneNumber_iOS;
-
 
 class RegisterViewController: FormViewController {
 

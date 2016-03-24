@@ -12,6 +12,8 @@
 		83AF20DA1CA310B100D3DF02 /* EurekaSwiftValidatorComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83AF20D91CA310B100D3DF02 /* EurekaSwiftValidatorComponents.swift */; };
 		83AF20DC1CA3537200D3DF02 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83AF20DB1CA3537200D3DF02 /* Constants.swift */; };
 		83E3DE731CA37F7600EB5349 /* MiscHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E3DE721CA37F7600EB5349 /* MiscHelpers.swift */; };
+		83E3DE761CA3967A00EB5349 /* StudySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E3DE751CA3967A00EB5349 /* StudySettings.swift */; };
+		83E3DE881CA3A75F00EB5349 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E3DE871CA3A75F00EB5349 /* Configuration.swift */; };
 		83F6C9661CA0F6C900B85914 /* OldRegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F6C9651CA0F6C900B85914 /* OldRegisterViewController.swift */; };
 		83F6C9681CA0F6CF00B85914 /* PersistentPasswordManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F6C9671CA0F6CF00B85914 /* PersistentPasswordManager.swift */; };
 		83F6C96A1CA0F6D900B85914 /* PersistentAppUUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F6C9691CA0F6D900B85914 /* PersistentAppUUID.swift */; };
@@ -30,6 +32,13 @@
 		83AF20D91CA310B100D3DF02 /* EurekaSwiftValidatorComponents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EurekaSwiftValidatorComponents.swift; sourceTree = "<group>"; };
 		83AF20DB1CA3537200D3DF02 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		83E3DE721CA37F7600EB5349 /* MiscHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiscHelpers.swift; sourceTree = "<group>"; };
+		83E3DE751CA3967A00EB5349 /* StudySettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudySettings.swift; sourceTree = "<group>"; };
+		83E3DE7B1CA3A37E00EB5349 /* Config-Dbg.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Config-Dbg.plist"; sourceTree = "<group>"; };
+		83E3DE7D1CA3A3A200EB5349 /* Config-Default.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Config-Default.plist"; sourceTree = "<group>"; };
+		83E3DE7F1CA3A3AC00EB5349 /* Config-Ext.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Config-Ext.plist"; sourceTree = "<group>"; };
+		83E3DE811CA3A3B900EB5349 /* Config-Int.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Config-Int.plist"; sourceTree = "<group>"; };
+		83E3DE831CA3A3C200EB5349 /* Config-Prod.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Config-Prod.plist"; sourceTree = "<group>"; };
+		83E3DE871CA3A75F00EB5349 /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		83F6C9651CA0F6C900B85914 /* OldRegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OldRegisterViewController.swift; sourceTree = "<group>"; };
 		83F6C9671CA0F6CF00B85914 /* PersistentPasswordManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentPasswordManager.swift; sourceTree = "<group>"; };
 		83F6C9691CA0F6D900B85914 /* PersistentAppUUID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentAppUUID.swift; sourceTree = "<group>"; };
@@ -81,11 +90,32 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		83E3DE741CA3956600EB5349 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				83E3DE751CA3967A00EB5349 /* StudySettings.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		83E3DE781CA3A2C100EB5349 /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				83E3DE7B1CA3A37E00EB5349 /* Config-Dbg.plist */,
+				83E3DE7D1CA3A3A200EB5349 /* Config-Default.plist */,
+				83E3DE7F1CA3A3AC00EB5349 /* Config-Ext.plist */,
+				83E3DE811CA3A3B900EB5349 /* Config-Int.plist */,
+				83E3DE831CA3A3C200EB5349 /* Config-Prod.plist */,
+			);
+			path = Configuration;
+			sourceTree = "<group>";
+		};
 		83F6C9581CA088D400B85914 /* Util */ = {
 			isa = PBXGroup;
 			children = (
 				83F6C9691CA0F6D900B85914 /* PersistentAppUUID.swift */,
 				83E3DE721CA37F7600EB5349 /* MiscHelpers.swift */,
+				83E3DE871CA3A75F00EB5349 /* Configuration.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -128,6 +158,8 @@
 		83F98C381C923C3600E0B64B /* Beiwe */ = {
 			isa = PBXGroup;
 			children = (
+				83E3DE781CA3A2C100EB5349 /* Configuration */,
+				83E3DE741CA3956600EB5349 /* Models */,
 				83AF20D81CA3107100D3DF02 /* Extensions */,
 				83F6C9641CA0F65600B85914 /* Controllers */,
 				83F6C95E1CA0895000B85914 /* Managers */,
@@ -155,6 +187,7 @@
 				83F98C341C923C3600E0B64B /* Resources */,
 				C0063108B4212D0EF2A50635 /* Embed Pods Frameworks */,
 				4361E4E405EBAA13ED8F650B /* Copy Pods Resources */,
+				83E3DE861CA3A41E00EB5349 /* ShellScript */,
 				83F98C501C925F2500E0B64B /* ShellScript */,
 				83F98C511C925F6F00E0B64B /* ShellScript */,
 				83F98C4F1C9250A600E0B64B /* Run Script */,
@@ -245,6 +278,19 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		83E3DE861CA3A41E00EB5349 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Copy Configuration files: ${TARGET_NAME_SUFFIX}\"\nCONFIG_NAME=${TARGET_NAME_SUFFIX}\nif [ \"$CONFIG_NAME\" == \"\" ]; then\n    CONFIG_NAME=\"Prod\"\nfi\necho $CONFIG_NAME\ncp ${SRCROOT}/Beiwe/Configuration/Config-Default.plist ${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app\ncp ${SRCROOT}/Beiwe/Configuration/Config-${CONFIG_NAME}.plist ${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/Config.plist";
+		};
 		83F98C4F1C9250A600E0B64B /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -307,11 +353,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				83E3DE761CA3967A00EB5349 /* StudySettings.swift in Sources */,
 				83F6C9681CA0F6CF00B85914 /* PersistentPasswordManager.swift in Sources */,
 				83AF20DA1CA310B100D3DF02 /* EurekaSwiftValidatorComponents.swift in Sources */,
 				833482F71CA2EF7E00A37B35 /* RegisterViewController.swift in Sources */,
 				83E3DE731CA37F7600EB5349 /* MiscHelpers.swift in Sources */,
 				83F98C3A1C923C3600E0B64B /* AppDelegate.swift in Sources */,
+				83E3DE881CA3A75F00EB5349 /* Configuration.swift in Sources */,
 				83AF20DC1CA3537200D3DF02 /* Constants.swift in Sources */,
 				83F6C9661CA0F6C900B85914 /* OldRegisterViewController.swift in Sources */,
 				83F6C96A1CA0F6D900B85914 /* PersistentAppUUID.swift in Sources */,
