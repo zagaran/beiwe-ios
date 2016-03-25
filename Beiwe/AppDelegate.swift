@@ -10,7 +10,6 @@ import UIKit
 import Fabric
 import Crashlytics
 
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -22,9 +21,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         Fabric.with([Crashlytics.self])
         print("AppUUID: \(PersistentAppUUID.sharedInstance.uuid)");
+        let uiDevice = UIDevice.currentDevice();
+        print("name: \(uiDevice.name)");
+        print("systemName: \(uiDevice.systemName)");
+        print("systemVersion: \(uiDevice.systemVersion)");
+        print("model: \(uiDevice.model)");
+        print("platform: \(platform())");
 
-        print("Test: \(Configuration.sharedInstance.settings["test"])");
-        print("Test2: \(Configuration.sharedInstance.settings["test2"])");
+
 
         return true
     }

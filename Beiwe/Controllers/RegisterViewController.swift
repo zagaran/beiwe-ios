@@ -21,7 +21,7 @@ class RegisterViewController: FormViewController {
         // Do any additional setup after loading the view.
 
         form +++ Section("Register for Study")
-            <<< SVAccountRow("account") {
+            <<< SVAccountRow("patientId") {
                 $0.title = "User ID:"
                 $0.placeholder = "Enter User ID";
                 $0.rules = [RequiredRule()]
@@ -62,8 +62,39 @@ class RegisterViewController: FormViewController {
                         PKHUD.sharedHUD.dimsBackground = true;
                         PKHUD.sharedHUD.userInteractionOnUnderlyingViewsEnabled = false;
                         HUD.show(.Progress);
-                        delay(2.0) {
-                            HUD.flash(.LabeledError(title: "Registration failed", subtitle: "Couldn't connect to server"), delay: 1)
+                        let formValues = self.form.values();
+                        let patientId: String? = formValues["patientId"] as! String?;
+                        let phoneNumber: String? = formValues["phone"] as! String?;
+                        let newPassword: String? = formValues["password"] as! String?;
+                        let tempPassword: String? = formValues["tempPassword"] as! String?;
+                        if let patientId = patientId, phoneNumber = phoneNumber, newPassword = newPassword {
+                            let registerStudyRequest = RegisterStudyRequest(patientId: patientId, phoneNumber: phoneNumber, newPassword: newPassword)
+                            ApiManager.sharedInstance.password = tempPassword ?? "";
+                            ApiManager.sharedInstance.makePostRequest(registerStudyRequest).then {
+                                studySettings -> Void in
+                                print("study settings received");
+                                PersistentPasswordManager.sharedInstance.storePassword(newPassword);
+                                HUD.flash(.Success, delay: 1);
+                            }.error { error -> Void in
+                                print("error received from register: \(error)");
+                                var delay = 2.0;
+                                var err: HUDContentType;
+                                switch error {
+                                case ApiErrors.FailedStatus(let code):
+                                    switch code {
+                                    case 403:
+                                        err = .LabeledError(title: "Registration failed", subtitle: "Incorrect UserID or Password");
+                                    case 405:
+                                        err = .Label("UserID already registered on another device.  Please contact your study administrator to unregister any previous devices that may have been used");
+                                        delay = 10.0;
+                                    default:
+                                        err = .LabeledError(title: "Registration failed", subtitle: "Communication error");
+                                    }
+                                default:
+                                    err = .LabeledError(title: "Registration failed", subtitle: "Communication error");
+                                }
+                                HUD.flash(err, delay: delay)
+                            }
                         }
                     } else {
                         print("Bad validation.");

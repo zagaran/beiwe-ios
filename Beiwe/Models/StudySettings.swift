@@ -40,7 +40,7 @@ import ObjectMapper;
  wifi_log_frequency_seconds: 300 } },
  
  */
-class StudySettings : Mappable {
+struct StudySettings : Mappable {
 
     var clientPublicKey: String?;
     var aboutPageText = "";
@@ -68,12 +68,12 @@ class StudySettings : Mappable {
     var wifi = false;
     var wifiLogFrequencySeconds = 300;
 
-    required init?(_ map: Map) {
+    init?(_ map: Map) {
 
     }
 
     // Mappable
-    func mapping(map: Map) {
+    mutating func mapping(map: Map) {
         clientPublicKey                 <- map["client_public_key"];
         aboutPageText                   <- map["device_settings.about_page_text"];
         accelerometer                   <- map["device_settings.accelerometer"];

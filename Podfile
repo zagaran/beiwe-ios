@@ -8,5 +8,5 @@ pod 'ObjectMapper', '~> 1.1'
 pod 'Eureka', '~> 1.5'
 pod 'SwiftValidator', '3.0.3' 
 pod "PKHUD"
-pod 'AlamofireObjectMapper', '~> 2.1'
+pod 'IDZSwiftCommonCrypto'
 

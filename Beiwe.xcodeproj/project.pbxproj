@@ -9,11 +9,14 @@
 /* Begin PBXBuildFile section */
 		158E7092A5A62BC4588FEF11 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D73594BB9D98FBE3AA1E023 /* Pods.framework */; };
 		833482F71CA2EF7E00A37B35 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833482F61CA2EF7E00A37B35 /* RegisterViewController.swift */; };
+		8379B45C1CA4F02C00D4C605 /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8379B45B1CA4F02C00D4C605 /* Crypto.swift */; };
 		83AF20DA1CA310B100D3DF02 /* EurekaSwiftValidatorComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83AF20D91CA310B100D3DF02 /* EurekaSwiftValidatorComponents.swift */; };
 		83AF20DC1CA3537200D3DF02 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83AF20DB1CA3537200D3DF02 /* Constants.swift */; };
 		83E3DE731CA37F7600EB5349 /* MiscHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E3DE721CA37F7600EB5349 /* MiscHelpers.swift */; };
 		83E3DE761CA3967A00EB5349 /* StudySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E3DE751CA3967A00EB5349 /* StudySettings.swift */; };
 		83E3DE881CA3A75F00EB5349 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E3DE871CA3A75F00EB5349 /* Configuration.swift */; };
+		83E3DE8C1CA4600500EB5349 /* RegisterStudyRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E3DE8B1CA4600500EB5349 /* RegisterStudyRequest.swift */; };
+		83E3DE8E1CA477D200EB5349 /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E3DE8D1CA477D200EB5349 /* ApiManager.swift */; };
 		83F6C9661CA0F6C900B85914 /* OldRegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F6C9651CA0F6C900B85914 /* OldRegisterViewController.swift */; };
 		83F6C9681CA0F6CF00B85914 /* PersistentPasswordManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F6C9671CA0F6CF00B85914 /* PersistentPasswordManager.swift */; };
 		83F6C96A1CA0F6D900B85914 /* PersistentAppUUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F6C9691CA0F6D900B85914 /* PersistentAppUUID.swift */; };
@@ -29,6 +32,7 @@
 		4D73594BB9D98FBE3AA1E023 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		78E8D8BEA9B2CD2BDA96DF26 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		833482F61CA2EF7E00A37B35 /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
+		8379B45B1CA4F02C00D4C605 /* Crypto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Crypto.swift; sourceTree = "<group>"; };
 		83AF20D91CA310B100D3DF02 /* EurekaSwiftValidatorComponents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EurekaSwiftValidatorComponents.swift; sourceTree = "<group>"; };
 		83AF20DB1CA3537200D3DF02 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		83E3DE721CA37F7600EB5349 /* MiscHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiscHelpers.swift; sourceTree = "<group>"; };
@@ -39,6 +43,8 @@
 		83E3DE811CA3A3B900EB5349 /* Config-Int.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Config-Int.plist"; sourceTree = "<group>"; };
 		83E3DE831CA3A3C200EB5349 /* Config-Prod.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Config-Prod.plist"; sourceTree = "<group>"; };
 		83E3DE871CA3A75F00EB5349 /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
+		83E3DE8B1CA4600500EB5349 /* RegisterStudyRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterStudyRequest.swift; sourceTree = "<group>"; };
+		83E3DE8D1CA477D200EB5349 /* ApiManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiManager.swift; sourceTree = "<group>"; };
 		83F6C9651CA0F6C900B85914 /* OldRegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OldRegisterViewController.swift; sourceTree = "<group>"; };
 		83F6C9671CA0F6CF00B85914 /* PersistentPasswordManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentPasswordManager.swift; sourceTree = "<group>"; };
 		83F6C9691CA0F6D900B85914 /* PersistentAppUUID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentAppUUID.swift; sourceTree = "<group>"; };
@@ -110,12 +116,22 @@
 			path = Configuration;
 			sourceTree = "<group>";
 		};
+		83E3DE8A1CA45F2400EB5349 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				83E3DE8B1CA4600500EB5349 /* RegisterStudyRequest.swift */,
+				83E3DE8D1CA477D200EB5349 /* ApiManager.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
 		83F6C9581CA088D400B85914 /* Util */ = {
 			isa = PBXGroup;
 			children = (
 				83F6C9691CA0F6D900B85914 /* PersistentAppUUID.swift */,
 				83E3DE721CA37F7600EB5349 /* MiscHelpers.swift */,
 				83E3DE871CA3A75F00EB5349 /* Configuration.swift */,
+				8379B45B1CA4F02C00D4C605 /* Crypto.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -158,6 +174,7 @@
 		83F98C381C923C3600E0B64B /* Beiwe */ = {
 			isa = PBXGroup;
 			children = (
+				83E3DE8A1CA45F2400EB5349 /* API */,
 				83E3DE781CA3A2C100EB5349 /* Configuration */,
 				83E3DE741CA3956600EB5349 /* Models */,
 				83AF20D81CA3107100D3DF02 /* Extensions */,
@@ -357,9 +374,12 @@
 				83F6C9681CA0F6CF00B85914 /* PersistentPasswordManager.swift in Sources */,
 				83AF20DA1CA310B100D3DF02 /* EurekaSwiftValidatorComponents.swift in Sources */,
 				833482F71CA2EF7E00A37B35 /* RegisterViewController.swift in Sources */,
+				83E3DE8E1CA477D200EB5349 /* ApiManager.swift in Sources */,
 				83E3DE731CA37F7600EB5349 /* MiscHelpers.swift in Sources */,
 				83F98C3A1C923C3600E0B64B /* AppDelegate.swift in Sources */,
 				83E3DE881CA3A75F00EB5349 /* Configuration.swift in Sources */,
+				83E3DE8C1CA4600500EB5349 /* RegisterStudyRequest.swift in Sources */,
+				8379B45C1CA4F02C00D4C605 /* Crypto.swift in Sources */,
 				83AF20DC1CA3537200D3DF02 /* Constants.swift in Sources */,
 				83F6C9661CA0F6C900B85914 /* OldRegisterViewController.swift in Sources */,
 				83F6C96A1CA0F6D900B85914 /* PersistentAppUUID.swift in Sources */,
