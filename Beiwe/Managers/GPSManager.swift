@@ -39,6 +39,7 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
     var lastLocations: [CLLocation]?;
     var isCollectingGps: Bool = false;
     var dataCollectionServices: [DataServiceStatus] = [ ];
+    var gpsStore: DataStorage?;
     static let headers = [ "timestamp", "latitude", "longitude", "altitude", "accuracy"];
 
     func startGpsAndTimer() {
@@ -51,6 +52,7 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
         };
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestAlwaysAuthorization();
+        locationManager.pausesLocationUpdatesAutomatically = false;
         locationManager.startUpdatingLocation();
 
     }
@@ -113,19 +115,21 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
             data.append(String(loc.coordinate.longitude))
             data.append(String(loc.altitude))
             data.append(String(loc.horizontalAccuracy))
-            DataStorageManager.sharedInstance.store("gps", headers: GPSManager.headers, data: data);
+            gpsStore?.store(data);
         }
     }
 
     func addDataService(on: Int, off: Int, handler: DataServiceProtocol) {
         let dataServiceStatus = DataServiceStatus(onDurationSeconds: on, offDurationSeconds: off, handler: handler);
         dataCollectionServices.append(dataServiceStatus);
+        handler.initCollecting();
     }
 
 
     /* Data service protocol */
 
     func initCollecting() {
+        gpsStore = DataStorageManager.sharedInstance.createStore("gps", headers: GPSManager.headers);
         isCollectingGps = false;
     }
     func startCollecting() {
@@ -135,10 +139,11 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
     func pauseCollecting() {
         print("Pausing GPS collection");
         isCollectingGps = false;
-        DataStorageManager.sharedInstance.flush("gps");
+        gpsStore?.flush();
     }
     func finishCollecting() {
-        DataStorageManager.sharedInstance.flush("gps");
+        DataStorageManager.sharedInstance.closeStore("gps");
+        gpsStore = nil;
         isCollectingGps = false;
     }
 }

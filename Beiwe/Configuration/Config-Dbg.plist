@@ -3,6 +3,6 @@
 <plist version="1.0">
 <dict>
 	<key>server-url</key>
-	<string>http://127.0.0.1:3000</string>
+	<string>http://kghome.unwiredservers.com:3000</string>
 </dict>
 </plist>

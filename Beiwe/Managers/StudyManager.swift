@@ -53,6 +53,9 @@ class StudyManager {
         if (studySettings.gps) {
             gpsManager!.addDataService(studySettings.gpsOnDurationSeconds, off: studySettings.gpsOffDurationSeconds, handler: gpsManager!)
         }
+        if (studySettings.accelerometer) {
+            gpsManager!.addDataService(studySettings.accelerometerOnDurationSeconds, off: studySettings.accelerometerOffDurationSeconds, handler: AccelerometerManager());
+        }
         gpsManager!.startGpsAndTimer();
     }
 

@@ -77,6 +77,12 @@ class DataStorage {
         _writeLine(line);
     }
 
+    func store(data: [String]) {
+        let csv = data.joinWithSeparator(DataStorage.delimiter);
+        writeLine(csv)
+
+    }
+
     func flush() {
         if (!hasData) {
             return;
@@ -133,12 +139,32 @@ class DataStorageManager {
         storage.writeLine(csv)
     }
 
+    func createStore(type: String, headers: [String]) -> DataStorage? {
+        if (storageTypes[type] == nil) {
+            if let publicKey = publicKey, patientId = study?.patientId {
+                storageTypes[type] = DataStorage(type: type, headers: headers, patientId: patientId, publicKey: publicKey);
+            } else {
+                print("No public key found! Can't store data");
+                return nil;
+            }
+        }
+        return storageTypes[type]!;
+    }
+
     func flush(type: String) {
         if let storage = storageTypes[type] {
             storage.flush();
         }
 
     }
+
+    func closeStore(type: String) {
+        if let storage = storageTypes[type] {
+            storage.flush();
+            storageTypes.removeValueForKey(type);
+        }
+    }
+
 
     func setCurrentStudy(study: Study) {
         self.study = study;
