@@ -85,7 +85,7 @@
       buildConfiguration = "TestFlight Internal">
    </AnalyzeAction>
    <ArchiveAction
-      buildConfiguration = "Release"
+      buildConfiguration = "TestFlight External"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>
