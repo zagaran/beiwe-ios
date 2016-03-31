@@ -144,4 +144,20 @@ class Recline {
 
     }
 
+    func purge<T: ReclineObject>(obj: T) -> Promise<Bool> {
+        return Promise { resolve, reject in
+
+            var doc: CBLDocument?;
+            if let rev = obj._docRevision {
+                doc = rev.document;
+                try doc?.purgeDocument();
+                return resolve(true);
+            } else {
+                return resolve(true);
+            }
+
+        }
+        
+    }
+
 }

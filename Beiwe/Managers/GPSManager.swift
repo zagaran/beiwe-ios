@@ -55,6 +55,14 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
 
     }
 
+    func stopAndClear() {
+        locationManager.stopUpdatingLocation();
+        for dataStatus in dataCollectionServices {
+            dataStatus.handler.finishCollecting();
+        }
+        dataCollectionServices.removeAll();
+    }
+
     func dispatchToServices() -> NSDate {
         let currentDate = NSDate().timeIntervalSince1970;
         var nextServiceDate = currentDate + (15 * 60);
@@ -87,7 +95,9 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
 
         let nextServiceSeconds = min(nextServiceDate.timeIntervalSince1970 - NSDate().timeIntervalSince1970, 1.0);
 
-        locationManager.allowDeferredLocationUpdatesUntilTraveled(10000, timeout: nextServiceSeconds);
+        if (!isCollectingGps) {
+            locationManager.allowDeferredLocationUpdatesUntilTraveled(10000, timeout: nextServiceSeconds);
+        }
 
     }
 
@@ -128,6 +138,7 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
         DataStorageManager.sharedInstance.flush("gps");
     }
     func finishCollecting() {
+        DataStorageManager.sharedInstance.flush("gps");
         isCollectingGps = false;
     }
 }

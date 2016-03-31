@@ -177,11 +177,20 @@
                                     <action selector="Upload:" destination="BYZ-38-t0r" eventType="touchUpInside" id="7Vf-Qz-stp"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a5z-8e-tBs">
+                                <rect key="frame" x="258" y="210" width="84" height="30"/>
+                                <state key="normal" title="Leave Study"/>
+                                <connections>
+                                    <action selector="leaveStudy:" destination="BYZ-38-t0r" eventType="touchUpInside" id="L3F-ts-hpU"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="RyB-nW-PvG" firstAttribute="top" secondItem="O8L-zM-cSS" secondAttribute="bottom" constant="59" id="4X3-4Y-47O"/>
+                            <constraint firstItem="a5z-8e-tBs" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="7uc-eA-eqw"/>
                             <constraint firstItem="O8L-zM-cSS" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="EqW-Up-GCL"/>
+                            <constraint firstItem="O8L-zM-cSS" firstAttribute="top" secondItem="a5z-8e-tBs" secondAttribute="bottom" constant="50" id="PS3-a3-XDo"/>
                             <constraint firstItem="RyB-nW-PvG" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Qn2-EK-7O3"/>
                             <constraint firstItem="O8L-zM-cSS" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="zs0-zP-zop"/>
                         </constraints>

@@ -56,6 +56,45 @@ class StudyManager {
         gpsManager!.startGpsAndTimer();
     }
 
+    func leaveStudy() {
+        guard let study = currentStudy else {
+            return;
+        }
+
+        gpsManager?.stopAndClear();
+        gpsManager = nil;
+        Recline.shared.purge(study).then { _ -> Void in
+            let fileManager = NSFileManager.defaultManager()
+            var enumerator = fileManager.enumeratorAtPath(DataStorageManager.uploadDataDirectory().path!);
+
+            if let enumerator = enumerator {
+                while let filename = enumerator.nextObject() as? String {
+                    if (filename.hasSuffix(DataStorageManager.dataFileSuffix)) {
+                        let filePath = DataStorageManager.uploadDataDirectory().URLByAppendingPathComponent(filename);
+                        try fileManager.removeItemAtURL(filePath);
+                    }
+                }
+            }
+
+            enumerator = fileManager.enumeratorAtPath(DataStorageManager.currentDataDirectory().path!);
+
+            if let enumerator = enumerator {
+                while let filename = enumerator.nextObject() as? String {
+                    if (filename.hasSuffix(DataStorageManager.dataFileSuffix)) {
+                        let filePath = DataStorageManager.currentDataDirectory().URLByAppendingPathComponent(filename);
+                        try fileManager.removeItemAtURL(filePath);
+                    }
+                }
+            }
+
+            self.loadDefaultStudy();
+
+            }.error { err -> Void in
+                print("Error leaving study!");
+        };
+
+    }
+
     func upload() {
         if (isUploading) {
             return;

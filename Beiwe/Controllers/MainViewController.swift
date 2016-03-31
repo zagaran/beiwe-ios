@@ -25,6 +25,9 @@ class MainViewController: UIViewController {
         StudyManager.sharedInstance.upload();
     }
 
+    @IBAction func leaveStudy(sender: AnyObject) {
+        StudyManager.sharedInstance.leaveStudy();
+    }
     /*
     // MARK: - Navigation
 
