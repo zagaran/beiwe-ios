@@ -9,4 +9,4 @@ pod 'Eureka', '~> 1.5'
 pod 'SwiftValidator', '3.0.3' 
 pod "PKHUD"
 pod 'IDZSwiftCommonCrypto'
-
+pod 'couchbase-lite-ios'

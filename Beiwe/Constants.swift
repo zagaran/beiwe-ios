@@ -9,4 +9,6 @@
 struct Constants {
     static let passwordRequirementRegex = "^.{6,}$";
     static let passwordRequirementDescription = "Must be at least 6 characters";
+
+    static let defaultStudyId = "default";
 }

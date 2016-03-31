@@ -14,17 +14,20 @@ struct PersistentPasswordManager {
 
     private let keychain = KeychainSwift()
     private let passwordKeyPrefix = "password:";
+    private let rsaKeyPrefix = "publicrsa:";
 
 
-    private func keyForStudy(study: String) -> String {
-        let key = passwordKeyPrefix + study;
+    private func keyForStudy(study: String, prefix: String) -> String {
+        let key = prefix + study;
         return key;
     }
-    func passwordForStudy(study: String = "default") -> String? {
-        return keychain.get(keyForStudy(study));
+
+    func passwordForStudy(study: String = Constants.defaultStudyId) -> String? {
+        return keychain.get(keyForStudy(study, prefix: passwordKeyPrefix));
     }
 
-    func storePassword(password: String, study: String = "default") {
-        keychain.set(password, forKey: keyForStudy(study), withAccess: .AccessibleAlwaysThisDeviceOnly);
+    func storePassword(password: String, study: String = Constants.defaultStudyId) {
+        keychain.set(password, forKey: keyForStudy(study, prefix: passwordKeyPrefix), withAccess: .AccessibleAlwaysThisDeviceOnly);
     }
+
 }

@@ -9,13 +9,13 @@
 import UIKit
 import Fabric
 import Crashlytics
+import PromiseKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var storyboard: UIStoryboard?;
-
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
@@ -28,7 +28,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("model: \(uiDevice.model)");
         print("platform: \(platform())");
 
+        storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle());
 
+        Recline.shared.open().then { _ -> Void in
+            print("Database opened");
+            StudyManager.sharedInstance.loadDefaultStudy();
+        }.error { err -> Void in
+            print("Database open failed.");
+        }
 
         return true
     }
@@ -55,14 +62,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
-    func application(application: UIApplication, willFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
-        storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle());
+    func displayCurrentMainView() {
+        //
+
+        var view: String;
+        if let _ = StudyManager.sharedInstance.currentStudy {
+            view = "initialStudyView";
+        } else {
+            view = "registerView";
+        }
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
         //self.window!.backgroundColor = UIColor.whiteColor()
 
-        self.window?.rootViewController = storyboard!.instantiateViewControllerWithIdentifier("registerView") as UIViewController!;
+        self.window?.rootViewController = storyboard!.instantiateViewControllerWithIdentifier(view) as UIViewController!;
 
         self.window!.makeKeyAndVisible()
+        
+    }
+
+    func application(application: UIApplication, willFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
 
         return true;
 

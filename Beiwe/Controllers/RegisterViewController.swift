@@ -10,10 +10,12 @@ import UIKit
 import Eureka
 import SwiftValidator
 import PKHUD
+import PromiseKit
 
 class RegisterViewController: FormViewController {
 
     let autoValidation = false;
+    let db = Recline.shared;
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,11 +72,16 @@ class RegisterViewController: FormViewController {
                         if let patientId = patientId, phoneNumber = phoneNumber, newPassword = newPassword {
                             let registerStudyRequest = RegisterStudyRequest(patientId: patientId, phoneNumber: phoneNumber, newPassword: newPassword)
                             ApiManager.sharedInstance.password = tempPassword ?? "";
+                            ApiManager.sharedInstance.patientId = patientId;
                             ApiManager.sharedInstance.makePostRequest(registerStudyRequest).then {
-                                studySettings -> Void in
+                                (studySettings, _) -> Promise<Study> in
                                 print("study settings received");
                                 PersistentPasswordManager.sharedInstance.storePassword(newPassword);
+                                let study = Study(phoneNumber: phoneNumber, patientId: patientId, studySettings: studySettings);
+                                return self.db.save(study);
+                            }.then { _ -> Void in
                                 HUD.flash(.Success, delay: 1);
+                                StudyManager.sharedInstance.loadDefaultStudy();
                             }.error { error -> Void in
                                 print("error received from register: \(error)");
                                 var delay = 2.0;

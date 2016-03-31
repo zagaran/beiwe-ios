@@ -11,13 +11,16 @@ import PromiseKit;
 import Alamofire;
 import ObjectMapper;
 
+
+
 protocol ApiRequest {
-    associatedtype _ApiReturnType : Mappable;
-    static var _apiEndpoint: String { get };
+    associatedtype ApiReturnType : Mappable;
+    static var apiEndpoint: String { get };
 }
 
 enum ApiErrors: ErrorType {
     case FailedStatus(code: Int)
+    case FileNotFound
 }
 
 class ApiManager {
@@ -37,12 +40,15 @@ class ApiManager {
         }
     }
 
-    func makePostRequest<T: ApiRequest where T: Mappable>(requestObject: T) -> Promise<(T._ApiReturnType, Int)> {
+    var patientId: String = "";
+
+    func makePostRequest<T: ApiRequest where T: Mappable>(requestObject: T) -> Promise<(T.ApiReturnType, Int)> {
         var parameters = requestObject.toJSON();
         parameters["password"] = hashedPassword;
         parameters["device_id"] = PersistentAppUUID.sharedInstance.uuid;
+        parameters["patient_id"] = patientId;
         return Promise { resolve, reject in
-            Alamofire.request(.POST, baseApiUrl + T._apiEndpoint, parameters: parameters)
+            Alamofire.request(.POST, baseApiUrl + T.apiEndpoint, parameters: parameters)
                 .responseString { response in
                     switch response.result {
                     case .Failure(let error):
@@ -52,7 +58,11 @@ class ApiManager {
                         if let statusCode = statusCode where statusCode < 200 || statusCode >= 400 {
                             reject(ApiErrors.FailedStatus(code: statusCode));
                         } else {
-                            let returnObject = Mapper<T._ApiReturnType>().map(response.result.value);
+                            var val = response.result.value;
+                            if (T.apiEndpoint == "/upload") {
+                                val = "{}";
+                            }
+                            let returnObject = Mapper<T.ApiReturnType>().map(val);
                             if let returnObject = returnObject {
                                 resolve((returnObject, statusCode ?? 0));
                             } else {
@@ -64,6 +74,7 @@ class ApiManager {
             }
         }
     }
+
 
 
 }

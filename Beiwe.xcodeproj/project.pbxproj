@@ -10,8 +10,17 @@
 		158E7092A5A62BC4588FEF11 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D73594BB9D98FBE3AA1E023 /* Pods.framework */; };
 		833482F71CA2EF7E00A37B35 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833482F61CA2EF7E00A37B35 /* RegisterViewController.swift */; };
 		8379B45C1CA4F02C00D4C605 /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8379B45B1CA4F02C00D4C605 /* Crypto.swift */; };
+		83AF04131CAADE6200A37225 /* StudyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83AF04121CAADE6200A37225 /* StudyManager.swift */; };
+		83AF04151CAB556800A37225 /* GPSManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83AF04141CAB556800A37225 /* GPSManager.swift */; };
+		83AF04171CAB777200A37225 /* DataStorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83AF04161CAB777200A37225 /* DataStorageManager.swift */; };
+		83AF04191CAB843D00A37225 /* SwiftyRSA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83AF04181CAB843D00A37225 /* SwiftyRSA.swift */; };
+		83AF041D1CACA6A000A37225 /* TDMultiStreamWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 83AF041C1CACA6A000A37225 /* TDMultiStreamWriter.m */; };
+		83AF041F1CACBCC600A37225 /* UploadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83AF041E1CACBCC600A37225 /* UploadRequest.swift */; };
+		83AF04211CACC1C900A37225 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83AF04201CACC1C900A37225 /* MainViewController.swift */; };
 		83AF20DA1CA310B100D3DF02 /* EurekaSwiftValidatorComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83AF20D91CA310B100D3DF02 /* EurekaSwiftValidatorComponents.swift */; };
 		83AF20DC1CA3537200D3DF02 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83AF20DB1CA3537200D3DF02 /* Constants.swift */; };
+		83B4D6721CA8DBB2001BF283 /* Study.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B4D6711CA8DBB2001BF283 /* Study.swift */; };
+		83B4D6771CAA05E0001BF283 /* Recline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B4D6761CAA05E0001BF283 /* Recline.swift */; };
 		83E3DE731CA37F7600EB5349 /* MiscHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E3DE721CA37F7600EB5349 /* MiscHelpers.swift */; };
 		83E3DE761CA3967A00EB5349 /* StudySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E3DE751CA3967A00EB5349 /* StudySettings.swift */; };
 		83E3DE881CA3A75F00EB5349 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E3DE871CA3A75F00EB5349 /* Configuration.swift */; };
@@ -33,8 +42,19 @@
 		78E8D8BEA9B2CD2BDA96DF26 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		833482F61CA2EF7E00A37B35 /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		8379B45B1CA4F02C00D4C605 /* Crypto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Crypto.swift; sourceTree = "<group>"; };
+		83AF04111CAA083400A37225 /* Beiwe-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Beiwe-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
+		83AF04121CAADE6200A37225 /* StudyManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudyManager.swift; sourceTree = "<group>"; };
+		83AF04141CAB556800A37225 /* GPSManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GPSManager.swift; sourceTree = "<group>"; };
+		83AF04161CAB777200A37225 /* DataStorageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataStorageManager.swift; sourceTree = "<group>"; };
+		83AF04181CAB843D00A37225 /* SwiftyRSA.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyRSA.swift; sourceTree = "<group>"; };
+		83AF041B1CACA6A000A37225 /* TDMultiStreamWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDMultiStreamWriter.h; sourceTree = "<group>"; };
+		83AF041C1CACA6A000A37225 /* TDMultiStreamWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDMultiStreamWriter.m; sourceTree = "<group>"; };
+		83AF041E1CACBCC600A37225 /* UploadRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadRequest.swift; sourceTree = "<group>"; };
+		83AF04201CACC1C900A37225 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		83AF20D91CA310B100D3DF02 /* EurekaSwiftValidatorComponents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EurekaSwiftValidatorComponents.swift; sourceTree = "<group>"; };
 		83AF20DB1CA3537200D3DF02 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		83B4D6711CA8DBB2001BF283 /* Study.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Study.swift; sourceTree = "<group>"; };
+		83B4D6761CAA05E0001BF283 /* Recline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recline.swift; sourceTree = "<group>"; };
 		83E3DE721CA37F7600EB5349 /* MiscHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiscHelpers.swift; sourceTree = "<group>"; };
 		83E3DE751CA3967A00EB5349 /* StudySettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudySettings.swift; sourceTree = "<group>"; };
 		83E3DE7B1CA3A37E00EB5349 /* Config-Dbg.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Config-Dbg.plist"; sourceTree = "<group>"; };
@@ -88,6 +108,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		83AF041A1CACA63600A37225 /* ObjC */ = {
+			isa = PBXGroup;
+			children = (
+				83AF041B1CACA6A000A37225 /* TDMultiStreamWriter.h */,
+				83AF041C1CACA6A000A37225 /* TDMultiStreamWriter.m */,
+			);
+			path = ObjC;
+			sourceTree = "<group>";
+		};
 		83AF20D81CA3107100D3DF02 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -96,10 +125,19 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		83B4D6751CAA04DA001BF283 /* Recline */ = {
+			isa = PBXGroup;
+			children = (
+				83B4D6761CAA05E0001BF283 /* Recline.swift */,
+			);
+			path = Recline;
+			sourceTree = "<group>";
+		};
 		83E3DE741CA3956600EB5349 /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				83E3DE751CA3967A00EB5349 /* StudySettings.swift */,
+				83B4D6711CA8DBB2001BF283 /* Study.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -121,6 +159,7 @@
 			children = (
 				83E3DE8B1CA4600500EB5349 /* RegisterStudyRequest.swift */,
 				83E3DE8D1CA477D200EB5349 /* ApiManager.swift */,
+				83AF041E1CACBCC600A37225 /* UploadRequest.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -132,6 +171,7 @@
 				83E3DE721CA37F7600EB5349 /* MiscHelpers.swift */,
 				83E3DE871CA3A75F00EB5349 /* Configuration.swift */,
 				8379B45B1CA4F02C00D4C605 /* Crypto.swift */,
+				83AF04181CAB843D00A37225 /* SwiftyRSA.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -140,6 +180,9 @@
 			isa = PBXGroup;
 			children = (
 				83F6C9671CA0F6CF00B85914 /* PersistentPasswordManager.swift */,
+				83AF04121CAADE6200A37225 /* StudyManager.swift */,
+				83AF04141CAB556800A37225 /* GPSManager.swift */,
+				83AF04161CAB777200A37225 /* DataStorageManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -149,6 +192,7 @@
 			children = (
 				83F6C9651CA0F6C900B85914 /* OldRegisterViewController.swift */,
 				833482F61CA2EF7E00A37B35 /* RegisterViewController.swift */,
+				83AF04201CACC1C900A37225 /* MainViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -174,6 +218,9 @@
 		83F98C381C923C3600E0B64B /* Beiwe */ = {
 			isa = PBXGroup;
 			children = (
+				83AF041A1CACA63600A37225 /* ObjC */,
+				83AF04111CAA083400A37225 /* Beiwe-Bridging-Header.h */,
+				83B4D6751CAA04DA001BF283 /* Recline */,
 				83E3DE8A1CA45F2400EB5349 /* API */,
 				83E3DE781CA3A2C100EB5349 /* Configuration */,
 				83E3DE741CA3956600EB5349 /* Models */,
@@ -306,7 +353,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo \"Copy Configuration files: ${TARGET_NAME_SUFFIX}\"\nCONFIG_NAME=${TARGET_NAME_SUFFIX}\nif [ \"$CONFIG_NAME\" == \"\" ]; then\n    CONFIG_NAME=\"Prod\"\nfi\necho $CONFIG_NAME\ncp ${SRCROOT}/Beiwe/Configuration/Config-Default.plist ${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app\ncp ${SRCROOT}/Beiwe/Configuration/Config-${CONFIG_NAME}.plist ${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/Config.plist";
+			shellScript = "echo \"Bundle ID: \" ${PRODUCT_BUNDLE_IDENTIFIER}\necho \"Product name: \" ${PRODUCT_NAME}\necho \"Copy Configuration files: ${TARGET_NAME_SUFFIX}\"\nCONFIG_NAME=${TARGET_NAME_SUFFIX}\nif [ \"$CONFIG_NAME\" == \"\" ]; then\n    CONFIG_NAME=\"Prod\"\nfi\necho $CONFIG_NAME\ncp \"${SRCROOT}/Beiwe/Configuration/Config-Default.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app\"\ncp \"${SRCROOT}/Beiwe/Configuration/Config-${CONFIG_NAME}.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/Config.plist\"";
 		};
 		83F98C4F1C9250A600E0B64B /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -370,16 +417,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				83AF041F1CACBCC600A37225 /* UploadRequest.swift in Sources */,
+				83AF04211CACC1C900A37225 /* MainViewController.swift in Sources */,
 				83E3DE761CA3967A00EB5349 /* StudySettings.swift in Sources */,
+				83AF04151CAB556800A37225 /* GPSManager.swift in Sources */,
+				83AF04131CAADE6200A37225 /* StudyManager.swift in Sources */,
 				83F6C9681CA0F6CF00B85914 /* PersistentPasswordManager.swift in Sources */,
 				83AF20DA1CA310B100D3DF02 /* EurekaSwiftValidatorComponents.swift in Sources */,
+				83B4D6721CA8DBB2001BF283 /* Study.swift in Sources */,
 				833482F71CA2EF7E00A37B35 /* RegisterViewController.swift in Sources */,
+				83B4D6771CAA05E0001BF283 /* Recline.swift in Sources */,
+				83AF04191CAB843D00A37225 /* SwiftyRSA.swift in Sources */,
 				83E3DE8E1CA477D200EB5349 /* ApiManager.swift in Sources */,
 				83E3DE731CA37F7600EB5349 /* MiscHelpers.swift in Sources */,
 				83F98C3A1C923C3600E0B64B /* AppDelegate.swift in Sources */,
 				83E3DE881CA3A75F00EB5349 /* Configuration.swift in Sources */,
 				83E3DE8C1CA4600500EB5349 /* RegisterStudyRequest.swift in Sources */,
+				83AF04171CAB777200A37225 /* DataStorageManager.swift in Sources */,
 				8379B45C1CA4F02C00D4C605 /* Crypto.swift in Sources */,
+				83AF041D1CACA6A000A37225 /* TDMultiStreamWriter.m in Sources */,
 				83AF20DC1CA3537200D3DF02 /* Constants.swift in Sources */,
 				83F6C9661CA0F6C900B85914 /* OldRegisterViewController.swift in Sources */,
 				83F6C96A1CA0F6D900B85914 /* PersistentAppUUID.swift in Sources */,
@@ -502,8 +558,9 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				INFOPLIST_FILE = Beiwe/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.rocketfarmstudios.beiwe$(BUNDLE_ID_SUFFIX}";
+				PRODUCT_BUNDLE_IDENTIFIER = com.rocketfarmstudios.beiwe.debug;
 				PRODUCT_NAME = "$(TARGET_NAME)${TARGET_NAME_SUFFIX}";
+				SWIFT_OBJC_BRIDGING_HEADER = "Beiwe-Bridging-Header.h";
 				TARGET_NAME_SUFFIX = Dbg;
 			};
 			name = Debug;
@@ -519,6 +576,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.rocketfarmstudios.beiwe$(BUNDLE_ID_SUFFIX}";
 				PRODUCT_NAME = "$(TARGET_NAME)${TARGET_NAME_SUFFIX}";
+				SWIFT_OBJC_BRIDGING_HEADER = "Beiwe-Bridging-Header.h";
 				TARGET_NAME_SUFFIX = "";
 			};
 			name = Release;
@@ -579,8 +637,9 @@
 				INFOPLIST_FILE = Beiwe/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.rocketfarmstudios.beiwe$(BUNDLE_ID_SUFFIX}";
+				PRODUCT_BUNDLE_IDENTIFIER = com.rocketfarmstudios.beiwe.tint;
 				PRODUCT_NAME = "$(TARGET_NAME)${TARGET_NAME_SUFFIX}";
+				SWIFT_OBJC_BRIDGING_HEADER = "Beiwe-Bridging-Header.h";
 				TARGET_NAME_SUFFIX = Int;
 			};
 			name = "TestFlight Internal";
@@ -641,8 +700,9 @@
 				INFOPLIST_FILE = Beiwe/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.rocketfarmstudios.beiwe$(BUNDLE_ID_SUFFIX}";
+				PRODUCT_BUNDLE_IDENTIFIER = com.rocketfarmstudios.beiwe.text;
 				PRODUCT_NAME = "$(TARGET_NAME)${TARGET_NAME_SUFFIX}";
+				SWIFT_OBJC_BRIDGING_HEADER = "Beiwe-Bridging-Header.h";
 				TARGET_NAME_SUFFIX = Ext;
 			};
 			name = "TestFlight External";

@@ -11,8 +11,8 @@ import ObjectMapper
 
 struct RegisterStudyRequest : Mappable, ApiRequest {
 
-    static let _apiEndpoint = "/register_user"
-    typealias _ApiReturnType = StudySettings;
+    static let apiEndpoint = "/register_user"
+    typealias ApiReturnType = StudySettings;
 
     var patientId: String?;
     var phoneNumber: String?;
