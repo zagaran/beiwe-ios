@@ -108,6 +108,7 @@ class StudyManager {
         let fileManager = NSFileManager.defaultManager()
         let enumerator = fileManager.enumeratorAtPath(DataStorageManager.uploadDataDirectory().path!);
 
+        /*
         var promises: [Promise<Bool>] = [ ];
 
         if let enumerator = enumerator {
@@ -133,6 +134,40 @@ class StudyManager {
             }.error { error in
                 print("Error uploading: \(error)");
                 self.isUploading = false;
+            }
+        }
+        */
+
+        var promiseChain = Promise(true);
+        var numFiles = 0;
+
+        if let enumerator = enumerator {
+            while let filename = enumerator.nextObject() as? String {
+                if (filename.hasSuffix(DataStorageManager.dataFileSuffix)) {
+                    let filePath = DataStorageManager.uploadDataDirectory().URLByAppendingPathComponent(filename);
+                    let uploadRequest = UploadRequest(fileName: filename, filePath: filePath.path!);
+                    let promise: Promise<Bool> = ApiManager.sharedInstance.makePostRequest(uploadRequest).then { _ -> Promise<Bool> in
+                        print("Finished uploading: \(filename), removing.");
+                        try fileManager.removeItemAtURL(filePath);
+                        return Promise(true);
+                    }
+                    promiseChain = promiseChain.then {_ in 
+                        return promise;
+                    }
+                    numFiles = numFiles + 1;
+                    //promises.append(promise);
+                }
+            }
+        }
+
+        if (numFiles > 0) {
+            isUploading = true;
+            promiseChain.then { results -> Void in
+                print("OK uploading. \(results)");
+                self.isUploading = false;
+                }.error { error in
+                    print("Error uploading: \(error)");
+                    self.isUploading = false;
             }
         }
 

@@ -30,7 +30,8 @@ class DataServiceStatus {
         self.offDurationSeconds = Double(offDurationSeconds);
         self.handler = handler;
         currentlyOn = false;
-        nextToggleTime = NSDate(); // NSDate().dateByAddingTimeInterval(self.offDurationSeconds);
+        nextToggleTime = NSDate();
+        // nextToggleTime = NSDate().dateByAddingTimeInterval(self.offDurationSeconds);
     }
 }
 

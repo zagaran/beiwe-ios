@@ -23,6 +23,22 @@ enum ApiErrors: ErrorType {
     case FileNotFound
 }
 
+struct BodyResponse: Mappable {
+
+    var body: String?;
+
+    init(body: String?) {
+        self.body = body;
+    }
+    init?(_ map: Map) {
+
+    }
+
+    mutating func mapping(map: Map) {
+        body    <- map["body"];
+    }
+}
+
 class ApiManager {
     static let sharedInstance = ApiManager();
     private let baseApiUrl = Configuration.sharedInstance.settings["server-url"] as! String;
@@ -58,11 +74,12 @@ class ApiManager {
                         if let statusCode = statusCode where statusCode < 200 || statusCode >= 400 {
                             reject(ApiErrors.FailedStatus(code: statusCode));
                         } else {
-                            var val = response.result.value;
-                            if (T.apiEndpoint == "/upload") {
-                                val = "{}";
+                            var returnObject: T.ApiReturnType?;
+                            if (T.ApiReturnType.self == BodyResponse.self) {
+                                returnObject = BodyResponse(body: response.result.value) as? T.ApiReturnType;
+                            } else {
+                                returnObject = Mapper<T.ApiReturnType>().map(response.result.value);
                             }
-                            let returnObject = Mapper<T.ApiReturnType>().map(val);
                             if let returnObject = returnObject {
                                 resolve((returnObject, statusCode ?? 0));
                             } else {

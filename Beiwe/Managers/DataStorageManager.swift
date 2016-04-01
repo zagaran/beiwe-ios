@@ -25,6 +25,7 @@ class DataStorage {
     var filename: NSURL?;
     var dataPoints = 0;
     var patientId: String;
+    var bytesWritten = 0;
 
     init(type: String, headers: [String], patientId: String, publicKey: String) {
         self.patientId = patientId;
@@ -40,11 +41,13 @@ class DataStorage {
         filename = DataStorageManager.currentDataDirectory().URLByAppendingPathComponent(name + DataStorageManager.dataFileSuffix) ;
         lines = [ ];
         dataPoints = 0;
+        bytesWritten = 0;
         hasData = false;
         aesKey = Crypto.sharedInstance.newAesKey(keyLength);
+        print("Generating new file and RSA key!");
         if let aesKey = aesKey {
             do {
-                let rsaLine = try Crypto.sharedInstance.base64ToBase64URL(SwiftyRSA.encryptString(Crypto.sharedInstance.base64ToBase64URL(aesKey.base64EncodedStringWithOptions([])), publicKeyPEM: publicKey, padding: .None)) + "\n";
+                let rsaLine = try Crypto.sharedInstance.base64ToBase64URL(SwiftyRSA.encryptString(Crypto.sharedInstance.base64ToBase64URL(aesKey.base64EncodedStringWithOptions([])), publicKeyId: PersistentPasswordManager.sharedInstance.publicKeyName(), padding: .None)) + "\n";
                 lines = [ rsaLine ];
                 _writeLine(headers.joinWithSeparator(DataStorage.delimiter))
             } catch {
@@ -84,7 +87,7 @@ class DataStorage {
     }
 
     func flush() {
-        if (!hasData) {
+        if (!hasData || lines.count == 0) {
             return;
         }
         let data = lines.joinWithSeparator("").dataUsingEncoding(NSUTF8StringEncoding);
@@ -100,11 +103,16 @@ class DataStorage {
                     }
                     fileHandle.seekToEndOfFile()
                     fileHandle.writeData(data)
+                    bytesWritten = bytesWritten + data.length;
                     print("Appended data to file: \(filename)");
+                    if (bytesWritten > DataStorageManager.MAX_DATAFILE_SIZE) {
+                        reset();
+                    }
                 }
             }
         } else {
             print("No filename.  NO data??");
+            reset();
         }
         lines = [ ];
     }
@@ -120,6 +128,7 @@ class DataStorage {
 class DataStorageManager {
     static let sharedInstance = DataStorageManager();
     static let dataFileSuffix = ".csv";
+    static let MAX_DATAFILE_SIZE = (1024 * 1024) * 10; // 10Meg
 
     var publicKey: String?;
     var storageTypes: [String: DataStorage] = [:];

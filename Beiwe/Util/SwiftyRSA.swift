@@ -61,6 +61,12 @@ public class SwiftyRSA: NSObject {
         return try rsa.encryptString(str, publicKey: key, padding: padding)
     }
 
+    public class func encryptString(str: String, publicKeyId: String, padding: SecPadding = defaultPadding) throws -> String {
+        let rsa = SwiftyRSA()
+        let key = try rsa.publicKeyFromId(publicKeyId)
+        return try rsa.encryptString(str, publicKey: key, padding: padding)
+    }
+
     public class func encryptString(str: String, publicKeyDER: NSData, padding: SecPadding = defaultPadding) throws -> String {
         let rsa = SwiftyRSA()
         let key = try rsa.publicKeyFromDERData(publicKeyDER)
@@ -73,11 +79,23 @@ public class SwiftyRSA: NSObject {
         return try rsa.decryptString(str, privateKey: key, padding: padding)
     }
 
+    public class func storePublicKey(publicKeyPEM: String, keyId: String) throws  {
+        let rsa = SwiftyRSA()
+        let data = try rsa.dataFromPEMKey(publicKeyPEM)
+        try rsa.addKey(data, isPublic: true, keyId: keyId)
+    }
+
+
     // MARK: - Public Advanced Methods
 
     public override init() {
         super.init()
     }
+
+    public func publicKeyFromId(keyId: String) throws -> SecKeyRef {
+        return try fetchKey(keyId, isPublic: true)
+    }
+
 
     public func publicKeyFromDERData(keyData: NSData) throws -> SecKeyRef {
         return try addKey(keyData, isPublic: true)
@@ -138,7 +156,7 @@ public class SwiftyRSA: NSObject {
 
     // MARK: - Private
 
-    private func addKey(keyData: NSData, isPublic: Bool) throws -> SecKeyRef {
+    private func addKey(keyData: NSData, isPublic: Bool, keyId: String? = nil) throws -> SecKeyRef {
 
         var keyData = keyData
 
@@ -147,7 +165,7 @@ public class SwiftyRSA: NSObject {
             try keyData = stripPublicKeyHeader(keyData)
         }
 
-        let tag = NSUUID().UUIDString
+        let tag = keyId ?? NSUUID().UUIDString
         let tagData = NSData(bytes: tag, length: tag.lengthOfBytesUsingEncoding(NSUTF8StringEncoding))
         removeKeyWithTagData(tagData)
 
@@ -170,7 +188,10 @@ public class SwiftyRSA: NSObject {
             throw SwiftyRSAError(message: "Provided key couldn't be added to the keychain")
         }
 
-        keyTags.append(tagData)
+        /* Only add for removal if permanent key not specified */
+        if (keyId == nil) {
+            keyTags.append(tagData)
+        }
 
         // Now fetch the SecKeyRef version of the key
         var keyRef: AnyObject? = nil
@@ -184,6 +205,37 @@ public class SwiftyRSA: NSObject {
             throw SwiftyRSAError(message: "Couldn't get key reference from the keychain")
         }
 
+        return unwrappedKeyRef as! SecKeyRef
+    }
+
+
+    private func fetchKey(keyId: String, isPublic: Bool) throws -> SecKeyRef {
+
+
+        let tag = keyId;
+        let tagData = NSData(bytes: tag, length: tag.lengthOfBytesUsingEncoding(NSUTF8StringEncoding))
+
+        // Add persistent version of the key to system keychain
+        let keyClass   = isPublic ? kSecAttrKeyClassPublic : kSecAttrKeyClassPrivate
+
+        // Add persistent version of the key to system keychain
+        let keyDict = NSMutableDictionary()
+        keyDict.setObject(kSecClassKey,         forKey: kSecClass as! NSCopying)
+        keyDict.setObject(tagData,              forKey: kSecAttrApplicationTag as! NSCopying)
+        keyDict.setObject(kSecAttrKeyTypeRSA,   forKey: kSecAttrKeyType as! NSCopying)
+        keyDict.setObject(keyClass,             forKey: kSecAttrKeyClass as! NSCopying)
+        keyDict.setObject(kSecAttrAccessibleAlways, forKey: kSecAttrAccessible as! NSCopying)
+
+        // Now fetch the SecKeyRef version of the key
+        var keyRef: AnyObject? = nil
+        keyDict.setObject(NSNumber(bool: true), forKey: kSecReturnRef as! NSCopying)
+        keyDict.setObject(kSecAttrKeyTypeRSA,   forKey: kSecAttrKeyType as! NSCopying)
+        SecItemCopyMatching(keyDict as CFDictionaryRef, &keyRef)
+
+        guard let unwrappedKeyRef = keyRef else {
+            throw SwiftyRSAError(message: "Couldn't get key reference from the keychain")
+        }
+        
         return unwrappedKeyRef as! SecKeyRef
     }
 

@@ -10,19 +10,10 @@
 import Foundation
 import ObjectMapper
 
-struct NullResponse: Mappable {
-    init?(_ map: Map) {
-
-    }
-
-    mutating func mapping(map: Map) {
-        
-    }
-}
 struct UploadRequest : Mappable, ApiRequest {
 
     static let apiEndpoint = "/upload"
-    typealias ApiReturnType = NullResponse;
+    typealias ApiReturnType = BodyResponse;
 
     var fileName: String?;
     var fileData: String?;

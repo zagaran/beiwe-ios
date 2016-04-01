@@ -14,7 +14,7 @@ struct PersistentPasswordManager {
 
     private let keychain = KeychainSwift()
     private let passwordKeyPrefix = "password:";
-    private let rsaKeyPrefix = "publicrsa:";
+    private let rsaKeyPrefix = "com.rocketarmstudios.beiwe.rsapk.";
 
 
     private func keyForStudy(study: String, prefix: String) -> String {
@@ -29,5 +29,14 @@ struct PersistentPasswordManager {
     func storePassword(password: String, study: String = Constants.defaultStudyId) {
         keychain.set(password, forKey: keyForStudy(study, prefix: passwordKeyPrefix), withAccess: .AccessibleAlwaysThisDeviceOnly);
     }
+
+    func storePublicKeyForStudy(publicKey: String, study: String = Constants.defaultStudyId) throws {
+        try SwiftyRSA.storePublicKey(publicKey, keyId: keyForStudy(study, prefix: rsaKeyPrefix))
+    }
+
+    func publicKeyName(study: String = Constants.defaultStudyId) -> String {
+        return keyForStudy(study, prefix: rsaKeyPrefix);
+    }
+
 
 }

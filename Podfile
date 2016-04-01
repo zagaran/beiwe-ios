@@ -10,3 +10,4 @@ pod 'SwiftValidator', '3.0.3'
 pod "PKHUD"
 pod 'IDZSwiftCommonCrypto'
 pod 'couchbase-lite-ios'
+pod 'ResearchKit', "1.3.0"
