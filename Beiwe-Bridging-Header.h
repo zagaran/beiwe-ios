@@ -11,6 +11,5 @@
 
 
 #import <CouchbaseLite/CouchbaseLite.h>
-#import "TDMultiStreamWriter.h"
 
 #endif /* Beiwe_Bridging_Header_h */

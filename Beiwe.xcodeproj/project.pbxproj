@@ -14,7 +14,6 @@
 		83AF04151CAB556800A37225 /* GPSManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83AF04141CAB556800A37225 /* GPSManager.swift */; };
 		83AF04171CAB777200A37225 /* DataStorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83AF04161CAB777200A37225 /* DataStorageManager.swift */; };
 		83AF04191CAB843D00A37225 /* SwiftyRSA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83AF04181CAB843D00A37225 /* SwiftyRSA.swift */; };
-		83AF041D1CACA6A000A37225 /* TDMultiStreamWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 83AF041C1CACA6A000A37225 /* TDMultiStreamWriter.m */; };
 		83AF041F1CACBCC600A37225 /* UploadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83AF041E1CACBCC600A37225 /* UploadRequest.swift */; };
 		83AF04211CACC1C900A37225 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83AF04201CACC1C900A37225 /* MainViewController.swift */; };
 		83AF04251CAD6FFF00A37225 /* Config-Pre1.plist in Resources */ = {isa = PBXBuildFile; fileRef = 83AF04241CAD6FFF00A37225 /* Config-Pre1.plist */; };
@@ -49,8 +48,6 @@
 		83AF04141CAB556800A37225 /* GPSManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GPSManager.swift; sourceTree = "<group>"; };
 		83AF04161CAB777200A37225 /* DataStorageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataStorageManager.swift; sourceTree = "<group>"; };
 		83AF04181CAB843D00A37225 /* SwiftyRSA.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyRSA.swift; sourceTree = "<group>"; };
-		83AF041B1CACA6A000A37225 /* TDMultiStreamWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDMultiStreamWriter.h; sourceTree = "<group>"; };
-		83AF041C1CACA6A000A37225 /* TDMultiStreamWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDMultiStreamWriter.m; sourceTree = "<group>"; };
 		83AF041E1CACBCC600A37225 /* UploadRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadRequest.swift; sourceTree = "<group>"; };
 		83AF04201CACC1C900A37225 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		83AF04241CAD6FFF00A37225 /* Config-Pre1.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Config-Pre1.plist"; sourceTree = "<group>"; };
@@ -110,15 +107,6 @@
 				4D73594BB9D98FBE3AA1E023 /* Pods.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		83AF041A1CACA63600A37225 /* ObjC */ = {
-			isa = PBXGroup;
-			children = (
-				83AF041B1CACA6A000A37225 /* TDMultiStreamWriter.h */,
-				83AF041C1CACA6A000A37225 /* TDMultiStreamWriter.m */,
-			);
-			path = ObjC;
 			sourceTree = "<group>";
 		};
 		83AF20D81CA3107100D3DF02 /* Extensions */ = {
@@ -224,7 +212,6 @@
 		83F98C381C923C3600E0B64B /* Beiwe */ = {
 			isa = PBXGroup;
 			children = (
-				83AF041A1CACA63600A37225 /* ObjC */,
 				83AF04111CAA083400A37225 /* Beiwe-Bridging-Header.h */,
 				83B4D6751CAA04DA001BF283 /* Recline */,
 				83E3DE8A1CA45F2400EB5349 /* API */,
@@ -443,7 +430,6 @@
 				83E3DE8C1CA4600500EB5349 /* RegisterStudyRequest.swift in Sources */,
 				83AF04171CAB777200A37225 /* DataStorageManager.swift in Sources */,
 				8379B45C1CA4F02C00D4C605 /* Crypto.swift in Sources */,
-				83AF041D1CACA6A000A37225 /* TDMultiStreamWriter.m in Sources */,
 				83AF20DC1CA3537200D3DF02 /* Constants.swift in Sources */,
 				83F6C9661CA0F6C900B85914 /* OldRegisterViewController.swift in Sources */,
 				83F6C96A1CA0F6D900B85914 /* PersistentAppUUID.swift in Sources */,
