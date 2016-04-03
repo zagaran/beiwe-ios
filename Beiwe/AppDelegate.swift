@@ -10,18 +10,31 @@ import UIKit
 import Fabric
 import Crashlytics
 import PromiseKit
+import CoreMotion;
+import ReachabilitySwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var storyboard: UIStoryboard?;
+    var modelVersionId = "";
+    let motionManager = CMMotionManager();
+    var reachability: Reachability?;
+
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
-        Fabric.with([Crashlytics.self])
+        let reachability: Reachability
+        do {
+            reachability = try Reachability.reachabilityForInternetConnection()
+            try reachability.startNotifier()
+        } catch {
+            print("Unable to create or start Reachability")
+        }
         print("AppUUID: \(PersistentAppUUID.sharedInstance.uuid)");
         let uiDevice = UIDevice.currentDevice();
+        modelVersionId = UIDevice.currentDevice().model + "/" + UIDevice.currentDevice().systemVersion;
         print("name: \(uiDevice.name)");
         print("systemName: \(uiDevice.systemName)");
         print("systemVersion: \(uiDevice.systemVersion)");
@@ -38,6 +51,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         return true
+    }
+
+    static func sharedInstance() -> AppDelegate{
+        return UIApplication.sharedApplication().delegate as! AppDelegate
     }
 
     func applicationWillResignActive(application: UIApplication) {
@@ -86,6 +103,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     }
 
+    func applicationProtectedDataDidBecomeAvailable(application: UIApplication) {
+        print("applicationProtectedDataDidBecomeAvailable");
+    }
+
+    func applicationProtectedDataWillBecomeUnavailable(application: UIApplication) {
+        print("applicationProtectedDataWillBecomeUnavailable");
+    }
     /* Crashlytics functions -- future */
 
     func setDebuggingUser(username: String) {

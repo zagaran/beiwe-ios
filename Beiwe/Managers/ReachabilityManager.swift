@@ -1,35 +1,38 @@
 //
-//  PowerStateManager.swift
+//  ReachabilityManager.swift
 //  Beiwe
 //
-//  Created by Keary Griffin on 4/1/16.
+//  Created by Keary Griffin on 4/3/16.
 //  Copyright © 2016 Rocketfarm Studios. All rights reserved.
 //
 
 import Foundation
+import ReachabilitySwift
 
-class PowerStateManager : DataServiceProtocol {
+class ReachabilityManager : DataServiceProtocol {
 
-    let storeType = "powerState";
+    let storeType = "reachability";
     let headers = ["timestamp", "event"]
     var store: DataStorage?;
 
-    @objc func batteryStateDidChange(notification: NSNotification){
-        // The stage did change: plugged, unplugged, full charge...
+    @objc func reachabilityChanged(notification: NSNotification){
+        guard let reachability = AppDelegate.sharedInstance().reachability else {
+            return;
+        }
+        var reachState: String;
+        if reachability.isReachable() {
+            if reachability.isReachableViaWiFi() {
+                reachState = "wifi";
+            } else {
+                reachState = "cellular";
+            }
+        } else {
+            reachState = "unreachable";
+        }
+
         var data: [String] = [ ];
         data.append(String(Int64(NSDate().timeIntervalSince1970 * 1000)));
-        var state: String;
-        switch(UIDevice.currentDevice().batteryState) {
-        case .Charging:
-            state = "Charging";
-        case .Full:
-            state = "Full";
-        case .Unplugged:
-            state = "Unplugged";
-        case .Unknown:
-            state = "PowerUnknown";
-        }
-        data.append(state);
+        data.append(reachState);
 
         dispatch_async(dispatch_get_main_queue()) {
             self.store?.store(data);
@@ -43,12 +46,12 @@ class PowerStateManager : DataServiceProtocol {
     func startCollecting() {
         print("Turning \(storeType) collection on");
         UIDevice.currentDevice().batteryMonitoringEnabled = true;
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.batteryStateDidChange), name: UIDeviceBatteryStateDidChangeNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.reachabilityChanged), name: ReachabilityChangedNotification, object: nil)
 
     }
     func pauseCollecting() {
         print("Pausing \(storeType) collection");
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIDeviceBatteryStateDidChangeNotification, object:nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: ReachabilityChangedNotification, object:nil)
         store!.flush();
     }
     func finishCollecting() {

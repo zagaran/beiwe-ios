@@ -50,12 +50,38 @@ class StudyManager {
         /* Move non current files out.  Probably not necessary, would happen later anyway */
         DataStorageManager.sharedInstance.prepareForUpload();
         gpsManager = GPSManager();
-        if (studySettings.gps) {
+        if (studySettings.gps && studySettings.gpsOnDurationSeconds > 0) {
             gpsManager!.addDataService(studySettings.gpsOnDurationSeconds, off: studySettings.gpsOffDurationSeconds, handler: gpsManager!)
         }
-        if (studySettings.accelerometer) {
+        if (studySettings.accelerometer && studySettings.gpsOnDurationSeconds > 0) {
             gpsManager!.addDataService(studySettings.accelerometerOnDurationSeconds, off: studySettings.accelerometerOffDurationSeconds, handler: AccelerometerManager());
         }
+        if (studySettings.powerState) {
+            gpsManager!.addDataService(PowerStateManager());
+        }
+
+        if (studySettings.proximity) {
+            gpsManager!.addDataService(ProximityManager());
+        }
+
+        if (studySettings.reachability) {
+            gpsManager!.addDataService(ReachabilityManager());
+        }
+
+        if (studySettings.gyro) {
+            gpsManager!.addDataService(studySettings.gyroOnDurationSeconds, off: studySettings.gyroOffDurationSeconds, handler: GyroManager());
+        }
+
+        if (studySettings.magnetometer && studySettings.magnetometerOnDurationSeconds > 0) {
+            gpsManager!.addDataService(studySettings.magnetometerOnDurationSeconds, off: studySettings.magnetometerOffDurationSeconds, handler: MagnetometerManager());
+        }
+
+        if (studySettings.motion && studySettings.motionOnDurationSeconds > 0) {
+            gpsManager!.addDataService(studySettings.motionOnDurationSeconds, off: studySettings.motionOffDurationSeconds, handler: DeviceMotionManager());
+        }
+
+
+
         gpsManager!.startGpsAndTimer();
     }
 

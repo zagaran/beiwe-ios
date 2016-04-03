@@ -11,3 +11,4 @@ pod "PKHUD"
 pod 'IDZSwiftCommonCrypto'
 pod 'couchbase-lite-ios'
 pod 'ResearchKit', "1.3.0"
+pod 'ReachabilitySwift', :git => 'https://github.com/ashleymills/Reachability.swift'

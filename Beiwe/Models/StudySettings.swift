@@ -67,6 +67,17 @@ struct StudySettings : Mappable {
     var voiceRecordingMaxLengthSeconds = 300;
     var wifi = false;
     var wifiLogFrequencySeconds = 300;
+    var proximity = false;
+    var magnetometer = false;
+    var magnetometerOffDurationSeconds = 300;
+    var magnetometerOnDurationSeconds = 0;
+    var gyro = false;
+    var gyroOffDurationSeconds = 300;
+    var gyroOnDurationSeconds = 0;
+    var motion = false;
+    var motionOffDurationSeconds = 300;
+    var motionOnDurationSeconds = 0;
+    var reachability = false;
 
     init?(_ map: Map) {
 
@@ -99,6 +110,17 @@ struct StudySettings : Mappable {
         voiceRecordingMaxLengthSeconds  <- map["device_settings.voice_recording_max_time_length_seconds"]
         wifi                            <- map["device_settings.wifi"]
         wifiLogFrequencySeconds         <- map["device_settings.wifi_log_frequency_seconds"]
+        proximity                       <- map["device_settings.proximity"];
+        magnetometer                    <- map["magnetometer"];
+        magnetometerOffDurationSeconds  <- map["magnetometerOffDurationSeconds"];
+        magnetometerOnDurationSeconds  <- map["magnetometerOnDurationSeconds"];
+        gyro                           <- map["gyro"];
+        gyroOffDurationSeconds         <- map["gyroOffDurationSeconds"];
+        gyroOnDurationSeconds          <- map["gyroOnDurationSeconds"];
+        motion                         <- map["motion"];
+        motionOffDurationSeconds       <- map["motionOffDurationSeconds"];
+        motionOnDurationSeconds        <- map["motionOnDurationSeconds"];
+        reachability                   <- map["reachability"];
     }
     
 }

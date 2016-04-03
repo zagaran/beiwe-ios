@@ -22,7 +22,7 @@ class DataServiceStatus {
     let onDurationSeconds: Double;
     let offDurationSeconds: Double;
     var currentlyOn: Bool;
-    var nextToggleTime: NSDate;
+    var nextToggleTime: NSDate?;
     let handler: DataServiceProtocol;
 
     init(onDurationSeconds: Int, offDurationSeconds: Int, handler: DataServiceProtocol) {
@@ -71,19 +71,27 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
         var nextServiceDate = currentDate + (15 * 60);
 
         for dataStatus in dataCollectionServices {
-            var serviceDate = dataStatus.nextToggleTime.timeIntervalSince1970;
-            if (serviceDate <= currentDate) {
-                if (dataStatus.currentlyOn) {
-                    dataStatus.handler.pauseCollecting();
-                    dataStatus.currentlyOn = false;
-                } else {
-                    dataStatus.handler.startCollecting();
-                    dataStatus.currentlyOn = true;
+            if let nextToggleTime = dataStatus.nextToggleTime {
+                var serviceDate = nextToggleTime.timeIntervalSince1970;
+                if (serviceDate <= currentDate) {
+                    if (dataStatus.currentlyOn) {
+                        dataStatus.handler.pauseCollecting();
+                        dataStatus.currentlyOn = false;
+                        dataStatus.nextToggleTime = NSDate(timeIntervalSince1970: currentDate + dataStatus.offDurationSeconds);
+                    } else {
+                        dataStatus.handler.startCollecting();
+                        dataStatus.currentlyOn = true;
+                        /* If there is no off time, we run forever... */
+                        if (dataStatus.offDurationSeconds == 0) {
+                            dataStatus.nextToggleTime = nil;
+                        } else {
+                            dataStatus.nextToggleTime = NSDate(timeIntervalSince1970: currentDate + dataStatus.onDurationSeconds);
+                        }
+                    }
+                    serviceDate = dataStatus.nextToggleTime?.timeIntervalSince1970 ?? DBL_MAX;
                 }
-                dataStatus.nextToggleTime = NSDate().dateByAddingTimeInterval(dataStatus.offDurationSeconds);
-                serviceDate = dataStatus.nextToggleTime.timeIntervalSince1970;
+                nextServiceDate = min(nextServiceDate, serviceDate);
             }
-            nextServiceDate = min(nextServiceDate, serviceDate);
         }
         return NSDate(timeIntervalSince1970: nextServiceDate)
     }
@@ -111,7 +119,7 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
 
             //     static let headers = [ "timestamp", "latitude", "longitude", "altitude", "accuracy", "vert_accuracy"];
 
-            data.append(String(Int(loc.timestamp.timeIntervalSince1970 * 1000)))
+            data.append(String(Int64(loc.timestamp.timeIntervalSince1970 * 1000)))
             data.append(String(loc.coordinate.latitude))
             data.append(String(loc.coordinate.longitude))
             data.append(String(loc.altitude))
@@ -126,7 +134,9 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
         handler.initCollecting();
     }
 
-
+    func addDataService(handler: DataServiceProtocol) {
+        addDataService(1, off: 0, handler: handler);
+    }
     /* Data service protocol */
 
     func initCollecting() {
@@ -143,6 +153,7 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
         gpsStore?.flush();
     }
     func finishCollecting() {
+        pauseCollecting();
         DataStorageManager.sharedInstance.closeStore("gps");
         gpsStore = nil;
         isCollectingGps = false;
