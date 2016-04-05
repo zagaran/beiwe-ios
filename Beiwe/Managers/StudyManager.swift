@@ -17,28 +17,36 @@ class StudyManager {
     var gpsManager: GPSManager?;
     var isUploading = false;
 
-    func loadDefaultStudy()  {
+    var isStudyLoaded: Bool {
+        return currentStudy != nil;
+    }
+
+    func loadDefaultStudy() -> Promise<Bool> {
         currentStudy = nil;
         gpsManager = nil;
-        firstly { _ -> Promise<[Study]> in
+        return firstly { _ -> Promise<[Study]> in
             return Recline.shared.queryAll()
-        }.then { studies -> Void in
+        }.then { studies -> Promise<Bool> in
             print("All Studies: \(studies)")
             if (studies.count > 0) {
                 self.currentStudy = studies[0];
-                /* Setup APIManager's security */
-                ApiManager.sharedInstance.password = PersistentPasswordManager.sharedInstance.passwordForStudy() ?? "";
-                if let patientId = self.currentStudy?.patientId {
-                    ApiManager.sharedInstance.patientId = patientId;
-                }
-                DataStorageManager.sharedInstance.setCurrentStudy(self.currentStudy!);
-                self.prepareDataServices();
             }
-            self.appDelegate.displayCurrentMainView();
-        }.error { err -> Void in
-            print("Error reading studies from database");
+            return Promise(true);
         }
 
+    }
+
+    func startStudyDataServices() {
+        guard let currentStudy = currentStudy else {
+            return;
+        }
+        /* Setup APIManager's security */
+        ApiManager.sharedInstance.password = PersistentPasswordManager.sharedInstance.passwordForStudy() ?? "";
+        if let patientId = currentStudy.patientId {
+            ApiManager.sharedInstance.patientId = patientId;
+        }
+        DataStorageManager.sharedInstance.setCurrentStudy(self.currentStudy!);
+        self.prepareDataServices();
     }
 
     func prepareDataServices() {
@@ -85,14 +93,24 @@ class StudyManager {
         gpsManager!.startGpsAndTimer();
     }
 
-    func leaveStudy() {
+    func setConsented() -> Promise<Bool> {
         guard let study = currentStudy else {
-            return;
+            return Promise(false);
+        }
+        study.participantConsented = true;
+        return Recline.shared.save(study).then { _ -> Promise<Bool> in
+            return Promise(true)
+        }
+    }
+
+    func leaveStudy() -> Promise<Bool> {
+        guard let study = currentStudy else {
+            return Promise(true);
         }
 
         gpsManager?.stopAndClear();
         gpsManager = nil;
-        Recline.shared.purge(study).then { _ -> Void in
+        return Recline.shared.purge(study).then { _ -> Promise<Bool> in
             let fileManager = NSFileManager.defaultManager()
             var enumerator = fileManager.enumeratorAtPath(DataStorageManager.uploadDataDirectory().path!);
 
@@ -116,11 +134,11 @@ class StudyManager {
                 }
             }
 
-            self.loadDefaultStudy();
+            self.currentStudy = nil;
 
-            }.error { err -> Void in
-                print("Error leaving study!");
-        };
+            return Promise(true);
+
+       }
 
     }
 

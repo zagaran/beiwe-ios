@@ -12,6 +12,7 @@ import Crashlytics
 import PromiseKit
 import CoreMotion;
 import ReachabilitySwift
+import ResearchKit;
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -21,6 +22,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var modelVersionId = "";
     let motionManager = CMMotionManager();
     var reachability: Reachability?;
+    var currentRootView: String? = "launchScreen";
+    var isLoggedIn: Bool = false;
+    var timeEnteredBackground: NSDate?;
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
@@ -45,14 +49,81 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle());
 
-        Recline.shared.open().then { _ -> Void in
+        self.window = UIWindow(frame: UIScreen.mainScreen().bounds);
+        self.window?.rootViewController = UIStoryboard(name: "LaunchScreen", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("launchScreen");
+        self.window!.makeKeyAndVisible()
+
+        Recline.shared.open().then { _ -> Promise<Bool> in
             print("Database opened");
-            StudyManager.sharedInstance.loadDefaultStudy();
-        }.error { err -> Void in
-            print("Database open failed.");
+            return StudyManager.sharedInstance.loadDefaultStudy();
+            }.then { _ -> Void in
+                self.transitionToCurrentAppState();
+            }.error { err -> Void in
+                print("Database open failed.");
         }
+        //launchScreen
+        /*
+            //self.window!.backgroundColor = UIColor.whiteColor()
+
+            self.window?.rootViewController = OnboardViewController();
+
+
+
+        }
+        */
+
 
         return true
+    }
+
+    func changeRootViewControllerWithIdentifier(identifier:String!) {
+        if (identifier == currentRootView) {
+            return;
+        }
+        let desiredViewController:UIViewController = (self.storyboard?.instantiateViewControllerWithIdentifier(identifier))!;
+
+        changeRootViewController(desiredViewController, identifier: identifier);
+    }
+
+    func changeRootViewController(desiredViewController: UIViewController, identifier: String? = nil) {
+        currentRootView = identifier;
+
+        let snapshot:UIView = (self.window?.snapshotViewAfterScreenUpdates(true))!
+        desiredViewController.view.addSubview(snapshot);
+
+        self.window?.rootViewController = desiredViewController;
+
+        UIView.animateWithDuration(0.3, animations: {() in
+            snapshot.layer.opacity = 0;
+            snapshot.layer.transform = CATransform3DMakeScale(1.5, 1.5, 1.5);
+            }, completion: {
+                (value: Bool) in
+                snapshot.removeFromSuperview();
+        });
+    }
+
+    func transitionToCurrentAppState() {
+
+        if let currentStudy = StudyManager.sharedInstance.currentStudy {
+            if (!isLoggedIn) {
+                // Load up the log in view
+                changeRootViewControllerWithIdentifier("login");
+            } else {
+                // We are logged in, so if we've completed onboarding load main interface
+                // Otherwise continue onboarding.
+                if (currentStudy.participantConsented) {
+                    changeRootViewControllerWithIdentifier("mainView");
+                } else {
+                    changeRootViewController(ConsentManager().consentViewController);
+                }
+
+            }
+
+        } else {
+            // If there is no study loaded, then it's obvious.  We need the onboarding flow
+            // from the beginning.
+            changeRootViewController(OnboardingManager().onboardingViewController);
+        }
     }
 
     static func sharedInstance() -> AppDelegate{
@@ -67,10 +138,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        timeEnteredBackground = NSDate();
+
+    }
+
+    func checkPasswordAndLogin(password: String) -> Bool {
+        if let storedPassword = PersistentPasswordManager.sharedInstance.passwordForStudy() where storedPassword.characters.count > 0 {
+            if (password == storedPassword) {
+                isLoggedIn = true;
+                return true;
+            }
+
+        }
+
+        return false;
+
     }
 
     func applicationWillEnterForeground(application: UIApplication) {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+        print("ApplicationWillEnterForeground");
+        if let timeEnteredBackground = timeEnteredBackground, currentStudy = StudyManager.sharedInstance.currentStudy, studySettings = currentStudy.studySettings where isLoggedIn == true {
+            let loginExpires = timeEnteredBackground.dateByAddingTimeInterval(Double(studySettings.secondsBeforeAutoLogout * 1000));
+            if (loginExpires.compare(NSDate()) == NSComparisonResult.OrderedAscending) {
+                // expired.  Log 'em out
+                isLoggedIn = false;
+                transitionToCurrentAppState();
+            }
+        } else {
+            isLoggedIn = false;
+        }
     }
 
     func applicationDidBecomeActive(application: UIApplication) {

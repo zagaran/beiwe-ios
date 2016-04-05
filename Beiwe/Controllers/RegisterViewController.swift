@@ -16,6 +16,7 @@ class RegisterViewController: FormViewController {
 
     let autoValidation = false;
     let db = Recline.shared;
+    var dismiss: ((didRegister: Bool) -> Void)?;
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -88,9 +89,16 @@ class RegisterViewController: FormViewController {
                                     print("No public key found.  Can't store");
                                 }
                                 return self.db.save(study);
-                            }.then { _ -> Void in
+                            }.then { _ -> Promise<Bool> in
                                 HUD.flash(.Success, delay: 1);
-                                StudyManager.sharedInstance.loadDefaultStudy();
+                                return StudyManager.sharedInstance.loadDefaultStudy();
+                            }.then { _ -> Void in
+                                AppDelegate.sharedInstance().isLoggedIn = true;
+                                if let dismiss = self.dismiss {
+                                    dismiss(didRegister: true);
+                                } else {
+                                    self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil);
+                                }
                             }.error { error -> Void in
                                 print("error received from register: \(error)");
                                 var delay = 2.0;
@@ -116,7 +124,15 @@ class RegisterViewController: FormViewController {
                         print("Bad validation.");
                     }
                 }
-
+            <<< ButtonRow() {
+                $0.title = "Cancel";
+                }.onCellSelection { [unowned self] cell, row in
+                    if let dismiss = self.dismiss {
+                        dismiss(didRegister: false);
+                    } else {
+                        self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil);
+                    }
+        }
         let passwordRow: SVPasswordRow? = form.rowByTag("password");
         let confirmRow: SVPasswordRow? = form.rowByTag("confirmPassword");
         confirmRow!.rules = [ConfirmationRule(confirmField: passwordRow!.cell.textField)]

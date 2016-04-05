@@ -15,6 +15,7 @@ class Study : ReclineObject {
     var phoneNumber: String = "";
     var studySettings: StudySettings?;
     var patientId: String?;
+    var participantConsented: Bool = false;
 
     init(phoneNumber: String, patientId: String, studySettings: StudySettings, studyId: String = Constants.defaultStudyId) {
         super.init();
@@ -36,6 +37,7 @@ class Study : ReclineObject {
         studySettings   <- map["studySettings"];
         studyId   <- map["studyId"];
         patientId <- map["patientId"];
+        participantConsented <- map["participantConsented"];
     }
 
 }
