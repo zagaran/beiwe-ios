@@ -37,7 +37,7 @@ class StudyManager {
     }
 
     func startStudyDataServices() {
-        guard let currentStudy = currentStudy else {
+        guard let currentStudy = currentStudy where gpsManager == nil else {
             return;
         }
         /* Setup APIManager's security */

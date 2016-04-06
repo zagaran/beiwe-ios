@@ -18,7 +18,7 @@ class DeviceMotionManager : DataServiceProtocol {
                    "user_accel_x", "user_accel_y", "user_accel_z",
                    "magnetic_field_calibration_accuracy", "magnetic_field_x", "magnetic_field_y", "magnetic_field_z"
                    ]
-    let storeType = "motion";
+    let storeType = "devicemotion";
     var store: DataStorage?;
     var offset: Double = 0;
 

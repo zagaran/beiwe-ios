@@ -104,7 +104,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func transitionToCurrentAppState() {
 
+
         if let currentStudy = StudyManager.sharedInstance.currentStudy {
+            if (currentStudy.participantConsented) {
+                StudyManager.sharedInstance.startStudyDataServices();
+            }
             if (!isLoggedIn) {
                 // Load up the log in view
                 changeRootViewControllerWithIdentifier("login");
