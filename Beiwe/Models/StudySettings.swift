@@ -111,16 +111,16 @@ struct StudySettings : Mappable {
         wifi                            <- map["device_settings.wifi"]
         wifiLogFrequencySeconds         <- map["device_settings.wifi_log_frequency_seconds"]
         proximity                       <- map["device_settings.proximity"];
-        magnetometer                    <- map["magnetometer"];
-        magnetometerOffDurationSeconds  <- map["magnetometerOffDurationSeconds"];
-        magnetometerOnDurationSeconds  <- map["magnetometerOnDurationSeconds"];
-        gyro                           <- map["gyro"];
-        gyroOffDurationSeconds         <- map["gyroOffDurationSeconds"];
-        gyroOnDurationSeconds          <- map["gyroOnDurationSeconds"];
-        motion                         <- map["motion"];
-        motionOffDurationSeconds       <- map["motionOffDurationSeconds"];
-        motionOnDurationSeconds        <- map["motionOnDurationSeconds"];
-        reachability                   <- map["reachability"];
+        magnetometer                    <- map["device_settings.magnetometer"];
+        magnetometerOffDurationSeconds  <- map["device_settings.magnetometer_off_duration_seconds"];
+        magnetometerOnDurationSeconds  <- map["device_settings.magnetometer_on_duration_seconds"];
+        gyro                           <- map["device_settings.gyro"];
+        gyroOffDurationSeconds         <- map["device_settings.gyro_off_duration_seconds"];
+        gyroOnDurationSeconds          <- map["device_settings.gyro_on_duration_seconds"];
+        motion                         <- map["device_settings.devicemotion"];
+        motionOffDurationSeconds       <- map["device_settings.devicemotion_off_duration_seconds"];
+        motionOnDurationSeconds        <- map["device_settings.devicemotion_on_duration_seconds"];
+        reachability                   <- map["device_settings.reachability"];
     }
     
 }
