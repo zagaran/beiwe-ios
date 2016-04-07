@@ -190,7 +190,11 @@ class StudyManager {
                 if (filename.hasSuffix(DataStorageManager.dataFileSuffix)) {
                     let filePath = DataStorageManager.uploadDataDirectory().URLByAppendingPathComponent(filename);
                     let uploadRequest = UploadRequest(fileName: filename, filePath: filePath.path!);
-                    let promise: Promise<Bool> = ApiManager.sharedInstance.makePostRequest(uploadRequest).then { _ -> Promise<Bool> in
+                    let promise: Promise<Bool> =
+                        //ApiManager.sharedInstance.makePostRequest(uploadRequest).then { _ -> Promise<Bool> in
+                        //ApiManager.sharedInstance.makeUploadRequest(uploadRequest, file: filePath).then { _ -> Promise<Bool> in
+
+                        ApiManager.sharedInstance.makeMultipartUploadRequest(uploadRequest, file: filePath).then { _ -> Promise<Bool> in
                         print("Finished uploading: \(filename), removing.");
                         try fileManager.removeItemAtURL(filePath);
                         return Promise(true);

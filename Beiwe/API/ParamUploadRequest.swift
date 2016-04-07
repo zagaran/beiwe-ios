@@ -1,15 +1,16 @@
 //
-//  NewUploadRequest.swift
+//  UploadRequest.swift
 //  Beiwe
 //
-//  Created by Keary Griffin on 4/6/16.
+//  Created by Keary Griffin on 3/30/16.
 //  Copyright © 2016 Rocketfarm Studios. All rights reserved.
 //
+
 
 import Foundation
 import ObjectMapper
 
-struct UploadRequest : Mappable, ApiRequest {
+struct ParamUploadRequest : Mappable, ApiRequest {
 
     static let apiEndpoint = "/upload"
     typealias ApiReturnType = BodyResponse;
@@ -19,14 +20,12 @@ struct UploadRequest : Mappable, ApiRequest {
 
     init(fileName: String, filePath: String) {
         self.fileName = fileName;
-        /*
         do {
             self.fileData = try NSString(contentsOfFile: filePath, encoding: NSUTF8StringEncoding) as String;
         } catch {
             print("Error reading file for upload: \(error)");
             fileData = "";
         }
-        */
     }
 
     init?(_ map: Map) {

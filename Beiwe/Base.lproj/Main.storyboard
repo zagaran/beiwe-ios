@@ -176,27 +176,28 @@
                                     <constraint firstAttribute="width" constant="250" id="1GG-zf-8eb"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" secureTextEntry="YES"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="go" secureTextEntry="YES"/>
                             </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Beiwe Custom Login Screen" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kdD-vO-LPC">
-                                <rect key="frame" x="168" y="32" width="214" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Beiwe Login" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kdD-vO-LPC">
+                                <rect key="frame" x="254" y="32" width="92" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fjW-53-3Zu">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fjW-53-3Zu" customClass="BWBorderedButton">
                                 <rect key="frame" x="281" y="216" width="38" height="30"/>
                                 <state key="normal" title="Login"/>
                                 <connections>
                                     <action selector="loginPressed:" destination="qWM-9N-RLc" eventType="touchUpInside" id="69j-2b-UQc"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oVg-mV-mgL">
-                                <rect key="frame" x="258" y="314" width="84" height="30"/>
-                                <state key="normal" title="Leave Study"/>
-                                <connections>
-                                    <action selector="leaveStudyPressed:" destination="qWM-9N-RLc" eventType="touchUpInside" id="UAr-vo-gpT"/>
-                                </connections>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pqy-gE-5gW" customClass="BWBorderedButton">
+                                <rect key="frame" x="242" y="484" width="117" height="30"/>
+                                <state key="normal" title="Contact Clinician"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ysc-6U-fpb" customClass="BWBorderedButton">
+                                <rect key="frame" x="243" y="436" width="115" height="30"/>
+                                <state key="normal" title="Forgot Password"/>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -204,15 +205,19 @@
                             <constraint firstItem="LYJ-Ie-QQT" firstAttribute="top" secondItem="Xz7-TR-GrZ" secondAttribute="bottom" constant="79" id="1J6-gR-VDq"/>
                             <constraint firstAttribute="leadingMargin" secondItem="LYJ-Ie-QQT" secondAttribute="leading" id="Jn5-xD-rNh"/>
                             <constraint firstItem="fjW-53-3Zu" firstAttribute="centerX" secondItem="Ro1-69-USY" secondAttribute="centerX" id="KXi-ah-gsc"/>
-                            <constraint firstItem="kdD-vO-LPC" firstAttribute="centerX" secondItem="Ro1-69-USY" secondAttribute="centerX" constant="-25" id="T6i-Lh-CKN"/>
+                            <constraint firstItem="Xty-FT-nNE" firstAttribute="top" secondItem="Pqy-gE-5gW" secondAttribute="bottom" constant="86" id="TJr-jy-zap"/>
+                            <constraint firstItem="Ysc-6U-fpb" firstAttribute="centerX" secondItem="Ro1-69-USY" secondAttribute="centerX" id="a54-ES-0Ob"/>
                             <constraint firstItem="JHQ-4q-sZb" firstAttribute="leading" secondItem="LYJ-Ie-QQT" secondAttribute="leading" id="bN6-GO-dvV"/>
+                            <constraint firstItem="fjW-53-3Zu" firstAttribute="top" secondItem="JHQ-4q-sZb" secondAttribute="bottom" constant="58" id="bXS-G5-K3V"/>
                             <constraint firstItem="JHQ-4q-sZb" firstAttribute="top" secondItem="LYJ-Ie-QQT" secondAttribute="bottom" constant="8" id="jfg-gZ-GR1"/>
-                            <constraint firstItem="oVg-mV-mgL" firstAttribute="centerX" secondItem="Ro1-69-USY" secondAttribute="centerX" id="qIM-bn-Ltn"/>
+                            <constraint firstItem="kdD-vO-LPC" firstAttribute="centerX" secondItem="Ro1-69-USY" secondAttribute="centerX" id="rAS-sN-Mxh"/>
+                            <constraint firstItem="Pqy-gE-5gW" firstAttribute="top" secondItem="Ysc-6U-fpb" secondAttribute="bottom" constant="18" id="tc5-N3-Kw3"/>
                             <constraint firstItem="kdD-vO-LPC" firstAttribute="top" secondItem="Xz7-TR-GrZ" secondAttribute="bottom" constant="12" id="w62-cx-e5p"/>
-                            <constraint firstItem="oVg-mV-mgL" firstAttribute="top" secondItem="fjW-53-3Zu" secondAttribute="bottom" constant="68" id="y0D-70-ee4"/>
+                            <constraint firstItem="Pqy-gE-5gW" firstAttribute="centerX" secondItem="Ro1-69-USY" secondAttribute="centerX" id="yNL-Gm-hvQ"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="loginButton" destination="fjW-53-3Zu" id="AwS-Z4-NQG"/>
                         <outlet property="password" destination="JHQ-4q-sZb" id="HMj-mj-zLD"/>
                     </connections>
                 </viewController>

@@ -11,5 +11,8 @@
 
 
 #import <CouchbaseLite/CouchbaseLite.h>
+#import "BWBorderedButton.h"
+#import "BWTextButton.h"
+
 
 #endif /* Beiwe_Bridging_Header_h */
