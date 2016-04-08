@@ -39,6 +39,7 @@ struct BodyResponse: Mappable {
     }
 }
 
+
 class ApiManager {
     static let sharedInstance = ApiManager();
     private let baseApiUrl = Configuration.sharedInstance.settings["server-url"] as! String;
@@ -98,6 +99,44 @@ class ApiManager {
             }
         }
     }
+
+    func arrayPostRequest<T: ApiRequest where T: Mappable>(requestObject: T) -> Promise<([T.ApiReturnType], Int)> {
+        var parameters = requestObject.toJSON();
+        //parameters["password"] = hashedPassword;
+        //parameters["device_id"] = PersistentAppUUID.sharedInstance.uuid;
+        //parameters["patient_id"] = patientId;
+        parameters.removeValueForKey("password");
+        parameters.removeValueForKey("device_id");
+        parameters.removeValueForKey("patient_id");
+        let credentialData = "\(patientId)@\(PersistentAppUUID.sharedInstance.uuid):\(hashedPassword)".dataUsingEncoding(NSUTF8StringEncoding)!
+        let base64Credentials = credentialData.base64EncodedStringWithOptions([])
+
+        let headers = ["Authorization": "Basic \(base64Credentials)"]
+        return Promise { resolve, reject in
+            Alamofire.request(.POST, baseApiUrl + T.apiEndpoint, parameters: parameters, headers: headers)
+                .responseString { response in
+                    switch response.result {
+                    case .Failure(let error):
+                        reject(error);
+                    case .Success:
+                        let statusCode = response.response?.statusCode;
+                        if let statusCode = statusCode where statusCode < 200 || statusCode >= 400 {
+                            reject(ApiErrors.FailedStatus(code: statusCode));
+                        } else {
+                            var returnObject: [T.ApiReturnType]?;
+                            returnObject = Mapper<T.ApiReturnType>().mapArray(response.result.value);
+                            if let returnObject = returnObject {
+                                resolve((returnObject, statusCode ?? 0));
+                            } else {
+                                reject(Error.errorWithCode(.DataSerializationFailed, failureReason: "Unable to decode response"));
+                            }
+                        }
+                    }
+
+            }
+        }
+    }
+
 
     func makeUploadRequest<T: ApiRequest where T: Mappable>(requestObject: T, file: NSURL) -> Promise<(T.ApiReturnType, Int)> {
         var parameters = requestObject.toJSON();

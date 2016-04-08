@@ -16,6 +16,7 @@ class StudyManager {
     var currentStudy: Study?;
     var gpsManager: GPSManager?;
     var isUploading = false;
+    var isHandlingPeriodic = false;
 
     var isStudyLoaded: Bool {
         return currentStudy != nil;
@@ -88,18 +89,20 @@ class StudyManager {
             gpsManager!.addDataService(studySettings.motionOnDurationSeconds, off: studySettings.motionOffDurationSeconds, handler: DeviceMotionManager());
         }
 
-
-
         gpsManager!.startGpsAndTimer();
     }
 
     func setConsented() -> Promise<Bool> {
-        guard let study = currentStudy else {
+        guard let study = currentStudy, studySettings = study.studySettings else {
             return Promise(false);
         }
+        let currentTime: Int64 = Int64(NSDate().timeIntervalSince1970);
+        study.nextUploadCheck = currentTime + studySettings.uploadDataFileFrequencySeconds;
+        study.nextSurveyCheck = currentTime + studySettings.checkForNewSurveysFreqSeconds;
+
         study.participantConsented = true;
         return Recline.shared.save(study).then { _ -> Promise<Bool> in
-            return Promise(true)
+            return self.checkSurveys();
         }
     }
 
@@ -142,11 +145,76 @@ class StudyManager {
 
     }
 
+    func periodicEvents() {
+        guard let currentStudy = currentStudy where isHandlingPeriodic == false else {
+            return;
+        }
+        let currentTime: Int64 = Int64(NSDate().timeIntervalSince1970);
+        let nextSurvey = currentStudy.nextSurveyCheck ?? 0;
+        let nextUpload = currentStudy.nextUploadCheck ?? 0;
+        if (currentTime > nextSurvey) {
+            setNextSurveyTime().then { _ -> Void in
+                self.isHandlingPeriodic = false;
+                self.checkSurveys();
+                }.error { _ -> Void in
+                    print("Error checking for surveys");
+            }
+        }
+        else if (currentTime > nextUpload) {
+            setNextUploadTime().then { _ -> Void in
+                self.upload();
+                }.error { _ -> Void in
+                    print("Error checking for uploades")
+            }
+        }
+
+    }
+
+    func checkSurveys() -> Promise<Bool> {
+        guard let study = currentStudy, studySettings = study.studySettings else {
+            return Promise(false);
+        }
+        print("Checking for surveys...");
+        study.nextSurveyCheck = Int64(NSDate().timeIntervalSince1970) + studySettings.checkForNewSurveysFreqSeconds;
+        return Recline.shared.save(study).then { _ -> Promise<([Survey], Int)> in
+                let surveyRequest = GetSurveysRequest();
+                return ApiManager.sharedInstance.arrayPostRequest(surveyRequest);
+            }.then { (surveys, _)  -> Promise<Bool> in
+                print("Surveys: \(surveys)");
+                return Promise(true);
+            }
+
+    }
+
+    func setNextUploadTime() -> Promise<Bool> {
+        guard let study = currentStudy, studySettings = study.studySettings else {
+            return Promise(true);
+        }
+
+        study.nextUploadCheck = Int64(NSDate().timeIntervalSince1970) + studySettings.uploadDataFileFrequencySeconds;
+        return Recline.shared.save(study).then { _ -> Promise<Bool> in
+            return Promise(true);
+        }
+    }
+
+    func setNextSurveyTime() -> Promise<Bool> {
+        guard let study = currentStudy, studySettings = study.studySettings else {
+            return Promise(true);
+        }
+
+        study.nextSurveyCheck = Int64(NSDate().timeIntervalSince1970) + studySettings.checkForNewSurveysFreqSeconds
+        return Recline.shared.save(study).then { _ -> Promise<Bool> in
+            return Promise(true);
+        }
+
+    }
+
     func upload() {
         if (isUploading) {
             return;
         }
 
+        print("Checking for uploads...");
         DataStorageManager.sharedInstance.prepareForUpload();
 
         let fileManager = NSFileManager.defaultManager()
@@ -182,7 +250,7 @@ class StudyManager {
         }
         */
 
-        var promiseChain = Promise(true);
+        var promiseChain = setNextUploadTime();
         var numFiles = 0;
 
         if let enumerator = enumerator {
@@ -208,16 +276,15 @@ class StudyManager {
             }
         }
 
-        if (numFiles > 0) {
-            isUploading = true;
-            promiseChain.then { results -> Void in
-                print("OK uploading. \(results)");
-                self.isUploading = false;
-                }.error { error in
-                    print("Error uploading: \(error)");
-                    self.isUploading = false;
-            }
-        }
+        isUploading = true;
 
+        promiseChain.then { results -> Void in
+            print("OK uploading \(numFiles). \(results)");
+            self.isUploading = false;
+            }.error { error in
+                print("Error uploading: \(error)");
+                self.setNextUploadTime();
+                self.isUploading = false;
+        }
     }
 }

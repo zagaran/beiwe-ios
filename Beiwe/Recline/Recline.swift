@@ -15,7 +15,7 @@ class ReclineObject : Mappable {
 
     init() {
     }
-    
+
     required init?(_ map: Map) {
     }
 

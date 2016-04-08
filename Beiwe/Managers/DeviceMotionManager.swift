@@ -22,7 +22,12 @@ class DeviceMotionManager : DataServiceProtocol {
     var store: DataStorage?;
     var offset: Double = 0;
 
-    func initCollecting() {
+    func initCollecting() -> Bool {
+        guard  motionManager.deviceMotionAvailable else {
+            print("DeviceMotion not available.  Not initializing collection");
+            return false;
+        }
+
         store = DataStorageManager.sharedInstance.createStore(storeType, headers: headers);
         // Get NSTimeInterval of uptime i.e. the delta: now - bootTime
         let uptime: NSTimeInterval = NSProcessInfo.processInfo().systemUptime;
@@ -31,6 +36,7 @@ class DeviceMotionManager : DataServiceProtocol {
         // Voila our offset
         self.offset = nowTimeIntervalSince1970 - uptime;
         motionManager.deviceMotionUpdateInterval = 0.1;
+        return true;
     }
 
     func startCollecting() {

@@ -12,14 +12,20 @@ import ObjectMapper;
 class Study : ReclineObject {
 
     var studyId = Constants.defaultStudyId;
-    var phoneNumber: String = "";
+    var patientPhoneNumber: String = "";
     var studySettings: StudySettings?;
     var patientId: String?;
+    var clinicianPhoneNumber: String?;
+    var raPhoneNumber: String?;
+    var nextUploadCheck: Int64?;
+    var nextSurveyCheck: Int64?;
+
+
     var participantConsented: Bool = false;
 
-    init(phoneNumber: String, patientId: String, studySettings: StudySettings, studyId: String = Constants.defaultStudyId) {
+    init(patientPhone: String, patientId: String, studySettings: StudySettings, studyId: String = Constants.defaultStudyId) {
         super.init();
-        self.phoneNumber = phoneNumber;
+        self.patientPhoneNumber = patientPhone;
         self.studySettings = studySettings;
         self.studyId = studyId;
         self.patientId = patientId;
@@ -33,11 +39,15 @@ class Study : ReclineObject {
     // Mappable
     override func mapping(map: Map) {
         super.mapping(map);
-        phoneNumber     <- map["phoneNumber"];
+        patientPhoneNumber     <- map["phoneNumber"];
         studySettings   <- map["studySettings"];
         studyId   <- map["studyId"];
         patientId <- map["patientId"];
         participantConsented <- map["participantConsented"];
+        clinicianPhoneNumber <- map["clinicianPhoneNumber"];
+        raPhoneNumber <- map["raPhoneNumber"];
+        nextSurveyCheck <- (map["nextSurveyCheck"], TransformOf<Int64, NSNumber>(fromJSON: { $0?.longLongValue }, toJSON: { $0.map { NSNumber(longLong: $0) } }))
+        nextUploadCheck <- (map["nextUploadCheck"], TransformOf<Int64, NSNumber>(fromJSON: { $0?.longLongValue }, toJSON: { $0.map { NSNumber(longLong: $0) } }))
     }
 
 }

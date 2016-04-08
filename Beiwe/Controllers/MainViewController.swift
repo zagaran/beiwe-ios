@@ -7,10 +7,12 @@
 //
 
 import UIKit
-import ResearchKit;
+import ResearchKit
+import EmitterKit
 
 class MainViewController: UIViewController, ORKTaskViewControllerDelegate {
 
+    var listeners: [Listener] = [];
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,13 +29,16 @@ class MainViewController: UIViewController, ORKTaskViewControllerDelegate {
         StudyManager.sharedInstance.upload();
     }
 
+    @IBAction func checkSurveys(sender: AnyObject) {
+        StudyManager.sharedInstance.checkSurveys();
+    }
     @IBAction func leaveStudy(sender: AnyObject) {
         StudyManager.sharedInstance.leaveStudy().then {_ -> Void in
             AppDelegate.sharedInstance().isLoggedIn = false;
             AppDelegate.sharedInstance().transitionToCurrentAppState();
         }
     }
-    @IBAction func testSurvey(sender: AnyObject) {
+    func testSurvey() {
 
         var steps = [ORKStep]();
 
@@ -62,6 +67,16 @@ class MainViewController: UIViewController, ORKTaskViewControllerDelegate {
         presentViewController(surveyViewController, animated: true, completion: nil)
 
     }
+
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
+        if (segue.identifier == "embedTaskListSegue") {
+            let taskListController: TaskListViewController = segue.destinationViewController as! TaskListViewController;
+            listeners += taskListController.surveySelected.on { survey in
+                self.testSurvey();
+            }
+        }
+    }
+
     /*
     // MARK: - Navigation
 

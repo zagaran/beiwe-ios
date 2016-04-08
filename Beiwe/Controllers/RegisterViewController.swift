@@ -24,6 +24,20 @@ class RegisterViewController: FormViewController {
         // Do any additional setup after loading the view.
 
         form +++ Section("Register for Study")
+            <<< SVAccountRow("primaryCareId") {
+                $0.title = "Clinician Phone:"
+                $0.placeholder = "10 digit number";
+                $0.rules = [RequiredRule(), PhoneNumberRule()]
+                $0.autoValidation = autoValidation
+
+            }
+            <<< SVAccountRow("assitantId") {
+                $0.title = "Rsearch Asst. Phone:"
+                $0.placeholder = "10 digit number";
+                $0.rules = [RequiredRule(), PhoneNumberRule()]
+                $0.autoValidation = autoValidation
+
+            }
             <<< SVAccountRow("patientId") {
                 $0.title = "User ID:"
                 $0.placeholder = "Enter User ID";
@@ -39,7 +53,7 @@ class RegisterViewController: FormViewController {
             }
             <<< SVSimplePhoneRow("phone") {
                 $0.title = "Phone:"
-                $0.placeholder = "10 digit number";
+                $0.placeholder = "Your 10 digit number";
                 $0.rules = [RequiredRule(), PhoneNumberRule()]
                 $0.autoValidation = autoValidation
             }
@@ -78,7 +92,7 @@ class RegisterViewController: FormViewController {
                                 (studySettings, _) -> Promise<Study> in
                                 print("study settings received");
                                 PersistentPasswordManager.sharedInstance.storePassword(newPassword);
-                                let study = Study(phoneNumber: phoneNumber, patientId: patientId, studySettings: studySettings);
+                                let study = Study(patientPhone: phoneNumber, patientId: patientId, studySettings: studySettings);
                                 if let clientPublicKey = study.studySettings?.clientPublicKey {
                                     do {
                                         try PersistentPasswordManager.sharedInstance.storePublicKeyForStudy(clientPublicKey);

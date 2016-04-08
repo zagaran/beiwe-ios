@@ -17,7 +17,12 @@ class MagnetometerManager : DataServiceProtocol {
     var store: DataStorage?;
     var offset: Double = 0;
 
-    func initCollecting() {
+    func initCollecting() -> Bool {
+        guard  motionManager.magnetometerAvailable else {
+            print("Magnetometer not available.  Not initializing collection");
+            return false;
+        }
+
         store = DataStorageManager.sharedInstance.createStore(storeType, headers: headers);
         // Get NSTimeInterval of uptime i.e. the delta: now - bootTime
         let uptime: NSTimeInterval = NSProcessInfo.processInfo().systemUptime;
@@ -26,6 +31,8 @@ class MagnetometerManager : DataServiceProtocol {
         // Voila our offset
         self.offset = nowTimeIntervalSince1970 - uptime;
         motionManager.magnetometerUpdateInterval = 0.1;
+
+        return true;
     }
 
     func startCollecting() {

@@ -12,7 +12,7 @@ import Darwin
 
 
 protocol DataServiceProtocol {
-    func initCollecting();
+    func initCollecting() -> Bool;
     func startCollecting();
     func pauseCollecting();
     func finishCollecting();
@@ -42,8 +42,14 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
     var dataCollectionServices: [DataServiceStatus] = [ ];
     var gpsStore: DataStorage?;
     static let headers = [ "timestamp", "latitude", "longitude", "altitude", "accuracy"];
+    var isDeferringUpdates = false;
 
-    func startGpsAndTimer() {
+    func gpsAllowed() -> Bool {
+        return CLLocationManager.locationServicesEnabled() &&  CLLocationManager.authorizationStatus() == .AuthorizedAlways;
+    }
+
+    func startGpsAndTimer() -> Bool {
+
         locationManager.delegate = self;
         locationManager.activityType = CLActivityType.Other;
         if #available(iOS 9.0, *) {
@@ -55,6 +61,12 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
         locationManager.requestAlwaysAuthorization();
         locationManager.pausesLocationUpdatesAutomatically = false;
         locationManager.startUpdatingLocation();
+
+        if (!gpsAllowed()) {
+            return false;
+        }
+
+        return true;
 
     }
 
@@ -104,12 +116,18 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
             recordGpsData(manager, locations: locations);
         }
 
-        let nextServiceSeconds = min(nextServiceDate.timeIntervalSince1970 - NSDate().timeIntervalSince1970, 1.0);
+        let nextServiceSeconds = max(nextServiceDate.timeIntervalSince1970 - NSDate().timeIntervalSince1970, 1.0);
 
-        if (!isCollectingGps) {
+        if (!isCollectingGps && !isDeferringUpdates) {
             locationManager.allowDeferredLocationUpdatesUntilTraveled(10000, timeout: nextServiceSeconds);
+            isDeferringUpdates = true;
         }
 
+        StudyManager.sharedInstance.periodicEvents();
+    }
+
+    func locationManager(manager: CLLocationManager, didFinishDeferredUpdatesWithError error: NSError?) {
+        isDeferringUpdates = false;
     }
 
     func recordGpsData(manager: CLLocationManager, locations: [CLLocation]) {
@@ -130,8 +148,10 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
 
     func addDataService(on: Int, off: Int, handler: DataServiceProtocol) {
         let dataServiceStatus = DataServiceStatus(onDurationSeconds: on, offDurationSeconds: off, handler: handler);
-        dataCollectionServices.append(dataServiceStatus);
-        handler.initCollecting();
+        if  handler.initCollecting() {
+            dataCollectionServices.append(dataServiceStatus);
+        }
+
     }
 
     func addDataService(handler: DataServiceProtocol) {
@@ -139,9 +159,14 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
     }
     /* Data service protocol */
 
-    func initCollecting() {
+    func initCollecting() -> Bool {
+        guard  gpsAllowed() else {
+            print("GPS not enabled.  Not initializing collection")
+            return false;
+        }
         gpsStore = DataStorageManager.sharedInstance.createStore("gps", headers: GPSManager.headers);
         isCollectingGps = false;
+        return true;
     }
     func startCollecting() {
         print("Turning GPS collection on");

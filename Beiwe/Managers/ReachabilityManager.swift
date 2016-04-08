@@ -40,8 +40,9 @@ class ReachabilityManager : DataServiceProtocol {
         }
     }
 
-    func initCollecting() {
+    func initCollecting() -> Bool {
         store = DataStorageManager.sharedInstance.createStore(storeType, headers: headers);
+        return true;
     }
 
     func startCollecting() {
