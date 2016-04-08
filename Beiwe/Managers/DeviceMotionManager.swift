@@ -12,7 +12,7 @@ import CoreMotion
 class DeviceMotionManager : DataServiceProtocol {
     let motionManager = AppDelegate.sharedInstance().motionManager;
 
-    let headers = ["timestamp", "accuracy", "roll", "pitch", "yaw",
+    let headers = ["timestamp", "roll", "pitch", "yaw",
                    "rotation_rate_x", "rotation_rate_y", "rotation_rate_z",
                    "gravity_x", "gravity_y", "gravity_z",
                    "user_accel_x", "user_accel_y", "user_accel_z",
@@ -51,7 +51,7 @@ class DeviceMotionManager : DataServiceProtocol {
                 var data: [String] = [ ];
                 let timestamp: Double = motionData.timestamp + self.offset;
                 data.append(String(Int64(timestamp * 1000)));
-                data.append(AppDelegate.sharedInstance().modelVersionId);
+                //data.append(AppDelegate.sharedInstance().modelVersionId);
                 data.append(String(motionData.attitude.roll))
                 data.append(String(motionData.attitude.pitch))
                 data.append(String(motionData.attitude.yaw))

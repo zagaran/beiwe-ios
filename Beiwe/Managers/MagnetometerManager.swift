@@ -12,7 +12,7 @@ import CoreMotion
 class MagnetometerManager : DataServiceProtocol {
     let motionManager = AppDelegate.sharedInstance().motionManager;
 
-    let headers = ["timestamp", "accuracy", "x", "y", "z"]
+    let headers = ["timestamp", "x", "y", "z"]
     let storeType = "magnetometer";
     var store: DataStorage?;
     var offset: Double = 0;
@@ -47,7 +47,7 @@ class MagnetometerManager : DataServiceProtocol {
                 var data: [String] = [ ];
                 let timestamp: Double = magData.timestamp + self.offset;
                 data.append(String(Int64(timestamp * 1000)));
-                data.append(AppDelegate.sharedInstance().modelVersionId);
+                //data.append(AppDelegate.sharedInstance().modelVersionId);
                 data.append(String(magData.magneticField.x))
                 data.append(String(magData.magneticField.y))
                 data.append(String(magData.magneticField.z))

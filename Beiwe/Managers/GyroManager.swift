@@ -12,7 +12,7 @@ import CoreMotion
 class GyroManager : DataServiceProtocol {
     let motionManager = AppDelegate.sharedInstance().motionManager;
 
-    let headers = ["timestamp", "accuracy", "x", "y", "z"]
+    let headers = ["timestamp", "x", "y", "z"]
     let storeType = "gyro";
     var store: DataStorage?;
     var offset: Double = 0;
@@ -47,7 +47,7 @@ class GyroManager : DataServiceProtocol {
                 var data: [String] = [ ];
                 let timestamp: Double = gyroData.timestamp + self.offset;
                 data.append(String(Int64(timestamp * 1000)));
-                data.append(AppDelegate.sharedInstance().modelVersionId);
+                //data.append(AppDelegate.sharedInstance().modelVersionId);
                 data.append(String(gyroData.rotationRate.x))
                 data.append(String(gyroData.rotationRate.y))
                 data.append(String(gyroData.rotationRate.z))

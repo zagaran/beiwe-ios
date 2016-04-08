@@ -12,7 +12,7 @@ import CoreMotion
 class AccelerometerManager : DataServiceProtocol {
     let motionManager = AppDelegate.sharedInstance().motionManager;
 
-    let headers = ["timestamp", "accuracy", "x", "y", "z"]
+    let headers = ["timestamp", "x", "y", "z"]
     let storeType = "accel";
     var store: DataStorage?;
     var offset: Double = 0;
@@ -50,7 +50,7 @@ class AccelerometerManager : DataServiceProtocol {
                 var data: [String] = [ ];
                 let timestamp: Double = accelData.timestamp + self.offset;
                 data.append(String(Int64(timestamp * 1000)));
-                data.append(AppDelegate.sharedInstance().modelVersionId);
+                //data.append(AppDelegate.sharedInstance().modelVersionId);
                 data.append(String(accelData.acceleration.x))
                 data.append(String(accelData.acceleration.y))
                 data.append(String(accelData.acceleration.z))
