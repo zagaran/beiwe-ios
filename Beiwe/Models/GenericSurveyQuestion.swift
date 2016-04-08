@@ -1,15 +1,14 @@
 //
-//  Survey.swift
+//  GenericSurveyQuestion.swift
 //  Beiwe
 //
-//  Created by Keary Griffin on 4/7/16.
+//  Created by Keary Griffin on 4/8/16.
 //  Copyright © 2016 Rocketfarm Studios. All rights reserved.
 //
 
-import Foundation
 import ObjectMapper
 
-struct Survey : Mappable  {
+struct GenericSurveyQuestion : Mappable  {
 
 
     init?(_ map: Map) {

@@ -124,6 +124,7 @@ class ApiManager {
                             reject(ApiErrors.FailedStatus(code: statusCode));
                         } else {
                             var returnObject: [T.ApiReturnType]?;
+                            print("Value: \(response.result.value)");
                             returnObject = Mapper<T.ApiReturnType>().mapArray(response.result.value);
                             if let returnObject = returnObject {
                                 resolve((returnObject, statusCode ?? 0));
