@@ -8,33 +8,51 @@
 
 import Foundation
 import ResearchKit
+import PermissionScope
 
 class ConsentManager : NSObject, ORKTaskViewControllerDelegate {
 
+    enum StepIds : String {
+        case Permission = "PermissionsStep"
+        case WaitForPermissions = "WaitForPermissions"
+        case WarningStep = "WarningStep"
+        case VisualConsent = "VisualConsentStep"
+        case ConsentReview = "ConsentReviewStep"
+    }
+    let pscope = AppDelegate.sharedInstance().pscope;
     var retainSelf: AnyObject?;
     var consentViewController: ORKTaskViewController!;
     var consentDocument: ORKConsentDocument!;
 
-    var RegisteredStep: ORKStep {
-        let instructionStep = ORKInstructionStep(identifier: "RegisteredStep")
-        instructionStep.image = UIImage(named: "AppIcon60x60")
-        instructionStep.title = "Perfect!";
-        instructionStep.text = "All set with the registration.  Now we just need to take care of some permissions and legalese";
+    var PermissionsStep: ORKStep {
+        let instructionStep = ORKInstructionStep(identifier: StepIds.Permission.rawValue)
+        instructionStep.title = "Permissions";
+        instructionStep.text = "This app requires your access to your location at all times.  It just won't work without it.  We'd also like to notify you when it's time to fill out the next survey";
         return instructionStep;
     }
 
-    var PermissionsStep: ORKStep {
-        let instructionStep = ORKInstructionStep(identifier: "PermissionsStep")
-        instructionStep.title = "Permissions";
-        instructionStep.text = "Now would be a good time to prompt for location permissions, etc";
+    var WarningStep: ORKStep {
+        let instructionStep = ORKInstructionStep(identifier: StepIds.WarningStep.rawValue)
+        instructionStep.title = "Warning";
+        instructionStep.text = "Permission to access your location is required to correctly gather the data required for this study.  To participate in this study we highly recommend you go back and allow this application to access your location.";
         return instructionStep;
     }
+
 
 
     override init() {
         super.init();
+
+        // Set up permissions
+
         var steps = [ORKStep]();
 
+
+        if (!hasRequiredPermissions()) {
+            steps += [PermissionsStep];
+            steps += [ORKWaitStep(identifier: StepIds.WaitForPermissions.rawValue)];
+            steps += [WarningStep];
+        }
 
         consentDocument = ORKConsentDocument()
         consentDocument.title = "Beiwe Consent"
@@ -66,12 +84,12 @@ class ConsentManager : NSObject, ORKTaskViewControllerDelegate {
 
         consentDocument.sections = consentSections        //TODO: signature
         
-        let visualConsentStep = ORKVisualConsentStep(identifier: "VisualConsentStep", document: consentDocument)
+        let visualConsentStep = ORKVisualConsentStep(identifier: StepIds.VisualConsent.rawValue, document: consentDocument)
         steps += [visualConsentStep]
 
         //let signature = consentDocument.signatures!.first!
 
-        let reviewConsentStep = ORKConsentReviewStep(identifier: "ConsentReviewStep", signature: nil, inDocument: consentDocument)
+        let reviewConsentStep = ORKConsentReviewStep(identifier: StepIds.ConsentReview.rawValue, signature: nil, inDocument: consentDocument)
 
         reviewConsentStep.text = "Review Consent!"
         reviewConsentStep.reasonForConsent = "Consent to join study"
@@ -89,6 +107,10 @@ class ConsentManager : NSObject, ORKTaskViewControllerDelegate {
     func closeOnboarding() {
         AppDelegate.sharedInstance().transitionToCurrentAppState();
         retainSelf = nil;
+    }
+
+    func hasRequiredPermissions() -> Bool {
+        return (pscope.statusNotifications() == .Authorized && pscope.statusLocationAlways() == .Authorized);
     }
 
     /* ORK Delegates */
@@ -113,7 +135,20 @@ class ConsentManager : NSObject, ORKTaskViewControllerDelegate {
     }
 
     func taskViewController(taskViewController: ORKTaskViewController, shouldPresentStep step: ORKStep) -> Bool {
+        /*
+        if let identifier = StepIds(rawValue: step.identifier) {
+            switch(identifier) {
+            case .Permission, .WaitForPermissions:
+                if (hasRequiredPermissions()) {
+                    taskViewController.goForward();
+                }
+                return false;
+            default: return true;
+            }
+        }
+        */
         return true;
+
     }
 
     func taskViewController(taskViewController: ORKTaskViewController, learnMoreForStep stepViewController: ORKStepViewController) {
@@ -129,11 +164,7 @@ class ConsentManager : NSObject, ORKTaskViewControllerDelegate {
     }
 
     func taskViewController(taskViewController: ORKTaskViewController, hasLearnMoreForStep step: ORKStep) -> Bool {
-        switch(step.identifier) {
-            case "SecondStep":
-                return true;
-        default: return false;
-        }
+        return false;
     }
 
     func taskViewController(taskViewController: ORKTaskViewController, viewControllerForStep step: ORKStep) -> ORKStepViewController? {
@@ -141,8 +172,34 @@ class ConsentManager : NSObject, ORKTaskViewControllerDelegate {
     }
 
     func taskViewController(taskViewController: ORKTaskViewController, stepViewControllerWillAppear stepViewController: ORKStepViewController) {
-        print("Step will appear;");
+        print("Step will appear: \(stepViewController.step?.identifier)");
         stepViewController.cancelButtonItem!.title = "Leave Study";
+
+        if let identifier = StepIds(rawValue: stepViewController.step?.identifier ?? "") {
+            switch(identifier) {
+            case .WaitForPermissions:
+                pscope.show({ finished, results in
+                    print("Permissions granted");
+                    stepViewController.goForward();
+                    }, cancelled: { (results) in
+                        print("Permissions cancelled");
+                        stepViewController.goForward();
+                })
+            case .Permission:
+                stepViewController.continueButtonTitle = "Permissions";
+            case .WarningStep:
+                if (pscope.statusLocationAlways() == .Authorized) {
+                    stepViewController.goForward();
+                } else {
+                    stepViewController.continueButtonTitle = "Continue";
+                }
+            case .VisualConsent:
+                if (hasRequiredPermissions()) {
+                    stepViewController.backButtonItem = nil;
+                }
+            default: break;
+            }
+        }
 
         //stepViewController.continueButtonTitle = "Go!"
     }

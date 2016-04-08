@@ -18,6 +18,7 @@ PODS:
     - OMGHTTPURLRQ/FormURLEncode
     - OMGHTTPURLRQ/UserAgent
   - OMGHTTPURLRQ/UserAgent (3.1.1)
+  - PermissionScope (1.0.2)
   - PKHUD (3.1.0)
   - PromiseKit (3.1.1):
     - PromiseKit/Foundation (= 3.1.1)
@@ -44,6 +45,7 @@ DEPENDENCIES:
   - IDZSwiftCommonCrypto
   - KeychainSwift (~> 3.0)
   - ObjectMapper (~> 1.1)
+  - PermissionScope
   - PKHUD
   - PromiseKit (~> 3.1.1)
   - ReachabilitySwift (from `https://github.com/ashleymills/Reachability.swift`)
@@ -70,6 +72,7 @@ SPEC CHECKSUMS:
   KeychainSwift: 0a4214c910423543a42b0f30f25987d46178b6a5
   ObjectMapper: 528b1a6677a6acac7747edd508576983e76a9148
   OMGHTTPURLRQ: 633f98ee745aeda02345935a52eec1784cddb589
+  PermissionScope: 860828c5516d349b6f49e5491799cfef33c5ccc7
   PKHUD: 4167eccdb1b3a892fd80ce2b51cb6ba412a889ab
   PromiseKit: 4e8127c22a9b29d1b44958ab2ec762ea6115cbfb
   ReachabilitySwift: e0f6b6f280effb47731acfaaa2d5ffe223703793

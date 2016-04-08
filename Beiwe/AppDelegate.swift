@@ -13,6 +13,7 @@ import PromiseKit
 import CoreMotion;
 import ReachabilitySwift
 import ResearchKit;
+import PermissionScope
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -25,12 +26,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var currentRootView: String? = "launchScreen";
     var isLoggedIn: Bool = false;
     var timeEnteredBackground: NSDate?;
-
+    let pscope = PermissionScope()
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
 
         Fabric.with([Crashlytics.self])
+        pscope.addPermission(NotificationsPermission(notificationCategories: nil),
+                             message: "Allows us to send you survey notifications")
+        pscope.addPermission(LocationAlwaysPermission(),
+                             message: "We need this for the data gathering capabilities of the application")
+
         let reachability: Reachability
         do {
             reachability = try Reachability.reachabilityForInternetConnection()
