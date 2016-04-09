@@ -9,6 +9,11 @@
 import Foundation
 import ObjectMapper
 
+enum SurveyTypes: String {
+    case AudioSurvey = "audio_survey"
+    case TrackingSurvey = "tracking_survey"
+}
+
 struct Survey : Mappable  {
 
     var surveyId: String?;
