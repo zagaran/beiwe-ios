@@ -19,6 +19,10 @@ class Study : ReclineObject {
     var raPhoneNumber: String?;
     var nextUploadCheck: Int64?;
     var nextSurveyCheck: Int64?;
+    var lastBadgeCnt = 0;
+
+    var surveys: [Survey] = [ ];
+    var activeSurveys: [String:ActiveSurvey] = [:]
 
 
     var participantConsented: Bool = false;
@@ -48,6 +52,8 @@ class Study : ReclineObject {
         raPhoneNumber <- map["raPhoneNumber"];
         nextSurveyCheck <- (map["nextSurveyCheck"], TransformOf<Int64, NSNumber>(fromJSON: { $0?.longLongValue }, toJSON: { $0.map { NSNumber(longLong: $0) } }))
         nextUploadCheck <- (map["nextUploadCheck"], TransformOf<Int64, NSNumber>(fromJSON: { $0?.longLongValue }, toJSON: { $0.map { NSNumber(longLong: $0) } }))
+        surveys    <- map["surveys"];
+        activeSurveys   <- map["active_surveys"]
     }
 
 }

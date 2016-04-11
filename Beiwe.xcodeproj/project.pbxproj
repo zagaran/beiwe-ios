@@ -34,6 +34,7 @@
 		83C295F21CB817AD0016DD95 /* Survey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C295F11CB817AD0016DD95 /* Survey.swift */; };
 		83C295F41CB831330016DD95 /* GenericSurveyQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C295F31CB831330016DD95 /* GenericSurveyQuestion.swift */; };
 		83C295F61CB8AF160016DD95 /* OneSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C295F51CB8AF160016DD95 /* OneSelection.swift */; };
+		83C295F81CBA048F0016DD95 /* ActiveSurvey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C295F71CBA048F0016DD95 /* ActiveSurvey.swift */; };
 		83C2BFCC1CB7484B00B2251B /* GetSurveysRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C2BFCB1CB7484B00B2251B /* GetSurveysRequest.swift */; };
 		83C7D37A1CB4E30C00BC7285 /* UploadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C7D3791CB4E30C00BC7285 /* UploadRequest.swift */; };
 		83C7D3831CB5943B00BC7285 /* BWBorderedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 83C7D3801CB5943B00BC7285 /* BWBorderedButton.m */; };
@@ -84,6 +85,7 @@
 		83C295F11CB817AD0016DD95 /* Survey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Survey.swift; sourceTree = "<group>"; };
 		83C295F31CB831330016DD95 /* GenericSurveyQuestion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenericSurveyQuestion.swift; sourceTree = "<group>"; };
 		83C295F51CB8AF160016DD95 /* OneSelection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneSelection.swift; sourceTree = "<group>"; };
+		83C295F71CBA048F0016DD95 /* ActiveSurvey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActiveSurvey.swift; sourceTree = "<group>"; };
 		83C2BFCB1CB7484B00B2251B /* GetSurveysRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetSurveysRequest.swift; sourceTree = "<group>"; };
 		83C7D3791CB4E30C00BC7285 /* UploadRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadRequest.swift; sourceTree = "<group>"; };
 		83C7D37F1CB5943B00BC7285 /* BWBorderedButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BWBorderedButton.h; sourceTree = "<group>"; };
@@ -185,6 +187,7 @@
 				83B4D6711CA8DBB2001BF283 /* Study.swift */,
 				83C295F31CB831330016DD95 /* GenericSurveyQuestion.swift */,
 				83C295F51CB8AF160016DD95 /* OneSelection.swift */,
+				83C295F71CBA048F0016DD95 /* ActiveSurvey.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -486,6 +489,7 @@
 				83E3DE761CA3967A00EB5349 /* StudySettings.swift in Sources */,
 				83AF043F1CB360F300A37225 /* ConsentManager.swift in Sources */,
 				83C7D3831CB5943B00BC7285 /* BWBorderedButton.m in Sources */,
+				83C295F81CBA048F0016DD95 /* ActiveSurvey.swift in Sources */,
 				83AF04151CAB556800A37225 /* GPSManager.swift in Sources */,
 				83AF042D1CB0D21700A37225 /* GyroManager.swift in Sources */,
 				83C295F21CB817AD0016DD95 /* Survey.swift in Sources */,

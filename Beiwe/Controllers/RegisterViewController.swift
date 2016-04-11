@@ -24,15 +24,15 @@ class RegisterViewController: FormViewController {
         // Do any additional setup after loading the view.
 
         form +++ Section("Register for Study")
-            <<< SVAccountRow("primaryCareId") {
+            <<< SVAccountRow("clinicianPhone") {
                 $0.title = "Clinician Phone:"
                 $0.placeholder = "10 digit number";
                 $0.rules = [RequiredRule(), PhoneNumberRule()]
                 $0.autoValidation = autoValidation
 
             }
-            <<< SVAccountRow("assitantId") {
-                $0.title = "Rsearch Asst. Phone:"
+            <<< SVAccountRow("raPhone") {
+                $0.title = "Research Asst. Phone:"
                 $0.placeholder = "10 digit number";
                 $0.rules = [RequiredRule(), PhoneNumberRule()]
                 $0.autoValidation = autoValidation
@@ -84,7 +84,9 @@ class RegisterViewController: FormViewController {
                         let phoneNumber: String? = formValues["phone"] as! String?;
                         let newPassword: String? = formValues["password"] as! String?;
                         let tempPassword: String? = formValues["tempPassword"] as! String?;
-                        if let patientId = patientId, phoneNumber = phoneNumber, newPassword = newPassword {
+                        let clinicianPhone: String? = formValues["clinicianPhone"] as! String?;
+                        let raPhone: String? = formValues["raPhone"] as! String?;
+                        if let patientId = patientId, phoneNumber = phoneNumber, newPassword = newPassword, clinicianPhone = clinicianPhone, raPhone = raPhone {
                             let registerStudyRequest = RegisterStudyRequest(patientId: patientId, phoneNumber: phoneNumber, newPassword: newPassword)
                             ApiManager.sharedInstance.password = tempPassword ?? "";
                             ApiManager.sharedInstance.patientId = patientId;
@@ -93,6 +95,8 @@ class RegisterViewController: FormViewController {
                                 print("study settings received");
                                 PersistentPasswordManager.sharedInstance.storePassword(newPassword);
                                 let study = Study(patientPhone: phoneNumber, patientId: patientId, studySettings: studySettings);
+                                study.clinicianPhoneNumber = clinicianPhone
+                                study.raPhoneNumber = raPhone
                                 if let clientPublicKey = study.studySettings?.clientPublicKey {
                                     do {
                                         try PersistentPasswordManager.sharedInstance.storePublicKeyForStudy(clientPublicKey);
@@ -120,7 +124,7 @@ class RegisterViewController: FormViewController {
                                 switch error {
                                 case ApiErrors.FailedStatus(let code):
                                     switch code {
-                                    case 403:
+                                    case 403, 401:
                                         err = .LabeledError(title: "Registration failed", subtitle: "Incorrect UserID or Password");
                                     case 405:
                                         err = .Label("UserID already registered on another device.  Please contact your study administrator to unregister any previous devices that may have been used");

@@ -13,24 +13,21 @@ import EmitterKit
 class TaskListViewController: FormViewController {
 
     let surveySelected = Event<String>();
+    let pendingSection =  Section("Pending Study Tasks");
+    let dateFormatter = NSDateFormatter();
+    var listeners: [Listener] = [];
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        form +++ Section("Pending Study Tasks")
-            <<< ButtonRow() {
-                $0.title = "Survey recvd. Apr, 6 4:33pm"
-                }
-                .onCellSelection {
-                    [unowned self] cell, row in
-                    print("Selected")
-                    self.surveySelected.emit("survey")
-            }
-            <<< ButtonRow() {
-                $0.title = "Survey recvd. Apr, 2 4:33pm"
-                }.onCellSelection { [unowned self] cell, row in
-                    self.surveySelected.emit("survey")
+        dateFormatter.dateFormat = "MMM d h:mm a";
 
+        form +++ pendingSection
+
+        loadSurveys();
+
+        listeners += StudyManager.sharedInstance.surveysUpdatedEvent.on {
+            self.loadSurveys();
         }
 
         // Do any additional setup after loading the view.
@@ -39,6 +36,39 @@ class TaskListViewController: FormViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+
+    func loadSurveys() {
+        pendingSection.removeAll();
+
+        if let activeSurveys = StudyManager.sharedInstance.currentStudy?.activeSurveys {
+            let sortedSurveys = activeSurveys.sort { (s1, s2) -> Bool in
+                return s1.1.received > s2.1.received;
+            }
+
+            for (id,survey) in sortedSurveys {
+                let surveyType = SurveyTypes(rawValue: survey.survey!.surveyType);
+                if let surveyType = surveyType where !survey.isComplete {
+                    var title: String;
+                    switch(surveyType) {
+                    case .TrackingSurvey:
+                        title = "Survey"
+                    case .AudioSurvey:
+                        title = "Audio Quest."
+                    }
+                    title = title + " recvd. " + dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: survey.received))
+                    pendingSection    <<< ButtonRow(id) {
+                        $0.title = title
+                        }
+                        .onCellSelection {
+                            [unowned self] cell, row in
+                            print("Selected")
+                            self.surveySelected.emit("survey")
+                    }
+                }
+            }
+        }
+
     }
     
 

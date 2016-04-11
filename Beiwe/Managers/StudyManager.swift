@@ -8,15 +8,19 @@
 
 import Foundation
 import PromiseKit
+import ReachabilitySwift
+import EmitterKit
 
 class StudyManager {
     static let sharedInstance = StudyManager();
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    let calendar = NSCalendar.currentCalendar();
 
     var currentStudy: Study?;
     var gpsManager: GPSManager?;
     var isUploading = false;
     var isHandlingPeriodic = false;
+    let surveysUpdatedEvent: Signal = Signal();
 
     var isStudyLoaded: Bool {
         return currentStudy != nil;
@@ -145,10 +149,15 @@ class StudyManager {
 
     }
 
-    func periodicEvents() {
+    func periodicNetworkTransfers() {
         guard let currentStudy = currentStudy where isHandlingPeriodic == false else {
             return;
         }
+
+        if (!appDelegate.reachability!.isReachableViaWiFi()) {
+            return;
+        }
+
         let currentTime: Int64 = Int64(NSDate().timeIntervalSince1970);
         let nextSurvey = currentStudy.nextSurveyCheck ?? 0;
         let nextUpload = currentStudy.nextUploadCheck ?? 0;
@@ -170,6 +179,141 @@ class StudyManager {
 
     }
 
+    func submitSurvey(survey: ActiveSurvey) {
+        removeNotificationForSurvey(survey);
+    }
+
+    func removeNotificationForSurvey(survey: ActiveSurvey) {
+        guard let notification = survey.notification else {
+            return;
+        }
+
+        UIApplication.sharedApplication().cancelLocalNotification(notification);
+        survey.notification = nil;
+    }
+
+    func updateActiveSurveys() -> NSTimeInterval {
+        let currentDate = NSDate();
+        let currentTime = currentDate.timeIntervalSince1970;
+        let currentDay = calendar.component(.Weekday, fromDate: currentDate) - 1;
+        let nowDateComponents = calendar.components([NSCalendarUnit.Day, NSCalendarUnit.Year, NSCalendarUnit.Month, NSCalendarUnit.TimeZone], fromDate: currentDate);
+        nowDateComponents.hour = 0;
+        nowDateComponents.minute = 0;
+        nowDateComponents.second = 0;
+
+        var closestNextSurveyTime: NSTimeInterval = currentTime + (60.0*60.0*24.0*7);
+
+        guard let study = currentStudy, dayBegin = calendar.dateFromComponents(nowDateComponents)  else {
+            return NSDate().dateByAddingTimeInterval((15.0*60.0)).timeIntervalSince1970;
+        }
+
+
+        var surveyDataModified = false;
+        for (id, activeSurvey) in study.activeSurveys {
+            if (!activeSurvey.isComplete && activeSurvey.expires <= currentTime) {
+                print("ActiveSurvey \(id) expired.");
+                activeSurvey.isComplete = true;
+                surveyDataModified = true;
+                submitSurvey(activeSurvey);
+            }
+        }
+
+        var allSurveyIds: [String] = [ ];
+        for survey in study.surveys {
+            var next: Double = -1;
+            outer: for day in 0..<7 {
+                let dayIdx = (day + currentDay) % 7;
+                for dayTime in survey.timings[dayIdx] {
+                    let possibleNxt = dayBegin.dateByAddingTimeInterval((Double(day) * 24.0 * 60.0 * 60.0) + Double(dayTime)).timeIntervalSince1970;
+                    if (possibleNxt > currentTime ) {
+                        next = possibleNxt;
+                        break outer
+                    }
+                }
+            }
+            if let id = survey.surveyId where next > 0 {
+                closestNextSurveyTime = min(closestNextSurveyTime, next);
+                allSurveyIds.append(id);
+                if study.activeSurveys[id] == nil {
+                    print("Adding survey  \(id) to active surveys");
+                    study.activeSurveys[id] = ActiveSurvey(survey: survey);
+                    study.activeSurveys[id]?.expires = survey.triggerOnFirstDownload ? currentTime : next;
+                    study.activeSurveys[id]?.isComplete = true;
+                    print("Added survey \(id), expires: \(NSDate(timeIntervalSince1970: study.activeSurveys[id]!.expires))");
+                    surveyDataModified = true;
+                }
+                let activeSurvey = study.activeSurveys[id]!;
+                if (activeSurvey.isComplete && activeSurvey.expires <= currentTime) {
+                    activeSurvey.reset();
+                    activeSurvey.received = activeSurvey.expires;
+                    surveyDataModified = true;
+
+                    /* Local notification goes here */
+
+                    let surveyType = SurveyTypes(rawValue: activeSurvey.survey!.surveyType);
+                    if let surveyType = surveyType {
+                        let localNotif = UILocalNotification();
+                        localNotif.fireDate = currentDate;
+
+                        var body: String;
+                        switch(surveyType) {
+                        case .TrackingSurvey:
+                            body = "A new survey has arrived and is awaiting completion."
+                        case .AudioSurvey:
+                            body = "A new audio question has arrived and is awaiting completion."
+                        }
+
+                        localNotif.alertBody = body;
+                        localNotif.soundName = UILocalNotificationDefaultSoundName;
+                        localNotif.userInfo = [
+                            "type": "survey",
+                            "survey_type": surveyType.rawValue,
+                            "survey_id": id
+                        ];
+                        UIApplication.sharedApplication().scheduleLocalNotification(localNotif);
+                        activeSurvey.notification = localNotif;
+
+                    }
+
+                }
+                if (activeSurvey.expires != next) {
+                    activeSurvey.expires = next;
+                    surveyDataModified = true;
+                }
+            }
+        }
+
+        var badgeCnt = 0;
+        for (id, activeSurvey) in study.activeSurveys {
+            if (activeSurvey.isComplete && !allSurveyIds.contains(id)) {
+                removeNotificationForSurvey(activeSurvey);
+                study.activeSurveys.removeValueForKey(id);
+                surveyDataModified = true;
+            } else if (!activeSurvey.isComplete) {
+                closestNextSurveyTime = min(closestNextSurveyTime, activeSurvey.expires);
+                badgeCnt += 1;
+            }
+        }
+        print("Badge Cnt: \(badgeCnt)");
+        if (badgeCnt != study.lastBadgeCnt) {
+            study.lastBadgeCnt = badgeCnt;
+            surveyDataModified = true;
+            let localNotif = UILocalNotification();
+            localNotif.applicationIconBadgeNumber = badgeCnt;
+            localNotif.fireDate = currentDate;
+            UIApplication.sharedApplication().scheduleLocalNotification(localNotif);
+        }
+
+        if (surveyDataModified) {
+            surveysUpdatedEvent.emit();
+            Recline.shared.save(study).error { _ in
+                print("Failed to save study after processing surveys");
+            }
+        }
+
+        return closestNextSurveyTime;
+    }
+
     func checkSurveys() -> Promise<Bool> {
         guard let study = currentStudy, studySettings = study.studySettings else {
             return Promise(false);
@@ -179,10 +323,16 @@ class StudyManager {
         return Recline.shared.save(study).then { _ -> Promise<([Survey], Int)> in
                 let surveyRequest = GetSurveysRequest();
                 return ApiManager.sharedInstance.arrayPostRequest(surveyRequest);
-            }.then { (surveys, _)  -> Promise<Bool> in
+            }.then { (surveys, _) in
                 print("Surveys: \(surveys)");
+                study.surveys = surveys;
+                return Recline.shared.save(study).asVoid();
+            }.then {
+                self.updateActiveSurveys();
                 return Promise(true);
-            }
+            }.recover { _ -> Promise<Bool> in
+                return Promise(false);
+        }
 
     }
 
@@ -209,7 +359,7 @@ class StudyManager {
 
     }
 
-    func upload() {
+    func upload(surveysOnly: Bool = false) {
         if (isUploading) {
             return;
         }
@@ -220,37 +370,12 @@ class StudyManager {
         let fileManager = NSFileManager.defaultManager()
         let enumerator = fileManager.enumeratorAtPath(DataStorageManager.uploadDataDirectory().path!);
 
-        /*
-        var promises: [Promise<Bool>] = [ ];
-
-        if let enumerator = enumerator {
-            while let filename = enumerator.nextObject() as? String {
-                if (filename.hasSuffix(DataStorageManager.dataFileSuffix)) {
-                    let filePath = DataStorageManager.uploadDataDirectory().URLByAppendingPathComponent(filename);
-                    let uploadRequest = UploadRequest(fileName: filename, filePath: filePath.path!);
-                    let promise: Promise<Bool> = ApiManager.sharedInstance.makePostRequest(uploadRequest).then { _ -> Promise<Bool> in
-                        print("Finished uploading: \(filename), removing.");
-                        try fileManager.removeItemAtURL(filePath);
-                        return Promise(true);
-                        }
-                    promises.append(promise);
-                }
-            }
+        var promiseChain: Promise<Bool>
+        if (surveysOnly) {
+            promiseChain = Promise(true);
+        } else {
+            promiseChain = setNextUploadTime();
         }
-
-        if (promises.count > 0) {
-            isUploading = true;
-            when(promises).then { results -> Void in
-                print("OK uploading. \(results)");
-                self.isUploading = false;
-            }.error { error in
-                print("Error uploading: \(error)");
-                self.isUploading = false;
-            }
-        }
-        */
-
-        var promiseChain = setNextUploadTime();
         var numFiles = 0;
 
         if let enumerator = enumerator {
@@ -283,7 +408,6 @@ class StudyManager {
             self.isUploading = false;
             }.error { error in
                 print("Error uploading: \(error)");
-                self.setNextUploadTime();
                 self.isUploading = false;
         }
     }

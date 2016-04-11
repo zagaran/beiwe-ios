@@ -37,10 +37,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         pscope.addPermission(LocationAlwaysPermission(),
                              message: "We need this for the data gathering capabilities of the application")
 
-        let reachability: Reachability
         do {
             reachability = try Reachability.reachabilityForInternetConnection()
-            try reachability.startNotifier()
+            try reachability!.startNotifier()
         } catch {
             print("Unable to create or start Reachability")
         }

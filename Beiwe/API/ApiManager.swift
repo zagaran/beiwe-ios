@@ -59,6 +59,18 @@ class ApiManager {
 
     var patientId: String = "";
 
+    func generateHeaders() -> [String:String] {
+        let credentialData = "\(patientId)@\(PersistentAppUUID.sharedInstance.uuid):\(hashedPassword)".dataUsingEncoding(NSUTF8StringEncoding)!
+        let base64Credentials = credentialData.base64EncodedStringWithOptions([])
+
+        let headers = [
+            "Authorization": "Basic \(base64Credentials)",
+            "Beiwe-Api-Version": "2",
+            "Accept": "application/vnd.beiwe.api.v2, application/json"
+        ]
+        return headers;
+    }
+
     func makePostRequest<T: ApiRequest where T: Mappable>(requestObject: T) -> Promise<(T.ApiReturnType, Int)> {
         var parameters = requestObject.toJSON();
         //parameters["password"] = hashedPassword;
@@ -67,10 +79,7 @@ class ApiManager {
         parameters.removeValueForKey("password");
         parameters.removeValueForKey("device_id");
         parameters.removeValueForKey("patient_id");
-        let credentialData = "\(patientId)@\(PersistentAppUUID.sharedInstance.uuid):\(hashedPassword)".dataUsingEncoding(NSUTF8StringEncoding)!
-        let base64Credentials = credentialData.base64EncodedStringWithOptions([])
-
-        let headers = ["Authorization": "Basic \(base64Credentials)"]
+        let headers = generateHeaders();
         return Promise { resolve, reject in
             Alamofire.request(.POST, baseApiUrl + T.apiEndpoint, parameters: parameters, headers: headers)
                 .responseString { response in
@@ -100,6 +109,7 @@ class ApiManager {
         }
     }
 
+
     func arrayPostRequest<T: ApiRequest where T: Mappable>(requestObject: T) -> Promise<([T.ApiReturnType], Int)> {
         var parameters = requestObject.toJSON();
         //parameters["password"] = hashedPassword;
@@ -108,10 +118,7 @@ class ApiManager {
         parameters.removeValueForKey("password");
         parameters.removeValueForKey("device_id");
         parameters.removeValueForKey("patient_id");
-        let credentialData = "\(patientId)@\(PersistentAppUUID.sharedInstance.uuid):\(hashedPassword)".dataUsingEncoding(NSUTF8StringEncoding)!
-        let base64Credentials = credentialData.base64EncodedStringWithOptions([])
-
-        let headers = ["Authorization": "Basic \(base64Credentials)"]
+        let headers = generateHeaders();
         return Promise { resolve, reject in
             Alamofire.request(.POST, baseApiUrl + T.apiEndpoint, parameters: parameters, headers: headers)
                 .responseString { response in
@@ -124,7 +131,6 @@ class ApiManager {
                             reject(ApiErrors.FailedStatus(code: statusCode));
                         } else {
                             var returnObject: [T.ApiReturnType]?;
-                            print("Value: \(response.result.value)");
                             returnObject = Mapper<T.ApiReturnType>().mapArray(response.result.value);
                             if let returnObject = returnObject {
                                 resolve((returnObject, statusCode ?? 0));
@@ -147,10 +153,9 @@ class ApiManager {
         parameters.removeValueForKey("password");
         parameters.removeValueForKey("device_id");
         parameters.removeValueForKey("patient_id");
-        let credentialData = "\(patientId)@\(PersistentAppUUID.sharedInstance.uuid):\(hashedPassword)".dataUsingEncoding(NSUTF8StringEncoding)!
-        let base64Credentials = credentialData.base64EncodedStringWithOptions([])
 
-        let headers = ["Authorization": "Basic \(base64Credentials)"]
+        let headers = generateHeaders();
+
         var request = NSMutableURLRequest(URL: NSURL(string: baseApiUrl + T.apiEndpoint)!);
         request.HTTPMethod = "POST";
         for (k,v) in headers {
@@ -195,10 +200,8 @@ class ApiManager {
         parameters.removeValueForKey("password");
         parameters.removeValueForKey("device_id");
         parameters.removeValueForKey("patient_id");
-        let credentialData = "\(patientId)@\(PersistentAppUUID.sharedInstance.uuid):\(hashedPassword)".dataUsingEncoding(NSUTF8StringEncoding)!
-        let base64Credentials = credentialData.base64EncodedStringWithOptions([])
 
-        let headers = ["Authorization": "Basic \(base64Credentials)"]
+        let headers = generateHeaders();
         /*
         var request = NSMutableURLRequest(URL: NSURL(string: baseApiUrl + T.apiEndpoint)!);
         request.HTTPMethod = "POST";

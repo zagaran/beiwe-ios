@@ -43,6 +43,7 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
     var gpsStore: DataStorage?;
     static let headers = [ "timestamp", "latitude", "longitude", "altitude", "accuracy"];
     var isDeferringUpdates = false;
+    var nextSurveyUpdate: NSTimeInterval = 0;
 
     func gpsAllowed() -> Bool {
         return CLLocationManager.locationServicesEnabled() &&  CLLocationManager.authorizationStatus() == .AuthorizedAlways;
@@ -78,7 +79,7 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
         dataCollectionServices.removeAll();
     }
 
-    func dispatchToServices() -> NSDate {
+    func dispatchToServices() -> NSTimeInterval {
         let currentDate = NSDate().timeIntervalSince1970;
         var nextServiceDate = currentDate + (15 * 60);
 
@@ -105,25 +106,32 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
                 nextServiceDate = min(nextServiceDate, serviceDate);
             }
         }
-        return NSDate(timeIntervalSince1970: nextServiceDate)
+        return nextServiceDate;
     }
 
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
 
-        let nextServiceDate = dispatchToServices();
+        var nextServiceDate = dispatchToServices();
 
         if (isCollectingGps) {
             recordGpsData(manager, locations: locations);
         }
 
-        let nextServiceSeconds = max(nextServiceDate.timeIntervalSince1970 - NSDate().timeIntervalSince1970, 1.0);
+        let currentTime = NSDate().timeIntervalSince1970;
+        StudyManager.sharedInstance.periodicNetworkTransfers();
+
+        if (currentTime > nextSurveyUpdate) {
+            nextSurveyUpdate = StudyManager.sharedInstance.updateActiveSurveys();
+        }
+
+        nextServiceDate = min(nextSurveyUpdate, nextServiceDate);
+        let nextServiceSeconds = max(nextServiceDate - currentTime, 1.0);
 
         if (!isCollectingGps && !isDeferringUpdates) {
             locationManager.allowDeferredLocationUpdatesUntilTraveled(10000, timeout: nextServiceSeconds);
             isDeferringUpdates = true;
         }
 
-        StudyManager.sharedInstance.periodicEvents();
     }
 
     func locationManager(manager: CLLocationManager, didFinishDeferredUpdatesWithError error: NSError?) {
