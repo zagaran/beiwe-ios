@@ -53,6 +53,7 @@
 		83F98C441C923C3600E0B64B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83F98C421C923C3600E0B64B /* LaunchScreen.storyboard */; };
 		83FDCFD61CBC877700AFF716 /* AudioSurveyPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FDCFD51CBC877700AFF716 /* AudioSurveyPresenter.swift */; };
 		83FDCFD81CBC8E4700AFF716 /* TrackingSurveyPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FDCFD71CBC8E4700AFF716 /* TrackingSurveyPresenter.swift */; };
+		83FDCFDA1CBCB6D300AFF716 /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FDCFD91CBCB6D300AFF716 /* ChangePasswordViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -115,6 +116,7 @@
 		83F98C451C923C3600E0B64B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		83FDCFD51CBC877700AFF716 /* AudioSurveyPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioSurveyPresenter.swift; sourceTree = "<group>"; };
 		83FDCFD71CBC8E4700AFF716 /* TrackingSurveyPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingSurveyPresenter.swift; sourceTree = "<group>"; };
+		83FDCFD91CBCB6D300AFF716 /* ChangePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewController.swift; sourceTree = "<group>"; };
 		FE647F058DAEF095F0138E0E /* Pods.testflight external.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods.testflight external.xcconfig"; path = "Pods/Target Support Files/Pods/Pods.testflight external.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -256,6 +258,7 @@
 		83F6C9641CA0F65600B85914 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				83FDCFD91CBCB6D300AFF716 /* ChangePasswordViewController.swift */,
 				83FDCFD71CBC8E4700AFF716 /* TrackingSurveyPresenter.swift */,
 				83FDCFD51CBC877700AFF716 /* AudioSurveyPresenter.swift */,
 				833482F61CA2EF7E00A37B35 /* RegisterViewController.swift */,
@@ -515,6 +518,7 @@
 				83AF043B1CB3451A00A37225 /* OnboardingManager.swift in Sources */,
 				83AF043D1CB35D2000A37225 /* LoginViewController.swift in Sources */,
 				83AF04191CAB843D00A37225 /* SwiftyRSA.swift in Sources */,
+				83FDCFDA1CBCB6D300AFF716 /* ChangePasswordViewController.swift in Sources */,
 				83AF042F1CB0D48D00A37225 /* MagnetometerManager.swift in Sources */,
 				83E3DE8E1CA477D200EB5349 /* ApiManager.swift in Sources */,
 				83AF04291CAF748C00A37225 /* PowerStateManager.swift in Sources */,

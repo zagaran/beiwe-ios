@@ -70,6 +70,9 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ysc-6U-fpb" customClass="BWBorderedButton">
                                 <rect key="frame" x="243" y="436" width="115" height="30"/>
                                 <state key="normal" title="Forgot Password"/>
+                                <connections>
+                                    <action selector="forgotPassword:" destination="qWM-9N-RLc" eventType="touchUpInside" id="lMa-k6-rKd"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -110,7 +113,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a5z-8e-tBs" customClass="BWBorderedButton">
-                                <rect key="frame" x="258" y="74" width="84" height="30"/>
+                                <rect key="frame" x="258" y="57" width="84" height="30"/>
                                 <state key="normal" title="Leave Study"/>
                                 <connections>
                                     <action selector="leaveStudy:" destination="BYZ-38-t0r" eventType="touchUpInside" id="L3F-ts-hpU"/>
@@ -123,46 +126,64 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wAa-kf-y1u">
-                                <rect key="frame" x="0.0" y="203" width="600" height="397"/>
+                                <rect key="frame" x="0.0" y="251" width="600" height="349"/>
                                 <connections>
                                     <segue destination="dQ4-5T-41d" kind="embed" identifier="embedTaskListSegue" id="RNo-A1-daT"/>
                                 </connections>
                             </containerView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f5e-AK-3ol" customClass="BWBorderedButton">
-                                <rect key="frame" x="256" y="112" width="88" height="30"/>
+                                <rect key="frame" x="256" y="90" width="88" height="30"/>
                                 <state key="normal" title="Call Clinician"/>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="azu-w9-tNA">
-                                <rect key="frame" x="390" y="164" width="152" height="30"/>
-                                <state key="normal" title="Check Surveys (temp)"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="azu-w9-tNA">
+                                <rect key="frame" x="446" y="201" width="127" height="30"/>
+                                <state key="normal" title="Chk Surveys (tmp)"/>
                                 <connections>
                                     <action selector="checkSurveys:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Bkb-LT-oOU"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RyB-nW-PvG">
-                                <rect key="frame" x="58" y="165" width="99" height="30"/>
-                                <state key="normal" title="Upload (temp)"/>
+                                <rect key="frame" x="26" y="201" width="91" height="30"/>
+                                <state key="normal" title="Upload (tmp)"/>
                                 <connections>
                                     <action selector="Upload:" destination="BYZ-38-t0r" eventType="touchUpInside" id="7Vf-Qz-stp"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hon-MM-zdm" customClass="BWBorderedButton">
+                                <rect key="frame" x="276" y="123" width="48" height="30"/>
+                                <state key="normal" title="Logout"/>
+                                <connections>
+                                    <action selector="logout:" destination="BYZ-38-t0r" eventType="touchUpInside" id="XZa-35-42c"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pBo-oe-oBh" customClass="BWBorderedButton">
+                                <rect key="frame" x="239" y="161" width="123" height="30"/>
+                                <state key="normal" title="Change Password"/>
+                                <connections>
+                                    <action selector="changePassword:" destination="BYZ-38-t0r" eventType="touchUpInside" id="hEF-LR-sFb"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="RyB-nW-PvG" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="38" id="0QP-uC-rk9"/>
+                            <constraint firstItem="RyB-nW-PvG" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="6" id="0QP-uC-rk9"/>
+                            <constraint firstItem="hon-MM-zdm" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="4Dp-8n-ep7"/>
                             <constraint firstItem="a5z-8e-tBs" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="7uc-eA-eqw"/>
-                            <constraint firstItem="wAa-kf-y1u" firstAttribute="top" secondItem="RyB-nW-PvG" secondAttribute="bottom" constant="8" id="82n-OT-CQZ"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="azu-w9-tNA" secondAttribute="trailing" constant="38" id="8K7-c8-wCR"/>
-                            <constraint firstItem="RyB-nW-PvG" firstAttribute="top" secondItem="f5e-AK-3ol" secondAttribute="bottom" constant="23" id="Dnp-3I-4Q6"/>
+                            <constraint firstItem="wAa-kf-y1u" firstAttribute="top" secondItem="RyB-nW-PvG" secondAttribute="bottom" constant="20" id="82n-OT-CQZ"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="azu-w9-tNA" secondAttribute="trailing" constant="7" id="8K7-c8-wCR"/>
+                            <constraint firstItem="pBo-oe-oBh" firstAttribute="top" secondItem="hon-MM-zdm" secondAttribute="bottom" constant="8" id="E1Q-NB-UrR"/>
                             <constraint firstItem="Db6-RE-GSW" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" id="IzP-46-qJx"/>
                             <constraint firstAttribute="trailing" secondItem="wAa-kf-y1u" secondAttribute="trailing" id="K35-DW-BGM"/>
                             <constraint firstItem="azu-w9-tNA" firstAttribute="top" secondItem="RyB-nW-PvG" secondAttribute="top" id="KEJ-I7-nkG"/>
                             <constraint firstItem="wAa-kf-y1u" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Nw2-Qy-EZ7"/>
-                            <constraint firstItem="a5z-8e-tBs" firstAttribute="top" secondItem="Db6-RE-GSW" secondAttribute="bottom" constant="25" id="WTE-o5-ixx"/>
+                            <constraint firstItem="hon-MM-zdm" firstAttribute="top" secondItem="f5e-AK-3ol" secondAttribute="bottom" constant="3" id="Oke-hq-axy"/>
+                            <constraint firstItem="RyB-nW-PvG" firstAttribute="top" secondItem="pBo-oe-oBh" secondAttribute="bottom" constant="10" id="SoA-TI-cdd"/>
+                            <constraint firstItem="a5z-8e-tBs" firstAttribute="top" secondItem="Db6-RE-GSW" secondAttribute="bottom" constant="8" id="WTE-o5-ixx"/>
                             <constraint firstItem="Db6-RE-GSW" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="YfA-ky-8sy"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="wAa-kf-y1u" secondAttribute="bottom" id="ZVK-Rr-qIO"/>
                             <constraint firstItem="f5e-AK-3ol" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="a0P-pO-CAk"/>
-                            <constraint firstItem="f5e-AK-3ol" firstAttribute="top" secondItem="a5z-8e-tBs" secondAttribute="bottom" constant="8" id="reP-sA-RLg"/>
+                            <constraint firstItem="f5e-AK-3ol" firstAttribute="top" secondItem="a5z-8e-tBs" secondAttribute="bottom" constant="3" id="reP-sA-RLg"/>
+                            <constraint firstItem="pBo-oe-oBh" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="v1O-tX-Xbu"/>
                             <constraint firstItem="a5z-8e-tBs" firstAttribute="leading" secondItem="Db6-RE-GSW" secondAttribute="leading" constant="20" id="yg4-8h-85S"/>
                         </constraints>
                         <variation key="default">
@@ -184,7 +205,7 @@
                         <viewControllerLayoutGuide type="bottom" id="JB4-rB-hWe"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Zaq-4u-Cae">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="397"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="349"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>

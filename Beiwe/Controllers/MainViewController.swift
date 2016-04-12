@@ -105,6 +105,15 @@ class MainViewController: UIViewController, ORKTaskViewControllerDelegate {
         }
     }
 
+    @IBAction func changePassword(sender: AnyObject) {
+        let changePasswordController = ChangePasswordViewController();
+        changePasswordController.isForgotPassword = false;
+        presentViewController(changePasswordController, animated: true, completion: nil);
+    }
+    @IBAction func logout(sender: AnyObject) {
+        AppDelegate.sharedInstance().isLoggedIn = false;
+        AppDelegate.sharedInstance().transitionToCurrentAppState();
+    }
     /*
     // MARK: - Navigation
 
