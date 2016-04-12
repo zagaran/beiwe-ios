@@ -192,7 +192,7 @@ class StudyManager {
         survey.notification = nil;
     }
 
-    func updateActiveSurveys() -> NSTimeInterval {
+    func updateActiveSurveys(forceSave: Bool = false) -> NSTimeInterval {
         let currentDate = NSDate();
         let currentTime = currentDate.timeIntervalSince1970;
         let currentDay = calendar.component(.Weekday, fromDate: currentDate) - 1;
@@ -210,7 +210,7 @@ class StudyManager {
 
         var surveyDataModified = false;
         for (id, activeSurvey) in study.activeSurveys {
-            if (!activeSurvey.isComplete && activeSurvey.expires <= currentTime) {
+            if (!activeSurvey.isComplete && activeSurvey.expires > 0 && activeSurvey.expires <= currentTime) {
                 print("ActiveSurvey \(id) expired.");
                 activeSurvey.isComplete = true;
                 surveyDataModified = true;
@@ -220,7 +220,7 @@ class StudyManager {
 
         var allSurveyIds: [String] = [ ];
         for survey in study.surveys {
-            var next: Double = -1;
+            var next: Double = 0;
             outer: for day in 0..<7 {
                 let dayIdx = (day + currentDay) % 7;
                 for dayTime in survey.timings[dayIdx] {
@@ -231,10 +231,12 @@ class StudyManager {
                     }
                 }
             }
-            if let id = survey.surveyId where next > 0 {
-                closestNextSurveyTime = min(closestNextSurveyTime, next);
+            if let id = survey.surveyId  {
+                if (next > 0) {
+                    closestNextSurveyTime = min(closestNextSurveyTime, next);
+                }
                 allSurveyIds.append(id);
-                if study.activeSurveys[id] == nil {
+                if study.activeSurveys[id] == nil && (survey.triggerOnFirstDownload || next > 0) {
                     print("Adding survey  \(id) to active surveys");
                     study.activeSurveys[id] = ActiveSurvey(survey: survey);
                     study.activeSurveys[id]?.expires = survey.triggerOnFirstDownload ? currentTime : next;
@@ -243,14 +245,14 @@ class StudyManager {
                     surveyDataModified = true;
                 }
                 let activeSurvey = study.activeSurveys[id]!;
-                if (activeSurvey.isComplete && activeSurvey.expires <= currentTime) {
+                if (activeSurvey.isComplete && activeSurvey.expires <= currentTime && activeSurvey.expires > 0) {
                     activeSurvey.reset();
                     activeSurvey.received = activeSurvey.expires;
                     surveyDataModified = true;
 
                     /* Local notification goes here */
 
-                    let surveyType = SurveyTypes(rawValue: activeSurvey.survey!.surveyType);
+                    let surveyType = activeSurvey.survey!.surveyType;
                     if let surveyType = surveyType {
                         let localNotif = UILocalNotification();
                         localNotif.fireDate = currentDate;
@@ -289,7 +291,7 @@ class StudyManager {
                 removeNotificationForSurvey(activeSurvey);
                 study.activeSurveys.removeValueForKey(id);
                 surveyDataModified = true;
-            } else if (!activeSurvey.isComplete) {
+            } else if (!activeSurvey.isComplete && activeSurvey.expires > 0) {
                 closestNextSurveyTime = min(closestNextSurveyTime, activeSurvey.expires);
                 badgeCnt += 1;
             }
@@ -304,7 +306,7 @@ class StudyManager {
             UIApplication.sharedApplication().scheduleLocalNotification(localNotif);
         }
 
-        if (surveyDataModified) {
+        if (surveyDataModified || forceSave) {
             surveysUpdatedEvent.emit();
             Recline.shared.save(study).error { _ in
                 print("Failed to save study after processing surveys");

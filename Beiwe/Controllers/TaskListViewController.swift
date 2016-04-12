@@ -47,8 +47,7 @@ class TaskListViewController: FormViewController {
             }
 
             for (id,survey) in sortedSurveys {
-                let surveyType = SurveyTypes(rawValue: survey.survey!.surveyType);
-                if let surveyType = surveyType where !survey.isComplete {
+                if let surveyType = survey.survey?.surveyType where !survey.isComplete {
                     var title: String;
                     switch(surveyType) {
                     case .TrackingSurvey:
@@ -63,7 +62,7 @@ class TaskListViewController: FormViewController {
                         .onCellSelection {
                             [unowned self] cell, row in
                             print("Selected")
-                            self.surveySelected.emit("survey")
+                            self.surveySelected.emit(id)
                     }
                 }
             }

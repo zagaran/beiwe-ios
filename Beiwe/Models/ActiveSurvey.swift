@@ -35,6 +35,7 @@ class ActiveSurvey : Mappable {
         received    <- map["received"];
         rkAnswers   <- (map["rk_answers"], transformNSData);
         notification    <- (map["notification"], transformNotification);
+        stepOrder   <- map["stepOrder"];
     }
 
     func reset() {

@@ -17,7 +17,7 @@ enum SurveyTypes: String {
 struct Survey : Mappable  {
 
     var surveyId: String?;
-    var surveyType: String = "";
+    var surveyType: SurveyTypes?;
     var timings: [[Int]] = [];
     var triggerOnFirstDownload: Bool = false;
     var randomize: Bool = false;

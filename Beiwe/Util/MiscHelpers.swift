@@ -70,3 +70,17 @@ let transformNotification = TransformOf<UILocalNotification, String>(fromJSON: {
         }
         return nil
 })
+
+let transformJsonStringInt = TransformOf<Int, String>(fromJSON: { (value: String?) -> Int? in
+    // transform value from String? to Int?
+    guard let value = value else {
+        return nil;
+    }
+    return Int(value)
+    }, toJSON: { (value: Int?) -> String? in
+        // transform value from Int? to String?
+        if let value = value {
+            return String(value)
+        }
+        return nil
+})

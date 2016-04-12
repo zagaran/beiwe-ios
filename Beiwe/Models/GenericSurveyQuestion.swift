@@ -30,6 +30,7 @@ struct GenericSurveyQuestion : Mappable  {
     var maxValue: Int?;
     var minValue: Int?;
     var selectionValues: [OneSelection] = [];
+    var textFieldType: TextFieldType?;
 
 
     init?(_ map: Map) {
@@ -38,12 +39,14 @@ struct GenericSurveyQuestion : Mappable  {
 
     // Mappable
     mutating func mapping(map: Map) {
-        questionId <- map["question_id"];
-        prompt  <- map["prompt"];
+        questionId <- map["question_id"]
+        prompt  <- map["prompt"]
         prompt <- map["question_text"]
-        questionType <- map["question_type"];
-        maxValue <- map["max"];
-        minValue <- map["min"];
+        questionType <- map["question_type"]
+        maxValue <- (map["max"], transformJsonStringInt)
+        minValue <- (map["min"], transformJsonStringInt)
+        textFieldType <- map["text_field_type"]
+        selectionValues <- map["answers"]
     }
     
 }

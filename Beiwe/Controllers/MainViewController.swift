@@ -33,13 +33,27 @@ class MainViewController: UIViewController, ORKTaskViewControllerDelegate {
         StudyManager.sharedInstance.checkSurveys();
     }
     @IBAction func leaveStudy(sender: AnyObject) {
-        StudyManager.sharedInstance.leaveStudy().then {_ -> Void in
-            AppDelegate.sharedInstance().isLoggedIn = false;
-            AppDelegate.sharedInstance().transitionToCurrentAppState();
+        let alertController = UIAlertController(title: "Leave Study", message: "Are you sure you want to leave the current study?", preferredStyle: .Alert)
+
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
+            print("Cancelled leave.")
+        }
+        alertController.addAction(cancelAction)
+
+        let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
+            StudyManager.sharedInstance.leaveStudy().then {_ -> Void in
+                AppDelegate.sharedInstance().isLoggedIn = false;
+                AppDelegate.sharedInstance().transitionToCurrentAppState();
+            }
+        }
+        alertController.addAction(OKAction)
+        
+        self.presentViewController(alertController, animated: true) {
+            print("Ok");
         }
     }
-    func testSurvey() {
 
+    func presentTrackingSurvey(surveyId: String, activeSurvey: ActiveSurvey, survey: Survey) {
         var steps = [ORKStep]();
 
         let instructionStep = ORKInstructionStep(identifier: "instruction");
@@ -65,14 +79,28 @@ class MainViewController: UIViewController, ORKTaskViewControllerDelegate {
         surveyViewController.delegate = self;
 
         presentViewController(surveyViewController, animated: true, completion: nil)
+        
+    }
 
+
+    func presentSurvey(surveyId: String) {
+        guard let activeSurvey = StudyManager.sharedInstance.currentStudy?.activeSurveys[surveyId], survey = activeSurvey.survey, surveyType = survey.surveyType else {
+            return;
+        }
+
+        switch(surveyType) {
+        case .TrackingSurvey:
+            TrackingSurveyPresenter(surveyId: surveyId, activeSurvey: activeSurvey, survey: survey).present(self);
+        case .AudioSurvey:
+            AudioSurveyPresenter(surveyId: surveyId, activeSurvey: activeSurvey, survey: survey).present(self);
+        }
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if (segue.identifier == "embedTaskListSegue") {
             let taskListController: TaskListViewController = segue.destinationViewController as! TaskListViewController;
-            listeners += taskListController.surveySelected.on { survey in
-                self.testSurvey();
+            listeners += taskListController.surveySelected.on { surveyId in
+                self.presentSurvey(surveyId);
             }
         }
     }
