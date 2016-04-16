@@ -145,10 +145,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate, ORKTaskViewCon
             case "wait":
                 let vc = ChangePasswordViewController();
                 vc.isForgotPassword = true;
-                vc.finished = { [weak self] in
-                    if let strongSelf = self {
-                        taskViewController.presentingViewController?.dismissViewControllerAnimated(true, completion: nil);
-                    }
+                vc.finished = { _ in
+                    taskViewController.presentingViewController?.dismissViewControllerAnimated(true, completion: nil);
                 }
                 taskViewController.presentViewController(vc, animated: true, completion: nil);
             default: break

@@ -11,7 +11,7 @@ import ObjectMapper
 
 struct GetSurveysRequest : Mappable, ApiRequest {
 
-    static let apiEndpoint = "/download_surveys"
+    static let apiEndpoint = "/download_surveys/ios/"
     typealias ApiReturnType = Survey;
 
 

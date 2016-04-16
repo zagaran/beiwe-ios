@@ -13,6 +13,7 @@
 #import <CouchbaseLite/CouchbaseLite.h>
 #import "BWBorderedButton.h"
 #import "BWTextButton.h"
+#import "ORKTaskViewController+BW.h"
 
 
 #endif /* Beiwe_Bridging_Header_h */

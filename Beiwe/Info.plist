@@ -54,8 +54,6 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>NSAppTransportSecurity</key>
 	<dict>
@@ -65,8 +63,6 @@
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>
-		<string>bluetooth-central</string>
-		<string>fetch</string>
 	</array>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>For medical research</string>

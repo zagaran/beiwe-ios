@@ -52,6 +52,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("model: \(uiDevice.model)");
         print("platform: \(platform())");
 
+        /* Colors */
+
+        UIView.appearance().tintColor = UIColor(1, g: 64, b: 64, a: 1);
+
         storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle());
 
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds);

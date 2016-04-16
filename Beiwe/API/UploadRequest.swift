@@ -11,7 +11,7 @@ import ObjectMapper
 
 struct UploadRequest : Mappable, ApiRequest {
 
-    static let apiEndpoint = "/upload"
+    static let apiEndpoint = "/upload/ios/"
     typealias ApiReturnType = BodyResponse;
 
     var fileName: String?;

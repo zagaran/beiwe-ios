@@ -26,6 +26,7 @@ class DataStorage {
     var dataPoints = 0;
     var patientId: String;
     var bytesWritten = 0;
+    var hasError = false;
 
     init(type: String, headers: [String], patientId: String, publicKey: String) {
         self.patientId = patientId;
@@ -52,9 +53,11 @@ class DataStorage {
                 _writeLine(headers.joinWithSeparator(DataStorage.delimiter))
             } catch {
                 print("Failed to RSA encrypt AES key")
+                hasError = true;
             }
         } else {
             print("Failed to generate AES key")
+            hasError = true;
         }
     }
 
@@ -71,6 +74,7 @@ class DataStorage {
             }
         } else {
             print("Can't generate IV, skipping data");
+            hasError = true;
         }
     }
 
@@ -81,7 +85,11 @@ class DataStorage {
     }
 
     func store(data: [String]) {
-        let csv = data.joinWithSeparator(DataStorage.delimiter);
+        var sanitizedData: [String] = [];
+        for str in data {
+            sanitizedData.append(str.stringByReplacingOccurrencesOfString(",", withString: ";").stringByReplacingOccurrencesOfString("[\t\n\r]", withString: " ", options: .RegularExpressionSearch))
+        }
+        let csv = sanitizedData.joinWithSeparator(DataStorage.delimiter);
         writeLine(csv)
 
     }
@@ -94,8 +102,12 @@ class DataStorage {
         if let filename = filename, data = data  {
             let fileManager = NSFileManager.defaultManager();
             if (!fileManager.fileExistsAtPath(filename.path!)) {
-                fileManager.createFileAtPath(filename.path!, contents: data, attributes: nil);
-                print("Create new data file: \(filename)");
+                if (!fileManager.createFileAtPath(filename.path!, contents: data, attributes: nil)) {
+                    hasError = true;
+                    print("Failed to create file.");
+                } else {
+                    print("Create new data file: \(filename)");
+                }
             } else {
                 if let fileHandle = try? NSFileHandle(forWritingToURL: filename) {
                     defer {
@@ -108,10 +120,14 @@ class DataStorage {
                     if (bytesWritten > DataStorageManager.MAX_DATAFILE_SIZE) {
                         reset();
                     }
+                } else {
+                    hasError = true;
+                    print("Error opening file for writing");
                 }
             }
         } else {
             print("No filename.  NO data??");
+            hasError = true;
             reset();
         }
         lines = [ ];

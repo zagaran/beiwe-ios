@@ -291,8 +291,10 @@ class StudyManager {
                 removeNotificationForSurvey(activeSurvey);
                 study.activeSurveys.removeValueForKey(id);
                 surveyDataModified = true;
-            } else if (!activeSurvey.isComplete && activeSurvey.expires > 0) {
-                closestNextSurveyTime = min(closestNextSurveyTime, activeSurvey.expires);
+            } else if (!activeSurvey.isComplete) {
+                if (activeSurvey.expires > 0) {
+                    closestNextSurveyTime = min(closestNextSurveyTime, activeSurvey.expires);
+                }
                 badgeCnt += 1;
             }
         }

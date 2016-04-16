@@ -11,7 +11,7 @@ import ObjectMapper
 enum SurveyQuestionType : String {
     case InformationText = "info_text_box"
     case Slider = "slider"
-    case RadioButton = "radio"
+    case RadioButton = "radio_button"
     case Checkbox = "checkbox"
     case FreeResponse = "free_response"
 }

@@ -27,7 +27,7 @@ class AudioSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
     }
 
     func present(parent: UIViewController) {
-        guard  let survey = survey, activeSurvey = activeSurvey, surveyId = surveyId where survey.questions.count > 0 else {
+        guard  let survey = survey where survey.questions.count > 0 else {
             return;
         }
         self.parent = parent;
