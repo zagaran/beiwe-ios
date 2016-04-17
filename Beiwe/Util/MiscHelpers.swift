@@ -84,3 +84,38 @@ let transformJsonStringInt = TransformOf<Int, String>(fromJSON: { (value: String
         }
         return nil
 })
+
+class Debouncer<T>: NSObject {
+    var arg: T?;
+    var callback: ((arg: T?) -> ())
+    var delay: Double
+    weak var timer: NSTimer?
+
+    init(delay: Double, callback: ((arg: T?) -> ())) {
+        self.delay = delay
+        self.callback = callback
+    }
+
+    func call(arg: T?) {
+        self.arg = arg;
+        if (delay == 0) {
+            fireNow();
+        } else {
+            timer?.invalidate()
+            let nextTimer = NSTimer.scheduledTimerWithTimeInterval(delay, target: self, selector: #selector(fireNow), userInfo: nil, repeats: false)
+            timer = nextTimer
+        }
+    }
+
+    func flush() {
+        if let timer = timer {
+            timer.invalidate();
+            fireNow();
+        }
+    }
+
+    func fireNow() {
+        timer = nil;
+        self.callback(arg: arg)
+    }
+}

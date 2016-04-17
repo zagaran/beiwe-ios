@@ -192,6 +192,7 @@ class StudyManager {
             var trackingSurvey: TrackingSurveyPresenter;
             if (surveyPresenter == nil) {
                 trackingSurvey = TrackingSurveyPresenter(surveyId: surveyId, activeSurvey: activeSurvey, survey: survey)
+                trackingSurvey.addTimingsEvent("expired", question: nil)
             } else {
                 trackingSurvey = surveyPresenter!;
             }
@@ -265,6 +266,9 @@ class StudyManager {
                 if (activeSurvey.isComplete && activeSurvey.expires <= currentTime && activeSurvey.expires > 0) {
                     activeSurvey.reset();
                     activeSurvey.received = activeSurvey.expires;
+                    let trackingSurvey: TrackingSurveyPresenter = TrackingSurveyPresenter(surveyId: id, activeSurvey: activeSurvey, survey: survey)
+                    trackingSurvey.addTimingsEvent("notified", question: nil)
+
                     surveyDataModified = true;
 
                     /* Local notification goes here */

@@ -26,11 +26,10 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
     var isComplete = false;
     var questionIdToQuestion: [String: GenericSurveyQuestion] = [:];
     var timingsStore: DataStorage?;
+    var task: ORKTask?;
+    var valueChangeHandler: Debouncer<String>?
 
     var currentQuestion: GenericSurveyQuestion? = nil;
-    var isInitializing = true;
-    var delayStepViewControllerWillAppear: ORKStepViewController?;
-
 
     init(surveyId: String, activeSurvey: ActiveSurvey, survey: Survey) {
         super.init();
@@ -38,12 +37,13 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
         self.activeSurvey = activeSurvey;
         self.survey = survey;
 
+        let timingsName = TrackingSurveyPresenter.timingDataType + "_" + surveyId;
+        timingsStore = DataStorageManager.sharedInstance.createStore(timingsName, headers: TrackingSurveyPresenter.timingsHeaders)
+
         guard  let stepOrder = activeSurvey.stepOrder where survey.questions.count > 0 else {
             return;
         }
 
-        let timingsName = TrackingSurveyPresenter.timingDataType + "_" + surveyId;
-        timingsStore = DataStorageManager.sharedInstance.createStore(timingsName, headers: TrackingSurveyPresenter.timingsHeaders)
 
         let numQuestions = survey.randomize ? min(survey.questions.count, survey.numberOfRandomQuestions ?? 999) : survey.questions.count;
         if (numQuestions == 0) {
@@ -113,33 +113,24 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
         steps += [finishStep];
 
 
-        let task = ORKOrderedTask(identifier: "SurveyTask", steps: steps)
-        if let restorationData = activeSurvey.rkAnswers {
-            surveyViewController = BWORKTaskViewController(task: task, restorationData: restorationData, delegate: self);
-        } else {
-            surveyViewController = BWORKTaskViewController(task: task, taskRunUUID: nil);
-        }
-
-        isInitializing = false;
-
+        task = ORKOrderedTask(identifier: "SurveyTask", steps: steps)
     }
 
     func present(parent: UIViewController) {
         //surveyViewController.showsProgressInNavigationBar = false;
-        guard let surveyViewController = surveyViewController else {
-            return;
+
+        if let activeSurvey = activeSurvey, restorationData = activeSurvey.rkAnswers {
+            surveyViewController = BWORKTaskViewController(task: task, restorationData: restorationData, delegate: self);
+        } else {
+            surveyViewController = BWORKTaskViewController(task: task, taskRunUUID: nil);
+            surveyViewController!.delegate = self;
         }
 
-        if let delayStepViewControllerWillAppear = delayStepViewControllerWillAppear {
-            self.taskViewController(surveyViewController, stepViewControllerWillAppear: delayStepViewControllerWillAppear)
-            self.delayStepViewControllerWillAppear = nil;
-        }
 
         self.parent = parent;
         self.retainSelf = self;
-        surveyViewController.delegate = self;
-        surveyViewController.displayDiscard = false;
-        parent.presentViewController(surveyViewController, animated: true, completion: nil)
+        surveyViewController!.displayDiscard = false;
+        parent.presentViewController(surveyViewController!, animated: true, completion: nil)
         
 
     }
@@ -273,21 +264,31 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
         
     }
 
-    func addTimingsEvent(event: String, question: GenericSurveyQuestion?) {
+    func addTimingsEvent(event: String, question: GenericSurveyQuestion?, forcedValue: String? = nil) {
+        var data: [String] = [ String(Int64(NSDate().timeIntervalSince1970 * 1000)) ]
         if let question = question {
-            var data: [String] = [ String(Int64(NSDate().timeIntervalSince1970 * 1000)), question.questionId ];
+            data.append(question.questionId);
             let (questionType, optionsString, answersString) = questionResponse(question);
             data.append(questionType);
             data.append(question.prompt ?? "");
             data.append(optionsString);
-            data.append(answersString);
-            data.append(event);
-            print("TimingsEvent: \(data.joinWithSeparator(","))")
-            timingsStore?.store(data);
+            data.append(forcedValue != nil ? forcedValue! : answersString);
+        } else {
+            data.append("");
+            data.append("");
+            data.append("");
+            data.append("");
+            data.append(forcedValue != nil ? forcedValue! : "");
         }
+        data.append(event);
+        print("TimingsEvent: \(data.joinWithSeparator(","))")
+        timingsStore?.store(data);
+
     }
 
     func possiblyAddUnpresent() {
+        valueChangeHandler?.flush();
+        valueChangeHandler = nil;
         if let currentQuestion = currentQuestion {
             addTimingsEvent("unpresent", question: currentQuestion);
             self.currentQuestion = nil;
@@ -321,7 +322,11 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
     func taskViewController(taskViewController: ORKTaskViewController, didChangeResult result: ORKTaskResult) {
 
         //print("didChangeStepId: \(taskViewController.currentStepViewController!.step!.identifier)")
-        storeAnswer((taskViewController.currentStepViewController!.step?.identifier)!, result: result)
+        if let identifier = taskViewController.currentStepViewController!.step?.identifier {
+            storeAnswer(identifier, result: result)
+            let currentValue = activeSurvey!.bwAnswers[identifier];
+            valueChangeHandler?.call(currentValue);
+        }
         return;
     }
 
@@ -357,10 +362,6 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
     }
 
     func taskViewController(taskViewController: ORKTaskViewController, stepViewControllerWillAppear stepViewController: ORKStepViewController) {
-        if (isInitializing) {
-            delayStepViewControllerWillAppear = stepViewController;
-            return;
-        }
         print("stepWillAppear: \(taskViewController.currentStepViewController!.step!.identifier)")
         currentQuestion = nil;
 
@@ -371,6 +372,7 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
             switch(identifier) {
             case "finished":
                 //createSurveyAnswers();
+                addTimingsEvent("submitted", question: nil)
                 StudyManager.sharedInstance.submitSurvey(activeSurvey!, surveyPresenter: self);
                 activeSurvey?.rkAnswers = taskViewController.restorationData;
                 activeSurvey?.isComplete = true;
@@ -386,7 +388,20 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
                     if (activeSurvey?.bwAnswers[identifier] == nil) {
                         activeSurvey?.bwAnswers[identifier] = "";
                     }
+                    var currentValue = activeSurvey!.bwAnswers[identifier];
                     addTimingsEvent("present", question: question);
+                    var delay = 0.0;
+                    if (question.questionType == SurveyQuestionType.Slider) {
+                        delay = 0.25;
+                    }
+                    valueChangeHandler = Debouncer<String>(delay: delay) { [weak self] val in
+                        if let strongSelf = self {
+                            if (currentValue != val) {
+                                currentValue = val;
+                                strongSelf.addTimingsEvent("changed", question: question, forcedValue: val);
+                            }
+                        }
+                    }
                 }
             }
         }

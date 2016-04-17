@@ -201,7 +201,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             view = "registerView";
         }
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
-        //self.window!.backgroundColor = UIColor.whiteColor()
 
         self.window?.rootViewController = storyboard!.instantiateViewControllerWithIdentifier(view) as UIViewController!;
 
