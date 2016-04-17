@@ -18,6 +18,7 @@ class ActiveSurvey : Mappable {
     var rkAnswers: NSData?;
     var notification: UILocalNotification?;
     var stepOrder: [Int]?;
+    var bwAnswers: [String:String] = [:]
 
     init(survey: Survey) {
         self.survey = survey;
@@ -34,12 +35,14 @@ class ActiveSurvey : Mappable {
         expires     <- map["expires"]
         received    <- map["received"];
         rkAnswers   <- (map["rk_answers"], transformNSData);
+        bwAnswers   <- map["bk_answers"]
         notification    <- (map["notification"], transformNotification);
         stepOrder   <- map["stepOrder"];
     }
 
     func reset() {
         rkAnswers = nil;
+        bwAnswers = [:]
         isComplete = false;
         guard let survey = survey else {
             return;

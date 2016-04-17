@@ -14,7 +14,9 @@ import ResearchKit
 class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
 
     static let headers = ["question id", "question type", "question text", "question answer options","answer"];
-    static let dataType = "surveyAnswers"
+    static let timingsHeaders = ["timestamp","question id", "question type", "question text", "question answer options","answer", "event"];
+    static let surveyDataType = "surveyAnswers"
+    static let timingDataType = "surveyTimings"
     var retainSelf: AnyObject?;
     var surveyId: String?;
     var activeSurvey: ActiveSurvey?;
@@ -22,7 +24,12 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
     var parent: UIViewController?;
     var surveyViewController: BWORKTaskViewController?;
     var isComplete = false;
+    var questionIdToQuestion: [String: GenericSurveyQuestion] = [:];
+    var timingsStore: DataStorage?;
 
+    var currentQuestion: GenericSurveyQuestion? = nil;
+    var isInitializing = true;
+    var delayStepViewControllerWillAppear: ORKStepViewController?;
 
 
     init(surveyId: String, activeSurvey: ActiveSurvey, survey: Survey) {
@@ -34,6 +41,10 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
         guard  let stepOrder = activeSurvey.stepOrder where survey.questions.count > 0 else {
             return;
         }
+
+        let timingsName = TrackingSurveyPresenter.timingDataType + "_" + surveyId;
+        timingsStore = DataStorageManager.sharedInstance.createStore(timingsName, headers: TrackingSurveyPresenter.timingsHeaders)
+
         let numQuestions = survey.randomize ? min(survey.questions.count, survey.numberOfRandomQuestions ?? 999) : survey.questions.count;
         if (numQuestions == 0) {
             return;
@@ -86,6 +97,7 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
                     step.title = "Question"
                     step.text =  question.prompt
                     steps += [step];
+                    questionIdToQuestion[question.questionId] = question;
                 }
             }
         }
@@ -103,18 +115,12 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
 
         let task = ORKOrderedTask(identifier: "SurveyTask", steps: steps)
         if let restorationData = activeSurvey.rkAnswers {
-            surveyViewController = BWORKTaskViewController(task: task, restorationData: restorationData, delegate: nil);
-            /*
-            if let results = surveyViewController!.result.results {
-                for r in results {
-                    print("R: \(r)");
-
-                }
-            }
-            */
+            surveyViewController = BWORKTaskViewController(task: task, restorationData: restorationData, delegate: self);
         } else {
             surveyViewController = BWORKTaskViewController(task: task, taskRunUUID: nil);
         }
+
+        isInitializing = false;
 
     }
 
@@ -122,6 +128,11 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
         //surveyViewController.showsProgressInNavigationBar = false;
         guard let surveyViewController = surveyViewController else {
             return;
+        }
+
+        if let delayStepViewControllerWillAppear = delayStepViewControllerWillAppear {
+            self.taskViewController(surveyViewController, stepViewControllerWillAppear: delayStepViewControllerWillAppear)
+            self.delayStepViewControllerWillAppear = nil;
         }
 
         self.parent = parent;
@@ -137,21 +148,17 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
         return "[" + array.joinWithSeparator(";") + "]"
     }
 
-    func questionResponse(question: GenericSurveyQuestion) -> (String, String, String) {
-        var typeString = "";
-        var optionsString = "";
+    func storeAnswer(identifier: String, result: ORKTaskResult) {
+        guard let question = questionIdToQuestion[identifier], stepResult = result.stepResultForStepIdentifier(identifier) else {
+            return;
+        }
+
         var answersString = "";
 
         if let questionType = question.questionType {
-            typeString = questionType.rawValue
-            let stepResults = surveyViewController?.result.stepResultForStepIdentifier(question.questionId);
-            if (stepResults == nil) {
-                answersString = "not_presented";
-            }
             switch(questionType) {
             case .Checkbox, .RadioButton:
-                optionsString = arrayAnswer(question.selectionValues.map { return $0.text });
-                if let results = stepResults?.results {
+                if let results = stepResult.results {
                     if let choiceResults = results as? [ORKChoiceQuestionResult] {
                         if (choiceResults.count > 0) {
                             if let choiceAnswers = choiceResults[0].choiceAnswers {
@@ -178,8 +185,7 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
                     }
                 }
             case .FreeResponse:
-                optionsString = "Text-field input type = " + (question.textFieldType?.rawValue ?? "");
-                if let results = stepResults?.results {
+                if let results = stepResult.results {
                     if let freeResponses = results as? [ORKQuestionResult] {
                         if (freeResponses.count > 0) {
                             if let answer = freeResponses[0].answer {
@@ -191,10 +197,7 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
             case .InformationText:
                 break;
             case .Slider:
-                if let minValue = question.minValue, maxValue = question.maxValue {
-                    optionsString = "min = " + String(minValue) + "; max = " + String(maxValue)
-                }
-                if let results = stepResults?.results {
+                if let results = stepResult.results {
                     if let sliderResults = results as? [ORKScaleQuestionResult] {
                         if (sliderResults.count > 0) {
                             if let answer = sliderResults[0].scaleAnswer {
@@ -205,18 +208,48 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
                 }
             }
         }
+        activeSurvey?.bwAnswers[identifier] = answersString;
+    }
+
+    func questionResponse(question: GenericSurveyQuestion) -> (String, String, String) {
+        var typeString = "";
+        var optionsString = "";
+        var answersString = "";
+
+        if let questionType = question.questionType {
+            typeString = questionType.rawValue
+            if let answer = activeSurvey?.bwAnswers[question.questionId] {
+                answersString = answer;
+            } else {
+                answersString = "not_presented";
+            }
+            switch(questionType) {
+            case .Checkbox, .RadioButton:
+                optionsString = arrayAnswer(question.selectionValues.map { return $0.text });
+            case .FreeResponse:
+                optionsString = "Text-field input type = " + (question.textFieldType?.rawValue ?? "");
+            case .InformationText:
+                answersString = "";
+                break;
+            case .Slider:
+                if let minValue = question.minValue, maxValue = question.maxValue {
+                    optionsString = "min = " + String(minValue) + "; max = " + String(maxValue)
+                }
+            }
+        }
         return (typeString, optionsString, answersString);
     }
 
-    func createSurveyAnswers() -> Bool {
+    func finalizeSurveyAnswers() -> Bool {
         guard let activeSurvey = activeSurvey, survey = activeSurvey.survey, surveyId = surveyId, patientId = StudyManager.sharedInstance.currentStudy?.patientId, publicKey = StudyManager.sharedInstance.currentStudy?.studySettings?.clientPublicKey else {
             return false;
         }
         guard  let stepOrder = activeSurvey.stepOrder where survey.questions.count > 0 else {
             return false;
         }
-        let name = TrackingSurveyPresenter.dataType + "_" + surveyId;
+        let name = TrackingSurveyPresenter.surveyDataType + "_" + surveyId;
         let dataFile = DataStorage(type: name, headers: TrackingSurveyPresenter.headers, patientId: patientId, publicKey: publicKey);
+        dataFile.sanitize = true;
 
         let numQuestions = survey.randomize ? min(survey.questions.count, survey.numberOfRandomQuestions ?? 999) : survey.questions.count;
         if (numQuestions == 0) {
@@ -240,6 +273,29 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
         
     }
 
+    func addTimingsEvent(event: String, question: GenericSurveyQuestion?) {
+        if let question = question {
+            var data: [String] = [ String(Int64(NSDate().timeIntervalSince1970 * 1000)), question.questionId ];
+            let (questionType, optionsString, answersString) = questionResponse(question);
+            data.append(questionType);
+            data.append(question.prompt ?? "");
+            data.append(optionsString);
+            data.append(answersString);
+            data.append(event);
+            print("TimingsEvent: \(data.joinWithSeparator(","))")
+            timingsStore?.store(data);
+        }
+    }
+
+    func possiblyAddUnpresent() {
+        if let currentQuestion = currentQuestion {
+            addTimingsEvent("unpresent", question: currentQuestion);
+            self.currentQuestion = nil;
+        }
+    }
+
+
+
     func closeSurvey() {
         retainSelf = nil;
         parent?.dismissViewControllerAnimated(true, completion: nil);
@@ -247,8 +303,7 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
 
     /* ORK Delegates */
     func taskViewController(taskViewController: ORKTaskViewController, didFinishWithReason reason: ORKTaskViewControllerFinishReason, error: NSError?) {
-        //Handle results with taskViewController.result
-        //taskViewController.dismissViewControllerAnimated(true, completion: nil)
+        possiblyAddUnpresent();
         if (!isComplete) {
             activeSurvey?.rkAnswers = taskViewController.restorationData;
             if let study = StudyManager.sharedInstance.currentStudy {
@@ -265,11 +320,13 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
 
     func taskViewController(taskViewController: ORKTaskViewController, didChangeResult result: ORKTaskResult) {
 
-        print("didChangeStepId: \(taskViewController.currentStepViewController!.step!.identifier)")
+        //print("didChangeStepId: \(taskViewController.currentStepViewController!.step!.identifier)")
+        storeAnswer((taskViewController.currentStepViewController!.step?.identifier)!, result: result)
         return;
     }
 
     func taskViewController(taskViewController: ORKTaskViewController, shouldPresentStep step: ORKStep) -> Bool {
+        possiblyAddUnpresent();
         return true;
     }
 
@@ -300,14 +357,21 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
     }
 
     func taskViewController(taskViewController: ORKTaskViewController, stepViewControllerWillAppear stepViewController: ORKStepViewController) {
+        if (isInitializing) {
+            delayStepViewControllerWillAppear = stepViewController;
+            return;
+        }
         print("stepWillAppear: \(taskViewController.currentStepViewController!.step!.identifier)")
+        currentQuestion = nil;
+
         if stepViewController.continueButtonTitle == "Get Started" {
             stepViewController.continueButtonTitle = "Continue";
         }
         if let identifier = stepViewController.step?.identifier {
             switch(identifier) {
             case "finished":
-                createSurveyAnswers();
+                //createSurveyAnswers();
+                StudyManager.sharedInstance.submitSurvey(activeSurvey!, surveyPresenter: self);
                 activeSurvey?.rkAnswers = taskViewController.restorationData;
                 activeSurvey?.isComplete = true;
                 isComplete = true;
@@ -316,7 +380,14 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
                 stepViewController.backButtonItem = nil;
             case "confirm":
                 stepViewController.continueButtonTitle = "Confirm";
-            default: break
+            default:
+                if let question = questionIdToQuestion[identifier] {
+                    currentQuestion = question;
+                    if (activeSurvey?.bwAnswers[identifier] == nil) {
+                        activeSurvey?.bwAnswers[identifier] = "";
+                    }
+                    addTimingsEvent("present", question: question);
+                }
             }
         }
         /*

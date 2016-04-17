@@ -179,8 +179,25 @@ class StudyManager {
 
     }
 
-    func submitSurvey(survey: ActiveSurvey) {
-        removeNotificationForSurvey(survey);
+    func cleanupSurvey(activeSurvey: ActiveSurvey) {
+        removeNotificationForSurvey(activeSurvey);
+        if let surveyId = activeSurvey.survey?.surveyId {
+            let timingsName = TrackingSurveyPresenter.timingDataType + "_" + surveyId;
+            DataStorageManager.sharedInstance.closeStore(timingsName);
+        }
+    }
+
+    func submitSurvey(activeSurvey: ActiveSurvey, surveyPresenter: TrackingSurveyPresenter? = nil) {
+        if let survey = activeSurvey.survey, surveyId = survey.surveyId {
+            var trackingSurvey: TrackingSurveyPresenter;
+            if (surveyPresenter == nil) {
+                trackingSurvey = TrackingSurveyPresenter(surveyId: surveyId, activeSurvey: activeSurvey, survey: survey)
+            } else {
+                trackingSurvey = surveyPresenter!;
+            }
+            trackingSurvey.finalizeSurveyAnswers();
+        }
+        cleanupSurvey(activeSurvey);
     }
 
     func removeNotificationForSurvey(survey: ActiveSurvey) {
@@ -288,7 +305,7 @@ class StudyManager {
         var badgeCnt = 0;
         for (id, activeSurvey) in study.activeSurveys {
             if (activeSurvey.isComplete && !allSurveyIds.contains(id)) {
-                removeNotificationForSurvey(activeSurvey);
+                cleanupSurvey(activeSurvey);
                 study.activeSurveys.removeValueForKey(id);
                 surveyDataModified = true;
             } else if (!activeSurvey.isComplete) {

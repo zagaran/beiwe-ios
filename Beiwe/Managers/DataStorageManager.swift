@@ -27,6 +27,8 @@ class DataStorage {
     var patientId: String;
     var bytesWritten = 0;
     var hasError = false;
+    var noBuffer = false;
+    var sanitize = false;
 
     init(type: String, headers: [String], patientId: String, publicKey: String) {
         self.patientId = patientId;
@@ -82,12 +84,20 @@ class DataStorage {
         hasData = true;
         dataPoints = dataPoints + 1;
         _writeLine(line);
+        if (noBuffer) {
+            flush();
+        }
     }
 
     func store(data: [String]) {
-        var sanitizedData: [String] = [];
-        for str in data {
-            sanitizedData.append(str.stringByReplacingOccurrencesOfString(",", withString: ";").stringByReplacingOccurrencesOfString("[\t\n\r]", withString: " ", options: .RegularExpressionSearch))
+        var sanitizedData: [String];
+        if (sanitize) {
+            sanitizedData = [];
+            for str in data {
+                sanitizedData.append(str.stringByReplacingOccurrencesOfString(",", withString: ";").stringByReplacingOccurrencesOfString("[\t\n\r]", withString: " ", options: .RegularExpressionSearch))
+            }
+        } else {
+            sanitizedData = data;
         }
         let csv = sanitizedData.joinWithSeparator(DataStorage.delimiter);
         writeLine(csv)
