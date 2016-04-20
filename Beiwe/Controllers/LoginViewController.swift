@@ -107,6 +107,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate, ORKTaskViewCon
     }
     */
 
+    @IBAction func callClinician(sender: AnyObject) {
+        confirmAndCallClinician();
+    }
     /* ORK Delegates */
     func taskViewController(taskViewController: ORKTaskViewController, didFinishWithReason reason: ORKTaskViewControllerFinishReason, error: NSError?) {
         //Handle results with taskViewController.result

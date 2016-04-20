@@ -27,6 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var isLoggedIn: Bool = false;
     var timeEnteredBackground: NSDate?;
     let pscope = PermissionScope()
+    var canOpenTel = false;
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
@@ -51,6 +52,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("systemVersion: \(uiDevice.systemVersion)");
         print("model: \(uiDevice.model)");
         print("platform: \(platform())");
+
+        canOpenTel = UIApplication.sharedApplication().canOpenURL(NSURL(string: "tel:6175551212")!);
+
 
         /* Colors */
 

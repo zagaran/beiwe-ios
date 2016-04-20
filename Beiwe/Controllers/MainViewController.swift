@@ -31,6 +31,12 @@ class MainViewController: UIViewController, ORKTaskViewControllerDelegate {
         StudyManager.sharedInstance.upload();
     }
 
+    @IBAction func callClinician(sender: AnyObject) {
+        // Present modal...
+
+        confirmAndCallClinician();
+    }
+
     @IBAction func checkSurveys(sender: AnyObject) {
         StudyManager.sharedInstance.checkSurveys();
     }
