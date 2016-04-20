@@ -57,28 +57,43 @@ class ConsentManager : NSObject, ORKTaskViewControllerDelegate {
         consentDocument = ORKConsentDocument()
         consentDocument.title = "Beiwe Consent"
 
-        let overviewSection = ORKConsentSection(type: .Overview);
-        overviewSection.summary = "This is the overview of the consent"
-        overviewSection.content = "In this study you will be... (Note, not all of the following pages need to be included)"
+        let studyConsentSections = StudyManager.sharedInstance.currentStudy?.studySettings?.contentSections ?? [:];
 
-        let consentSectionTypes: [ORKConsentSectionType] = [
-            .DataGathering,
-            .Privacy,
-            .DataUse,
-            .TimeCommitment,
-            .StudySurvey,
-            .StudyTasks,
-            .Withdrawing
+
+        let overviewSection = ORKConsentSection(type: .Overview);
+        if let welcomeStudySection = studyConsentSections["welcome"] where !welcomeStudySection.text.isEmpty {
+            overviewSection.summary = welcomeStudySection.text
+            if (!welcomeStudySection.more.isEmpty) {
+                overviewSection.content = welcomeStudySection.more
+            }
+        } else {
+            overviewSection.summary = "Welcome to the study"
+        }
+
+        let consentSectionTypes: [(ORKConsentSectionType, String)] = [
+            (.DataGathering, "data_gathering"),
+            (.Privacy, "privacy"),
+            (.DataUse, "data_use"),
+            (.TimeCommitment, "time_commitment"),
+            (.StudySurvey, "study_survey"),
+            (.StudyTasks, "study_tasks"),
+            (.Withdrawing, "withdrawing")
         ]
 
 
+        var hasAdditionalConsent = false;
         var consentSections: [ORKConsentSection] = [overviewSection];
-        consentSections.appendContentsOf(consentSectionTypes.map { contentSectionType in
-            let consentSection = ORKConsentSection(type: contentSectionType)
-            consentSection.summary = "Summary for this page"
-            consentSection.content = "Additional content for this page."
-            return consentSection
-        });
+        for (contentSectionType, bwType) in consentSectionTypes {
+            if let bwSection = studyConsentSections[bwType] where !bwSection.text.isEmpty {
+                hasAdditionalConsent = true;
+                let consentSection = ORKConsentSection(type: contentSectionType)
+                consentSection.summary = bwSection.text
+                if (!bwSection.more.isEmpty) {
+                    consentSection.content = bwSection.more
+                }
+                consentSections.append(consentSection);
+            }
+        }
 
         consentDocument.addSignature(ORKConsentSignature(forPersonWithTitle: nil, dateFormatString: nil, identifier: "ConsentDocumentParticipantSignature"))
 
@@ -89,13 +104,14 @@ class ConsentManager : NSObject, ORKTaskViewControllerDelegate {
 
         //let signature = consentDocument.signatures!.first!
 
-        let reviewConsentStep = ORKConsentReviewStep(identifier: StepIds.ConsentReview.rawValue, signature: nil, inDocument: consentDocument)
+        if (hasAdditionalConsent) {
+            let reviewConsentStep = ORKConsentReviewStep(identifier: StepIds.ConsentReview.rawValue, signature: nil, inDocument: consentDocument)
 
-        reviewConsentStep.text = "Review Consent!"
-        reviewConsentStep.reasonForConsent = "Consent to join study"
+            reviewConsentStep.text = "Review Consent"
+            reviewConsentStep.reasonForConsent = "Consent to join study"
 
-        steps += [reviewConsentStep]
-
+            steps += [reviewConsentStep]
+        }
 
         let task = ORKOrderedTask(identifier: "ConsentTask", steps: steps)
         consentViewController = ORKTaskViewController(task: task, taskRunUUID: nil);

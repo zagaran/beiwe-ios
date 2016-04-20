@@ -7,3 +7,27 @@
 //
 
 import Foundation
+import ObjectMapper
+
+struct ChangePasswordRequest : Mappable, ApiRequest {
+
+    static let apiEndpoint = "/set_password/ios/"
+    typealias ApiReturnType = BodyResponse;
+
+    var newPassword: String?;
+
+
+    init(newPassword: String) {
+        self.newPassword = newPassword;
+    }
+
+    init?(_ map: Map) {
+
+    }
+
+    // Mappable
+    mutating func mapping(map: Map) {
+        newPassword <- map["new_password"];
+    }
+    
+}

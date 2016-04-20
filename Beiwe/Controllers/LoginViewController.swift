@@ -78,7 +78,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate, ORKTaskViewCon
 
         let instructionStep = ORKInstructionStep(identifier: "forgotpassword")
         instructionStep.title = "Forgot Password";
-        instructionStep.text = "To reset your password, please contact your clincians research assistant at " + (StudyManager.sharedInstance.currentStudy?.raPhoneNumber ?? "") + ".  Once you have called and received a temporary password, click on continue to set a new password."
+        instructionStep.text = "To reset your password, please contact your clincians research assistant at " + (StudyManager.sharedInstance.currentStudy?.raPhoneNumber ?? "") + ".  Once you have called and received a temporary password, click on continue to set a new password.  Your patient ID is " + (StudyManager.sharedInstance.currentStudy?.patientId ?? "")
         steps += [instructionStep];
         steps += [ORKWaitStep(identifier: "wait")];
 

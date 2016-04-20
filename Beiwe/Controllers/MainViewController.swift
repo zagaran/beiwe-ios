@@ -13,7 +13,9 @@ import EmitterKit
 class MainViewController: UIViewController, ORKTaskViewControllerDelegate {
 
     var listeners: [Listener] = [];
+    var taskListController: TaskListViewController?;
 
+    @IBOutlet weak var surveysCompleteView: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -96,12 +98,33 @@ class MainViewController: UIViewController, ORKTaskViewControllerDelegate {
         }
     }
 
+    func surveysChanged() {
+        if let taskListController = taskListController {
+            let cnt = taskListController.loadSurveys();
+            if (cnt == 0) {
+                surveysCompleteView.hidden = false;
+                taskListController.view.hidden = true;
+            } else {
+                surveysCompleteView.hidden = true;
+                taskListController.view.hidden = false;
+            }
+        }
+    }
+
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if (segue.identifier == "embedTaskListSegue") {
             let taskListController: TaskListViewController = segue.destinationViewController as! TaskListViewController;
+            self.taskListController = taskListController;
             listeners += taskListController.surveySelected.on { surveyId in
                 self.presentSurvey(surveyId);
             }
+
+            surveysChanged();
+
+            listeners += StudyManager.sharedInstance.surveysUpdatedEvent.on {
+                self.surveysChanged();
+            }
+
         }
     }
 

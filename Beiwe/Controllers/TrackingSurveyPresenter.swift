@@ -241,6 +241,12 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
         guard  let stepOrder = activeSurvey.stepOrder where survey.questions.count > 0 else {
             return false;
         }
+
+        guard activeSurvey.bwAnswers.count > 0 else {
+            print("No questions answered, not submitting.");
+            return false;
+        }
+
         let name = TrackingSurveyPresenter.surveyDataType + "_" + surveyId;
         let dataFile = DataStorage(type: name, headers: TrackingSurveyPresenter.headers, patientId: patientId, publicKey: publicKey);
         dataFile.sanitize = true;

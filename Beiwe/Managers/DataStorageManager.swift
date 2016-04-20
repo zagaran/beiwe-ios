@@ -40,7 +40,7 @@ class DataStorage {
     }
 
     func reset() {
-        let name = patientId + "_" + type + "_" + String(Int(NSDate().timeIntervalSince1970 * 1000));
+        let name = patientId + "_" + type + "_" + String(Int64(NSDate().timeIntervalSince1970 * 1000));
         filename = DataStorageManager.currentDataDirectory().URLByAppendingPathComponent(name + DataStorageManager.dataFileSuffix) ;
         lines = [ ];
         dataPoints = 0;

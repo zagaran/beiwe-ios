@@ -4,6 +4,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--Register View Controller-->
@@ -163,15 +164,41 @@
                                     <action selector="changePassword:" destination="BYZ-38-t0r" eventType="touchUpInside" id="hEF-LR-sFb"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kTf-qO-aWh" userLabel="No Surveys View">
+                                <rect key="frame" x="0.0" y="251" width="600" height="349"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="rSr-pb-5dh">
+                                        <rect key="frame" x="149" y="25" width="301" height="233"/>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="All Surveys Complete" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IFX-pT-7V2">
+                                        <rect key="frame" x="218" y="268" width="163" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="IFX-pT-7V2" firstAttribute="centerX" secondItem="kTf-qO-aWh" secondAttribute="centerX" id="2G8-gw-MiK"/>
+                                    <constraint firstItem="rSr-pb-5dh" firstAttribute="width" secondItem="kTf-qO-aWh" secondAttribute="width" multiplier="1/2" constant="1" id="4zq-BC-jZr"/>
+                                    <constraint firstItem="rSr-pb-5dh" firstAttribute="top" secondItem="kTf-qO-aWh" secondAttribute="top" constant="25" id="Ro8-om-J7a"/>
+                                    <constraint firstItem="rSr-pb-5dh" firstAttribute="centerX" secondItem="kTf-qO-aWh" secondAttribute="centerX" id="ckz-ul-g21"/>
+                                    <constraint firstItem="rSr-pb-5dh" firstAttribute="height" secondItem="kTf-qO-aWh" secondAttribute="height" multiplier="2/3" id="jWh-5T-QhL"/>
+                                    <constraint firstItem="IFX-pT-7V2" firstAttribute="top" secondItem="rSr-pb-5dh" secondAttribute="bottom" constant="10" id="sml-yi-Pdq"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="RyB-nW-PvG" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="6" id="0QP-uC-rk9"/>
+                            <constraint firstItem="kTf-qO-aWh" firstAttribute="height" secondItem="wAa-kf-y1u" secondAttribute="height" id="1Ti-oL-oBA"/>
                             <constraint firstItem="hon-MM-zdm" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="4Dp-8n-ep7"/>
                             <constraint firstItem="a5z-8e-tBs" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="7uc-eA-eqw"/>
                             <constraint firstItem="wAa-kf-y1u" firstAttribute="top" secondItem="RyB-nW-PvG" secondAttribute="bottom" constant="20" id="82n-OT-CQZ"/>
                             <constraint firstAttribute="trailingMargin" secondItem="azu-w9-tNA" secondAttribute="trailing" constant="7" id="8K7-c8-wCR"/>
+                            <constraint firstItem="kTf-qO-aWh" firstAttribute="top" secondItem="wAa-kf-y1u" secondAttribute="top" id="AtT-RO-6c1"/>
                             <constraint firstItem="pBo-oe-oBh" firstAttribute="top" secondItem="hon-MM-zdm" secondAttribute="bottom" constant="8" id="E1Q-NB-UrR"/>
+                            <constraint firstItem="kTf-qO-aWh" firstAttribute="width" secondItem="wAa-kf-y1u" secondAttribute="width" id="Ejk-Vh-xBx"/>
                             <constraint firstItem="Db6-RE-GSW" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" id="IzP-46-qJx"/>
                             <constraint firstAttribute="trailing" secondItem="wAa-kf-y1u" secondAttribute="trailing" id="K35-DW-BGM"/>
                             <constraint firstItem="azu-w9-tNA" firstAttribute="top" secondItem="RyB-nW-PvG" secondAttribute="top" id="KEJ-I7-nkG"/>
@@ -182,6 +209,7 @@
                             <constraint firstItem="Db6-RE-GSW" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="YfA-ky-8sy"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="wAa-kf-y1u" secondAttribute="bottom" id="ZVK-Rr-qIO"/>
                             <constraint firstItem="f5e-AK-3ol" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="a0P-pO-CAk"/>
+                            <constraint firstItem="kTf-qO-aWh" firstAttribute="leading" secondItem="wAa-kf-y1u" secondAttribute="leading" id="dOi-rB-IRC"/>
                             <constraint firstItem="f5e-AK-3ol" firstAttribute="top" secondItem="a5z-8e-tBs" secondAttribute="bottom" constant="3" id="reP-sA-RLg"/>
                             <constraint firstItem="pBo-oe-oBh" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="v1O-tX-Xbu"/>
                             <constraint firstItem="a5z-8e-tBs" firstAttribute="leading" secondItem="Db6-RE-GSW" secondAttribute="leading" constant="20" id="yg4-8h-85S"/>
@@ -192,9 +220,13 @@
                             </mask>
                         </variation>
                     </view>
+                    <connections>
+                        <outlet property="surveysCompleteView" destination="kTf-qO-aWh" id="qsf-Vc-4Z3"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="276" y="358"/>
         </scene>
         <!--Task List ViewController-->
         <scene sceneID="7qQ-fv-hf2">
@@ -215,4 +247,7 @@
             <point key="canvasLocation" x="1214" y="655"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Checkmark" width="417" height="362"/>
+    </resources>
 </document>

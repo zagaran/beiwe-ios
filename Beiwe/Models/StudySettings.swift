@@ -40,6 +40,22 @@ import ObjectMapper;
  wifi_log_frequency_seconds: 300 } },
  
  */
+
+struct ContentSection: Mappable {
+
+    var text: String = "";
+    var more: String = "";
+
+    init?(_ map: Map) {
+
+    }
+
+    // Mappable
+    mutating func mapping(map: Map) {
+        text    <- map["text"]
+        more    <- map["more"]
+    }
+}
 struct StudySettings : Mappable {
 
     var clientPublicKey: String?;
@@ -78,6 +94,7 @@ struct StudySettings : Mappable {
     var motionOffDurationSeconds = 300;
     var motionOnDurationSeconds = 0;
     var reachability = false;
+    var contentSections: [String:ContentSection] = [:];
 
     init?(_ map: Map) {
 
@@ -121,6 +138,7 @@ struct StudySettings : Mappable {
         motionOffDurationSeconds       <- map["device_settings.devicemotion_off_duration_seconds"];
         motionOnDurationSeconds        <- map["device_settings.devicemotion_on_duration_seconds"];
         reachability                   <- map["device_settings.reachability"];
+        contentSections                <- map["device_settings.content_sections"]
     }
     
 }

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		158E7092A5A62BC4588FEF11 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D73594BB9D98FBE3AA1E023 /* Pods.framework */; };
 		833482F71CA2EF7E00A37B35 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833482F61CA2EF7E00A37B35 /* RegisterViewController.swift */; };
+		8340ABF51CC7115400D0382F /* ChangePasswordRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8340ABF41CC7115400D0382F /* ChangePasswordRequest.swift */; };
 		8379B45C1CA4F02C00D4C605 /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8379B45B1CA4F02C00D4C605 /* Crypto.swift */; };
 		83AF04131CAADE6200A37225 /* StudyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83AF04121CAADE6200A37225 /* StudyManager.swift */; };
 		83AF04151CAB556800A37225 /* GPSManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83AF04141CAB556800A37225 /* GPSManager.swift */; };
@@ -65,6 +66,7 @@
 		4D73594BB9D98FBE3AA1E023 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		78E8D8BEA9B2CD2BDA96DF26 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		833482F61CA2EF7E00A37B35 /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
+		8340ABF41CC7115400D0382F /* ChangePasswordRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordRequest.swift; sourceTree = "<group>"; };
 		8379B45B1CA4F02C00D4C605 /* Crypto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Crypto.swift; sourceTree = "<group>"; };
 		83AF04111CAA083400A37225 /* Beiwe-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Beiwe-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		83AF04121CAADE6200A37225 /* StudyManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudyManager.swift; sourceTree = "<group>"; };
@@ -236,6 +238,7 @@
 				83AF041E1CACBCC600A37225 /* ParamUploadRequest.swift */,
 				83C7D3791CB4E30C00BC7285 /* UploadRequest.swift */,
 				83C2BFCB1CB7484B00B2251B /* GetSurveysRequest.swift */,
+				8340ABF41CC7115400D0382F /* ChangePasswordRequest.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -540,6 +543,7 @@
 				83AF043D1CB35D2000A37225 /* LoginViewController.swift in Sources */,
 				83AF04191CAB843D00A37225 /* SwiftyRSA.swift in Sources */,
 				83FDCFDA1CBCB6D300AFF716 /* ChangePasswordViewController.swift in Sources */,
+				8340ABF51CC7115400D0382F /* ChangePasswordRequest.swift in Sources */,
 				83B2BDF31CC1D5AA007FAE91 /* UIColor.swift in Sources */,
 				83AF042F1CB0D48D00A37225 /* MagnetometerManager.swift in Sources */,
 				83E3DE8E1CA477D200EB5349 /* ApiManager.swift in Sources */,

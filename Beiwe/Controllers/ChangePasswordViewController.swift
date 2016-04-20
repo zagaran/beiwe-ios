@@ -54,13 +54,37 @@ class ChangePasswordViewController: FormViewController {
                         PKHUD.sharedHUD.userInteractionOnUnderlyingViewsEnabled = false;
                         HUD.show(.Progress);
                         let formValues = self.form.values();
-                        //let newPassword: String? = formValues["password"] as! String?;
-                        //let currentPassword: String? = formValues["currentPassword"] as! String?;
-                        HUD.flash(.Success, delay: 0.5);
-                        if let finished = self.finished {
-                            finished(changed: true);
-                        } else {
-                            self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil);
+                        let newPassword: String? = formValues["password"] as! String?;
+                        let currentPassword: String? = formValues["currentPassword"] as! String?;
+                        if let newPassword = newPassword, currentPassword = currentPassword {
+                            let changePasswordRequest = ChangePasswordRequest(newPassword: newPassword);
+                            ApiManager.sharedInstance.makePostRequest(changePasswordRequest, password: currentPassword).then {
+                                (body, code) -> Void in
+                                print("Password changed");
+                                PersistentPasswordManager.sharedInstance.storePassword(newPassword);
+                                HUD.flash(.Success, delay: 1);
+                                if let finished = self.finished {
+                                    finished(changed: true);
+                                } else {
+                                    self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil);
+                                }
+                            }.error { error -> Void in
+                                    print("error received from change password: \(error)");
+                                    let delay = 2.0;
+                                    var err: HUDContentType;
+                                    switch error {
+                                    case ApiErrors.FailedStatus(let code):
+                                        switch code {
+                                        case 403, 401:
+                                            err = .LabeledError(title: "Failed", subtitle: "Incorrect Password");
+                                        default:
+                                            err = .LabeledError(title: "Failed", subtitle: "Communication error");
+                                        }
+                                    default:
+                                        err = .LabeledError(title: "Failed", subtitle: "Communication error");
+                                    }
+                                    HUD.flash(err, delay: delay)
+                            }
                         }
                     } else {
                         print("Bad validation.");

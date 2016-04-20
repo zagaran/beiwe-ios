@@ -197,7 +197,19 @@ class StudyManager {
                 trackingSurvey = surveyPresenter!;
             }
             trackingSurvey.finalizeSurveyAnswers();
+            if (activeSurvey.bwAnswers.count > 0) {
+                if let surveyType = survey.surveyType {
+                    switch (surveyType) {
+                    case .AudioSurvey:
+                        currentStudy?.submittedAudioSurveys = (currentStudy?.submittedAudioSurveys ?? 0) + 1;
+                    case .TrackingSurvey:
+                        currentStudy?.submittedTrackingSurveys = (currentStudy?.submittedTrackingSurveys ?? 0) + 1;
+
+                    }
+                }
+            }
         }
+
         cleanupSurvey(activeSurvey);
     }
 
@@ -273,8 +285,15 @@ class StudyManager {
 
                     /* Local notification goes here */
 
-                    let surveyType = activeSurvey.survey!.surveyType;
-                    if let surveyType = surveyType {
+                    if let surveyType = survey.surveyType {
+                        switch (surveyType) {
+                        case .AudioSurvey:
+                            currentStudy?.receivedAudioSurveys = (currentStudy?.receivedAudioSurveys ?? 0) + 1;
+                        case .TrackingSurvey:
+                            currentStudy?.receivedTrackingSurveys = (currentStudy?.receivedTrackingSurveys ?? 0) + 1;
+                            
+                        }
+
                         let localNotif = UILocalNotification();
                         localNotif.fireDate = currentDate;
 

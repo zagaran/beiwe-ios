@@ -20,17 +20,10 @@ class TaskListViewController: FormViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        dateFormatter.dateFormat = "MMM d h:mm a";
-
         form +++ pendingSection
 
-        loadSurveys();
-
-        listeners += StudyManager.sharedInstance.surveysUpdatedEvent.on {
-            self.loadSurveys();
-        }
-
         // Do any additional setup after loading the view.
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -38,7 +31,9 @@ class TaskListViewController: FormViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    func loadSurveys() {
+    func loadSurveys() -> Int {
+        dateFormatter.dateFormat = "MMM d h:mm a";
+        var cnt = 0;
         pendingSection.removeAll();
 
         if let activeSurveys = StudyManager.sharedInstance.currentStudy?.activeSurveys {
@@ -48,6 +43,7 @@ class TaskListViewController: FormViewController {
 
             for (id,survey) in sortedSurveys {
                 if let surveyType = survey.survey?.surveyType where !survey.isComplete {
+                    cnt = cnt + 1;
                     var title: String;
                     switch(surveyType) {
                     case .TrackingSurvey:
@@ -55,7 +51,10 @@ class TaskListViewController: FormViewController {
                     case .AudioSurvey:
                         title = "Audio Quest."
                     }
-                    title = title + " recvd. " + dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: survey.received))
+                    let dt = NSDate(timeIntervalSince1970: survey.received);
+                    print("Dt: \(dt)")
+                    let sdt = dateFormatter.stringFromDate(dt);
+                    title = title + " recvd. " + sdt
                     pendingSection    <<< ButtonRow(id) {
                         $0.title = title
                         }
@@ -67,6 +66,7 @@ class TaskListViewController: FormViewController {
                 }
             }
         }
+        return cnt;
 
     }
     

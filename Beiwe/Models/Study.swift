@@ -20,6 +20,11 @@ class Study : ReclineObject {
     var nextUploadCheck: Int64?;
     var nextSurveyCheck: Int64?;
     var lastBadgeCnt = 0;
+    var registerDate: Int64?;
+    var receivedAudioSurveys: Int = 0;
+    var receivedTrackingSurveys: Int = 0;
+    var submittedAudioSurveys: Int = 0;
+    var submittedTrackingSurveys: Int = 0;
 
     var surveys: [Survey] = [ ];
     var activeSurveys: [String:ActiveSurvey] = [:]
@@ -33,6 +38,7 @@ class Study : ReclineObject {
         self.studySettings = studySettings;
         self.studyId = studyId;
         self.patientId = patientId;
+        self.registerDate = Int64(NSDate().timeIntervalSince1970);
     }
 
     required init?(_ map: Map) {
@@ -54,6 +60,12 @@ class Study : ReclineObject {
         nextUploadCheck <- (map["nextUploadCheck"], TransformOf<Int64, NSNumber>(fromJSON: { $0?.longLongValue }, toJSON: { $0.map { NSNumber(longLong: $0) } }))
         surveys    <- map["surveys"];
         activeSurveys   <- map["active_surveys"]
+        registerDate <- (map["registerDate"], TransformOf<Int64, NSNumber>(fromJSON: { $0?.longLongValue }, toJSON: { $0.map { NSNumber(longLong: $0) } }))
+        receivedAudioSurveys <- map["receivedAudioSurveys"]
+        receivedTrackingSurveys <- map["receivedTrackingSurveys"]
+        submittedAudioSurveys  <- map["submittedAudioSurveys"]
+        submittedTrackingSurveys <- map["submittedTrackingSurveys"]
+
     }
 
 }

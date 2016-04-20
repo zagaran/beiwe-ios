@@ -59,8 +59,13 @@ class ApiManager {
 
     var patientId: String = "";
 
-    func generateHeaders() -> [String:String] {
-        let credentialData = "\(patientId)@\(PersistentAppUUID.sharedInstance.uuid):\(hashedPassword)".dataUsingEncoding(NSUTF8StringEncoding)!
+    func generateHeaders(password: String? = nil) -> [String:String] {
+
+        var hash = hashedPassword;
+        if let password = password {
+            hash = Crypto.sharedInstance.sha256Base64URL(password);
+        }
+        let credentialData = "\(patientId)@\(PersistentAppUUID.sharedInstance.uuid):\(hash)".dataUsingEncoding(NSUTF8StringEncoding)!
         let base64Credentials = credentialData.base64EncodedStringWithOptions([])
 
         let headers = [
@@ -71,7 +76,7 @@ class ApiManager {
         return headers;
     }
 
-    func makePostRequest<T: ApiRequest where T: Mappable>(requestObject: T) -> Promise<(T.ApiReturnType, Int)> {
+    func makePostRequest<T: ApiRequest where T: Mappable>(requestObject: T, password: String? = nil) -> Promise<(T.ApiReturnType, Int)> {
         var parameters = requestObject.toJSON();
         //parameters["password"] = hashedPassword;
         //parameters["device_id"] = PersistentAppUUID.sharedInstance.uuid;
@@ -79,7 +84,7 @@ class ApiManager {
         parameters.removeValueForKey("password");
         parameters.removeValueForKey("device_id");
         parameters.removeValueForKey("patient_id");
-        let headers = generateHeaders();
+        let headers = generateHeaders(password);
         return Promise { resolve, reject in
             Alamofire.request(.POST, baseApiUrl + T.apiEndpoint, parameters: parameters, headers: headers)
                 .responseString { response in
