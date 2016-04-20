@@ -199,6 +199,9 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
                 }
             }
         }
+        if (answersString == "" || answersString == "[]") {
+            answersString = "NO_ANSWER_SELECTED";
+        }
         activeSurvey?.bwAnswers[identifier] = answersString;
     }
 
@@ -212,7 +215,7 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
             if let answer = activeSurvey?.bwAnswers[question.questionId] {
                 answersString = answer;
             } else {
-                answersString = "not_presented";
+                answersString = "NOT_PRESENTED";
             }
             switch(questionType) {
             case .Checkbox, .RadioButton:
