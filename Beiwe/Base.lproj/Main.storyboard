@@ -28,22 +28,22 @@
         <!--Login View Controller-->
         <scene sceneID="RmD-UF-ejn">
             <objects>
-                <viewController storyboardIdentifier="login" id="qWM-9N-RLc" userLabel="Login View Controller" customClass="LoginViewController" customModule="Beiwe" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="qWM-9N-RLc" userLabel="Login View Controller" customClass="LoginViewController" customModule="Beiwe" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Xz7-TR-GrZ"/>
                         <viewControllerLayoutGuide type="bottom" id="Xty-FT-nNE"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Ro1-69-USY">
+                    <view key="view" contentMode="scaleToFill" id="Ro1-69-USY" customClass="GradientView" customModule="Beiwe" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Password:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LYJ-Ie-QQT">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Password:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LYJ-Ie-QQT">
                                 <rect key="frame" x="20" y="99" width="79" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.98823529409999999" green="1" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JHQ-4q-sZb">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JHQ-4q-sZb">
                                 <rect key="frame" x="20" y="128" width="250" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="250" id="1GG-zf-8eb"/>
@@ -51,27 +51,32 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="go" secureTextEntry="YES"/>
                             </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Beiwe Login" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kdD-vO-LPC">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Login to your Study" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kdD-vO-LPC">
                                 <rect key="frame" x="254" y="32" width="92" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.98823529409999999" green="1" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fjW-53-3Zu" customClass="BWBorderedButton">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fjW-53-3Zu" customClass="BWButton" customModule="Beiwe" customModuleProvider="target">
                                 <rect key="frame" x="281" y="216" width="38" height="30"/>
                                 <state key="normal" title="Login"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="loginPressed:" destination="qWM-9N-RLc" eventType="touchUpInside" id="69j-2b-UQc"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pqy-gE-5gW" customClass="BWBorderedButton">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pqy-gE-5gW" customClass="BWButton" customModule="Beiwe" customModuleProvider="target">
                                 <rect key="frame" x="242" y="484" width="117" height="30"/>
                                 <state key="normal" title="Contact Clinician"/>
                                 <connections>
                                     <action selector="callClinician:" destination="qWM-9N-RLc" eventType="touchUpInside" id="uIW-xh-qrv"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ysc-6U-fpb" customClass="BWBorderedButton">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ysc-6U-fpb" customClass="BWButton" customModule="Beiwe" customModuleProvider="target">
                                 <rect key="frame" x="243" y="436" width="115" height="30"/>
                                 <state key="normal" title="Forgot Password"/>
                                 <connections>
@@ -94,7 +99,16 @@
                             <constraint firstItem="kdD-vO-LPC" firstAttribute="top" secondItem="Xz7-TR-GrZ" secondAttribute="bottom" constant="12" id="w62-cx-e5p"/>
                             <constraint firstItem="Pqy-gE-5gW" firstAttribute="centerX" secondItem="Ro1-69-USY" secondAttribute="centerX" id="yNL-Gm-hvQ"/>
                         </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="color" keyPath="topColor">
+                                <color key="value" red="0.0039215686274509803" green="0.46274509803921571" blue="0.50588235294117645" alpha="1" colorSpace="calibratedRGB"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="color" keyPath="bottomColor">
+                                <color key="value" red="0.32156862745098036" green="0.74901960784313726" blue="0.74509803921568629" alpha="1" colorSpace="calibratedRGB"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
                     </view>
+                    <navigationItem key="navigationItem" id="m2I-i3-uI3"/>
                     <connections>
                         <outlet property="loginButton" destination="fjW-53-3Zu" id="AwS-Z4-NQG"/>
                         <outlet property="password" destination="JHQ-4q-sZb" id="HMj-mj-zLD"/>
@@ -102,12 +116,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fs0-Xn-j8e" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="182" y="-302"/>
+            <point key="canvasLocation" x="994" y="-302"/>
         </scene>
         <!--Main Study ViewController-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController storyboardIdentifier="mainView" id="BYZ-38-t0r" userLabel="Main Study ViewController" customClass="MainViewController" customModule="Beiwe" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" userLabel="Main Study ViewController" customClass="MainViewController" customModule="Beiwe" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -116,54 +130,54 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a5z-8e-tBs" customClass="BWBorderedButton">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a5z-8e-tBs" customClass="BWBorderedButton">
                                 <rect key="frame" x="258" y="57" width="84" height="30"/>
                                 <state key="normal" title="Leave Study"/>
                                 <connections>
                                     <action selector="leaveStudy:" destination="BYZ-38-t0r" eventType="touchUpInside" id="L3F-ts-hpU"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Beiwe Main Screen" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Db6-RE-GSW">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Beiwe Main Screen" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Db6-RE-GSW">
                                 <rect key="frame" x="227" y="28" width="145" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wAa-kf-y1u">
+                            <containerView opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wAa-kf-y1u">
                                 <rect key="frame" x="0.0" y="251" width="600" height="349"/>
                                 <connections>
                                     <segue destination="dQ4-5T-41d" kind="embed" identifier="embedTaskListSegue" id="RNo-A1-daT"/>
                                 </connections>
                             </containerView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f5e-AK-3ol" customClass="BWBorderedButton">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f5e-AK-3ol" customClass="BWBorderedButton">
                                 <rect key="frame" x="256" y="90" width="88" height="30"/>
                                 <state key="normal" title="Call Clinician"/>
                                 <connections>
                                     <action selector="callClinician:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Qrc-QA-m1P"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="azu-w9-tNA">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="azu-w9-tNA">
                                 <rect key="frame" x="446" y="201" width="127" height="30"/>
                                 <state key="normal" title="Chk Surveys (tmp)"/>
                                 <connections>
                                     <action selector="checkSurveys:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Bkb-LT-oOU"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RyB-nW-PvG">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RyB-nW-PvG">
                                 <rect key="frame" x="26" y="201" width="91" height="30"/>
                                 <state key="normal" title="Upload (tmp)"/>
                                 <connections>
                                     <action selector="Upload:" destination="BYZ-38-t0r" eventType="touchUpInside" id="7Vf-Qz-stp"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hon-MM-zdm" customClass="BWBorderedButton">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hon-MM-zdm" customClass="BWBorderedButton">
                                 <rect key="frame" x="276" y="123" width="48" height="30"/>
                                 <state key="normal" title="Logout"/>
                                 <connections>
                                     <action selector="logout:" destination="BYZ-38-t0r" eventType="touchUpInside" id="XZa-35-42c"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pBo-oe-oBh" customClass="BWBorderedButton">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pBo-oe-oBh" customClass="BWBorderedButton">
                                 <rect key="frame" x="239" y="161" width="123" height="30"/>
                                 <state key="normal" title="Change Password"/>
                                 <connections>
@@ -226,13 +240,14 @@
                             </mask>
                         </variation>
                     </view>
+                    <navigationItem key="navigationItem" id="I7e-rk-7g8"/>
                     <connections>
                         <outlet property="surveysCompleteView" destination="kTf-qO-aWh" id="qsf-Vc-4Z3"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="276" y="358"/>
+            <point key="canvasLocation" x="1088" y="358"/>
         </scene>
         <!--Task List ViewController-->
         <scene sceneID="7qQ-fv-hf2">
@@ -250,7 +265,43 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dHL-Kk-6Hj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1214" y="655"/>
+            <point key="canvasLocation" x="2026" y="654.5"/>
+        </scene>
+        <!--Login navigation-->
+        <scene sceneID="y81-th-GhJ">
+            <objects>
+                <navigationController storyboardIdentifier="login" automaticallyAdjustsScrollViewInsets="NO" id="zvn-V9-FvQ" userLabel="Login navigation" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" hidden="YES" alpha="0.0" contentMode="scaleToFill" id="8mU-57-uff">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="qWM-9N-RLc" kind="relationship" relationship="rootViewController" id="yff-pS-yLU"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Lq4-mu-p2r" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="182" y="-302"/>
+        </scene>
+        <!--Main Study Navigation-->
+        <scene sceneID="YIi-K4-a6h">
+            <objects>
+                <navigationController storyboardIdentifier="mainView" automaticallyAdjustsScrollViewInsets="NO" id="Pfv-PO-V6j" userLabel="Main Study Navigation" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="wDQ-YR-8p6">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="EJ9-Je-sif"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="I27-dE-j63" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="276" y="358"/>
         </scene>
     </scenes>
     <resources>

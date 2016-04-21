@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		158E7092A5A62BC4588FEF11 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D73594BB9D98FBE3AA1E023 /* Pods.framework */; };
+		832FFC1E1CC8506900F2E1EF /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832FFC1D1CC8506900F2E1EF /* GradientView.swift */; };
+		832FFC221CC85A7C00F2E1EF /* BWButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832FFC211CC85A7C00F2E1EF /* BWButton.swift */; };
+		832FFC241CC863F400F2E1EF /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832FFC231CC863F400F2E1EF /* AppColors.swift */; };
 		833482F71CA2EF7E00A37B35 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833482F61CA2EF7E00A37B35 /* RegisterViewController.swift */; };
 		8340ABF51CC7115400D0382F /* ChangePasswordRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8340ABF41CC7115400D0382F /* ChangePasswordRequest.swift */; };
 		8379B45C1CA4F02C00D4C605 /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8379B45B1CA4F02C00D4C605 /* Crypto.swift */; };
@@ -65,6 +68,9 @@
 		3553E4BA8EC1FCD145CC27CC /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		4D73594BB9D98FBE3AA1E023 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		78E8D8BEA9B2CD2BDA96DF26 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		832FFC1D1CC8506900F2E1EF /* GradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
+		832FFC211CC85A7C00F2E1EF /* BWButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BWButton.swift; sourceTree = "<group>"; };
+		832FFC231CC863F400F2E1EF /* AppColors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
 		833482F61CA2EF7E00A37B35 /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		8340ABF41CC7115400D0382F /* ChangePasswordRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordRequest.swift; sourceTree = "<group>"; };
 		8379B45B1CA4F02C00D4C605 /* Crypto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Crypto.swift; sourceTree = "<group>"; };
@@ -188,6 +194,8 @@
 		83C7D37B1CB5927600BC7285 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				832FFC1D1CC8506900F2E1EF /* GradientView.swift */,
+				832FFC211CC85A7C00F2E1EF /* BWButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -251,6 +259,7 @@
 				83E3DE871CA3A75F00EB5349 /* Configuration.swift */,
 				8379B45B1CA4F02C00D4C605 /* Crypto.swift */,
 				83AF04181CAB843D00A37225 /* SwiftyRSA.swift */,
+				832FFC231CC863F400F2E1EF /* AppColors.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -544,12 +553,15 @@
 				83AF04191CAB843D00A37225 /* SwiftyRSA.swift in Sources */,
 				83FDCFDA1CBCB6D300AFF716 /* ChangePasswordViewController.swift in Sources */,
 				8340ABF51CC7115400D0382F /* ChangePasswordRequest.swift in Sources */,
+				832FFC221CC85A7C00F2E1EF /* BWButton.swift in Sources */,
+				832FFC241CC863F400F2E1EF /* AppColors.swift in Sources */,
 				83B2BDF31CC1D5AA007FAE91 /* UIColor.swift in Sources */,
 				83AF042F1CB0D48D00A37225 /* MagnetometerManager.swift in Sources */,
 				83E3DE8E1CA477D200EB5349 /* ApiManager.swift in Sources */,
 				83AF04291CAF748C00A37225 /* PowerStateManager.swift in Sources */,
 				83AF04351CB0E2BB00A37225 /* ReachabilityManager.swift in Sources */,
 				83E3DE731CA37F7600EB5349 /* MiscHelpers.swift in Sources */,
+				832FFC1E1CC8506900F2E1EF /* GradientView.swift in Sources */,
 				83AF04271CADA02A00A37225 /* AccelerometerManager.swift in Sources */,
 				83F98C3A1C923C3600E0B64B /* AppDelegate.swift in Sources */,
 				83E3DE881CA3A75F00EB5349 /* Configuration.swift in Sources */,

@@ -58,7 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         /* Colors */
 
-        UIView.appearance().tintColor = UIColor(1, g: 64, b: 64, a: 1);
+        UIView.appearance().tintColor = AppColors.tintColor;
 
         storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle());
 

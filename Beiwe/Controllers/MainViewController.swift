@@ -125,11 +125,13 @@ class MainViewController: UIViewController, ORKTaskViewControllerDelegate {
                 self.presentSurvey(surveyId);
             }
 
+            /*
             surveysChanged();
 
             listeners += StudyManager.sharedInstance.surveysUpdatedEvent.on {
                 self.surveysChanged();
             }
+            */
 
         }
     }
