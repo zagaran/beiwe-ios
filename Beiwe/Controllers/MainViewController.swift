@@ -18,13 +18,27 @@ class MainViewController: UIViewController, ORKTaskViewControllerDelegate {
     @IBOutlet weak var surveysCompleteView: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.presentTransparentNavigationBar();
+        let leftImage : UIImage? = UIImage(named:"ic-user")!.imageWithRenderingMode(.AlwaysOriginal);
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: leftImage, style: UIBarButtonItemStyle.Plain, target: self, action: #selector(userButton))
+        let rightImage : UIImage? = UIImage(named:"ic-info")!.imageWithRenderingMode(.AlwaysOriginal);
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: rightImage, style: UIBarButtonItemStyle.Plain, target: self, action: #selector(infoButton))
 
         // Do any additional setup after loading the view.
     }
 
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+
+    func userButton() {
+
+    }
+
+    func infoButton() {
+
     }
     
     @IBAction func Upload(sender: AnyObject) {

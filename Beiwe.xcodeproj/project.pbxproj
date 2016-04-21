@@ -11,6 +11,8 @@
 		832FFC1E1CC8506900F2E1EF /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832FFC1D1CC8506900F2E1EF /* GradientView.swift */; };
 		832FFC221CC85A7C00F2E1EF /* BWButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832FFC211CC85A7C00F2E1EF /* BWButton.swift */; };
 		832FFC241CC863F400F2E1EF /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832FFC231CC863F400F2E1EF /* AppColors.swift */; };
+		832FFC261CC866AB00F2E1EF /* UINavigationController+transparent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832FFC251CC866AB00F2E1EF /* UINavigationController+transparent.swift */; };
+		832FFC281CC86A0800F2E1EF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 832FFC271CC86A0800F2E1EF /* Assets.xcassets */; };
 		833482F71CA2EF7E00A37B35 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833482F61CA2EF7E00A37B35 /* RegisterViewController.swift */; };
 		8340ABF51CC7115400D0382F /* ChangePasswordRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8340ABF41CC7115400D0382F /* ChangePasswordRequest.swift */; };
 		8379B45C1CA4F02C00D4C605 /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8379B45B1CA4F02C00D4C605 /* Crypto.swift */; };
@@ -56,7 +58,6 @@
 		83F6C96A1CA0F6D900B85914 /* PersistentAppUUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F6C9691CA0F6D900B85914 /* PersistentAppUUID.swift */; };
 		83F98C3A1C923C3600E0B64B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F98C391C923C3600E0B64B /* AppDelegate.swift */; };
 		83F98C3F1C923C3600E0B64B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83F98C3D1C923C3600E0B64B /* Main.storyboard */; };
-		83F98C411C923C3600E0B64B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83F98C401C923C3600E0B64B /* Assets.xcassets */; };
 		83F98C441C923C3600E0B64B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83F98C421C923C3600E0B64B /* LaunchScreen.storyboard */; };
 		83FDCFD61CBC877700AFF716 /* AudioSurveyPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FDCFD51CBC877700AFF716 /* AudioSurveyPresenter.swift */; };
 		83FDCFD81CBC8E4700AFF716 /* TrackingSurveyPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FDCFD71CBC8E4700AFF716 /* TrackingSurveyPresenter.swift */; };
@@ -71,6 +72,8 @@
 		832FFC1D1CC8506900F2E1EF /* GradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		832FFC211CC85A7C00F2E1EF /* BWButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BWButton.swift; sourceTree = "<group>"; };
 		832FFC231CC863F400F2E1EF /* AppColors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
+		832FFC251CC866AB00F2E1EF /* UINavigationController+transparent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UINavigationController+transparent.swift"; sourceTree = "<group>"; };
+		832FFC271CC86A0800F2E1EF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		833482F61CA2EF7E00A37B35 /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		8340ABF41CC7115400D0382F /* ChangePasswordRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordRequest.swift; sourceTree = "<group>"; };
 		8379B45B1CA4F02C00D4C605 /* Crypto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Crypto.swift; sourceTree = "<group>"; };
@@ -126,7 +129,6 @@
 		83F98C361C923C3600E0B64B /* BeiweDbg.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BeiweDbg.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		83F98C391C923C3600E0B64B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		83F98C3E1C923C3600E0B64B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		83F98C401C923C3600E0B64B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		83F98C431C923C3600E0B64B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		83F98C451C923C3600E0B64B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		83FDCFD51CBC877700AFF716 /* AudioSurveyPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioSurveyPresenter.swift; sourceTree = "<group>"; };
@@ -171,6 +173,7 @@
 			children = (
 				83AF20D91CA310B100D3DF02 /* EurekaSwiftValidatorComponents.swift */,
 				83B2BDF21CC1D5AA007FAE91 /* UIColor.swift */,
+				832FFC251CC866AB00F2E1EF /* UINavigationController+transparent.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -320,6 +323,7 @@
 		83F98C381C923C3600E0B64B /* Beiwe */ = {
 			isa = PBXGroup;
 			children = (
+				832FFC271CC86A0800F2E1EF /* Assets.xcassets */,
 				83B2BDF51CC1DC58007FAE91 /* RK */,
 				83C7D37E1CB593D500BC7285 /* ObjC */,
 				83C7D37B1CB5927600BC7285 /* Views */,
@@ -334,7 +338,6 @@
 				83F6C9581CA088D400B85914 /* Util */,
 				83F98C391C923C3600E0B64B /* AppDelegate.swift */,
 				83F98C3D1C923C3600E0B64B /* Main.storyboard */,
-				83F98C401C923C3600E0B64B /* Assets.xcassets */,
 				83F98C421C923C3600E0B64B /* LaunchScreen.storyboard */,
 				83F98C451C923C3600E0B64B /* Info.plist */,
 				83AF20DB1CA3537200D3DF02 /* Constants.swift */,
@@ -408,8 +411,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				83F98C441C923C3600E0B64B /* LaunchScreen.storyboard in Resources */,
-				83F98C411C923C3600E0B64B /* Assets.xcassets in Resources */,
 				83AF04251CAD6FFF00A37225 /* Config-Pre1.plist in Resources */,
+				832FFC281CC86A0800F2E1EF /* Assets.xcassets in Resources */,
 				83F98C3F1C923C3600E0B64B /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -522,6 +525,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				832FFC261CC866AB00F2E1EF /* UINavigationController+transparent.swift in Sources */,
 				83C2BFCC1CB7484B00B2251B /* GetSurveysRequest.swift in Sources */,
 				83AF041F1CACBCC600A37225 /* ParamUploadRequest.swift in Sources */,
 				83AF042B1CAF7F7F00A37225 /* ProximityManager.swift in Sources */,

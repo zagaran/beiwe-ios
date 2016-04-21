@@ -4,7 +4,6 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--Register View Controller-->
@@ -126,124 +125,86 @@
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC" customClass="GradientView" customModule="Beiwe" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a5z-8e-tBs" customClass="BWBorderedButton">
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a5z-8e-tBs" customClass="BWButton" customModule="Beiwe" customModuleProvider="target">
                                 <rect key="frame" x="258" y="57" width="84" height="30"/>
                                 <state key="normal" title="Leave Study"/>
                                 <connections>
                                     <action selector="leaveStudy:" destination="BYZ-38-t0r" eventType="touchUpInside" id="L3F-ts-hpU"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Beiwe Main Screen" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Db6-RE-GSW">
-                                <rect key="frame" x="227" y="28" width="145" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <containerView opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wAa-kf-y1u">
+                            <containerView opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wAa-kf-y1u">
                                 <rect key="frame" x="0.0" y="251" width="600" height="349"/>
                                 <connections>
                                     <segue destination="dQ4-5T-41d" kind="embed" identifier="embedTaskListSegue" id="RNo-A1-daT"/>
                                 </connections>
                             </containerView>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f5e-AK-3ol" customClass="BWBorderedButton">
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f5e-AK-3ol" customClass="BWButton" customModule="Beiwe" customModuleProvider="target">
                                 <rect key="frame" x="256" y="90" width="88" height="30"/>
                                 <state key="normal" title="Call Clinician"/>
                                 <connections>
                                     <action selector="callClinician:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Qrc-QA-m1P"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="azu-w9-tNA">
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="azu-w9-tNA">
                                 <rect key="frame" x="446" y="201" width="127" height="30"/>
                                 <state key="normal" title="Chk Surveys (tmp)"/>
                                 <connections>
                                     <action selector="checkSurveys:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Bkb-LT-oOU"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RyB-nW-PvG">
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RyB-nW-PvG">
                                 <rect key="frame" x="26" y="201" width="91" height="30"/>
                                 <state key="normal" title="Upload (tmp)"/>
                                 <connections>
                                     <action selector="Upload:" destination="BYZ-38-t0r" eventType="touchUpInside" id="7Vf-Qz-stp"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hon-MM-zdm" customClass="BWBorderedButton">
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hon-MM-zdm" customClass="BWButton" customModule="Beiwe" customModuleProvider="target">
                                 <rect key="frame" x="276" y="123" width="48" height="30"/>
                                 <state key="normal" title="Logout"/>
                                 <connections>
                                     <action selector="logout:" destination="BYZ-38-t0r" eventType="touchUpInside" id="XZa-35-42c"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pBo-oe-oBh" customClass="BWBorderedButton">
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pBo-oe-oBh" customClass="BWButton" customModule="Beiwe" customModuleProvider="target">
                                 <rect key="frame" x="239" y="161" width="123" height="30"/>
                                 <state key="normal" title="Change Password"/>
                                 <connections>
                                     <action selector="changePassword:" destination="BYZ-38-t0r" eventType="touchUpInside" id="hEF-LR-sFb"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kTf-qO-aWh" userLabel="No Surveys View">
-                                <rect key="frame" x="173" y="259" width="253" height="146"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="All Surveys Complete" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IFX-pT-7V2">
-                                        <rect key="frame" x="78" y="268" width="163" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="Checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="rSr-pb-5dh">
-                                        <rect key="frame" x="64" y="-11" width="151" height="168"/>
-                                    </imageView>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstItem="IFX-pT-7V2" firstAttribute="centerX" secondItem="kTf-qO-aWh" secondAttribute="centerX" id="2G8-gw-MiK"/>
-                                    <constraint firstItem="rSr-pb-5dh" firstAttribute="width" secondItem="kTf-qO-aWh" secondAttribute="width" multiplier="1/2" constant="1" id="4zq-BC-jZr"/>
-                                    <constraint firstItem="rSr-pb-5dh" firstAttribute="top" secondItem="kTf-qO-aWh" secondAttribute="top" constant="25" id="Ro8-om-J7a"/>
-                                    <constraint firstItem="rSr-pb-5dh" firstAttribute="centerX" secondItem="kTf-qO-aWh" secondAttribute="centerX" id="ckz-ul-g21"/>
-                                    <constraint firstItem="rSr-pb-5dh" firstAttribute="height" secondItem="kTf-qO-aWh" secondAttribute="height" multiplier="2/3" id="jWh-5T-QhL"/>
-                                    <constraint firstItem="IFX-pT-7V2" firstAttribute="top" secondItem="rSr-pb-5dh" secondAttribute="bottom" constant="10" id="sml-yi-Pdq"/>
-                                </constraints>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="RyB-nW-PvG" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="6" id="0QP-uC-rk9"/>
-                            <constraint firstItem="kTf-qO-aWh" firstAttribute="height" secondItem="wAa-kf-y1u" secondAttribute="height" id="1Ti-oL-oBA"/>
                             <constraint firstItem="hon-MM-zdm" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="4Dp-8n-ep7"/>
                             <constraint firstItem="a5z-8e-tBs" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="7uc-eA-eqw"/>
                             <constraint firstItem="wAa-kf-y1u" firstAttribute="top" secondItem="RyB-nW-PvG" secondAttribute="bottom" constant="20" id="82n-OT-CQZ"/>
                             <constraint firstAttribute="trailingMargin" secondItem="azu-w9-tNA" secondAttribute="trailing" constant="7" id="8K7-c8-wCR"/>
-                            <constraint firstItem="kTf-qO-aWh" firstAttribute="top" secondItem="wAa-kf-y1u" secondAttribute="top" id="AtT-RO-6c1"/>
                             <constraint firstItem="pBo-oe-oBh" firstAttribute="top" secondItem="hon-MM-zdm" secondAttribute="bottom" constant="8" id="E1Q-NB-UrR"/>
-                            <constraint firstItem="kTf-qO-aWh" firstAttribute="width" secondItem="wAa-kf-y1u" secondAttribute="width" id="Ejk-Vh-xBx"/>
-                            <constraint firstItem="Db6-RE-GSW" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" id="IzP-46-qJx"/>
                             <constraint firstAttribute="trailing" secondItem="wAa-kf-y1u" secondAttribute="trailing" id="K35-DW-BGM"/>
                             <constraint firstItem="azu-w9-tNA" firstAttribute="top" secondItem="RyB-nW-PvG" secondAttribute="top" id="KEJ-I7-nkG"/>
                             <constraint firstItem="wAa-kf-y1u" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Nw2-Qy-EZ7"/>
                             <constraint firstItem="hon-MM-zdm" firstAttribute="top" secondItem="f5e-AK-3ol" secondAttribute="bottom" constant="3" id="Oke-hq-axy"/>
                             <constraint firstItem="RyB-nW-PvG" firstAttribute="top" secondItem="pBo-oe-oBh" secondAttribute="bottom" constant="10" id="SoA-TI-cdd"/>
-                            <constraint firstItem="a5z-8e-tBs" firstAttribute="top" secondItem="Db6-RE-GSW" secondAttribute="bottom" constant="8" id="WTE-o5-ixx"/>
-                            <constraint firstItem="Db6-RE-GSW" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="YfA-ky-8sy"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="wAa-kf-y1u" secondAttribute="bottom" id="ZVK-Rr-qIO"/>
                             <constraint firstItem="f5e-AK-3ol" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="a0P-pO-CAk"/>
-                            <constraint firstItem="kTf-qO-aWh" firstAttribute="leading" secondItem="wAa-kf-y1u" secondAttribute="leading" id="dOi-rB-IRC"/>
                             <constraint firstItem="f5e-AK-3ol" firstAttribute="top" secondItem="a5z-8e-tBs" secondAttribute="bottom" constant="3" id="reP-sA-RLg"/>
                             <constraint firstItem="pBo-oe-oBh" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="v1O-tX-Xbu"/>
-                            <constraint firstItem="a5z-8e-tBs" firstAttribute="leading" secondItem="Db6-RE-GSW" secondAttribute="leading" constant="20" id="yg4-8h-85S"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="yg4-8h-85S"/>
-                            </mask>
-                        </variation>
                     </view>
-                    <navigationItem key="navigationItem" id="I7e-rk-7g8"/>
-                    <connections>
-                        <outlet property="surveysCompleteView" destination="kTf-qO-aWh" id="qsf-Vc-4Z3"/>
-                    </connections>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Study" id="oyA-yJ-afD">
+                        <barButtonItem key="leftBarButtonItem" image="ic-user" id="Df7-ve-t6h">
+                            <color key="tintColor" red="0.98823529409999999" green="1" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" image="ic-info" id="K8S-Ip-8m1"/>
+                    </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
@@ -290,9 +251,12 @@
             <objects>
                 <navigationController storyboardIdentifier="mainView" automaticallyAdjustsScrollViewInsets="NO" id="Pfv-PO-V6j" userLabel="Main Study Navigation" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="wDQ-YR-8p6">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="wDQ-YR-8p6">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" red="0.98823529409999999" green="1" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
+                        </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -305,6 +269,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Checkmark" width="417" height="362"/>
+        <image name="ic-info" width="22" height="22"/>
+        <image name="ic-user" width="22" height="22"/>
     </resources>
 </document>
