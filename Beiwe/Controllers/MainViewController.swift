@@ -10,6 +10,7 @@ import UIKit
 import ResearchKit
 import EmitterKit
 import Hakuba
+import XLActionController
 
 class MainViewController: UIViewController, ORKTaskViewControllerDelegate {
 
@@ -82,6 +83,7 @@ class MainViewController: UIViewController, ORKTaskViewControllerDelegate {
     }
 
     func userButton() {
+        /*
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
 
         alertController.addAction(UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
@@ -103,6 +105,36 @@ class MainViewController: UIViewController, ORKTaskViewControllerDelegate {
         self.presentViewController(alertController, animated: true) {
             // ...
         }
+        */
+
+        let actionController = BWXLActionController()
+        actionController.settings.cancelView.backgroundColor = AppColors.highlightColor
+
+        actionController.headerData = nil;
+
+        actionController.addAction(Action(ActionData(title: "Change Password"), style: .Default) { (action) in
+            dispatch_async(dispatch_get_main_queue()) {
+                self.changePassword(self);
+            }
+            });
+        actionController.addAction(Action(ActionData(title: "Logout"), style: .Default) { (action) in
+            dispatch_async(dispatch_get_main_queue()) {
+                self.logout(self);
+            }
+
+            });
+        actionController.addAction(Action(ActionData(title: "Leave Study"), style: .Destructive) { (action) in
+            dispatch_async(dispatch_get_main_queue()) {
+                self.leaveStudy(self);
+            }
+            });
+
+        self.presentViewController(actionController, animated: true) {
+            
+        }
+
+
+
     }
 
     func infoButton() {

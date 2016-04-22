@@ -15,3 +15,4 @@ pod 'ReachabilitySwift', :git => 'https://github.com/ashleymills/Reachability.sw
 pod 'EmitterKit', '~> 4.0'
 pod 'PermissionScope'
 pod 'Hakuba'
+pod 'XLActionController'
