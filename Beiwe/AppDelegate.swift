@@ -58,12 +58,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         /* Colors */
 
-        UIView.appearance().tintColor = AppColors.tintColor;
+        let rkAppearance = UIView.my_appearanceWhenContainedIn(ORKTaskViewController.self)
+        rkAppearance.tintColor = AppColors.tintColor;
+        //rkAppearance.backgroundColor = UIColor.clearColor() // AppColors.gradientBottom;
+
+        /*
+        let stepAppearance = UIView.my_appearanceWhenContainedIn(ORKStepViewController.self)
+        stepAppearance.tintColor = AppColors.tintColor;
+        stepAppearance.backgroundColor = UIColor.clearColor() // AppColors.gradientBottom;
+        */
+
+        /*
+        UIView.appearanceWhenContainedInInstancesOfClasses([ORKTaskViewController.self]).tintColor = AppColors.tintColor
+        */
+
+        //UIView.appearance().tintColor = AppColors.tintColor;
 
         storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle());
 
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds);
         self.window?.rootViewController = UIStoryboard(name: "LaunchScreen", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("launchScreen");
+        /* Gradient background so we can use "clear" RK views */
+        //self.window?.insertSubview(GradientView(frame: UIScreen.mainScreen().bounds), atIndex: 0)
+
         self.window!.makeKeyAndVisible()
 
         Recline.shared.open().then { _ -> Promise<Bool> in

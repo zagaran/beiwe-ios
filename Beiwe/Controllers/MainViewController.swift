@@ -9,22 +9,70 @@
 import UIKit
 import ResearchKit
 import EmitterKit
+import Hakuba
 
 class MainViewController: UIViewController, ORKTaskViewControllerDelegate {
 
     var listeners: [Listener] = [];
     var taskListController: TaskListViewController?;
+    var hakuba: Hakuba!;
 
-    @IBOutlet weak var surveysCompleteView: UIView!
+    @IBOutlet weak var surveyTableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         self.navigationController?.presentTransparentNavigationBar();
         let leftImage : UIImage? = UIImage(named:"ic-user")!.imageWithRenderingMode(.AlwaysOriginal);
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: leftImage, style: UIBarButtonItemStyle.Plain, target: self, action: #selector(userButton))
+        /*
         let rightImage : UIImage? = UIImage(named:"ic-info")!.imageWithRenderingMode(.AlwaysOriginal);
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: rightImage, style: UIBarButtonItemStyle.Plain, target: self, action: #selector(infoButton))
+        */
+        self.navigationItem.rightBarButtonItem = nil;
 
         // Do any additional setup after loading the view.
+
+        hakuba = Hakuba(tableView: surveyTableView);
+        surveyTableView.backgroundView = nil;
+        surveyTableView.backgroundColor = UIColor.clearColor();
+        /*hakuba
+            .registerCell(SurveyCell) */
+
+        listeners += StudyManager.sharedInstance.surveysUpdatedEvent.on { [weak self] in
+            self?.refreshSurveys();
+        }
+        refreshSurveys();
+
+    }
+
+    func refreshSurveys() {
+        hakuba.removeAll();
+        let section = Section() // create a new section
+
+        hakuba
+            .insert(section, atIndex: 0)
+            .bump()
+
+        var cnt = 0;
+        if let activeSurveys = StudyManager.sharedInstance.currentStudy?.activeSurveys {
+            let sortedSurveys = activeSurveys.sort { (s1, s2) -> Bool in
+                return s1.1.received > s2.1.received;
+            }
+
+            for (_,survey) in sortedSurveys {
+                if (!survey.isComplete) {
+                    let cellmodel = SurveyCellModel(activeSurvey: survey) { [weak self] cell in
+                        cell.selected = false;
+                        if let strongSelf = self, surveyCell = cell as? SurveyCell, surveyId = surveyCell.cellmodel?.activeSurvey.survey?.surveyId {
+                            strongSelf.presentSurvey(surveyId)
+                        }
+                    }
+                    hakuba[0].append(cellmodel)
+                }
+            }
+            hakuba[0].bump();
+        }
+
     }
 
 
@@ -34,7 +82,27 @@ class MainViewController: UIViewController, ORKTaskViewControllerDelegate {
     }
 
     func userButton() {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
 
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
+            // ...
+            });
+
+        alertController.addAction(UIAlertAction(title: "Change Password", style: .Default) { (action) in
+            self.changePassword(self)
+            });
+
+        alertController.addAction(UIAlertAction(title: "Logout", style: .Default) { (action) in
+            self.logout(self);
+            });
+
+        alertController.addAction(UIAlertAction(title: "Leave Study", style: .Destructive) { (action) in
+            self.leaveStudy(self);
+            });
+
+        self.presentViewController(alertController, animated: true) {
+            // ...
+        }
     }
 
     func infoButton() {
@@ -44,6 +112,7 @@ class MainViewController: UIViewController, ORKTaskViewControllerDelegate {
     @IBAction func Upload(sender: AnyObject) {
         StudyManager.sharedInstance.upload();
     }
+
 
     @IBAction func callClinician(sender: AnyObject) {
         // Present modal...
@@ -118,37 +187,6 @@ class MainViewController: UIViewController, ORKTaskViewControllerDelegate {
         }
     }
 
-    func surveysChanged() {
-        if let taskListController = taskListController {
-            let cnt = taskListController.loadSurveys();
-            if (cnt == 0) {
-                surveysCompleteView.hidden = false;
-                taskListController.view.hidden = true;
-            } else {
-                surveysCompleteView.hidden = true;
-                taskListController.view.hidden = false;
-            }
-        }
-    }
-
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
-        if (segue.identifier == "embedTaskListSegue") {
-            let taskListController: TaskListViewController = segue.destinationViewController as! TaskListViewController;
-            self.taskListController = taskListController;
-            listeners += taskListController.surveySelected.on { surveyId in
-                self.presentSurvey(surveyId);
-            }
-
-            /*
-            surveysChanged();
-
-            listeners += StudyManager.sharedInstance.surveysUpdatedEvent.on {
-                self.surveysChanged();
-            }
-            */
-
-        }
-    }
 
     @IBAction func changePassword(sender: AnyObject) {
         let changePasswordController = ChangePasswordViewController();

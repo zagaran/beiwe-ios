@@ -13,6 +13,12 @@ import ResearchKit
 class BWORKTaskViewController : ORKTaskViewController {
     var displayDiscard = true;
 
+    /*
+    @objc override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return UIStatusBarStyle.LightContent
+    }
+    */
+
     @objc override func presentCancelOptions(saveable: Bool, sender: UIBarButtonItem?) {
         super.presentCancelOptions(displayDiscard ? saveable : false, sender: sender);
     }

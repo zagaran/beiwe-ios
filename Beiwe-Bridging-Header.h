@@ -14,6 +14,6 @@
 #import "BWBorderedButton.h"
 #import "BWTextButton.h"
 #import "ORKTaskViewController+BW.h"
-
+#import "UIAppearance+Swift.h"
 
 #endif /* Beiwe_Bridging_Header_h */

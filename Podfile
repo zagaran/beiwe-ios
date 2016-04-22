@@ -14,3 +14,4 @@ pod 'ResearchKit', "1.3.0"
 pod 'ReachabilitySwift', :git => 'https://github.com/ashleymills/Reachability.swift'
 pod 'EmitterKit', '~> 4.0'
 pod 'PermissionScope'
+pod 'Hakuba'

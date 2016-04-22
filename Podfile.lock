@@ -8,6 +8,7 @@ PODS:
   - EmitterKit (4.0.1)
   - Eureka (1.5.0)
   - Fabric (1.6.7)
+  - Hakuba (2.1.1)
   - IDZSwiftCommonCrypto (0.7.1)
   - KeychainSwift (3.0.11)
   - ObjectMapper (1.1.5)
@@ -42,6 +43,7 @@ DEPENDENCIES:
   - Crashlytics (~> 3.4)
   - EmitterKit (~> 4.0)
   - Eureka (~> 1.5)
+  - Hakuba
   - IDZSwiftCommonCrypto
   - KeychainSwift (~> 3.0)
   - ObjectMapper (~> 1.1)
@@ -68,6 +70,7 @@ SPEC CHECKSUMS:
   EmitterKit: ac291d6fbf87237b2098ddbf71fff5c11e94208a
   Eureka: 2fb37bb50569c62ee3284689d5b7aca694b040e0
   Fabric: caf7580c725e64db144f610ac65cd60956911dc7
+  Hakuba: bc5a0422290d086c33a6424a26dd58c1a1136e94
   IDZSwiftCommonCrypto: 320d5d0254b3d5230004bb01ef7753b0777d916c
   KeychainSwift: 0a4214c910423543a42b0f30f25987d46178b6a5
   ObjectMapper: 528b1a6677a6acac7747edd508576983e76a9148

@@ -154,12 +154,12 @@ class ConsentManager : NSObject, ORKTaskViewControllerDelegate {
         /*
         if let identifier = StepIds(rawValue: step.identifier) {
             switch(identifier) {
-            case .Permission, .WaitForPermissions:
-                if (hasRequiredPermissions()) {
+            case .WarningStep:
+                if (pscope.statusLocationAlways() == .Authorized) {
                     taskViewController.goForward();
+                    return false;
                 }
-                return false;
-            default: return true;
+            default: break
             }
         }
         */
@@ -196,7 +196,9 @@ class ConsentManager : NSObject, ORKTaskViewControllerDelegate {
             case .WaitForPermissions:
                 pscope.show({ finished, results in
                     print("Permissions granted");
-                    stepViewController.goForward();
+                    if (self.hasRequiredPermissions()) {
+                        stepViewController.goForward();
+                    }
                     }, cancelled: { (results) in
                         print("Permissions cancelled");
                         stepViewController.goForward();

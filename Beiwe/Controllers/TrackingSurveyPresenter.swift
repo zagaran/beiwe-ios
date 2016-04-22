@@ -126,6 +126,7 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
             surveyViewController!.delegate = self;
         }
 
+        //surveyViewController?.navigationController?.navigationBar.barStyle = UIBarStyle.Black
 
         self.parent = parent;
         self.retainSelf = self;
@@ -308,6 +309,7 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
 
     func closeSurvey() {
         retainSelf = nil;
+        StudyManager.sharedInstance.surveysUpdatedEvent.emit();
         parent?.dismissViewControllerAnimated(true, completion: nil);
     }
 
@@ -371,6 +373,13 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
     }
 
     func taskViewController(taskViewController: ORKTaskViewController, stepViewControllerWillAppear stepViewController: ORKStepViewController) {
+        /*
+        stepViewController.navigationController?.navigationBar.barStyle = UIBarStyle.Black
+        stepViewController.navigationController?.presentTransparentNavigationBar()
+        stepViewController.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.blackColor()]
+        stepViewController.view.backgroundColor = UIColor.clearColor();
+        */
+
         print("stepWillAppear: \(taskViewController.currentStepViewController!.step!.identifier)")
         currentQuestion = nil;
 
