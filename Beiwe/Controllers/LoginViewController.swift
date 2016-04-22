@@ -16,6 +16,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate, ORKTaskViewCon
     @IBOutlet weak var password: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.presentTransparentNavigationBar();
+
         password.delegate = self
         loginButton.enabled = false;
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tap))
