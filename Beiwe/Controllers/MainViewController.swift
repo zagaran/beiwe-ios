@@ -18,6 +18,9 @@ class MainViewController: UIViewController, ORKTaskViewControllerDelegate {
     var taskListController: TaskListViewController?;
     var hakuba: Hakuba!;
 
+    @IBOutlet weak var footerSeperator: UIView!
+    @IBOutlet weak var activeSurveyHeader: UIView!
+    @IBOutlet var emptySurveyHeader: UIView!
     @IBOutlet weak var surveyTableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,9 +72,19 @@ class MainViewController: UIViewController, ORKTaskViewControllerDelegate {
                         }
                     }
                     hakuba[0].append(cellmodel)
+                    cnt += 1;
                 }
             }
             hakuba[0].bump();
+        }
+        if (cnt > 0) {
+            footerSeperator.hidden = false
+            surveyTableView.tableHeaderView = activeSurveyHeader;
+            surveyTableView.scrollEnabled = true
+        } else {
+            footerSeperator.hidden = true
+            surveyTableView.tableHeaderView = emptySurveyHeader;
+            surveyTableView.scrollEnabled = false
         }
 
     }
