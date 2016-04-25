@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreMotion
+import PromiseKit
 
 class DeviceMotionManager : DataServiceProtocol {
     let motionManager = AppDelegate.sharedInstance().motionManager;
@@ -41,7 +42,7 @@ class DeviceMotionManager : DataServiceProtocol {
 
     func startCollecting() {
         print("Turning \(storeType) collection on");
-        let queue = NSOperationQueue.mainQueue();
+        let queue = NSOperationQueue()
 
 
         motionManager.startDeviceMotionUpdatesUsingReferenceFrame(CMAttitudeReferenceFrame.XArbitraryZVertical, toQueue: queue) {
@@ -91,10 +92,10 @@ class DeviceMotionManager : DataServiceProtocol {
         motionManager.stopGyroUpdates();
         store?.flush();
     }
-    func finishCollecting() {
+    func finishCollecting() -> Promise<Void> {
         print ("Finishing \(storeType) collecting");
         pauseCollecting();
-        DataStorageManager.sharedInstance.closeStore(storeType);
         store = nil;
+        return DataStorageManager.sharedInstance.closeStore(storeType);
     }
 }

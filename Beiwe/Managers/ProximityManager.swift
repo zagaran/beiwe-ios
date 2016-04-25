@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import PromiseKit
 
 class ProximityManager : DataServiceProtocol {
 
@@ -20,10 +21,8 @@ class ProximityManager : DataServiceProtocol {
         data.append(String(Int64(NSDate().timeIntervalSince1970 * 1000)));
         data.append(UIDevice.currentDevice().proximityState ? "NearUser" : "NotNearUser");
 
-        dispatch_async(dispatch_get_main_queue()) {
-            self.store?.store(data);
-            self.store?.flush();
-        }
+        self.store?.store(data);
+        self.store?.flush();
     }
 
     func initCollecting() -> Bool {
@@ -42,10 +41,10 @@ class ProximityManager : DataServiceProtocol {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIDeviceProximityStateDidChangeNotification, object:nil)
         store!.flush();
     }
-    func finishCollecting() {
+    func finishCollecting() -> Promise<Void> {
         print("Finish collecting \(storeType) collection");
         pauseCollecting();
-        DataStorageManager.sharedInstance.closeStore(storeType);
         store = nil;
+        return DataStorageManager.sharedInstance.closeStore(storeType);
     }
 }

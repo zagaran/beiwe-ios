@@ -9,13 +9,13 @@
 import Foundation
 import CoreLocation
 import Darwin
-
+import PromiseKit
 
 protocol DataServiceProtocol {
     func initCollecting() -> Bool;
     func startCollecting();
     func pauseCollecting();
-    func finishCollecting();
+    func finishCollecting() -> Promise<Void>;
 }
 
 class DataServiceStatus {
@@ -71,12 +71,14 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
 
     }
 
-    func stopAndClear() {
+    func stopAndClear() -> Promise<Void> {
         locationManager.stopUpdatingLocation();
+        var promises: [Promise<Void>] = [];
         for dataStatus in dataCollectionServices {
-            dataStatus.handler.finishCollecting();
+            promises.append(dataStatus.handler.finishCollecting())
         }
         dataCollectionServices.removeAll();
+        return when(promises)
     }
 
     func dispatchToServices() -> NSTimeInterval {
@@ -185,10 +187,10 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
         isCollectingGps = false;
         gpsStore?.flush();
     }
-    func finishCollecting() {
+    func finishCollecting() -> Promise<Void> {
         pauseCollecting();
-        DataStorageManager.sharedInstance.closeStore("gps");
-        gpsStore = nil;
         isCollectingGps = false;
+        gpsStore = nil;
+        return DataStorageManager.sharedInstance.closeStore("gps");
     }
 }

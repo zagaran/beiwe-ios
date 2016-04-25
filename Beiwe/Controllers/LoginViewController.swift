@@ -12,11 +12,22 @@ import ResearchKit
 
 class LoginViewController: UIViewController, UITextFieldDelegate, ORKTaskViewControllerDelegate {
 
+    @IBOutlet weak var callClinicianButton: UIButton!
     @IBOutlet weak var loginButton: BWBorderedButton!
     @IBOutlet weak var password: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.presentTransparentNavigationBar();
+
+        var clinicianText: String;
+        clinicianText = StudyManager.sharedInstance.currentStudy?.studySettings?.callClinicianText ?? "Contact Clinician"
+        callClinicianButton.setTitle(clinicianText, forState: UIControlState.Normal)
+        callClinicianButton.setTitle(clinicianText, forState: UIControlState.Highlighted)
+        if #available(iOS 9.0, *) {
+            callClinicianButton.setTitle(clinicianText, forState: UIControlState.Focused)
+        } else {
+            // Fallback on earlier versions
+        }
 
         password.delegate = self
         loginButton.enabled = false;

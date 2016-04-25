@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreMotion
+import PromiseKit
 
 class GyroManager : DataServiceProtocol {
     let motionManager = AppDelegate.sharedInstance().motionManager;
@@ -37,7 +38,7 @@ class GyroManager : DataServiceProtocol {
 
     func startCollecting() {
         print("Turning \(storeType) collection on");
-        let queue = NSOperationQueue.mainQueue();
+        let queue = NSOperationQueue()
 
 
         motionManager.startGyroUpdatesToQueue(queue) {
@@ -61,10 +62,10 @@ class GyroManager : DataServiceProtocol {
         motionManager.stopGyroUpdates();
         store?.flush();
     }
-    func finishCollecting() {
+    func finishCollecting() -> Promise<Void> {
         print ("Finishing \(storeType) collecting");
         pauseCollecting();
-        DataStorageManager.sharedInstance.closeStore(storeType);
         store = nil;
+        return DataStorageManager.sharedInstance.closeStore(storeType);
     }
 }

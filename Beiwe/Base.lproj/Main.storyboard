@@ -97,6 +97,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Login to your Study" id="m2I-i3-uI3"/>
                     <connections>
+                        <outlet property="callClinicianButton" destination="Pqy-gE-5gW" id="zQx-QS-a1e"/>
                         <outlet property="loginButton" destination="fjW-53-3Zu" id="AwS-Z4-NQG"/>
                         <outlet property="password" destination="JHQ-4q-sZb" id="HMj-mj-zLD"/>
                     </connections>
@@ -250,6 +251,7 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="activeSurveyHeader" destination="7Ol-rl-pK7" id="Tet-ai-5eb"/>
+                        <outlet property="callClinicianButton" destination="2Mg-Ad-WGs" id="N9e-d8-bq3"/>
                         <outlet property="emptySurveyHeader" destination="N0x-11-GBl" id="daA-k0-VHZ"/>
                         <outlet property="footerSeperator" destination="kQY-M2-eeq" id="2C7-fo-KTF"/>
                         <outlet property="surveyTableView" destination="jMT-1I-Per" id="ogx-3F-s7M"/>

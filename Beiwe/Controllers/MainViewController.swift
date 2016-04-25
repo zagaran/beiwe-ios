@@ -18,6 +18,7 @@ class MainViewController: UIViewController, ORKTaskViewControllerDelegate {
     var taskListController: TaskListViewController?;
     var hakuba: Hakuba!;
 
+    @IBOutlet weak var callClinicianButton: UIButton!
     @IBOutlet weak var footerSeperator: UIView!
     @IBOutlet weak var activeSurveyHeader: UIView!
     @IBOutlet var emptySurveyHeader: UIView!
@@ -42,9 +43,23 @@ class MainViewController: UIViewController, ORKTaskViewControllerDelegate {
         /*hakuba
             .registerCell(SurveyCell) */
 
+        var clinicianText: String;
+        clinicianText = StudyManager.sharedInstance.currentStudy?.studySettings?.callClinicianText ?? "Contact Clinician"
+        callClinicianButton.setTitle(clinicianText, forState: UIControlState.Normal)
+        callClinicianButton.setTitle(clinicianText, forState: UIControlState.Highlighted)
+        if #available(iOS 9.0, *) {
+            callClinicianButton.setTitle(clinicianText, forState: UIControlState.Focused)
+        } else {
+            // Fallback on earlier versions
+        }
         listeners += StudyManager.sharedInstance.surveysUpdatedEvent.on { [weak self] in
             self?.refreshSurveys();
         }
+
+        if (AppDelegate.sharedInstance().debugEnabled) {
+            addDebugMenu();
+        }
+
         refreshSurveys();
 
     }
@@ -95,6 +110,43 @@ class MainViewController: UIViewController, ORKTaskViewControllerDelegate {
         // Dispose of any resources that can be recreated.
     }
 
+    func addDebugMenu() {
+
+        let tapRecognizer = UITapGestureRecognizer.init(target: self, action: #selector(debugTap))
+        tapRecognizer.numberOfTapsRequired = 2;
+        tapRecognizer.numberOfTouchesRequired = 2;
+        self.view.addGestureRecognizer(tapRecognizer)
+    }
+
+    func debugTap(gestureRecognizer: UIGestureRecognizer) {
+        if (gestureRecognizer.state != .Ended) {
+            return
+        }
+
+        let actionController = BWXLActionController()
+        actionController.settings.cancelView.backgroundColor = AppColors.highlightColor
+
+        actionController.headerData = nil;
+
+        actionController.addAction(Action(ActionData(title: "Upload Data"), style: .Default) { (action) in
+            dispatch_async(dispatch_get_main_queue()) {
+                self.Upload(self)
+            }
+            });
+        actionController.addAction(Action(ActionData(title: "Check for Surveys"), style: .Default) { (action) in
+            dispatch_async(dispatch_get_main_queue()) {
+                self.checkSurveys(self)
+            }
+
+            });
+
+        self.presentViewController(actionController, animated: true) {
+
+        }
+        
+        
+
+    }
     func userButton() {
         /*
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)

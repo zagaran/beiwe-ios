@@ -115,37 +115,45 @@ class StudyManager {
             return Promise(true);
         }
 
-        gpsManager?.stopAndClear();
-        gpsManager = nil;
-        return Recline.shared.purge(study).then { _ -> Promise<Bool> in
-            let fileManager = NSFileManager.defaultManager()
-            var enumerator = fileManager.enumeratorAtPath(DataStorageManager.uploadDataDirectory().path!);
 
-            if let enumerator = enumerator {
-                while let filename = enumerator.nextObject() as? String {
-                    if (filename.hasSuffix(DataStorageManager.dataFileSuffix)) {
-                        let filePath = DataStorageManager.uploadDataDirectory().URLByAppendingPathComponent(filename);
-                        try fileManager.removeItemAtURL(filePath);
+        var promise: Promise<Void>
+        if (gpsManager != nil) {
+            promise = gpsManager!.stopAndClear()
+        } else {
+            promise = Promise();
+        }
+        return promise.then {
+            self.gpsManager = nil;
+            return Recline.shared.purge(study).then { _ -> Promise<Bool> in
+                let fileManager = NSFileManager.defaultManager()
+                var enumerator = fileManager.enumeratorAtPath(DataStorageManager.uploadDataDirectory().path!);
+
+                if let enumerator = enumerator {
+                    while let filename = enumerator.nextObject() as? String {
+                        if (filename.hasSuffix(DataStorageManager.dataFileSuffix)) {
+                            let filePath = DataStorageManager.uploadDataDirectory().URLByAppendingPathComponent(filename);
+                            try fileManager.removeItemAtURL(filePath);
+                        }
                     }
                 }
-            }
 
-            enumerator = fileManager.enumeratorAtPath(DataStorageManager.currentDataDirectory().path!);
+                enumerator = fileManager.enumeratorAtPath(DataStorageManager.currentDataDirectory().path!);
 
-            if let enumerator = enumerator {
-                while let filename = enumerator.nextObject() as? String {
-                    if (filename.hasSuffix(DataStorageManager.dataFileSuffix)) {
-                        let filePath = DataStorageManager.currentDataDirectory().URLByAppendingPathComponent(filename);
-                        try fileManager.removeItemAtURL(filePath);
+                if let enumerator = enumerator {
+                    while let filename = enumerator.nextObject() as? String {
+                        if (filename.hasSuffix(DataStorageManager.dataFileSuffix)) {
+                            let filePath = DataStorageManager.currentDataDirectory().URLByAppendingPathComponent(filename);
+                            try fileManager.removeItemAtURL(filePath);
+                        }
                     }
                 }
+                
+                self.currentStudy = nil;
+                
+                return Promise(true);
+                
             }
-
-            self.currentStudy = nil;
-
-            return Promise(true);
-
-       }
+        }
 
     }
 
@@ -154,27 +162,31 @@ class StudyManager {
             return;
         }
 
-        if (!appDelegate.reachability!.isReachableViaWiFi()) {
-            return;
-        }
+        // Good time to compact the database
+        Recline.shared.compact().then { _ -> Void in
+            if (!self.appDelegate.reachability!.isReachableViaWiFi()) {
+                return;
+            }
 
-        let currentTime: Int64 = Int64(NSDate().timeIntervalSince1970);
-        let nextSurvey = currentStudy.nextSurveyCheck ?? 0;
-        let nextUpload = currentStudy.nextUploadCheck ?? 0;
-        if (currentTime > nextSurvey) {
-            setNextSurveyTime().then { _ -> Void in
-                self.isHandlingPeriodic = false;
-                self.checkSurveys();
-                }.error { _ -> Void in
-                    print("Error checking for surveys");
+            let currentTime: Int64 = Int64(NSDate().timeIntervalSince1970);
+            let nextSurvey = currentStudy.nextSurveyCheck ?? 0;
+            let nextUpload = currentStudy.nextUploadCheck ?? 0;
+            if (currentTime > nextSurvey) {
+                self.setNextSurveyTime().then { _ -> Void in
+                    self.isHandlingPeriodic = false;
+                    self.checkSurveys();
+                    }.error { _ -> Void in
+                        print("Error checking for surveys");
+                }
             }
-        }
-        else if (currentTime > nextUpload) {
-            setNextUploadTime().then { _ -> Void in
-                self.upload();
-                }.error { _ -> Void in
-                    print("Error checking for uploades")
+            else if (currentTime > nextUpload) {
+                self.setNextUploadTime().then { _ -> Void in
+                    self.upload();
+                    }.error { _ -> Void in
+                        print("Error checking for uploades")
+                }
             }
+
         }
 
     }
@@ -409,7 +421,6 @@ class StudyManager {
         }
 
         print("Checking for uploads...");
-        DataStorageManager.sharedInstance.prepareForUpload();
 
         let fileManager = NSFileManager.defaultManager()
         let enumerator = fileManager.enumeratorAtPath(DataStorageManager.uploadDataDirectory().path!);
@@ -420,6 +431,13 @@ class StudyManager {
         } else {
             promiseChain = setNextUploadTime();
         }
+
+        promiseChain = promiseChain.then { _ in
+            return DataStorageManager.sharedInstance.prepareForUpload().then {
+                return Promise(true)
+            };
+        }
+
         var numFiles = 0;
 
         if let enumerator = enumerator {

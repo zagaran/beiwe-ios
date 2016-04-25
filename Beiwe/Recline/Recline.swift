@@ -44,16 +44,16 @@ enum ReclineErrors: ErrorType {
 }
 class Recline {
     static let kReclineMetadataKey = "reclineMetadata";
+    static let queue = dispatch_queue_create("com.rocketfarm.beiwe.recline.queue", nil)
     static let shared = Recline();
-    var manager: CBLManager;
+    var manager: CBLManager!;
     var db: CBLDatabase?;
     var typesView: CBLView?;
 
     init() {
-        manager = CBLManager.sharedInstance()
     }
 
-    func open(dbName: String = "default") -> Promise<BooleanType> {
+    func _open(dbName: String = "default") -> Promise<BooleanType> {
         return Promise { resolve, reject in
             self.db = try manager.databaseNamed(dbName);
             self.typesView = self.db!.viewNamed("reclineType")
@@ -69,7 +69,18 @@ class Recline {
         }
     }
 
-    func save<T: ReclineObject>(obj: T) -> Promise<T> {
+    func open(dbName: String = "default") -> Promise<BooleanType> {
+        return Promise().then(on: Recline.queue) {
+            if (self.manager == nil) {
+                self.manager = CBLManager.sharedInstance()
+                self.manager.dispatchQueue = Recline.queue
+            }
+
+            return self._open(dbName);
+        }
+    }
+
+    func _save<T: ReclineObject>(obj: T) -> Promise<T> {
         return Promise { resolve, reject in
             guard let db = db else {
                 return reject(ReclineErrors.DatabaseNotOpen);
@@ -104,7 +115,14 @@ class Recline {
 
     }
 
-    func load<T: ReclineObject>(docId: String) -> Promise<T?> {
+    func save<T: ReclineObject>(obj: T) -> Promise<T> {
+        return Promise().then(on: Recline.queue) {
+            return self._save(obj)
+        }
+    }
+
+
+    func _load<T: ReclineObject>(docId: String) -> Promise<T?> {
         return Promise { resolve, reject in
             guard let db = db else {
                 return reject(ReclineErrors.DatabaseNotOpen);
@@ -120,7 +138,14 @@ class Recline {
         }
     }
 
-    func queryAll<T: ReclineObject>() -> Promise<[T]> {
+    func load<T: ReclineObject>(docId: String) -> Promise<T?> {
+        return Promise().then(on: Recline.queue) {
+            self._load(docId);
+        }
+    }
+
+
+    func _queryAll<T: ReclineObject>() -> Promise<[T]> {
         return Promise { resolve, reject in
             guard let typesView = typesView else {
                 return reject(ReclineErrors.DatabaseNotOpen);
@@ -134,7 +159,7 @@ class Recline {
                     promises.append(load(docId))
                 }
             }
-            return when(promises).then  { results -> Void in
+            return when(promises).then(on: Recline.queue)  { results -> Void in
                 //resolve([]);
                 resolve(results.filter { $0 != nil}.map { $0! }  );
                 }.error { err in
@@ -144,7 +169,14 @@ class Recline {
 
     }
 
-    func purge<T: ReclineObject>(obj: T) -> Promise<Bool> {
+    func queryAll<T: ReclineObject>() -> Promise<[T]> {
+        return Promise().then(on: Recline.queue) {
+            return self._queryAll()
+        }
+    }
+
+
+    func _purge<T: ReclineObject>(obj: T) -> Promise<Bool> {
         return Promise { resolve, reject in
 
             var doc: CBLDocument?;
@@ -158,6 +190,18 @@ class Recline {
 
         }
         
+    }
+
+    func purge<T: ReclineObject>(obj: T) -> Promise<Bool> {
+        return Promise().then(on: Recline.queue) {
+            return self._purge(obj)
+        }
+    }
+
+    func compact() -> Promise<Void> {
+        return Promise<Void>().then(on: Recline.queue) { _ -> Void in
+            try self.db?.compact()
+            }
     }
 
 }

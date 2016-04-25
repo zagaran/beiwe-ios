@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import PromiseKit
 
 class PowerStateManager : DataServiceProtocol {
 
@@ -31,10 +32,8 @@ class PowerStateManager : DataServiceProtocol {
         }
         data.append(state);
 
-        dispatch_async(dispatch_get_main_queue()) {
-            self.store?.store(data);
-            self.store?.flush();
-        }
+        self.store?.store(data);
+        self.store?.flush();
     }
 
     func initCollecting() -> Bool {
@@ -53,10 +52,10 @@ class PowerStateManager : DataServiceProtocol {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIDeviceBatteryStateDidChangeNotification, object:nil)
         store!.flush();
     }
-    func finishCollecting() {
+    func finishCollecting() -> Promise<Void> {
         print("Finish collecting \(storeType) collection");
         pauseCollecting();
-        DataStorageManager.sharedInstance.closeStore(storeType);
         store = nil;
+        return DataStorageManager.sharedInstance.closeStore(storeType);
     }
 }

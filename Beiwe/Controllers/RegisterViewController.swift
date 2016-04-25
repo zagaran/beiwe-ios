@@ -23,51 +23,65 @@ class RegisterViewController: FormViewController {
 
         // Do any additional setup after loading the view.
 
+        let font = UIFont.systemFontOfSize(13.0);
+        SVAccountRow.defaultCellSetup = { cell, row in
+            cell.textLabel?.font = font
+            cell.detailTextLabel?.font = font;
+        }
+        SVPasswordRow.defaultCellSetup = { cell, row in
+            cell.textLabel?.font = font
+            cell.detailTextLabel?.font = font;
+        }
+        SVSimplePhoneRow.defaultCellSetup = { cell, row in
+            cell.textLabel?.font = font
+            cell.detailTextLabel?.font = font;
+        }
         form +++ Section("Register for Study")
-            <<< SVAccountRow("clinicianPhone") {
-                $0.title = "Clinician Phone:"
-                $0.placeholder = "10 digit number";
-                $0.rules = [RequiredRule(), PhoneNumberRule()]
-                $0.autoValidation = autoValidation
-
-            }
-            <<< SVAccountRow("raPhone") {
-                $0.title = "Research Asst. Phone:"
-                $0.placeholder = "10 digit number";
-                $0.rules = [RequiredRule(), PhoneNumberRule()]
-                $0.autoValidation = autoValidation
-
-            }
             <<< SVAccountRow("patientId") {
                 $0.title = "User ID:"
-                $0.placeholder = "Enter User ID";
+                $0.placeholder = "User ID";
                 $0.rules = [RequiredRule()]
                 $0.autoValidation = autoValidation
-
             }
             <<< SVPasswordRow("tempPassword") {
                 $0.title = "Temporary Password:"
-                $0.placeholder = "temp password";
+                $0.placeholder = "Temp Password";
                 $0.rules = [RequiredRule()]
                 $0.autoValidation = autoValidation
             }
+            /*
             <<< SVSimplePhoneRow("phone") {
                 $0.title = "Phone:"
                 $0.placeholder = "Your 10 digit number";
                 $0.rules = [RequiredRule(), PhoneNumberRule()]
                 $0.autoValidation = autoValidation
             }
+            */
             <<< SVPasswordRow("password") {
                 $0.title = "New Password:"
-                $0.placeholder = "Enter your new password";
+                $0.placeholder = "New password";
                 $0.rules = [RequiredRule(), RegexRule(regex: Constants.passwordRequirementRegex, message: Constants.passwordRequirementDescription)]
                 $0.autoValidation = autoValidation
             }
             <<< SVPasswordRow("confirmPassword") {
                 $0.title = "Confirm Password:"
-                $0.placeholder = "Confirm your new password";
+                $0.placeholder = "Confirm Password";
                 $0.rules = [RequiredRule(), MinLengthRule(length: 1)]
                 $0.autoValidation = autoValidation
+            }
+            <<< SVSimplePhoneRow("clinicianPhone") {
+                $0.title = "Primary Researcher Phone:"
+                $0.placeholder = "10 digit number";
+                $0.rules = [RequiredRule(), PhoneNumberRule()]
+                $0.autoValidation = autoValidation
+
+            }
+            <<< SVSimplePhoneRow("raPhone") {
+                $0.title = "Research Asst. Phone:"
+                $0.placeholder = "10 digit number";
+                $0.rules = [RequiredRule(), PhoneNumberRule()]
+                $0.autoValidation = autoValidation
+
             }
             <<< ButtonRow() {
                 $0.title = "Register"
@@ -81,7 +95,8 @@ class RegisterViewController: FormViewController {
                         HUD.show(.Progress);
                         let formValues = self.form.values();
                         let patientId: String? = formValues["patientId"] as! String?;
-                        let phoneNumber: String? = formValues["phone"] as! String?;
+                        //let phoneNumber: String? = formValues["phone"] as! String?;
+                        let phoneNumber: String? = "NOT_SUPPLIED"
                         let newPassword: String? = formValues["password"] as! String?;
                         let tempPassword: String? = formValues["tempPassword"] as! String?;
                         let clinicianPhone: String? = formValues["clinicianPhone"] as! String?;
@@ -151,6 +166,7 @@ class RegisterViewController: FormViewController {
                         self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil);
                     }
         }
+
         let passwordRow: SVPasswordRow? = form.rowByTag("password");
         let confirmRow: SVPasswordRow? = form.rowByTag("confirmPassword");
         confirmRow!.rules = [ConfirmationRule(confirmField: passwordRow!.cell.textField)]

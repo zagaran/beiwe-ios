@@ -28,6 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var timeEnteredBackground: NSDate?;
     let pscope = PermissionScope()
     var canOpenTel = false;
+    let debugEnabled  = _isDebugAssertConfiguration();
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.

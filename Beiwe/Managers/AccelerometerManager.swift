@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreMotion
+import PromiseKit
 
 class AccelerometerManager : DataServiceProtocol {
     let motionManager = AppDelegate.sharedInstance().motionManager;
@@ -40,7 +41,7 @@ class AccelerometerManager : DataServiceProtocol {
 
     func startCollecting() {
         print("Turning \(storeType) collection on");
-        let queue = NSOperationQueue.mainQueue();
+        let queue = NSOperationQueue()
 
 
         motionManager.startAccelerometerUpdatesToQueue(queue) {
@@ -64,10 +65,10 @@ class AccelerometerManager : DataServiceProtocol {
         motionManager.stopAccelerometerUpdates();
         store?.flush();
     }
-    func finishCollecting() {
+    func finishCollecting() -> Promise<Void> {
         print ("Finishing \(storeType) collecting");
         pauseCollecting();
-        DataStorageManager.sharedInstance.closeStore(storeType);
         store = nil;
+        return DataStorageManager.sharedInstance.closeStore(storeType);
     }
 }
