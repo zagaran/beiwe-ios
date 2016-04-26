@@ -200,7 +200,7 @@ class StudyManager {
     }
 
     func submitSurvey(activeSurvey: ActiveSurvey, surveyPresenter: TrackingSurveyPresenter? = nil) {
-        if let survey = activeSurvey.survey, surveyId = survey.surveyId {
+        if let survey = activeSurvey.survey, surveyId = survey.surveyId, surveyType = survey.surveyType where surveyType == .TrackingSurvey {
             var trackingSurvey: TrackingSurveyPresenter;
             if (surveyPresenter == nil) {
                 trackingSurvey = TrackingSurveyPresenter(surveyId: surveyId, activeSurvey: activeSurvey, survey: survey)

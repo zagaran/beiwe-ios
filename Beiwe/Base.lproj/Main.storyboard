@@ -53,27 +53,33 @@
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pqy-gE-5gW" customClass="BWButton" customModule="Beiwe" customModuleProvider="target">
                                 <rect key="frame" x="242" y="484" width="117" height="30"/>
-                                <state key="normal" title="Contact Clinician"/>
+                                <state key="normal" title="Contact Clinician">
+                                    <color key="titleColor" red="0.98823529409999999" green="1" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="callClinician:" destination="qWM-9N-RLc" eventType="touchUpInside" id="uIW-xh-qrv"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ysc-6U-fpb" customClass="BWButton" customModule="Beiwe" customModuleProvider="target">
                                 <rect key="frame" x="243" y="436" width="115" height="30"/>
-                                <state key="normal" title="Forgot Password"/>
+                                <state key="normal" title="Forgot Password">
+                                    <color key="titleColor" red="0.98823529409999999" green="1" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="forgotPassword:" destination="qWM-9N-RLc" eventType="touchUpInside" id="lMa-k6-rKd"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fjW-53-3Zu" customClass="BWButton" customModule="Beiwe" customModuleProvider="target">
                                 <rect key="frame" x="20" y="207" width="38" height="30"/>
-                                <state key="normal" title="Login"/>
+                                <state key="normal" title="Login">
+                                    <color key="titleColor" red="0.98823529409999999" green="1" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="loginPressed:" destination="qWM-9N-RLc" eventType="touchUpInside" id="69j-2b-UQc"/>
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.054901961239999998" green="0.38039216399999998" blue="0.37254902719999999" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="LYJ-Ie-QQT" firstAttribute="top" secondItem="Xz7-TR-GrZ" secondAttribute="bottom" constant="79" id="1J6-gR-VDq"/>
                             <constraint firstAttribute="leadingMargin" secondItem="LYJ-Ie-QQT" secondAttribute="leading" id="Jn5-xD-rNh"/>
@@ -168,7 +174,9 @@
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Mg-Ad-WGs" customClass="BWButton" customModule="Beiwe" customModuleProvider="target">
                                             <rect key="frame" x="251" y="38" width="98" height="33"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <state key="normal" title="Call Clinician"/>
+                                            <state key="normal" title="Call Clinician">
+                                                <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            </state>
                                             <connections>
                                                 <action selector="callClinician:" destination="BYZ-38-t0r" eventType="touchUpInside" id="5o4-JQ-VhF"/>
                                             </connections>
@@ -229,7 +237,7 @@
                                 </prototypes>
                             </tableView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.054901961239999998" green="0.38039216399999998" blue="0.37254902719999999" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="jMT-1I-Per" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="0J2-8a-e22"/>
                             <constraint firstItem="8jS-Fu-wsB" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="1/4" id="EQb-c0-tjG"/>
@@ -255,6 +263,7 @@
                         <outlet property="emptySurveyHeader" destination="N0x-11-GBl" id="daA-k0-VHZ"/>
                         <outlet property="footerSeperator" destination="kQY-M2-eeq" id="2C7-fo-KTF"/>
                         <outlet property="surveyTableView" destination="jMT-1I-Per" id="ogx-3F-s7M"/>
+                        <segue destination="3pR-tX-e0X" kind="show" identifier="audioQuestionSegue" id="ObB-m6-2fe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -329,10 +338,97 @@
             </objects>
             <point key="canvasLocation" x="276" y="358"/>
         </scene>
+        <!--Audio Question View Controller-->
+        <scene sceneID="miG-Td-9qQ">
+            <objects>
+                <viewController title="Audio Question" id="3pR-tX-e0X" userLabel="Audio Question View Controller" customClass="AudioQuestionViewController" customModule="Beiwe" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="FNf-0e-voQ"/>
+                        <viewControllerLayoutGuide type="bottom" id="Ie1-Cu-aMs"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="67n-ia-977" customClass="GradientView" customModule="Beiwe" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Question" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zDy-ZL-HgI">
+                                <rect key="frame" x="100" y="30" width="400" height="175"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="175" id="uLo-gT-6r5"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <color key="textColor" red="0.98823529409999999" green="1" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o2C-Hl-U4C" customClass="BWButton" customModule="Beiwe" customModuleProvider="target">
+                                <rect key="frame" x="290" y="257" width="20" height="22"/>
+                                <color key="tintColor" red="0.023529412224888802" green="0.19607843458652496" blue="0.19215686619281769" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" image="record"/>
+                                <connections>
+                                    <action selector="recordCancelPressed:" destination="3pR-tX-e0X" eventType="touchUpInside" id="v7K-3V-iTT"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5aN-yy-cIR" customClass="BWButton" customModule="Beiwe" customModuleProvider="target">
+                                <rect key="frame" x="283" y="437" width="34" height="30"/>
+                                <state key="normal" title="Save"/>
+                                <connections>
+                                    <action selector="saveButtonPressed:" destination="3pR-tX-e0X" eventType="touchUpInside" id="eZb-Ms-Lho"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Maximum Length 0 secs" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Shb-kd-O9W">
+                                <rect key="frame" x="206.5" y="211" width="187" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.98823529409999999" green="1" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 secs" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vKX-3q-Jmy">
+                                <rect key="frame" x="274.5" y="304" width="51" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.98823529409999999" green="1" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hCR-ge-r03" customClass="BWButton" customModule="Beiwe" customModuleProvider="target">
+                                <rect key="frame" x="268.5" y="340" width="63" height="30"/>
+                                <state key="normal" title="Rerecord"/>
+                                <connections>
+                                    <action selector="reRecordButtonPressed:" destination="3pR-tX-e0X" eventType="touchUpInside" id="l5Z-4r-XKl"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.054901961239999998" green="0.38039216399999998" blue="0.37254902719999999" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="o2C-Hl-U4C" firstAttribute="centerX" secondItem="67n-ia-977" secondAttribute="centerX" id="1Gb-gH-joY"/>
+                            <constraint firstItem="zDy-ZL-HgI" firstAttribute="top" secondItem="FNf-0e-voQ" secondAttribute="bottom" constant="30" id="RZG-oP-TwT"/>
+                            <constraint firstItem="o2C-Hl-U4C" firstAttribute="top" secondItem="Shb-kd-O9W" secondAttribute="bottom" constant="25" id="SSk-hE-qOA"/>
+                            <constraint firstItem="hCR-ge-r03" firstAttribute="centerX" secondItem="67n-ia-977" secondAttribute="centerX" id="SXn-mi-zmk"/>
+                            <constraint firstItem="vKX-3q-Jmy" firstAttribute="top" secondItem="o2C-Hl-U4C" secondAttribute="bottom" constant="25" id="Uad-dI-57b"/>
+                            <constraint firstItem="zDy-ZL-HgI" firstAttribute="width" secondItem="67n-ia-977" secondAttribute="width" multiplier="2/3" id="Yd1-Th-bpe"/>
+                            <constraint firstItem="zDy-ZL-HgI" firstAttribute="centerX" secondItem="67n-ia-977" secondAttribute="centerX" id="Z2b-6p-tlj"/>
+                            <constraint firstItem="5aN-yy-cIR" firstAttribute="centerX" secondItem="67n-ia-977" secondAttribute="centerX" id="blK-kK-j4T"/>
+                            <constraint firstItem="Ie1-Cu-aMs" firstAttribute="top" secondItem="5aN-yy-cIR" secondAttribute="bottom" constant="25" id="qBN-Zh-pYU"/>
+                            <constraint firstItem="Shb-kd-O9W" firstAttribute="top" secondItem="zDy-ZL-HgI" secondAttribute="bottom" constant="6" id="qYc-Vk-Vnc"/>
+                            <constraint firstItem="vKX-3q-Jmy" firstAttribute="centerX" secondItem="67n-ia-977" secondAttribute="centerX" id="rCU-Rt-oll"/>
+                            <constraint firstItem="Shb-kd-O9W" firstAttribute="centerX" secondItem="67n-ia-977" secondAttribute="centerX" id="rq1-Tt-VJ4"/>
+                            <constraint firstItem="hCR-ge-r03" firstAttribute="top" secondItem="vKX-3q-Jmy" secondAttribute="bottom" constant="15" id="yg5-0I-Em6"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="currentLengthLabel" destination="vKX-3q-Jmy" id="nEE-Ad-eAc"/>
+                        <outlet property="maxLengthLabel" destination="Shb-kd-O9W" id="D33-1E-rwK"/>
+                        <outlet property="promptLabel" destination="zDy-ZL-HgI" id="Ntg-BT-YqA"/>
+                        <outlet property="reRecordButton" destination="hCR-ge-r03" id="NqV-KI-bmJ"/>
+                        <outlet property="recordPlayButton" destination="o2C-Hl-U4C" id="nlK-kD-Hs2"/>
+                        <outlet property="saveButton" destination="5aN-yy-cIR" id="7BT-qX-LHJ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1Q8-TD-fAj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1031" y="1220"/>
+        </scene>
     </scenes>
     <resources>
         <image name="ic-info" width="22" height="22"/>
         <image name="ic-user" width="22" height="22"/>
         <image name="phone" width="343" height="199"/>
+        <image name="record" width="20" height="20"/>
     </resources>
 </document>

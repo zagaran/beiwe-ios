@@ -18,6 +18,7 @@
 		832FFC2F1CC9C30E00F2E1EF /* BWXLAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832FFC2E1CC9C30E00F2E1EF /* BWXLAction.swift */; };
 		832FFC321CC9C3CD00F2E1EF /* ActionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832FFC301CC9C3CD00F2E1EF /* ActionData.swift */; };
 		832FFC331CC9C3CD00F2E1EF /* BWXLCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 832FFC311CC9C3CD00F2E1EF /* BWXLCell.xib */; };
+		832FFC351CCED80200F2E1EF /* AudioQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832FFC341CCED80200F2E1EF /* AudioQuestionViewController.swift */; };
 		833482F71CA2EF7E00A37B35 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833482F61CA2EF7E00A37B35 /* RegisterViewController.swift */; };
 		8340ABF51CC7115400D0382F /* ChangePasswordRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8340ABF41CC7115400D0382F /* ChangePasswordRequest.swift */; };
 		8379B45C1CA4F02C00D4C605 /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8379B45B1CA4F02C00D4C605 /* Crypto.swift */; };
@@ -85,6 +86,7 @@
 		832FFC2E1CC9C30E00F2E1EF /* BWXLAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BWXLAction.swift; sourceTree = "<group>"; };
 		832FFC301CC9C3CD00F2E1EF /* ActionData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionData.swift; sourceTree = "<group>"; };
 		832FFC311CC9C3CD00F2E1EF /* BWXLCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BWXLCell.xib; sourceTree = "<group>"; };
+		832FFC341CCED80200F2E1EF /* AudioQuestionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioQuestionViewController.swift; sourceTree = "<group>"; };
 		833482F61CA2EF7E00A37B35 /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		8340ABF41CC7115400D0382F /* ChangePasswordRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordRequest.swift; sourceTree = "<group>"; };
 		8379B45B1CA4F02C00D4C605 /* Crypto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Crypto.swift; sourceTree = "<group>"; };
@@ -315,6 +317,7 @@
 				83AF043C1CB35D2000A37225 /* LoginViewController.swift */,
 				83C7D3881CB5F43400BC7285 /* TaskListViewController.swift */,
 				83B2BDEF1CC1C068007FAE91 /* BWORKTaskViewController.swift */,
+				832FFC341CCED80200F2E1EF /* AudioQuestionViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -589,6 +592,7 @@
 				832FFC2A1CC8805A00F2E1EF /* UIAppearance+Swift.m in Sources */,
 				83AF04271CADA02A00A37225 /* AccelerometerManager.swift in Sources */,
 				832FFC321CC9C3CD00F2E1EF /* ActionData.swift in Sources */,
+				832FFC351CCED80200F2E1EF /* AudioQuestionViewController.swift in Sources */,
 				83F98C3A1C923C3600E0B64B /* AppDelegate.swift in Sources */,
 				83E3DE881CA3A75F00EB5349 /* Configuration.swift in Sources */,
 				83E3DE8C1CA4600500EB5349 /* RegisterStudyRequest.swift in Sources */,
