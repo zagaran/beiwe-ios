@@ -16,9 +16,9 @@ class OnboardingManager : NSObject, ORKTaskViewControllerDelegate {
 
     var WelcomeStep: ORKStep {
         let instructionStep = ORKInstructionStep(identifier: "WelcomeStep")
-        instructionStep.image = UIImage(named: "AppIcon60x60")
-        instructionStep.title = "Welcome!";
-        instructionStep.text = "This is ResearchKit style consent form.  We are using it for onboarding/registration/consent.  We could also have custom content before this point (or intermixed)";
+        instructionStep.image = UIImage(named: "welcome-image")
+        instructionStep.title = "Welcome";
+        instructionStep.text = "Welcome to the Beiwe Study App! Please have your registration user id and password handy.  It should have been provided to you by your clinician.";
         return instructionStep;
     }
 
@@ -42,8 +42,8 @@ class OnboardingManager : NSObject, ORKTaskViewControllerDelegate {
         var steps = [ORKStep]();
 
         steps += [WelcomeStep];
-        steps += [SecondStep];
-        steps += [PreRegisterStep];
+        //steps += [SecondStep];
+        //steps += [PreRegisterStep];
         steps += [ORKWaitStep(identifier: "WaitForRegister")];
 
 
@@ -106,6 +106,7 @@ class OnboardingManager : NSObject, ORKTaskViewControllerDelegate {
             switch(identifier) {
                 case "WelcomeStep":
                     stepViewController.cancelButtonItem = nil;
+                    stepViewController.continueButtonTitle = "Register"
                 case "WaitForRegister":
                     let registerViewController = RegisterViewController();
                     registerViewController.dismiss = { [unowned self] didRegister in
