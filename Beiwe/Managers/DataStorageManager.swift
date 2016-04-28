@@ -10,6 +10,103 @@ import Foundation
 import Security
 import PromiseKit
 
+enum DataStorageErrors : ErrorType {
+    case CantCreateFile
+    case NotInitialized
+
+}
+class EncryptedStorage {
+
+    static let delimiter = ",";
+
+    let keyLength = 128;
+
+    var type: String;
+    var aesKey: NSData?;
+    var iv: NSData?
+    var publicKey: String;
+    var filename: NSURL;
+    var realFilename: NSURL
+    var patientId: String;
+    let queue: dispatch_queue_t
+    var currentData: NSMutableData = NSMutableData()
+    var hasData = false
+    var handle: NSFileHandle?
+    let fileManager = NSFileManager.defaultManager();
+
+
+    init(type: String, suffix: String, patientId: String, publicKey: String, moveOnClose: Bool = true) {
+        self.patientId = patientId;
+        self.publicKey = publicKey;
+        self.type = type;
+
+        queue = dispatch_queue_create("com.rocketfarm.beiwe.dataqueue." + type, nil)
+
+        let name = patientId + "_" + type + "_" + String(Int64(NSDate().timeIntervalSince1970 * 1000));
+        realFilename = DataStorageManager.currentDataDirectory().URLByAppendingPathComponent(name + suffix)
+        filename = NSURL(fileURLWithPath:  NSTemporaryDirectory()).URLByAppendingPathComponent(name + suffix)
+        aesKey = Crypto.sharedInstance.newAesKey(keyLength);
+        iv = Crypto.sharedInstance.randomBytes(16)
+
+    }
+
+    func open() -> Promise<Void> {
+        guard let aesKey = aesKey, iv = iv else {
+            return Promise(error: DataStorageErrors.NotInitialized)
+        }
+        return Promise().then(on: queue) {
+            if (!self.fileManager.createFileAtPath(self.filename.path!, contents: nil, attributes: nil)) {
+                return Promise(error: DataStorageErrors.CantCreateFile)
+            } else {
+                print("Create new enc file: \(self.filename)");
+            }
+            self.handle = try? NSFileHandle(forWritingToURL: self.filename)
+            let rsaLine = try Crypto.sharedInstance.base64ToBase64URL(SwiftyRSA.encryptString(Crypto.sharedInstance.base64ToBase64URL(aesKey.base64EncodedStringWithOptions([])), publicKeyId: PersistentPasswordManager.sharedInstance.publicKeyName(), padding: .None)) + "\n";
+            self.handle?.writeData(rsaLine.dataUsingEncoding(NSUTF8StringEncoding)!)
+            let ivHeader = Crypto.sharedInstance.base64ToBase64URL(iv.base64EncodedStringWithOptions([])) + ":"
+            self.handle?.writeData(ivHeader.dataUsingEncoding(NSUTF8StringEncoding)!)
+            return Promise()
+        }
+
+
+    }
+
+    func close() -> Promise<Void> {
+        return Promise().then(on: queue) {
+            return Promise()
+        }
+    }
+
+    func _write(data: NSData, len: Int) -> Promise<Int> {
+        if (len == 0) {
+            return Promise(0);
+        }
+        return Promise().then(on: queue) {
+            self.hasData = true
+            return Promise(len)
+        }
+
+    }
+
+    func write(data: NSData) -> Promise<Void> {
+        return Promise().then(on: queue) {
+            self.currentData.appendData(data)
+            // Only write multiples of 3, since we are base64 encoding and would otherwise end up with padding
+            let writeLen = (self.currentData.length / 3) * 3
+            return self._write(self.currentData, len: writeLen)
+            }.then(on: queue) { writeLen in
+                self.currentData.replaceBytesInRange(NSRange(0..<writeLen), withBytes: nil)
+        }
+    }
+
+    deinit {
+        if (handle != nil) {
+            handle?.closeFile()
+            handle = nil
+        }
+    }
+}
+
 class DataStorage {
 
     static let delimiter = ",";
@@ -24,28 +121,44 @@ class DataStorage {
     var publicKey: String;
     var hasData: Bool = false;
     var filename: NSURL?;
+    var realFilename: NSURL?
     var dataPoints = 0;
     var patientId: String;
     var bytesWritten = 0;
     var hasError = false;
     var noBuffer = false;
     var sanitize = false;
+    let moveOnClose: Bool
     let queue: dispatch_queue_t
 
 
-    init(type: String, headers: [String], patientId: String, publicKey: String) {
+    init(type: String, headers: [String], patientId: String, publicKey: String, moveOnClose: Bool = false) {
         self.patientId = patientId;
         self.publicKey = publicKey;
         self.type = type;
         self.headers = headers;
+        self.moveOnClose = moveOnClose
 
         queue = dispatch_queue_create("com.rocketfarm.beiwe.dataqueue." + type, nil)
         reset();
     }
 
     private func reset() {
+        if let filename = filename, realFilename = realFilename where moveOnClose == true && hasData == true {
+            do {
+                try NSFileManager.defaultManager().moveItemAtURL(filename, toURL: realFilename)
+                print("moved temp data file \(filename) to \(realFilename)");
+            } catch {
+                print("Error moving temp data \(filename) to \(realFilename)");
+            }
+        }
         let name = patientId + "_" + type + "_" + String(Int64(NSDate().timeIntervalSince1970 * 1000));
-        filename = DataStorageManager.currentDataDirectory().URLByAppendingPathComponent(name + DataStorageManager.dataFileSuffix) ;
+        realFilename = DataStorageManager.currentDataDirectory().URLByAppendingPathComponent(name + DataStorageManager.dataFileSuffix)
+        if (moveOnClose) {
+            filename = NSURL(fileURLWithPath:  NSTemporaryDirectory()).URLByAppendingPathComponent(name + DataStorageManager.dataFileSuffix) ;
+        } else {
+            filename = realFilename
+        }
         lines = [ ];
         dataPoints = 0;
         bytesWritten = 0;
@@ -132,6 +245,7 @@ class DataStorage {
                         }
                         fileHandle.seekToEndOfFile()
                         fileHandle.writeData(data)
+                        fileHandle.closeFile()
                         self.bytesWritten = self.bytesWritten + data.length;
                         print("Appended data to file: \(filename)");
                         if (self.bytesWritten > DataStorageManager.MAX_DATAFILE_SIZE) {
@@ -154,11 +268,13 @@ class DataStorage {
 
     func closeAndReset() -> Promise<Void> {
         return Promise().then(on: queue) {
+            var promise = Promise()
             if (self.hasData) {
-                self.flush();
+                promise = promise.then { return self.flush(); }
             }
-            self.reset();
-            return Promise()
+            return promise.then {
+                return self.reset()
+            }
         }
     }
 }

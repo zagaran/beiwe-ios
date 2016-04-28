@@ -57,7 +57,7 @@ class ConsentManager : NSObject, ORKTaskViewControllerDelegate {
         consentDocument = ORKConsentDocument()
         consentDocument.title = "Beiwe Consent"
 
-        let studyConsentSections = StudyManager.sharedInstance.currentStudy?.studySettings?.contentSections ?? [:];
+        let studyConsentSections = StudyManager.sharedInstance.currentStudy?.studySettings?.consentSections ?? [:];
 
 
         let overviewSection = ORKConsentSection(type: .Overview);

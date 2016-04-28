@@ -180,6 +180,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func checkPasswordAndLogin(password: String) -> Bool {
         if let storedPassword = PersistentPasswordManager.sharedInstance.passwordForStudy() where storedPassword.characters.count > 0 {
             if (password == storedPassword) {
+                ApiManager.sharedInstance.password = storedPassword;
                 isLoggedIn = true;
                 return true;
             }

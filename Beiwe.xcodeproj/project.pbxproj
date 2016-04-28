@@ -686,7 +686,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.rocketfarmstudios.kg.beiwe.kgint;
 				PRODUCT_NAME = "$(TARGET_NAME)${TARGET_NAME_SUFFIX}";
 				SWIFT_OBJC_BRIDGING_HEADER = "Beiwe-Bridging-Header.h";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TARGET_NAME_SUFFIX = Pre1;
 			};
 			name = "TestFlight KG";
@@ -790,7 +790,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)${TARGET_NAME_SUFFIX}";
 				SWIFT_OBJC_BRIDGING_HEADER = "Beiwe-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TARGET_NAME_SUFFIX = Dbg;
 			};
 			name = Debug;
@@ -808,7 +808,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.rocketfarmstudios.beiwe$(BUNDLE_ID_SUFFIX}";
 				PRODUCT_NAME = "$(TARGET_NAME)${TARGET_NAME_SUFFIX}";
 				SWIFT_OBJC_BRIDGING_HEADER = "Beiwe-Bridging-Header.h";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TARGET_NAME_SUFFIX = "";
 			};
 			name = Release;
@@ -873,7 +873,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.rocketfarmstudios.beiwe.tint;
 				PRODUCT_NAME = "$(TARGET_NAME)${TARGET_NAME_SUFFIX}";
 				SWIFT_OBJC_BRIDGING_HEADER = "Beiwe-Bridging-Header.h";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TARGET_NAME_SUFFIX = Int;
 			};
 			name = "TestFlight Internal";
@@ -938,7 +938,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.rocketfarmstudios.beiwe.text;
 				PRODUCT_NAME = "$(TARGET_NAME)${TARGET_NAME_SUFFIX}";
 				SWIFT_OBJC_BRIDGING_HEADER = "Beiwe-Bridging-Header.h";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TARGET_NAME_SUFFIX = Ext;
 			};
 			name = "TestFlight External";

@@ -44,12 +44,8 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Trash, target: self, action:  #selector(cancelButton))
 
         reset()
-        let dirPaths = NSSearchPathForDirectoriesInDomains(.CachesDirectory,
-                                                           .UserDomainMask, true)
 
-        let cacheDir = dirPaths[0]
-        filename = NSURL(fileURLWithPath: cacheDir).URLByAppendingPathComponent(NSUUID().UUIDString + ".mp4");
-
+        filename = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent(NSUUID().UUIDString + ".mp4")
 
         recordingSession = AVAudioSession.sharedInstance()
 
@@ -154,6 +150,7 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
     func startRecording() {
         let settings = [
             AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
+            AVEncoderBitRateKey: 64 * 1024,
             AVSampleRateKey: 44100.0,
             AVNumberOfChannelsKey: 1 as NSNumber,
             AVEncoderAudioQualityKey: AVAudioQuality.High.rawValue

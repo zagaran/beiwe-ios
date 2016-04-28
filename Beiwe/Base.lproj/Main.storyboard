@@ -70,7 +70,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fjW-53-3Zu" customClass="BWButton" customModule="Beiwe" customModuleProvider="target">
-                                <rect key="frame" x="20" y="207" width="38" height="30"/>
+                                <rect key="frame" x="20" y="212" width="38" height="30"/>
                                 <state key="normal" title="Login">
                                     <color key="titleColor" red="0.98823529409999999" green="1" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
@@ -83,7 +83,7 @@
                         <constraints>
                             <constraint firstItem="LYJ-Ie-QQT" firstAttribute="top" secondItem="Xz7-TR-GrZ" secondAttribute="bottom" constant="79" id="1J6-gR-VDq"/>
                             <constraint firstAttribute="leadingMargin" secondItem="LYJ-Ie-QQT" secondAttribute="leading" id="Jn5-xD-rNh"/>
-                            <constraint firstItem="fjW-53-3Zu" firstAttribute="top" secondItem="JHQ-4q-sZb" secondAttribute="bottom" constant="5" id="NV7-h3-AmZ"/>
+                            <constraint firstItem="fjW-53-3Zu" firstAttribute="top" secondItem="JHQ-4q-sZb" secondAttribute="bottom" constant="10" id="NV7-h3-AmZ"/>
                             <constraint firstItem="Xty-FT-nNE" firstAttribute="top" secondItem="Pqy-gE-5gW" secondAttribute="bottom" constant="86" id="TJr-jy-zap"/>
                             <constraint firstItem="fjW-53-3Zu" firstAttribute="leading" secondItem="JHQ-4q-sZb" secondAttribute="leading" id="Vt2-0y-iEo"/>
                             <constraint firstItem="Ysc-6U-fpb" firstAttribute="centerX" secondItem="Ro1-69-USY" secondAttribute="centerX" id="a54-ES-0Ob"/>
@@ -360,7 +360,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o2C-Hl-U4C" customClass="BWButton" customModule="Beiwe" customModuleProvider="target">
-                                <rect key="frame" x="290" y="257" width="20" height="22"/>
+                                <rect key="frame" x="293" y="257" width="14" height="22"/>
                                 <color key="tintColor" red="0.023529412224888802" green="0.19607843458652496" blue="0.19215686619281769" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" image="record"/>
                                 <connections>
@@ -375,20 +375,20 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Maximum Length 0 secs" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Shb-kd-O9W">
-                                <rect key="frame" x="206.5" y="211" width="187" height="21"/>
+                                <rect key="frame" x="206" y="211" width="187" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.98823529409999999" green="1" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 secs" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vKX-3q-Jmy">
-                                <rect key="frame" x="274.5" y="304" width="51" height="21"/>
+                                <rect key="frame" x="274" y="304" width="51" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.98823529409999999" green="1" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hCR-ge-r03" customClass="BWButton" customModule="Beiwe" customModuleProvider="target">
-                                <rect key="frame" x="268.5" y="340" width="63" height="30"/>
-                                <state key="normal" title="Rerecord"/>
+                                <rect key="frame" x="267" y="340" width="66" height="30"/>
+                                <state key="normal" title="re-record"/>
                                 <connections>
                                     <action selector="reRecordButtonPressed:" destination="3pR-tX-e0X" eventType="touchUpInside" id="l5Z-4r-XKl"/>
                                 </connections>
@@ -429,6 +429,6 @@
         <image name="ic-info" width="22" height="22"/>
         <image name="ic-user" width="22" height="22"/>
         <image name="phone" width="343" height="199"/>
-        <image name="record" width="20" height="20"/>
+        <image name="record" width="14" height="21"/>
     </resources>
 </document>

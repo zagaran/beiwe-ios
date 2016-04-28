@@ -41,7 +41,7 @@ class StudyManager {
 
     }
 
-    func startStudyDataServices() {
+    func setApiCredentials() {
         guard let currentStudy = currentStudy where gpsManager == nil else {
             return;
         }
@@ -50,6 +50,12 @@ class StudyManager {
         if let patientId = currentStudy.patientId {
             ApiManager.sharedInstance.patientId = patientId;
         }
+    }
+    func startStudyDataServices() {
+        if gpsManager != nil {
+            return;
+        }
+        setApiCredentials()
         DataStorageManager.sharedInstance.setCurrentStudy(self.currentStudy!);
         self.prepareDataServices();
     }
@@ -100,6 +106,7 @@ class StudyManager {
         guard let study = currentStudy, studySettings = study.studySettings else {
             return Promise(false);
         }
+        setApiCredentials()
         let currentTime: Int64 = Int64(NSDate().timeIntervalSince1970);
         study.nextUploadCheck = currentTime + studySettings.uploadDataFileFrequencySeconds;
         study.nextSurveyCheck = currentTime + studySettings.checkForNewSurveysFreqSeconds;

@@ -249,7 +249,7 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
         }
 
         let name = TrackingSurveyPresenter.surveyDataType + "_" + surveyId;
-        let dataFile = DataStorage(type: name, headers: TrackingSurveyPresenter.headers, patientId: patientId, publicKey: publicKey);
+        let dataFile = DataStorage(type: name, headers: TrackingSurveyPresenter.headers, patientId: patientId, publicKey: publicKey, moveOnClose: true);
         dataFile.sanitize = true;
 
         let numQuestions = survey.randomize ? min(survey.questions.count, survey.numberOfRandomQuestions ?? 999) : survey.questions.count;

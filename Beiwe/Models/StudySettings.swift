@@ -41,7 +41,7 @@ import ObjectMapper;
  
  */
 
-struct ContentSection: Mappable {
+struct ConsentSection: Mappable {
 
     var text: String = "";
     var more: String = "";
@@ -94,7 +94,7 @@ struct StudySettings : Mappable {
     var motionOffDurationSeconds = 300;
     var motionOnDurationSeconds = 0;
     var reachability = false;
-    var contentSections: [String:ContentSection] = [:];
+    var consentSections: [String:ConsentSection] = [:];
 
     init?(_ map: Map) {
 
@@ -138,7 +138,7 @@ struct StudySettings : Mappable {
         motionOffDurationSeconds       <- map["device_settings.devicemotion_off_duration_seconds"];
         motionOnDurationSeconds        <- map["device_settings.devicemotion_on_duration_seconds"];
         reachability                   <- map["device_settings.reachability"];
-        contentSections                <- map["device_settings.content_sections"]
+        consentSections                <- map["device_settings.consent_sections"]
     }
     
 }
