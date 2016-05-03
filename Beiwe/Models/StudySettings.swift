@@ -142,9 +142,9 @@ struct StudySettings : Mappable {
         motionOnDurationSeconds        <- map["device_settings.devicemotion_on_duration_seconds"];
         reachability                   <- map["device_settings.reachability"];
         consentSections                <- map["device_settings.consent_sections"]
-        audioSurveyType              <- map["audio_survey_type"]
-        audioSampleRate                    <- map["sample_rate"]
-        audioBitrate                       <- map["bit_rate"]
+        audioSurveyType              <- map["device_settings.audio_survey_type"]
+        audioSampleRate                    <- map["device_settings.sample_rate"]
+        audioBitrate                       <- map["device_settings.bit_rate"]
     }
     
 }
