@@ -80,7 +80,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds);
         self.window?.rootViewController = UIStoryboard(name: "LaunchScreen", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("launchScreen");
         /* Gradient background so we can use "clear" RK views */
-        //self.window?.insertSubview(GradientView(frame: UIScreen.mainScreen().bounds), atIndex: 0)
+        /*
+        let backView = GradientView(frame: UIScreen.mainScreen().bounds)
+        backView.topColor = AppColors.gradientBottom
+        backView.bottomColor = UIColor.whiteColor()
+        self.window?.insertSubview(backView, atIndex: 0)
+        */
 
         self.window!.makeKeyAndVisible()
 
