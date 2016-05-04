@@ -65,7 +65,6 @@
 		83F98C3A1C923C3600E0B64B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F98C391C923C3600E0B64B /* AppDelegate.swift */; };
 		83F98C3F1C923C3600E0B64B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83F98C3D1C923C3600E0B64B /* Main.storyboard */; };
 		83F98C441C923C3600E0B64B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83F98C421C923C3600E0B64B /* LaunchScreen.storyboard */; };
-		83FDCFD61CBC877700AFF716 /* AudioSurveyPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FDCFD51CBC877700AFF716 /* AudioSurveyPresenter.swift */; };
 		83FDCFD81CBC8E4700AFF716 /* TrackingSurveyPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FDCFD71CBC8E4700AFF716 /* TrackingSurveyPresenter.swift */; };
 		83FDCFDA1CBCB6D300AFF716 /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FDCFD91CBCB6D300AFF716 /* ChangePasswordViewController.swift */; };
 /* End PBXBuildFile section */
@@ -144,7 +143,6 @@
 		83F98C3E1C923C3600E0B64B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		83F98C431C923C3600E0B64B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		83F98C451C923C3600E0B64B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		83FDCFD51CBC877700AFF716 /* AudioSurveyPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioSurveyPresenter.swift; sourceTree = "<group>"; };
 		83FDCFD71CBC8E4700AFF716 /* TrackingSurveyPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingSurveyPresenter.swift; sourceTree = "<group>"; };
 		83FDCFD91CBCB6D300AFF716 /* ChangePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewController.swift; sourceTree = "<group>"; };
 		FE647F058DAEF095F0138E0E /* Pods.testflight external.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods.testflight external.xcconfig"; path = "Pods/Target Support Files/Pods/Pods.testflight external.xcconfig"; sourceTree = "<group>"; };
@@ -311,7 +309,6 @@
 				832FFC2E1CC9C30E00F2E1EF /* BWXLAction.swift */,
 				83FDCFD91CBCB6D300AFF716 /* ChangePasswordViewController.swift */,
 				83FDCFD71CBC8E4700AFF716 /* TrackingSurveyPresenter.swift */,
-				83FDCFD51CBC877700AFF716 /* AudioSurveyPresenter.swift */,
 				833482F61CA2EF7E00A37B35 /* RegisterViewController.swift */,
 				83AF04201CACC1C900A37225 /* MainViewController.swift */,
 				83AF043C1CB35D2000A37225 /* LoginViewController.swift */,
@@ -572,7 +569,6 @@
 				83B4D6771CAA05E0001BF283 /* Recline.swift in Sources */,
 				83C7D3841CB5943B00BC7285 /* BWTextButton.m in Sources */,
 				83B2BDF71CC1DCBA007FAE91 /* BWORKScaleAnswerFormat.swift in Sources */,
-				83FDCFD61CBC877700AFF716 /* AudioSurveyPresenter.swift in Sources */,
 				83C295F41CB831330016DD95 /* GenericSurveyQuestion.swift in Sources */,
 				83AF043B1CB3451A00A37225 /* OnboardingManager.swift in Sources */,
 				83AF043D1CB35D2000A37225 /* LoginViewController.swift in Sources */,

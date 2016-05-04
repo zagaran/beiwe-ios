@@ -137,7 +137,7 @@ class StudyManager {
 
                 if let enumerator = enumerator {
                     while let filename = enumerator.nextObject() as? String {
-                        if (filename.hasSuffix(DataStorageManager.dataFileSuffix)) {
+                        if (true /*filename.hasSuffix(DataStorageManager.dataFileSuffix)*/) {
                             let filePath = DataStorageManager.uploadDataDirectory().URLByAppendingPathComponent(filename);
                             try fileManager.removeItemAtURL(filePath);
                         }
@@ -148,7 +148,7 @@ class StudyManager {
 
                 if let enumerator = enumerator {
                     while let filename = enumerator.nextObject() as? String {
-                        if (filename.hasSuffix(DataStorageManager.dataFileSuffix)) {
+                        if (true /* filename.hasSuffix(DataStorageManager.dataFileSuffix) */) {
                             let filePath = DataStorageManager.currentDataDirectory().URLByAppendingPathComponent(filename);
                             try fileManager.removeItemAtURL(filePath);
                         }
@@ -449,7 +449,7 @@ class StudyManager {
 
         if let enumerator = enumerator {
             while let filename = enumerator.nextObject() as? String {
-                if (filename.hasSuffix(DataStorageManager.dataFileSuffix)) {
+                if (DataStorageManager.sharedInstance.isUploadFile(filename)) {
                     let filePath = DataStorageManager.uploadDataDirectory().URLByAppendingPathComponent(filename);
                     let uploadRequest = UploadRequest(fileName: filename, filePath: filePath.path!);
                     let promise: Promise<Bool> =

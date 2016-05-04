@@ -9,6 +9,9 @@
 import Foundation
 import ObjectMapper
 
+enum BWErrors : ErrorType {
+    case IOError
+}
 func delay(delay:Double, closure:()->()) {
     dispatch_after(
         dispatch_time(

@@ -8,6 +8,8 @@
 
 import UIKit
 import AVFoundation
+import PKHUD
+import PromiseKit
 
 
 class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDelegate {
@@ -27,6 +29,8 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
     var state: AudioState = .Initial
     var timer: NSTimer?
     var currentLength: Double = 0
+    var suffix = ".mp4"
+    let OUTPUT_CHUNK_SIZE = 128 * 1024
 
     @IBOutlet weak var maxLengthLabel: UILabel!
     @IBOutlet weak var currentLengthLabel: UILabel!
@@ -208,10 +212,62 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
             stopPlaying()
         }
     }
+
+    func writeSomeData(handle: NSFileHandle, encFile: EncryptedStorage) -> Promise<Void> {
+        return Promise().then(on: dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND , 0)) {
+            let data: NSData = handle.readDataOfLength(self.OUTPUT_CHUNK_SIZE)
+            if (data.length > 0) {
+                return encFile.write(data, writeLen: data.length).then {
+                    return self.writeSomeData(handle, encFile: encFile)
+                }
+            }
+            /* We're done... */
+            return encFile.close()
+        }
+
+    }
+
+    func saveEncryptedAudio() -> Promise<Void> {
+        if let study = StudyManager.sharedInstance.currentStudy {
+            var fileHandle: NSFileHandle
+            do {
+                fileHandle = try NSFileHandle(forReadingFromURL: filename)
+            } catch {
+                return Promise<Void>(error: BWErrors.IOError)
+            }
+            let encFile = EncryptedStorage(type: "voiceRecording", suffix: suffix, patientId: study.patientId!, publicKey: PersistentPasswordManager.sharedInstance.publicKeyName())
+            return encFile.open().then {
+                return self.writeSomeData(fileHandle, encFile: encFile)
+            }.always {
+                fileHandle.closeFile()
+            }
+        } else {
+            return Promise<Void>(error: BWErrors.IOError)
+        }
+        /*
+        return Promise<Void> { fulfill, reject in
+            let is: NSInputStream? = NSInputStream(URL: self.filename)
+            if (!)
+        }
+        */
+    }
     @IBAction func saveButtonPressed(sender: AnyObject) {
-        activeSurvey.isComplete = true;
-        StudyManager.sharedInstance.updateActiveSurveys(true);
-        cleanupAndDismiss()
+        PKHUD.sharedHUD.dimsBackground = true;
+        PKHUD.sharedHUD.userInteractionOnUnderlyingViewsEnabled = false;
+
+        HUD.show(.LabeledProgress(title: "Saving", subtitle: ""))
+
+        return saveEncryptedAudio().then { _ -> Void in
+            HUD.flash(.Success, delay: 0.5)
+            self.cleanupAndDismiss()
+        }.onError { _ in
+            HUD.flash(.LabeledError(title: "Error Saving", subtitle: "Audio answer not sent"), delay: 2.0) { finished in
+                self.cleanupAndDismiss()
+            }
+        }
+
+        //activeSurvey.isComplete = true;
+        //StudyManager.sharedInstance.updateActiveSurveys(true);
     }
 
     func updateRecordButton() {
