@@ -135,7 +135,6 @@ class ConsentManager : NSObject, ORKTaskViewControllerDelegate {
         //let waitForPermissionRule = WaitForPermissionsRule(coder: NSCoder())
         //task.setNavigationRule(waitForPermissionRule!, forTriggerStepIdentifier: StepIds.WaitForPermissions.rawValue)
         task.setNavigationRule(WaitForPermissionsRule() { [weak self] taskResult -> String in
-            print("In nextTask check: \(taskResult)")
             if (self?.pscope.statusLocationAlways() == .Authorized) {
                 return StepIds.VisualConsent.rawValue
             } else {
