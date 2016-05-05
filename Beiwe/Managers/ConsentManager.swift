@@ -10,15 +10,33 @@ import Foundation
 import ResearchKit
 import PermissionScope
 
+
+enum StepIds : String {
+    case Permission = "PermissionsStep"
+    case WaitForPermissions = "WaitForPermissions"
+    case WarningStep = "WarningStep"
+    case VisualConsent = "VisualConsentStep"
+    case ConsentReview = "ConsentReviewStep"
+}
+
+class WaitForPermissionsRule : ORKStepNavigationRule {
+    let nextTask: ((ORKTaskResult) -> String)
+    init(nextTask: ((taskResult: ORKTaskResult) -> String)) {
+        self.nextTask = nextTask
+
+        super.init(coder: NSCoder())!
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    override func identifierForDestinationStepWithTaskResult(taskResult: ORKTaskResult)  -> String {
+        return self.nextTask(taskResult)
+    }
+}
+
 class ConsentManager : NSObject, ORKTaskViewControllerDelegate {
 
-    enum StepIds : String {
-        case Permission = "PermissionsStep"
-        case WaitForPermissions = "WaitForPermissions"
-        case WarningStep = "WarningStep"
-        case VisualConsent = "VisualConsentStep"
-        case ConsentReview = "ConsentReviewStep"
-    }
     let pscope = AppDelegate.sharedInstance().pscope;
     var retainSelf: AnyObject?;
     var consentViewController: ORKTaskViewController!;
@@ -113,7 +131,18 @@ class ConsentManager : NSObject, ORKTaskViewControllerDelegate {
             steps += [reviewConsentStep]
         }
 
-        let task = ORKOrderedTask(identifier: "ConsentTask", steps: steps)
+        let task = ORKNavigableOrderedTask(identifier: "ConsentTask", steps: steps)
+        //let waitForPermissionRule = WaitForPermissionsRule(coder: NSCoder())
+        //task.setNavigationRule(waitForPermissionRule!, forTriggerStepIdentifier: StepIds.WaitForPermissions.rawValue)
+        task.setNavigationRule(WaitForPermissionsRule() { [weak self] taskResult -> String in
+            print("In nextTask check: \(taskResult)")
+            if (self?.pscope.statusLocationAlways() == .Authorized) {
+                return StepIds.VisualConsent.rawValue
+            } else {
+                return StepIds.WarningStep.rawValue
+            }
+
+            }, forTriggerStepIdentifier: StepIds.WaitForPermissions.rawValue)
         consentViewController = ORKTaskViewController(task: task, taskRunUUID: nil);
         consentViewController.showsProgressInNavigationBar = false;
         consentViewController.delegate = self;
