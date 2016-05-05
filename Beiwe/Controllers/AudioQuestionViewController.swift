@@ -25,7 +25,7 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
     var recordingSession: AVAudioSession!
     var recorder: AVAudioRecorder?
     var player: AVAudioPlayer?
-    var filename: NSURL!
+    var filename: NSURL?
     var state: AudioState = .Initial
     var timer: NSTimer?
     var currentLength: Double = 0
@@ -48,8 +48,6 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Trash, target: self, action:  #selector(cancelButton))
 
         reset()
-
-        filename = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent(NSUUID().UUIDString + ".mp4")
 
         recordingSession = AVAudioSession.sharedInstance()
 
@@ -83,9 +81,12 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
     }
 
     func cleanupAndDismiss() {
-        do {
-            try NSFileManager.defaultManager().removeItemAtURL(filename)
-        } catch { }
+        if let filename = filename {
+            do {
+                try NSFileManager.defaultManager().removeItemAtURL(filename)
+            } catch { }
+            self.filename = nil
+        }
         recorder?.delegate = nil
         player?.delegate = nil
         recorder?.stop()
@@ -152,17 +153,39 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
         updateLengthLabel()
     }
     func startRecording() {
-        let settings = [
-            AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
-            AVEncoderBitRateKey: 64 * 1024,
-            AVSampleRateKey: 44100.0,
-            AVNumberOfChannelsKey: 1 as NSNumber,
-            AVEncoderAudioQualityKey: AVAudioQuality.High.rawValue
-        ]
+        var settings: [String: AnyObject];
+        let format = StudyManager.sharedInstance.currentStudy?.studySettings?.audioSurveyType ?? "compressed"
+        let bitrate = StudyManager.sharedInstance.currentStudy?.studySettings?.audioBitrate ?? 64
+        let samplerate = StudyManager.sharedInstance.currentStudy?.studySettings?.audioSampleRate ?? 44100
+
+        if (format == "compressed") {
+            self.suffix = ".mp4"
+            settings = [
+                AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
+                AVEncoderBitRateKey: bitrate * 1024,
+                AVSampleRateKey: Double(samplerate),
+                AVNumberOfChannelsKey: 1 as NSNumber,
+                AVEncoderAudioQualityKey: AVAudioQuality.High.rawValue
+            ]
+        } else if (format == "raw") {
+            self.suffix = ".wav"
+            settings = [
+                AVFormatIDKey: Int(kAudioFormatLinearPCM),
+                //AVEncoderBitRateKey: bitrate * 1024,
+                AVSampleRateKey: Double(samplerate),
+                AVNumberOfChannelsKey: 1 as NSNumber,
+                AVEncoderAudioQualityKey: AVAudioQuality.High.rawValue
+            ]
+        } else {
+            return fail()
+        }
+
+
+        filename = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent(NSUUID().UUIDString + suffix)
 
         do {
             // 5
-            recorder = try AVAudioRecorder(URL: filename, settings: settings)
+            recorder = try AVAudioRecorder(URL: filename!, settings: settings)
             recorder?.delegate = self
             recorder?.record()
             state = .Recording
@@ -231,7 +254,7 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
         if let study = StudyManager.sharedInstance.currentStudy {
             var fileHandle: NSFileHandle
             do {
-                fileHandle = try NSFileHandle(forReadingFromURL: filename)
+                fileHandle = try NSFileHandle(forReadingFromURL: filename!)
             } catch {
                 return Promise<Void>(error: BWErrors.IOError)
             }
@@ -258,6 +281,8 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
         HUD.show(.LabeledProgress(title: "Saving", subtitle: ""))
 
         return saveEncryptedAudio().then { _ -> Void in
+            self.activeSurvey.isComplete = true;
+            StudyManager.sharedInstance.updateActiveSurveys(true);
             HUD.flash(.Success, delay: 0.5)
             self.cleanupAndDismiss()
         }.onError { _ in
@@ -266,8 +291,6 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
             }
         }
 
-        //activeSurvey.isComplete = true;
-        //StudyManager.sharedInstance.updateActiveSurveys(true);
     }
 
     func updateRecordButton() {
@@ -290,13 +313,14 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
         if let timer = timer {
             timer.invalidate();
         }
+        filename = nil
         player = nil
         recorder = nil
         state = .Initial
         saveButton.enabled = false
         reRecordButton.hidden = true
         maxLen = StudyManager.sharedInstance.currentStudy?.studySettings?.voiceRecordingMaxLengthSeconds ?? 60
-        maxLen = 5
+        //maxLen = 5
         maxLengthLabel.text = "Maximum length \(maxLen) seconds"
         currentLengthLabel.hidden = true
         updateRecordButton()
@@ -320,7 +344,7 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
             saveButton.enabled = true
             reRecordButton.hidden = false
             do {
-                player = try AVAudioPlayer(contentsOfURL: filename)
+                player = try AVAudioPlayer(contentsOfURL: filename!)
                 player?.delegate = self
             } catch {
                 reset()

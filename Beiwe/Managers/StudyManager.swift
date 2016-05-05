@@ -429,9 +429,6 @@ class StudyManager {
 
         print("Checking for uploads...");
 
-        let fileManager = NSFileManager.defaultManager()
-        let enumerator = fileManager.enumeratorAtPath(DataStorageManager.uploadDataDirectory().path!);
-
         var promiseChain: Promise<Bool>
         if (surveysOnly) {
             promiseChain = Promise(true);
@@ -447,32 +444,38 @@ class StudyManager {
 
         var numFiles = 0;
 
-        if let enumerator = enumerator {
-            while let filename = enumerator.nextObject() as? String {
-                if (DataStorageManager.sharedInstance.isUploadFile(filename)) {
-                    let filePath = DataStorageManager.uploadDataDirectory().URLByAppendingPathComponent(filename);
-                    let uploadRequest = UploadRequest(fileName: filename, filePath: filePath.path!);
-                    let promise: Promise<Bool> =
-                        //ApiManager.sharedInstance.makePostRequest(uploadRequest).then { _ -> Promise<Bool> in
-                        //ApiManager.sharedInstance.makeUploadRequest(uploadRequest, file: filePath).then { _ -> Promise<Bool> in
-
-                        ApiManager.sharedInstance.makeMultipartUploadRequest(uploadRequest, file: filePath).then { _ -> Promise<Bool> in
-                        print("Finished uploading: \(filename), removing.");
-                        try fileManager.removeItemAtURL(filePath);
-                        return Promise(true);
-                    }
-                    promiseChain = promiseChain.then {_ in 
-                        return promise;
-                    }
-                    numFiles = numFiles + 1;
-                    //promises.append(promise);
-                }
-            }
-        }
-
         isUploading = true;
 
-        promiseChain.then { results -> Void in
+        return promiseChain.then { _ -> Promise<Bool> in
+            let fileManager = NSFileManager.defaultManager()
+            let enumerator = fileManager.enumeratorAtPath(DataStorageManager.uploadDataDirectory().path!);
+            
+
+            var uploadChain = Promise<Bool>(true)
+            if let enumerator = enumerator {
+                while let filename = enumerator.nextObject() as? String {
+                    if (DataStorageManager.sharedInstance.isUploadFile(filename)) {
+                        let filePath = DataStorageManager.uploadDataDirectory().URLByAppendingPathComponent(filename);
+                        let uploadRequest = UploadRequest(fileName: filename, filePath: filePath.path!);
+                        let promise: Promise<Bool> =
+                            //ApiManager.sharedInstance.makePostRequest(uploadRequest).then { _ -> Promise<Bool> in
+                            //ApiManager.sharedInstance.makeUploadRequest(uploadRequest, file: filePath).then { _ -> Promise<Bool> in
+
+                            ApiManager.sharedInstance.makeMultipartUploadRequest(uploadRequest, file: filePath).then { _ -> Promise<Bool> in
+                            print("Finished uploading: \(filename), removing.");
+                            try fileManager.removeItemAtURL(filePath);
+                            return Promise(true);
+                        }
+                        uploadChain = uploadChain.then {_ in
+                            return promise;
+                        }
+                        numFiles = numFiles + 1;
+                        //promises.append(promise);
+                    }
+                }
+            }
+            return uploadChain
+        }.then { results -> Void in
             print("OK uploading \(numFiles). \(results)");
             self.isUploading = false;
             }.error { error in

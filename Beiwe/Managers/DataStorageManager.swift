@@ -94,7 +94,10 @@ class EncryptedStorage {
         }
         return Promise().then(on: queue) {
             self.hasData = true
-            self.handle?.writeData(data)
+            let dataToWriteBuffer = UnsafeMutablePointer<Void>(data.bytes)
+            let dataToWrite = NSData(bytesNoCopy: dataToWriteBuffer, length: len, freeWhenDone: false)
+            let encodedData: String = Crypto.sharedInstance.base64ToBase64URL(dataToWrite.base64EncodedStringWithOptions([]))
+            self.handle?.writeData(encodedData.dataUsingEncoding(NSUTF8StringEncoding)!)
             return Promise(len)
         }
 
@@ -117,19 +120,32 @@ class EncryptedStorage {
                     let bufferOut = UnsafeMutablePointer<Void>.alloc(encryptLen)
                     var byteCount: Int = 0
                     self.sc.final(bufferOut, byteCapacityOut: encryptLen, byteCountOut: &byteCount)
-                    self.currentData.appendData(NSData(bytesNoCopy: bufferOut, length: byteCount))
+                    let finalData = NSData(bytesNoCopy: bufferOut, length: byteCount);
+
+                    let count = finalData.length / sizeof(UInt8)
+
+                    // create array of appropriate length:
+                    var array = [UInt8](count: count, repeatedValue: 0)
+
+                    // copy bytes into array
+                    finalData.getBytes(&array, length:count * sizeof(UInt8))
+
+                    print(array)
+
+
+                    self.currentData.appendData(finalData)
                 }
             }
             // Only write multiples of 3, since we are base64 encoding and would otherwise end up with padding
-            var writeLen: Int
+            var evenLength: Int
             if (isFlush) {
-                writeLen = self.currentData.length
+                evenLength = self.currentData.length
             } else {
-                writeLen = (self.currentData.length / 3) * 3
+                evenLength = (self.currentData.length / 3) * 3
             }
-            return self._write(self.currentData, len: writeLen)
-            }.then(on: queue) { writeLen in
-                self.currentData.replaceBytesInRange(NSRange(0..<writeLen), withBytes: nil, length: 0)
+            return self._write(self.currentData, len: evenLength)
+            }.then(on: queue) { evenLength in
+                self.currentData.replaceBytesInRange(NSRange(0..<evenLength), withBytes: nil, length: 0)
         }
     }
 
