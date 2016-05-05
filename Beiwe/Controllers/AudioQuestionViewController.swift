@@ -285,7 +285,7 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
             StudyManager.sharedInstance.updateActiveSurveys(true);
             HUD.flash(.Success, delay: 0.5)
             self.cleanupAndDismiss()
-        }.onError { _ in
+        }.error { _ in
             HUD.flash(.LabeledError(title: "Error Saving", subtitle: "Audio answer not sent"), delay: 2.0) { finished in
                 self.cleanupAndDismiss()
             }
