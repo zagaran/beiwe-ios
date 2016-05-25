@@ -294,6 +294,7 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
     }
 
     func updateRecordButton() {
+        /*
         var imageName: String;
         switch(state) {
         case .Initial:
@@ -308,6 +309,20 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
         recordPlayButton.setImage(image, forState: .Highlighted)
         recordPlayButton.setImage(image, forState: .Normal)
         recordPlayButton.setImage(image, forState: .Disabled)
+        */
+        var text: String
+        switch(state) {
+        case .Initial:
+            text = "Record"
+        case .Playing, .Recording:
+            text = "Stop"
+        case .Recorded:
+            text = "Play"
+        }
+        recordPlayButton.setTitle(text, forState: .Highlighted)
+        recordPlayButton.setTitle(text, forState: .Normal)
+        recordPlayButton.setTitle(text, forState: .Disabled)
+
     }
     func reset() {
         if let timer = timer {
