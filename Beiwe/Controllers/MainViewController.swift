@@ -215,7 +215,7 @@ class MainViewController: UIViewController {
     @IBAction func callClinician(sender: AnyObject) {
         // Present modal...
 
-        confirmAndCallClinician();
+        confirmAndCallClinician(self);
     }
 
     @IBAction func checkSurveys(sender: AnyObject) {
