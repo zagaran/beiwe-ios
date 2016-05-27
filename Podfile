@@ -2,10 +2,7 @@ use_frameworks!
 platform :ios, '8.0'
 pod 'Crashlytics', '~> 3.4'
 pod 'KeychainSwift', '~> 3.0'
-#pod "PromiseKit", "~> 3.1.1"
-pod 'PromiseKit',
-    :git => 'git@github.com:rad3ks/PromiseKit.git',
-    :branch => 'bug/415'
+pod "PromiseKit", "~> 3.1.1"
 pod 'Alamofire', '~> 3.0'
 pod 'ObjectMapper', '~> 1.1'
 pod 'Eureka', '~> 1.5'
@@ -19,3 +16,12 @@ pod 'EmitterKit', '~> 4.0'
 pod 'PermissionScope'
 pod 'Hakuba'
 pod 'XLActionController'
+
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    next unless (target.name == 'PromiseKit')
+    target.build_configurations.each do |config|
+      config.build_settings['SWIFT_OPTIMIZATION_LEVEL'] = '-Onone'
+    end
+  end
+end

@@ -293,53 +293,54 @@ class StudyManager {
                     print("Added survey \(id), expires: \(NSDate(timeIntervalSince1970: study.activeSurveys[id]!.expires))");
                     surveyDataModified = true;
                 }
-                let activeSurvey = study.activeSurveys[id]!;
-                if (activeSurvey.isComplete && activeSurvey.expires <= currentTime && activeSurvey.expires > 0) {
-                    activeSurvey.reset();
-                    activeSurvey.received = activeSurvey.expires;
-                    let trackingSurvey: TrackingSurveyPresenter = TrackingSurveyPresenter(surveyId: id, activeSurvey: activeSurvey, survey: survey)
-                    trackingSurvey.addTimingsEvent("notified", question: nil)
+                if let activeSurvey = study.activeSurveys[id] {
+                    if (activeSurvey.isComplete && activeSurvey.expires <= currentTime && activeSurvey.expires > 0) {
+                        activeSurvey.reset();
+                        activeSurvey.received = activeSurvey.expires;
+                        let trackingSurvey: TrackingSurveyPresenter = TrackingSurveyPresenter(surveyId: id, activeSurvey: activeSurvey, survey: survey)
+                        trackingSurvey.addTimingsEvent("notified", question: nil)
 
-                    surveyDataModified = true;
+                        surveyDataModified = true;
 
-                    /* Local notification goes here */
+                        /* Local notification goes here */
 
-                    if let surveyType = survey.surveyType {
-                        switch (surveyType) {
-                        case .AudioSurvey:
-                            currentStudy?.receivedAudioSurveys = (currentStudy?.receivedAudioSurveys ?? 0) + 1;
-                        case .TrackingSurvey:
-                            currentStudy?.receivedTrackingSurveys = (currentStudy?.receivedTrackingSurveys ?? 0) + 1;
-                            
+                        if let surveyType = survey.surveyType {
+                            switch (surveyType) {
+                            case .AudioSurvey:
+                                currentStudy?.receivedAudioSurveys = (currentStudy?.receivedAudioSurveys ?? 0) + 1;
+                            case .TrackingSurvey:
+                                currentStudy?.receivedTrackingSurveys = (currentStudy?.receivedTrackingSurveys ?? 0) + 1;
+                                
+                            }
+
+                            let localNotif = UILocalNotification();
+                            localNotif.fireDate = currentDate;
+
+                            var body: String;
+                            switch(surveyType) {
+                            case .TrackingSurvey:
+                                body = "A new survey has arrived and is awaiting completion."
+                            case .AudioSurvey:
+                                body = "A new audio question has arrived and is awaiting completion."
+                            }
+
+                            localNotif.alertBody = body;
+                            localNotif.soundName = UILocalNotificationDefaultSoundName;
+                            localNotif.userInfo = [
+                                "type": "survey",
+                                "survey_type": surveyType.rawValue,
+                                "survey_id": id
+                            ];
+                            UIApplication.sharedApplication().scheduleLocalNotification(localNotif);
+                            activeSurvey.notification = localNotif;
+
                         }
-
-                        let localNotif = UILocalNotification();
-                        localNotif.fireDate = currentDate;
-
-                        var body: String;
-                        switch(surveyType) {
-                        case .TrackingSurvey:
-                            body = "A new survey has arrived and is awaiting completion."
-                        case .AudioSurvey:
-                            body = "A new audio question has arrived and is awaiting completion."
-                        }
-
-                        localNotif.alertBody = body;
-                        localNotif.soundName = UILocalNotificationDefaultSoundName;
-                        localNotif.userInfo = [
-                            "type": "survey",
-                            "survey_type": surveyType.rawValue,
-                            "survey_id": id
-                        ];
-                        UIApplication.sharedApplication().scheduleLocalNotification(localNotif);
-                        activeSurvey.notification = localNotif;
 
                     }
-
-                }
-                if (activeSurvey.expires != next) {
-                    activeSurvey.expires = next;
-                    surveyDataModified = true;
+                    if (activeSurvey.expires != next) {
+                        activeSurvey.expires = next;
+                        surveyDataModified = true;
+                    }
                 }
             }
         }
