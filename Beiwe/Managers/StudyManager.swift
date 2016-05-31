@@ -129,6 +129,9 @@ class StudyManager {
         } else {
             promise = Promise();
         }
+
+
+        UIApplication.sharedApplication().cancelAllLocalNotifications()
         return promise.then {
             self.gpsManager = nil;
             return Recline.shared.purge(study).then { _ -> Promise<Bool> in
@@ -258,6 +261,8 @@ class StudyManager {
 
 
         var surveyDataModified = false;
+
+        /* For all active surveys that aren't complete, but have expired, submit them */
         for (id, activeSurvey) in study.activeSurveys {
             if (!activeSurvey.isComplete && activeSurvey.expires > 0 && activeSurvey.expires <= currentTime) {
                 print("ActiveSurvey \(id) expired.");
@@ -268,11 +273,15 @@ class StudyManager {
         }
 
         var allSurveyIds: [String] = [ ];
+        /* Now for each survey from the server, check on the scheduling */
         for survey in study.surveys {
             var next: Double = 0;
+            /* Find the next scheduled date that is >= now */
             outer: for day in 0..<7 {
                 let dayIdx = (day + currentDay) % 7;
-                for dayTime in survey.timings[dayIdx] {
+                let timings = survey.timings[dayIdx]
+                print("Timings: \(timings)")
+                for dayTime in timings {
                     let possibleNxt = dayBegin.dateByAddingTimeInterval((Double(day) * 24.0 * 60.0 * 60.0) + Double(dayTime)).timeIntervalSince1970;
                     if (possibleNxt > currentTime ) {
                         next = possibleNxt;
@@ -285,15 +294,18 @@ class StudyManager {
                     closestNextSurveyTime = min(closestNextSurveyTime, next);
                 }
                 allSurveyIds.append(id);
+                /* If we don't know about this survey already, add it in there */
                 if study.activeSurveys[id] == nil && (survey.triggerOnFirstDownload || next > 0) {
                     print("Adding survey  \(id) to active surveys");
                     study.activeSurveys[id] = ActiveSurvey(survey: survey);
+                    /* Schedule it for the next upcoming time, or immediately if triggerOnFirstDownload is true */
                     study.activeSurveys[id]?.expires = survey.triggerOnFirstDownload ? currentTime : next;
                     study.activeSurveys[id]?.isComplete = true;
                     print("Added survey \(id), expires: \(NSDate(timeIntervalSince1970: study.activeSurveys[id]!.expires))");
                     surveyDataModified = true;
                 }
                 if let activeSurvey = study.activeSurveys[id] {
+                    /* If it's complete (including surveys we force-completed above) and it's expired, it's time for the next one */
                     if (activeSurvey.isComplete && activeSurvey.expires <= currentTime && activeSurvey.expires > 0) {
                         activeSurvey.reset();
                         activeSurvey.received = activeSurvey.expires;
@@ -345,6 +357,8 @@ class StudyManager {
             }
         }
 
+
+        /* Set the badge, and remove surveys no longer on server from our active surveys list */
         var badgeCnt = 0;
         for (id, activeSurvey) in study.activeSurveys {
             if (activeSurvey.isComplete && !allSurveyIds.contains(id)) {
@@ -359,6 +373,7 @@ class StudyManager {
             }
         }
         print("Badge Cnt: \(badgeCnt)");
+        /*
         if (badgeCnt != study.lastBadgeCnt) {
             study.lastBadgeCnt = badgeCnt;
             surveyDataModified = true;
@@ -367,6 +382,8 @@ class StudyManager {
             localNotif.fireDate = currentDate;
             UIApplication.sharedApplication().scheduleLocalNotification(localNotif);
         }
+        */
+        UIApplication.sharedApplication().applicationIconBadgeNumber = badgeCnt
 
         if (surveyDataModified || forceSave) {
             surveysUpdatedEvent.emit();
