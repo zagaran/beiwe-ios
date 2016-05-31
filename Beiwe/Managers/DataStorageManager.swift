@@ -238,7 +238,7 @@ class DataStorage {
             if let encrypted = encrypted  {
                 lines.append(Crypto.sharedInstance.base64ToBase64URL(iv.base64EncodedStringWithOptions([])) + ":" + Crypto.sharedInstance.base64ToBase64URL(encrypted.base64EncodedStringWithOptions([])) + "\n")
                 if (lines.count >= flushLines) {
-                    flush();
+                    flush(false);
                 }
             }
         } else {
@@ -252,7 +252,7 @@ class DataStorage {
         dataPoints = dataPoints + 1;
         _writeLine(line);
         if (noBuffer) {
-            flush();
+            flush(false);
         }
     }
 
@@ -273,9 +273,12 @@ class DataStorage {
         }
     }
 
-    func flush() -> Promise<Void> {
+    func flush(reset: Bool = false) -> Promise<Void> {
         return Promise().then(on: queue) {
             if (!self.hasData || self.lines.count == 0) {
+                if (reset) {
+                    self.reset()
+                }
                 return Promise();
             }
             let data = self.lines.joinWithSeparator("").dataUsingEncoding(NSUTF8StringEncoding);
@@ -312,20 +315,15 @@ class DataStorage {
                 self.reset();
             }
             self.lines = [ ];
+            if (reset) {
+                self.reset()
+            }
             return Promise()
         }
     }
 
     func closeAndReset() -> Promise<Void> {
-        return Promise().then(on: queue) {
-            var promise = Promise()
-            if (self.hasData) {
-                promise = promise.then { return self.flush(); }
-            }
-            return promise.then {
-                return self.reset()
-            }
-        }
+        return flush(true)
     }
 }
 
@@ -391,7 +389,7 @@ class DataStorageManager {
     func closeStore(type: String) -> Promise<Void> {
         if let storage = storageTypes[type] {
             self.storageTypes.removeValueForKey(type);
-            return storage.flush();
+            return storage.flush(false);
         }
         return Promise();
     }
