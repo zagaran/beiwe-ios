@@ -140,9 +140,12 @@ class RegisterViewController: FormViewController {
                                 case ApiErrors.FailedStatus(let code):
                                     switch code {
                                     case 403, 401:
-                                        err = .LabeledError(title: "Registration failed", subtitle: "Incorrect UserID or Password");
+                                        err = .LabeledError(title: "Registration failed", subtitle: "Incorrect patient ID or Password");
                                     case 405:
                                         err = .Label("UserID already registered on another device.  Please contact your study administrator to unregister any previous devices that may have been used");
+                                        delay = 10.0;
+                                    case 400:
+                                        err = .Label("This device could not be registered under the provided patient ID.  Please contact your study administrator");
                                         delay = 10.0;
                                     default:
                                         err = .LabeledError(title: "Registration failed", subtitle: "Communication error");
