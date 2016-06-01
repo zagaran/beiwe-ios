@@ -245,6 +245,7 @@ class StudyManager {
     }
 
     func updateActiveSurveys(forceSave: Bool = false) -> NSTimeInterval {
+        print("Updating active surveys...")
         let currentDate = NSDate();
         let currentTime = currentDate.timeIntervalSince1970;
         let currentDay = calendar.component(.Weekday, fromDate: currentDate) - 1;
@@ -343,6 +344,7 @@ class StudyManager {
                                 "survey_type": surveyType.rawValue,
                                 "survey_id": id
                             ];
+                            print("Survey notif: \(body), \(localNotif.userInfo)")
                             UIApplication.sharedApplication().scheduleLocalNotification(localNotif);
                             activeSurvey.notification = localNotif;
 
