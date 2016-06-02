@@ -493,7 +493,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Fabric/run\" bd1fd4714dfa3611e3a300de6411aa10dbcbedf8 f329661d3a49a5b03432f774465bf86c6b4ab019817331674abb1d3a29a2faec";
+			shellScript = "\"${PODS_ROOT}/Fabric/run\" e39144f1f340beaea740ae45276af72b2f8d2708 61ae03d66f3516dcaa9f0ffaf3c9db9dc49037fdc0e38105a7f5a48ac0f466a1";
 		};
 		83F98C501C925F2500E0B64B /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -750,7 +750,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Jukka-Pekka Onnela (6M52R5C7FT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Jukka-Pekka Onnela (6M52R5C7FT)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -801,7 +802,7 @@
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Beiwe/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.rocketfarmstudios.beiwe$(BUNDLE_ID_SUFFIX}";
+				PRODUCT_BUNDLE_IDENTIFIER = lab.onnela.beiwe.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)${TARGET_NAME_SUFFIX}";
 				SWIFT_OBJC_BRIDGING_HEADER = "Beiwe-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = 1;
