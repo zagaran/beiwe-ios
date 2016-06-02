@@ -2,16 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>server-url
-&lt;plist version=&quot;1.0&quot;&gt;
-&lt;string&gt;https://rf-beiwe.herokuapp.com&lt;/string&gt;
-&lt;/plist&gt;
-&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;
-&lt;plist version=&quot;1.0&quot;&gt;
-&lt;string&gt;https://rf-beiwe.herokuapp.com&lt;/string&gt;
-&lt;/plist&gt;
-server-url</key>
-	<string>https://studies.beiwe.org</string>
+	<key>server-url</key>
+	<string>https://rf-beiwe.herokuapp.com</string>
 </dict>
 </plist>
