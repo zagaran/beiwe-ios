@@ -71,9 +71,9 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
             // Just need to put any old answer in here...
             activeSurvey.bwAnswers["A"] = "A"
             Recline.shared.save(study).then {_ in
-                print("Saved.");
-                }.error {_ in
-                    print("Error saving updated answers.");
+                log.info("Saved.");
+                }.error { e in
+                    log.error("Error saving updated answers: \(e)");
             }
         }
 
@@ -112,7 +112,6 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
 
 
             self.presentViewController(alertController, animated: true) {
-                print("Ok");
             }
 
         } else {
@@ -131,7 +130,6 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
         alertController.addAction(OKAction)
 
         self.presentViewController(alertController, animated: true) {
-            print("Ok");
         }
     }
 
@@ -194,7 +192,7 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
             currentLength = 0;
             timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: #selector(recordingTimer), userInfo: nil, repeats: true)
         } catch  let error as NSError{
-            print("Err: \(error)")
+            log.error("Err: \(error)")
             fail()
         }
         updateRecordButton()

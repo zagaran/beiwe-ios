@@ -225,7 +225,6 @@ class MainViewController: UIViewController {
         let alertController = UIAlertController(title: "Leave Study", message: "Are you sure you want to leave the current study?", preferredStyle: .Alert)
 
         let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
-            print("Cancelled leave.")
         }
         alertController.addAction(cancelAction)
 
@@ -238,7 +237,6 @@ class MainViewController: UIViewController {
         alertController.addAction(OKAction)
         
         self.presentViewController(alertController, animated: true) {
-            print("Ok");
         }
     }
 

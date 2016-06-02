@@ -10,6 +10,7 @@ import Foundation
 import PromiseKit
 import ReachabilitySwift
 import EmitterKit
+import Crashlytics
 
 class StudyManager {
     static let sharedInstance = StudyManager();
@@ -32,7 +33,10 @@ class StudyManager {
         return firstly { _ -> Promise<[Study]> in
             return Recline.shared.queryAll()
         }.then { studies -> Promise<Bool> in
-            print("All Studies: \(studies)")
+            if (studies.count > 1) {
+                log.error("Multiple Studies: \(studies)")
+                Crashlytics.sharedInstance().recordError(NSError(domain: "com.rf.beiwe.studies", code: 1, userInfo: nil))
+            }
             if (studies.count > 0) {
                 self.currentStudy = studies[0];
             }
@@ -112,15 +116,33 @@ class StudyManager {
         study.nextSurveyCheck = currentTime + studySettings.checkForNewSurveysFreqSeconds;
 
         study.participantConsented = true;
+        DataStorageManager.sharedInstance.setCurrentStudy(study)
         return Recline.shared.save(study).then { _ -> Promise<Bool> in
             return self.checkSurveys();
         }
     }
 
+    func purgeStudies() -> Promise<Bool> {
+        return firstly { _ -> Promise<[Study]> in
+            return Recline.shared.queryAll()
+            }.then { studies -> Promise<Bool> in
+                var promise = Promise<Bool>(true)
+                for study in studies {
+                    promise = promise.then { _ in
+                        return Recline.shared.purge(study)
+                    }
+                }
+                return promise
+        }
+    }
+
     func leaveStudy() -> Promise<Bool> {
+
+        /*
         guard let study = currentStudy else {
             return Promise(true);
         }
+        */
 
 
         var promise: Promise<Void>
@@ -134,7 +156,7 @@ class StudyManager {
         UIApplication.sharedApplication().cancelAllLocalNotifications()
         return promise.then {
             self.gpsManager = nil;
-            return Recline.shared.purge(study).then { _ -> Promise<Bool> in
+                return self.purgeStudies().then { _ -> Promise<Bool> in
                 let fileManager = NSFileManager.defaultManager()
                 var enumerator = fileManager.enumeratorAtPath(DataStorageManager.uploadDataDirectory().path!);
 
@@ -186,14 +208,14 @@ class StudyManager {
                     self.isHandlingPeriodic = false;
                     self.checkSurveys();
                     }.error { _ -> Void in
-                        print("Error checking for surveys");
+                        log.error("Error checking for surveys");
                 }
             }
             else if (currentTime > nextUpload) {
                 self.setNextUploadTime().then { _ -> Void in
                     self.upload();
                     }.error { _ -> Void in
-                        print("Error checking for uploades")
+                        log.error("Error checking for uploads")
                 }
             }
 
@@ -240,12 +262,14 @@ class StudyManager {
             return;
         }
 
+        log.info("Cancelling notification: \(notification.alertBody), \(notification.userInfo)")
+
         UIApplication.sharedApplication().cancelLocalNotification(notification);
         survey.notification = nil;
     }
 
     func updateActiveSurveys(forceSave: Bool = false) -> NSTimeInterval {
-        print("Updating active surveys...")
+        log.info("Updating active surveys...")
         let currentDate = NSDate();
         let currentTime = currentDate.timeIntervalSince1970;
         let currentDay = calendar.component(.Weekday, fromDate: currentDate) - 1;
@@ -266,7 +290,7 @@ class StudyManager {
         /* For all active surveys that aren't complete, but have expired, submit them */
         for (id, activeSurvey) in study.activeSurveys {
             if (!activeSurvey.isComplete && activeSurvey.expires > 0 && activeSurvey.expires <= currentTime) {
-                print("ActiveSurvey \(id) expired.");
+                log.info("ActiveSurvey \(id) expired.");
                 activeSurvey.isComplete = true;
                 surveyDataModified = true;
                 submitSurvey(activeSurvey);
@@ -280,8 +304,8 @@ class StudyManager {
             /* Find the next scheduled date that is >= now */
             outer: for day in 0..<7 {
                 let dayIdx = (day + currentDay) % 7;
-                let timings = survey.timings[dayIdx]
-                print("Timings: \(timings)")
+                let timings = survey.timings[dayIdx].sort()
+
                 for dayTime in timings {
                     let possibleNxt = dayBegin.dateByAddingTimeInterval((Double(day) * 24.0 * 60.0 * 60.0) + Double(dayTime)).timeIntervalSince1970;
                     if (possibleNxt > currentTime ) {
@@ -297,12 +321,12 @@ class StudyManager {
                 allSurveyIds.append(id);
                 /* If we don't know about this survey already, add it in there */
                 if study.activeSurveys[id] == nil && (survey.triggerOnFirstDownload || next > 0) {
-                    print("Adding survey  \(id) to active surveys");
+                    log.info("Adding survey  \(id) to active surveys");
                     study.activeSurveys[id] = ActiveSurvey(survey: survey);
                     /* Schedule it for the next upcoming time, or immediately if triggerOnFirstDownload is true */
                     study.activeSurveys[id]?.expires = survey.triggerOnFirstDownload ? currentTime : next;
                     study.activeSurveys[id]?.isComplete = true;
-                    print("Added survey \(id), expires: \(NSDate(timeIntervalSince1970: study.activeSurveys[id]!.expires))");
+                    log.info("Added survey \(id), expires: \(NSDate(timeIntervalSince1970: study.activeSurveys[id]!.expires))");
                     surveyDataModified = true;
                 }
                 if let activeSurvey = study.activeSurveys[id] {
@@ -344,7 +368,7 @@ class StudyManager {
                                 "survey_type": surveyType.rawValue,
                                 "survey_id": id
                             ];
-                            print("Survey notif: \(body), \(localNotif.userInfo)")
+                            log.info("Sending Survey notif: \(body), \(localNotif.userInfo)")
                             UIApplication.sharedApplication().scheduleLocalNotification(localNotif);
                             activeSurvey.notification = localNotif;
 
@@ -374,7 +398,7 @@ class StudyManager {
                 badgeCnt += 1;
             }
         }
-        print("Badge Cnt: \(badgeCnt)");
+        log.info("Badge Cnt: \(badgeCnt)");
         /*
         if (badgeCnt != study.lastBadgeCnt) {
             study.lastBadgeCnt = badgeCnt;
@@ -390,7 +414,7 @@ class StudyManager {
         if (surveyDataModified || forceSave) {
             surveysUpdatedEvent.emit();
             Recline.shared.save(study).error { _ in
-                print("Failed to save study after processing surveys");
+                log.error("Failed to save study after processing surveys");
             }
         }
 
@@ -401,13 +425,13 @@ class StudyManager {
         guard let study = currentStudy, studySettings = study.studySettings else {
             return Promise(false);
         }
-        print("Checking for surveys...");
+        log.info("Checking for surveys...");
         study.nextSurveyCheck = Int64(NSDate().timeIntervalSince1970) + studySettings.checkForNewSurveysFreqSeconds;
         return Recline.shared.save(study).then { _ -> Promise<([Survey], Int)> in
                 let surveyRequest = GetSurveysRequest();
                 return ApiManager.sharedInstance.arrayPostRequest(surveyRequest);
             }.then { (surveys, _) in
-                print("Surveys: \(surveys)");
+                log.info("Surveys: \(surveys)");
                 study.surveys = surveys;
                 return Recline.shared.save(study).asVoid();
             }.then {
@@ -447,7 +471,7 @@ class StudyManager {
             return;
         }
 
-        print("Checking for uploads...");
+        log.info("Checking for uploads...");
 
         var promiseChain: Promise<Bool>
         if (surveysOnly) {
@@ -482,7 +506,7 @@ class StudyManager {
                             //ApiManager.sharedInstance.makeUploadRequest(uploadRequest, file: filePath).then { _ -> Promise<Bool> in
 
                             ApiManager.sharedInstance.makeMultipartUploadRequest(uploadRequest, file: filePath).then { _ -> Promise<Bool> in
-                            print("Finished uploading: \(filename), removing.");
+                            log.info("Finished uploading: \(filename), removing.");
                             try fileManager.removeItemAtURL(filePath);
                             return Promise(true);
                         }
@@ -496,10 +520,10 @@ class StudyManager {
             }
             return uploadChain
         }.then { results -> Void in
-            print("OK uploading \(numFiles). \(results)");
+            log.info("OK uploading \(numFiles). \(results)");
             self.isUploading = false;
             }.error { error in
-                print("Error uploading: \(error)");
+                log.error("Error uploading: \(error)");
                 self.isUploading = false;
         }
     }

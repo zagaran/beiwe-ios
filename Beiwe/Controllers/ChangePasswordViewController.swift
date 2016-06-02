@@ -49,7 +49,6 @@ class ChangePasswordViewController: FormViewController {
                 .onCellSelection {
                     [unowned self] cell, row in
                     if (self.form.validateAll()) {
-                        print("Form validates, should register");
                         PKHUD.sharedHUD.dimsBackground = true;
                         PKHUD.sharedHUD.userInteractionOnUnderlyingViewsEnabled = false;
                         HUD.show(.Progress);
@@ -60,7 +59,7 @@ class ChangePasswordViewController: FormViewController {
                             let changePasswordRequest = ChangePasswordRequest(newPassword: newPassword);
                             ApiManager.sharedInstance.makePostRequest(changePasswordRequest, password: currentPassword).then {
                                 (body, code) -> Void in
-                                print("Password changed");
+                                log.info("Password changed");
                                 PersistentPasswordManager.sharedInstance.storePassword(newPassword);
                                 HUD.flash(.Success, delay: 1);
                                 if let finished = self.finished {
@@ -69,7 +68,7 @@ class ChangePasswordViewController: FormViewController {
                                     self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil);
                                 }
                             }.error { error -> Void in
-                                    print("error received from change password: \(error)");
+                                    log.info("error received from change password: \(error)");
                                     let delay = 2.0;
                                     var err: HUDContentType;
                                     switch error {

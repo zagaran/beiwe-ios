@@ -14,6 +14,9 @@ import CoreMotion;
 import ReachabilitySwift
 import ResearchKit;
 import PermissionScope
+import XCGLogger
+
+let log = XCGLogger(identifier: "advancedLogger", includeDefaultDestinations: false)
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -34,6 +37,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
 
         Fabric.with([Crashlytics.self])
+
+        // Create a destination for the system console log (via NSLog)
+        let systemLogDestination = XCGNSLogDestination(owner: log, identifier: "advancedLogger.systemLogDestination")
+
+        // Optionally set some configuration options
+        systemLogDestination.outputLogLevel = .Debug
+        systemLogDestination.showLogIdentifier = false
+        systemLogDestination.showFunctionName = false // true
+        systemLogDestination.showThreadName = true
+        systemLogDestination.showLogLevel = false // true
+        systemLogDestination.showFileName = false // true
+        systemLogDestination.showLineNumber = false // true
+        systemLogDestination.showDate = true
+        
+        // Add the destination to the logger
+        log.addLogDestination(systemLogDestination)
+
+        log.info("applicationDidFinishLaunching")
+        log.logAppDetails()
+
         pscope.addPermission(NotificationsPermission(notificationCategories: nil),
                              message: "Allows us to send you survey notifications")
         pscope.addPermission(LocationAlwaysPermission(),
@@ -43,16 +66,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             reachability = try Reachability.reachabilityForInternetConnection()
             try reachability!.startNotifier()
         } catch {
-            print("Unable to create or start Reachability")
+            log.error("Unable to create or start Reachability")
         }
-        print("AppUUID: \(PersistentAppUUID.sharedInstance.uuid)");
+        log.info("AppUUID: \(PersistentAppUUID.sharedInstance.uuid)");
         let uiDevice = UIDevice.currentDevice();
         modelVersionId = UIDevice.currentDevice().model + "/" + UIDevice.currentDevice().systemVersion;
-        print("name: \(uiDevice.name)");
-        print("systemName: \(uiDevice.systemName)");
-        print("systemVersion: \(uiDevice.systemVersion)");
-        print("model: \(uiDevice.model)");
-        print("platform: \(platform())");
+        log.info("name: \(uiDevice.name)");
+        log.info("systemName: \(uiDevice.systemName)");
+        log.info("systemVersion: \(uiDevice.systemVersion)");
+        log.info("model: \(uiDevice.model)");
+        log.info("platform: \(platform())");
 
         canOpenTel = UIApplication.sharedApplication().canOpenURL(NSURL(string: "tel:6175551212")!);
 
@@ -173,11 +196,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+        log.info("applicationWillResignActive")
     }
 
     func applicationDidEnterBackground(application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        log.info("applicationDidEnterBackground")
         timeEnteredBackground = NSDate();
 
     }
@@ -197,6 +222,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillEnterForeground(application: UIApplication) {
+        log.info("applicationWillEnterForeground")
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
         print("ApplicationWillEnterForeground");
         if let timeEnteredBackground = timeEnteredBackground, currentStudy = StudyManager.sharedInstance.currentStudy, studySettings = currentStudy.studySettings where isLoggedIn == true {
@@ -213,10 +239,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        log.info("applicationDidBecomeActive")
     }
 
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        log.info("applicationWillTerminate")
     }
 
     func displayCurrentMainView() {
@@ -237,17 +265,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(application: UIApplication, willFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
-
+        log.info("applicationWillFinishLaunchingWithOptions")
         return true;
 
     }
 
     func applicationProtectedDataDidBecomeAvailable(application: UIApplication) {
-        print("applicationProtectedDataDidBecomeAvailable");
+        log.info("applicationProtectedDataDidBecomeAvailable");
     }
 
     func applicationProtectedDataWillBecomeUnavailable(application: UIApplication) {
-        print("applicationProtectedDataWillBecomeUnavailable");
+        log.info("applicationProtectedDataWillBecomeUnavailable");
     }
     /* Crashlytics functions -- future */
 

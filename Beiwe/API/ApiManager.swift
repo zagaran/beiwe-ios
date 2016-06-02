@@ -50,7 +50,6 @@ class ApiManager {
     var password: String {
         set {
             hashedPassword = Crypto.sharedInstance.sha256Base64URL(newValue);
-            print("Hashed: \(hashedPassword)");
         }
         get {
             return "";
@@ -78,12 +77,12 @@ class ApiManager {
 
     func makePostRequest<T: ApiRequest where T: Mappable>(requestObject: T, password: String? = nil) -> Promise<(T.ApiReturnType, Int)> {
         var parameters = requestObject.toJSON();
-        //parameters["password"] = hashedPassword;
-        //parameters["device_id"] = PersistentAppUUID.sharedInstance.uuid;
-        //parameters["patient_id"] = patientId;
-        parameters.removeValueForKey("password");
-        parameters.removeValueForKey("device_id");
-        parameters.removeValueForKey("patient_id");
+        parameters["password"] = hashedPassword;
+        parameters["device_id"] = PersistentAppUUID.sharedInstance.uuid;
+        parameters["patient_id"] = patientId;
+        //parameters.removeValueForKey("password");
+        //parameters.removeValueForKey("device_id");
+        //parameters.removeValueForKey("patient_id");
         let headers = generateHeaders(password);
         return Promise { resolve, reject in
             Alamofire.request(.POST, baseApiUrl + T.apiEndpoint, parameters: parameters, headers: headers)
@@ -117,12 +116,12 @@ class ApiManager {
 
     func arrayPostRequest<T: ApiRequest where T: Mappable>(requestObject: T) -> Promise<([T.ApiReturnType], Int)> {
         var parameters = requestObject.toJSON();
-        //parameters["password"] = hashedPassword;
-        //parameters["device_id"] = PersistentAppUUID.sharedInstance.uuid;
-        //parameters["patient_id"] = patientId;
-        parameters.removeValueForKey("password");
-        parameters.removeValueForKey("device_id");
-        parameters.removeValueForKey("patient_id");
+        parameters["password"] = hashedPassword;
+        parameters["device_id"] = PersistentAppUUID.sharedInstance.uuid;
+        parameters["patient_id"] = patientId;
+        //parameters.removeValueForKey("password");
+        //parameters.removeValueForKey("device_id");
+        //parameters.removeValueForKey("patient_id");
         let headers = generateHeaders();
         return Promise { resolve, reject in
             Alamofire.request(.POST, baseApiUrl + T.apiEndpoint, parameters: parameters, headers: headers)
@@ -152,12 +151,12 @@ class ApiManager {
 
     func makeUploadRequest<T: ApiRequest where T: Mappable>(requestObject: T, file: NSURL) -> Promise<(T.ApiReturnType, Int)> {
         var parameters = requestObject.toJSON();
-        //parameters["password"] = hashedPassword;
-        //parameters["device_id"] = PersistentAppUUID.sharedInstance.uuid;
-        //parameters["patient_id"] = patientId;
-        parameters.removeValueForKey("password");
-        parameters.removeValueForKey("device_id");
-        parameters.removeValueForKey("patient_id");
+        parameters["password"] = hashedPassword;
+        parameters["device_id"] = PersistentAppUUID.sharedInstance.uuid;
+        parameters["patient_id"] = patientId;
+        //parameters.removeValueForKey("password");
+        //parameters.removeValueForKey("device_id");
+        //parameters.removeValueForKey("patient_id");
 
         let headers = generateHeaders();
 
@@ -199,12 +198,12 @@ class ApiManager {
 
     func makeMultipartUploadRequest<T: ApiRequest where T: Mappable>(requestObject: T, file: NSURL) -> Promise<(T.ApiReturnType, Int)> {
         var parameters = requestObject.toJSON();
-        //parameters["password"] = hashedPassword;
-        //parameters["device_id"] = PersistentAppUUID.sharedInstance.uuid;
-        //parameters["patient_id"] = patientId;
-        parameters.removeValueForKey("password");
-        parameters.removeValueForKey("device_id");
-        parameters.removeValueForKey("patient_id");
+        parameters["password"] = hashedPassword;
+        parameters["device_id"] = PersistentAppUUID.sharedInstance.uuid;
+        parameters["patient_id"] = patientId;
+        //parameters.removeValueForKey("password");
+        //parameters.removeValueForKey("device_id");
+        //parameters.removeValueForKey("patient_id");
 
         let headers = generateHeaders();
         /*

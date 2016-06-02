@@ -20,7 +20,7 @@ class AccelerometerManager : DataServiceProtocol {
 
     func initCollecting() -> Bool {
         guard  motionManager.accelerometerAvailable else {
-            print("Accel not available.  Not initializing collection");
+            log.info("Accel not available.  Not initializing collection");
             return false;
         }
 
@@ -40,7 +40,7 @@ class AccelerometerManager : DataServiceProtocol {
     }
 
     func startCollecting() {
-        print("Turning \(storeType) collection on");
+        log.info("Turning \(storeType) collection on");
         let queue = NSOperationQueue()
 
 
@@ -61,7 +61,7 @@ class AccelerometerManager : DataServiceProtocol {
         }
     }
     func pauseCollecting() {
-        print("Pausing \(storeType) collection");
+        log.info("Pausing \(storeType) collection");
         motionManager.stopAccelerometerUpdates();
         store?.flush();
     }

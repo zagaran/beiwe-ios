@@ -31,18 +31,18 @@ class ProximityManager : DataServiceProtocol {
     }
 
     func startCollecting() {
-        print("Turning \(storeType) collection on");
+        log.info("Turning \(storeType) collection on");
         UIDevice.currentDevice().proximityMonitoringEnabled = true;
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.proximityStateDidChange), name: UIDeviceProximityStateDidChangeNotification, object: nil)
 
     }
     func pauseCollecting() {
-        print("Pausing \(storeType) collection");
+        log.info("Pausing \(storeType) collection");
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIDeviceProximityStateDidChangeNotification, object:nil)
         store!.flush();
     }
     func finishCollecting() -> Promise<Void> {
-        print("Finish collecting \(storeType) collection");
+        log.info("Finish collecting \(storeType) collection");
         pauseCollecting();
         store = nil;
         return DataStorageManager.sharedInstance.closeStore(storeType);

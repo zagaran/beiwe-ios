@@ -89,7 +89,6 @@ class RegisterViewController: FormViewController {
                 .onCellSelection {
                     [unowned self] cell, row in
                     if (self.form.validateAll()) {
-                        print("Form validates, should register");
                         PKHUD.sharedHUD.dimsBackground = true;
                         PKHUD.sharedHUD.userInteractionOnUnderlyingViewsEnabled = false;
                         HUD.show(.Progress);
@@ -107,7 +106,6 @@ class RegisterViewController: FormViewController {
                             ApiManager.sharedInstance.patientId = patientId;
                             ApiManager.sharedInstance.makePostRequest(registerStudyRequest).then {
                                 (studySettings, _) -> Promise<Study> in
-                                print("study settings received");
                                 PersistentPasswordManager.sharedInstance.storePassword(newPassword);
                                 let study = Study(patientPhone: phoneNumber, patientId: patientId, studySettings: studySettings);
                                 study.clinicianPhoneNumber = clinicianPhone
@@ -116,12 +114,14 @@ class RegisterViewController: FormViewController {
                                     do {
                                         try PersistentPasswordManager.sharedInstance.storePublicKeyForStudy(clientPublicKey);
                                     } catch {
-                                        print("Failed to store RSA key in keychain.");
+                                        log.error("Failed to store RSA key in keychain.");
                                     }
                                 } else {
-                                    print("No public key found.  Can't store");
+                                    log.error("No public key found.  Can't store");
                                 }
-                                return self.db.save(study);
+                                return StudyManager.sharedInstance.purgeStudies().then {_ in 
+                                    return self.db.save(study)
+                                }
                             }.then { _ -> Promise<Bool> in
                                 HUD.flash(.Success, delay: 1);
                                 return StudyManager.sharedInstance.loadDefaultStudy();

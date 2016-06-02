@@ -170,7 +170,6 @@ class ConsentManager : NSObject, ORKTaskViewControllerDelegate {
                 self.closeOnboarding();
             }
         }
-        print("Finished.");
     }
 
     func taskViewController(taskViewController: ORKTaskViewController, didChangeResult result: ORKTaskResult) {
@@ -200,7 +199,6 @@ class ConsentManager : NSObject, ORKTaskViewControllerDelegate {
         let refreshAlert = UIAlertController(title: "Learning more!", message: "You're smart now", preferredStyle: UIAlertControllerStyle.Alert)
 
         refreshAlert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: { (action: UIAlertAction!) in
-            print("Handle Ok logic here")
         }))
 
 
@@ -216,19 +214,18 @@ class ConsentManager : NSObject, ORKTaskViewControllerDelegate {
     }
 
     func taskViewController(taskViewController: ORKTaskViewController, stepViewControllerWillAppear stepViewController: ORKStepViewController) {
-        print("Step will appear: \(stepViewController.step?.identifier)");
         stepViewController.cancelButtonItem!.title = "Leave Study";
 
         if let identifier = StepIds(rawValue: stepViewController.step?.identifier ?? "") {
             switch(identifier) {
             case .WaitForPermissions:
                 pscope.show({ finished, results in
-                    print("Permissions granted");
+                    log.info("Permissions granted");
                     if (self.hasRequiredPermissions()) {
                         stepViewController.goForward();
                     }
                     }, cancelled: { (results) in
-                        print("Permissions cancelled");
+                        log.info("Permissions cancelled");
                         stepViewController.goForward();
                 })
             case .Permission:

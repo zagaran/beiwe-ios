@@ -11,7 +11,7 @@ import PromiseKit
 import ObjectMapper
 
 class ReclineObject : Mappable {
-    private var _docRevision: CBLRevision?;
+    private var _id: String?
 
     init() {
     }
@@ -72,7 +72,10 @@ class Recline {
     func open(dbName: String = "default") -> Promise<BooleanType> {
         return Promise().then(on: Recline.queue) {
             if (self.manager == nil) {
-                self.manager = CBLManager.sharedInstance()
+                let cbloptions = CBLManagerOptions(readOnly: false, fileProtection: NSDataWritingOptions.DataWritingFileProtectionNone)
+                let poptions=UnsafeMutablePointer<CBLManagerOptions>.alloc(1)
+                poptions.initialize(cbloptions)
+                try self.manager = CBLManager(directory: CBLManager.defaultDirectory(), options: poptions)
                 self.manager.dispatchQueue = Recline.queue
             }
 
@@ -86,28 +89,19 @@ class Recline {
                 return reject(ReclineErrors.DatabaseNotOpen);
             }
 
-            var doc: CBLDocument?;
-            if let rev = obj._docRevision {
-                doc = rev.document;
+            var doc: CBLDocument?
+            if let _id = obj._id {
+                doc = db.documentWithID(_id)
             } else {
-                doc = db.createDocument();
+                doc = db.createDocument()
             }
 
             var newProps = Mapper<T>().toJSON(obj);
             let reclineMeta = ReclineMetadata(type: String(obj.dynamicType));
             newProps[Recline.kReclineMetadataKey] = Mapper<ReclineMetadata>().toJSON(reclineMeta);
-
-            if let oldProps = doc?.properties {
-                newProps["_rev"] = oldProps["_rev"];
-                newProps["_id"] = oldProps["_id"];
-                /*
-                for (key, value) in oldProps {
-                    newProps[key] = newProps[key] != nil ? newProps[key];
-                }
-                */
-            }
-            let savedRev = try doc?.putProperties(newProps);
-            obj._docRevision = savedRev;
+            newProps["_id"] = doc?.properties?["_id"]
+            newProps["_rev"] = doc?.properties?["_rev"]
+            try doc?.putProperties(newProps)
 
             return resolve(obj);
 
@@ -130,7 +124,7 @@ class Recline {
             let doc: CBLDocument? = db.documentWithID(docId);
             if let doc = doc {
                 if let newObj = Mapper<T>().map(doc.properties)  {
-                    newObj._docRevision = doc.currentRevision;
+                    newObj._id = doc.properties?["_id"] as? String
                     return resolve(newObj);
                 }
             }
@@ -179,10 +173,8 @@ class Recline {
     func _purge<T: ReclineObject>(obj: T) -> Promise<Bool> {
         return Promise { resolve, reject in
 
-            var doc: CBLDocument?;
-            if let rev = obj._docRevision {
-                doc = rev.document;
-                try doc?.purgeDocument();
+            if let _id = obj._id {
+                try db?.documentWithID(_id)?.purgeDocument()
                 return resolve(true);
             } else {
                 return resolve(true);

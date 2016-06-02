@@ -20,7 +20,7 @@ class GyroManager : DataServiceProtocol {
 
     func initCollecting() -> Bool {
         guard  motionManager.gyroAvailable else {
-            print("Gyro not available.  Not initializing collection");
+            log.info("Gyro not available.  Not initializing collection");
             return false;
         }
 
@@ -37,7 +37,7 @@ class GyroManager : DataServiceProtocol {
     }
 
     func startCollecting() {
-        print("Turning \(storeType) collection on");
+        log.info("Turning \(storeType) collection on");
         let queue = NSOperationQueue()
 
 
@@ -58,7 +58,7 @@ class GyroManager : DataServiceProtocol {
         }
     }
     func pauseCollecting() {
-        print("Pausing \(storeType) collection");
+        log.info("Pausing \(storeType) collection");
         motionManager.stopGyroUpdates();
         store?.flush();
     }

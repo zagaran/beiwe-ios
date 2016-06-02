@@ -23,7 +23,7 @@ struct ParamUploadRequest : Mappable, ApiRequest {
         do {
             self.fileData = try NSString(contentsOfFile: filePath, encoding: NSUTF8StringEncoding) as String;
         } catch {
-            print("Error reading file for upload: \(error)");
+            log.error("Error reading file for upload: \(error)");
             fileData = "";
         }
     }

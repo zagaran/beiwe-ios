@@ -64,7 +64,7 @@ class OnboardingManager : NSObject, ORKTaskViewControllerDelegate {
         //Handle results with taskViewController.result
         //taskViewController.dismissViewControllerAnimated(true, completion: nil)
         closeOnboarding();
-        print("Finished.");
+        log.info("Onboarding closed");
     }
 
     func taskViewController(taskViewController: ORKTaskViewController, didChangeResult result: ORKTaskResult) {
@@ -81,7 +81,6 @@ class OnboardingManager : NSObject, ORKTaskViewControllerDelegate {
         let refreshAlert = UIAlertController(title: "Learning more!", message: "You're smart now", preferredStyle: UIAlertControllerStyle.Alert)
 
         refreshAlert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: { (action: UIAlertAction!) in
-            print("Handle Ok logic here")
         }))
 
 
@@ -101,7 +100,6 @@ class OnboardingManager : NSObject, ORKTaskViewControllerDelegate {
     }
 
     func taskViewController(taskViewController: ORKTaskViewController, stepViewControllerWillAppear stepViewController: ORKStepViewController) {
-        print("Step will appear;");
         if let identifier = stepViewController.step?.identifier {
             switch(identifier) {
                 case "WelcomeStep":

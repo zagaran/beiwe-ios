@@ -25,7 +25,7 @@ class DeviceMotionManager : DataServiceProtocol {
 
     func initCollecting() -> Bool {
         guard  motionManager.deviceMotionAvailable else {
-            print("DeviceMotion not available.  Not initializing collection");
+            log.info("DeviceMotion not available.  Not initializing collection");
             return false;
         }
 
@@ -41,7 +41,7 @@ class DeviceMotionManager : DataServiceProtocol {
     }
 
     func startCollecting() {
-        print("Turning \(storeType) collection on");
+        log.info("Turning \(storeType) collection on");
         let queue = NSOperationQueue()
 
 
@@ -88,7 +88,7 @@ class DeviceMotionManager : DataServiceProtocol {
         }
     }
     func pauseCollecting() {
-        print("Pausing \(storeType) collection");
+        log.info("Pausing \(storeType) collection");
         motionManager.stopGyroUpdates();
         store?.flush();
     }

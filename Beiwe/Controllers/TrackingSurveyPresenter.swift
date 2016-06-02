@@ -39,6 +39,8 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
 
         let timingsName = TrackingSurveyPresenter.timingDataType + "_" + surveyId;
         timingsStore = DataStorageManager.sharedInstance.createStore(timingsName, headers: TrackingSurveyPresenter.timingsHeaders)
+        timingsStore!.sanitize = true;
+
 
         guard  let stepOrder = activeSurvey.stepOrder where survey.questions.count > 0 else {
             return;
@@ -244,7 +246,7 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
         }
 
         guard activeSurvey.bwAnswers.count > 0 else {
-            print("No questions answered, not submitting.");
+            log.info("No questions answered, not submitting.");
             return false;
         }
 
@@ -320,14 +322,13 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
             activeSurvey?.rkAnswers = taskViewController.restorationData;
             if let study = StudyManager.sharedInstance.currentStudy {
                 Recline.shared.save(study).then {_ in
-                    print("Saved.");
+                    log.info("Tracking survey Saved.");
                     }.error {_ in
-                        print("Error saving updated answers.");
+                        log.error("Error saving updated answers.");
                 }
             }
         }
         closeSurvey();
-        print("Finished.");
     }
 
     func taskViewController(taskViewController: ORKTaskViewController, didChangeResult result: ORKTaskResult) {
@@ -351,7 +352,6 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
         let refreshAlert = UIAlertController(title: "Learning more!", message: "You're smart now", preferredStyle: UIAlertControllerStyle.Alert)
 
         refreshAlert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: { (action: UIAlertAction!) in
-            print("Handle Ok logic here")
         }))
 
 
@@ -380,7 +380,6 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
         stepViewController.view.backgroundColor = UIColor.clearColor();
         */
 
-        print("stepWillAppear: \(taskViewController.currentStepViewController!.step!.identifier)")
         currentQuestion = nil;
 
         if stepViewController.continueButtonTitle == "Get Started" {

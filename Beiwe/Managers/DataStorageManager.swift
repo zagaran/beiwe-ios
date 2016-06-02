@@ -63,7 +63,7 @@ class EncryptedStorage {
             if (!self.fileManager.createFileAtPath(self.filename.path!, contents: nil, attributes: nil)) {
                 return Promise(error: DataStorageErrors.CantCreateFile)
             } else {
-                print("Create new enc file: \(self.filename)");
+                log.info("Create new enc file: \(self.filename)");
             }
             self.handle = try? NSFileHandle(forWritingToURL: self.filename)
             let rsaLine = try Crypto.sharedInstance.base64ToBase64URL(SwiftyRSA.encryptString(Crypto.sharedInstance.base64ToBase64URL(aesKey.base64EncodedStringWithOptions([])), publicKeyId: PersistentPasswordManager.sharedInstance.publicKeyName(), padding: .None)) + "\n";
@@ -82,7 +82,7 @@ class EncryptedStorage {
                 handle.closeFile()
                 self.handle = nil
                 try NSFileManager.defaultManager().moveItemAtURL(self.filename, toURL: self.realFilename)
-                print("moved temp data file \(self.filename) to \(self.realFilename)");
+                log.info("moved temp data file \(self.filename) to \(self.realFilename)");
             }
             return Promise()
         }
@@ -129,10 +129,6 @@ class EncryptedStorage {
 
                     // copy bytes into array
                     finalData.getBytes(&array, length:count * sizeof(UInt8))
-
-                    print(array)
-
-
                     self.currentData.appendData(finalData)
                 }
             }
@@ -197,9 +193,9 @@ class DataStorage {
         if let filename = filename, realFilename = realFilename where moveOnClose == true && hasData == true {
             do {
                 try NSFileManager.defaultManager().moveItemAtURL(filename, toURL: realFilename)
-                print("moved temp data file \(filename) to \(realFilename)");
+                log.info("moved temp data file \(filename) to \(realFilename)");
             } catch {
-                print("Error moving temp data \(filename) to \(realFilename)");
+                log.error("Error moving temp data \(filename) to \(realFilename)");
             }
         }
         let name = patientId + "_" + type + "_" + String(Int64(NSDate().timeIntervalSince1970 * 1000));
@@ -214,18 +210,17 @@ class DataStorage {
         bytesWritten = 0;
         hasData = false;
         aesKey = Crypto.sharedInstance.newAesKey(keyLength);
-        print("Generating new file and RSA key!");
         if let aesKey = aesKey {
             do {
                 let rsaLine = try Crypto.sharedInstance.base64ToBase64URL(SwiftyRSA.encryptString(Crypto.sharedInstance.base64ToBase64URL(aesKey.base64EncodedStringWithOptions([])), publicKeyId: PersistentPasswordManager.sharedInstance.publicKeyName(), padding: .None)) + "\n";
                 lines = [ rsaLine ];
                 _writeLine(headers.joinWithSeparator(DataStorage.delimiter))
             } catch {
-                print("Failed to RSA encrypt AES key")
+                log.error("Failed to RSA encrypt AES key")
                 hasError = true;
             }
         } else {
-            print("Failed to generate AES key")
+            log.error("Failed to generate AES key")
             hasError = true;
         }
     }
@@ -242,7 +237,7 @@ class DataStorage {
                 }
             }
         } else {
-            print("Can't generate IV, skipping data");
+            log.error("Can't generate IV, skipping data");
             hasError = true;
         }
     }
@@ -287,9 +282,9 @@ class DataStorage {
                 if (!fileManager.fileExistsAtPath(filename.path!)) {
                     if (!fileManager.createFileAtPath(filename.path!, contents: data, attributes: nil)) {
                         self.hasError = true;
-                        print("Failed to create file.");
+                        log.error("Failed to create file.");
                     } else {
-                        print("Create new data file: \(filename)");
+                        log.info("Create new data file: \(filename)");
                     }
                 } else {
                     if let fileHandle = try? NSFileHandle(forWritingToURL: filename) {
@@ -300,13 +295,13 @@ class DataStorage {
                         fileHandle.writeData(data)
                         fileHandle.closeFile()
                         self.bytesWritten = self.bytesWritten + data.length;
-                        print("Appended data to file: \(filename)");
+                        log.info("Appended data to file: \(filename)");
                         if (self.bytesWritten > DataStorageManager.MAX_DATAFILE_SIZE) {
                             self.reset();
                         }
                     } else {
                         self.hasError = true;
-                        print("Error opening file for writing");
+                        log.error("Error opening file for writing");
                     }
                 }
             } else {
@@ -363,7 +358,7 @@ class DataStorageManager {
                                                                      withIntermediateDirectories: true,
                                                                      attributes: nil)
         } catch {
-            print("Failed to create directories.");
+            log.error("Failed to create directories.");
         }
     }
 
@@ -379,7 +374,7 @@ class DataStorageManager {
             if let publicKey = publicKey, patientId = study?.patientId {
                 storageTypes[type] = DataStorage(type: type, headers: headers, patientId: patientId, publicKey: publicKey);
             } else {
-                print("No public key found! Can't store data");
+                log.error("No public key found! Can't store data");
                 return nil;
             }
         }
@@ -421,9 +416,9 @@ class DataStorageManager {
                             let dst = DataStorageManager.uploadDataDirectory().URLByAppendingPathComponent(filename);
                             do {
                                 try fileManager.moveItemAtURL(src, toURL: dst)
-                                print("moved \(src) to \(dst)");
+                                log.info("moved \(src) to \(dst)");
                             } catch {
-                                print("Error moving \(src) to \(dst)");
+                                log.error("Error moving \(src) to \(dst)");
                             }
                         }
                     }

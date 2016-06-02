@@ -16,6 +16,7 @@ pod 'EmitterKit', '~> 4.0'
 pod 'PermissionScope'
 pod 'Hakuba'
 pod 'XLActionController'
+pod 'XCGLogger', '~> 3.3'
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|

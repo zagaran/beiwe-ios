@@ -41,6 +41,7 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
     var isCollectingGps: Bool = false;
     var dataCollectionServices: [DataServiceStatus] = [ ];
     var gpsStore: DataStorage?;
+    var areServicesRunning = false;
     static let headers = [ "timestamp", "latitude", "longitude", "altitude", "accuracy"];
     var isDeferringUpdates = false;
     var nextSurveyUpdate: NSTimeInterval = 0;
@@ -62,10 +63,13 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
         locationManager.requestAlwaysAuthorization();
         locationManager.pausesLocationUpdatesAutomatically = false;
         locationManager.startUpdatingLocation();
+        locationManager.startMonitoringSignificantLocationChanges()
 
         if (!gpsAllowed()) {
             return false;
         }
+
+        areServicesRunning = true
 
         return true;
 
@@ -73,6 +77,7 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
 
     func stopAndClear() -> Promise<Void> {
         locationManager.stopUpdatingLocation();
+        areServicesRunning = false
         var promises: [Promise<Void>] = [];
         for dataStatus in dataCollectionServices {
             promises.append(dataStatus.handler.finishCollecting())
@@ -112,6 +117,9 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
     }
 
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if (!areServicesRunning) {
+            return
+        }
 
         var nextServiceDate = dispatchToServices();
 
@@ -171,7 +179,7 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
 
     func initCollecting() -> Bool {
         guard  gpsAllowed() else {
-            print("GPS not enabled.  Not initializing collection")
+            log.error("GPS not enabled.  Not initializing collection")
             return false;
         }
         gpsStore = DataStorageManager.sharedInstance.createStore("gps", headers: GPSManager.headers);
@@ -179,11 +187,11 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
         return true;
     }
     func startCollecting() {
-        print("Turning GPS collection on");
+        log.info("Turning GPS collection on");
         isCollectingGps = true;
     }
     func pauseCollecting() {
-        print("Pausing GPS collection");
+        log.info("Pausing GPS collection");
         isCollectingGps = false;
         gpsStore?.flush();
     }

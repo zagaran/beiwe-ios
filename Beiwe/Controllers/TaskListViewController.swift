@@ -52,7 +52,6 @@ class TaskListViewController: FormViewController {
                         title = "Audio Quest."
                     }
                     let dt = NSDate(timeIntervalSince1970: survey.received);
-                    print("Dt: \(dt)")
                     let sdt = dateFormatter.stringFromDate(dt);
                     title = title + " recvd. " + sdt
                     pendingSection    <<< ButtonRow(id) {
@@ -60,7 +59,6 @@ class TaskListViewController: FormViewController {
                         }
                         .onCellSelection {
                             [unowned self] cell, row in
-                            print("Selected")
                             self.surveySelected.emit(id)
                     }
                 }

@@ -128,7 +128,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate, ORKTaskViewCon
         //Handle results with taskViewController.result
         //taskViewController.dismissViewControllerAnimated(true, completion: nil)
         taskViewController.presentingViewController?.dismissViewControllerAnimated(true, completion: nil);
-        print("Finished.");
     }
 
     func taskViewController(taskViewController: ORKTaskViewController, didChangeResult result: ORKTaskResult) {
@@ -153,7 +152,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate, ORKTaskViewCon
     }
 
     func taskViewController(taskViewController: ORKTaskViewController, stepViewControllerWillAppear stepViewController: ORKStepViewController) {
-        print("Step will appear;");
         if let identifier = stepViewController.step?.identifier {
             switch(identifier) {
             case "forgotpassword":
