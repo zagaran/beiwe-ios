@@ -123,10 +123,16 @@ class Debouncer<T>: NSObject {
     }
 }
 
-func confirmAndCallClinician(presenter: UIViewController) {
-    if let phoneNumber = StudyManager.sharedInstance.currentStudy?.clinicianPhoneNumber where AppDelegate.sharedInstance().canOpenTel {
+func confirmAndCallClinician(presenter: UIViewController, callAssistant: Bool = false) {
+    var msg = "Are you sure you wish to call your primary clincian now?"
+    var number = StudyManager.sharedInstance.currentStudy?.clinicianPhoneNumber
+    if (callAssistant) {
+        msg = "Call your study's research assistant now?"
+        number = StudyManager.sharedInstance.currentStudy?.raPhoneNumber
+    }
+    if let phoneNumber = number where AppDelegate.sharedInstance().canOpenTel {
         if let phoneUrl = NSURL(string: "tel:" + phoneNumber) {
-            let callAlert = UIAlertController(title: "Confirm", message: "Are you sure you wish to call your primary clincian now?", preferredStyle: UIAlertControllerStyle.Alert)
+            let callAlert = UIAlertController(title: "Confirm", message: msg, preferredStyle: UIAlertControllerStyle.Alert)
 
             callAlert.addAction(UIAlertAction(title: "Ok", style: .Default) { (action: UIAlertAction!) in
                 UIApplication.sharedApplication().openURL(phoneUrl)

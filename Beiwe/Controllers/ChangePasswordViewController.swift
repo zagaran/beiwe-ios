@@ -20,14 +20,33 @@ class ChangePasswordViewController: FormViewController {
     var finished: ((changed: Bool) -> Void)?;
 
     override func viewDidLoad() {
+        //self.view = GradientView()
         super.viewDidLoad()
+
+        if (isForgotPassword) {
+            tableView?.backgroundColor = UIColor.whiteColor()
+        }
+        //tableView?.backgroundColor = UIColor.clearColor()
 
         // Do any additional setup after loading the view.
 
-        form +++ Section("Change Password")
+        form +++ Section(){ section in
+            if (isForgotPassword) {
+                var header = HeaderFooterView<ForgotPasswordHeaderView>(.NibFile(name: "ForgotPasswordHeaderView", bundle: nil))
+                header.onSetupView = { headerView, _, _ in
+                    headerView.patientId.text = StudyManager.sharedInstance.currentStudy?.patientId ?? ""
+                    headerView.callButton.addTarget(self, action: #selector(ChangePasswordViewController.callAssistant(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+
+                }
+                section.header = header
+            } else {
+                section.header  = HeaderFooterView(stringLiteral: "Change Password")
+            }
+            }
             <<< SVPasswordRow("currentPassword") {
                 $0.title = isForgotPassword ? "Temporary Password:" : "Current Password:"
-                $0.placeholder = $0.title?.lowercaseString;
+                let placeholder: String = String($0.title!.lowercaseString.characters.dropLast())
+                $0.placeholder = placeholder
                 $0.rules = [RequiredRule()]
                 $0.autoValidation = autoValidation
             }
@@ -109,6 +128,10 @@ class ChangePasswordViewController: FormViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+
+    func callAssistant(sender:UIButton!) {
+        confirmAndCallClinician(self, callAssistant: true)
     }
     
 

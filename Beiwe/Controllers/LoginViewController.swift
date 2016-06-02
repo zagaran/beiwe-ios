@@ -10,7 +10,7 @@ import UIKit
 import PKHUD
 import ResearchKit
 
-class LoginViewController: UIViewController, UITextFieldDelegate, ORKTaskViewControllerDelegate {
+class LoginViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var callClinicianButton: UIButton!
     @IBOutlet weak var loginButton: BWBorderedButton!
@@ -87,6 +87,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate, ORKTaskViewCon
     }
 
     @IBAction func forgotPassword(sender: AnyObject) {
+        /*
         var steps = [ORKStep]();
 
         let instructionStep = ORKInstructionStep(identifier: "forgotpassword")
@@ -100,8 +101,16 @@ class LoginViewController: UIViewController, UITextFieldDelegate, ORKTaskViewCon
         vc.showsProgressInNavigationBar = false;
         vc.delegate = self;
         presentViewController(vc, animated: true, completion: nil);
+        */
+        let vc = ChangePasswordViewController();
+        vc.isForgotPassword = true;
+        vc.finished = { _ in
+            self.dismissViewControllerAnimated(true, completion: nil);
+        }
+        presentViewController(vc, animated: true, completion: nil);
+
     }
-    
+
     /*
     @IBAction func leaveStudyPressed(sender: AnyObject) {
         StudyManager.sharedInstance.leaveStudy().then {_ -> Void in
@@ -122,57 +131,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate, ORKTaskViewCon
 
     @IBAction func callClinician(sender: AnyObject) {
         confirmAndCallClinician(self);
-    }
-    /* ORK Delegates */
-    func taskViewController(taskViewController: ORKTaskViewController, didFinishWithReason reason: ORKTaskViewControllerFinishReason, error: NSError?) {
-        //Handle results with taskViewController.result
-        //taskViewController.dismissViewControllerAnimated(true, completion: nil)
-        taskViewController.presentingViewController?.dismissViewControllerAnimated(true, completion: nil);
-    }
-
-    func taskViewController(taskViewController: ORKTaskViewController, didChangeResult result: ORKTaskResult) {
-
-        return;
-    }
-
-    func taskViewController(taskViewController: ORKTaskViewController, shouldPresentStep step: ORKStep) -> Bool {
-        return true;
-    }
-
-    func taskViewController(taskViewController: ORKTaskViewController, learnMoreForStep stepViewController: ORKStepViewController) {
-        // Present modal...
-    }
-
-    func taskViewController(taskViewController: ORKTaskViewController, hasLearnMoreForStep step: ORKStep) -> Bool {
-        return false;
-    }
-
-    func taskViewController(taskViewController: ORKTaskViewController, viewControllerForStep step: ORKStep) -> ORKStepViewController? {
-        return nil;
-    }
-
-    func taskViewController(taskViewController: ORKTaskViewController, stepViewControllerWillAppear stepViewController: ORKStepViewController) {
-        if let identifier = stepViewController.step?.identifier {
-            switch(identifier) {
-            case "forgotpassword":
-                stepViewController.continueButtonTitle = "Continue";
-            case "wait":
-                let vc = ChangePasswordViewController();
-                vc.isForgotPassword = true;
-                vc.finished = { _ in
-                    taskViewController.presentingViewController?.dismissViewControllerAnimated(true, completion: nil);
-                }
-                taskViewController.presentViewController(vc, animated: true, completion: nil);
-            default: break
-            }
-        }
-        /*
-         if (stepViewController.step?.identifier == "login") {
-         stepViewController.cancelButtonItem = nil;
-         }
-         */
-
-        //stepViewController.continueButtonTitle = "Go!"
     }
 
 }

@@ -22,6 +22,8 @@
 		833482F71CA2EF7E00A37B35 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833482F61CA2EF7E00A37B35 /* RegisterViewController.swift */; };
 		8340ABF51CC7115400D0382F /* ChangePasswordRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8340ABF41CC7115400D0382F /* ChangePasswordRequest.swift */; };
 		8379B45C1CA4F02C00D4C605 /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8379B45B1CA4F02C00D4C605 /* Crypto.swift */; };
+		83914CAD1D00DA1100B01C82 /* ForgotPasswordHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83914CAC1D00DA1100B01C82 /* ForgotPasswordHeaderView.swift */; };
+		83914CAF1D00DA4600B01C82 /* ForgotPasswordHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83914CAE1D00DA4600B01C82 /* ForgotPasswordHeaderView.xib */; };
 		83AF04131CAADE6200A37225 /* StudyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83AF04121CAADE6200A37225 /* StudyManager.swift */; };
 		83AF04151CAB556800A37225 /* GPSManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83AF04141CAB556800A37225 /* GPSManager.swift */; };
 		83AF04171CAB777200A37225 /* DataStorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83AF04161CAB777200A37225 /* DataStorageManager.swift */; };
@@ -89,6 +91,8 @@
 		833482F61CA2EF7E00A37B35 /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		8340ABF41CC7115400D0382F /* ChangePasswordRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordRequest.swift; sourceTree = "<group>"; };
 		8379B45B1CA4F02C00D4C605 /* Crypto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Crypto.swift; sourceTree = "<group>"; };
+		83914CAC1D00DA1100B01C82 /* ForgotPasswordHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotPasswordHeaderView.swift; sourceTree = "<group>"; };
+		83914CAE1D00DA4600B01C82 /* ForgotPasswordHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ForgotPasswordHeaderView.xib; sourceTree = "<group>"; };
 		83AF04111CAA083400A37225 /* Beiwe-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Beiwe-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		83AF04121CAADE6200A37225 /* StudyManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudyManager.swift; sourceTree = "<group>"; };
 		83AF04141CAB556800A37225 /* GPSManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GPSManager.swift; sourceTree = "<group>"; };
@@ -211,6 +215,8 @@
 				832FFC1D1CC8506900F2E1EF /* GradientView.swift */,
 				832FFC211CC85A7C00F2E1EF /* BWButton.swift */,
 				832FFC2C1CC889DB00F2E1EF /* SurveyCell.swift */,
+				83914CAC1D00DA1100B01C82 /* ForgotPasswordHeaderView.swift */,
+				83914CAE1D00DA4600B01C82 /* ForgotPasswordHeaderView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -432,6 +438,7 @@
 				83AF04251CAD6FFF00A37225 /* Config-Pre1.plist in Resources */,
 				832FFC281CC86A0800F2E1EF /* Assets.xcassets in Resources */,
 				83F98C3F1C923C3600E0B64B /* Main.storyboard in Resources */,
+				83914CAF1D00DA4600B01C82 /* ForgotPasswordHeaderView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -566,6 +573,7 @@
 				83B4D6721CA8DBB2001BF283 /* Study.swift in Sources */,
 				833482F71CA2EF7E00A37B35 /* RegisterViewController.swift in Sources */,
 				83C7D3891CB5F43400BC7285 /* TaskListViewController.swift in Sources */,
+				83914CAD1D00DA1100B01C82 /* ForgotPasswordHeaderView.swift in Sources */,
 				83B4D6771CAA05E0001BF283 /* Recline.swift in Sources */,
 				83C7D3841CB5943B00BC7285 /* BWTextButton.m in Sources */,
 				83B2BDF71CC1DCBA007FAE91 /* BWORKScaleAnswerFormat.swift in Sources */,
