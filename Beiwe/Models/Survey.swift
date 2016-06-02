@@ -24,6 +24,10 @@ struct Survey : Mappable  {
     var numberOfRandomQuestions: Int?;
     var randomizeWithMemory: Bool = false;
     var questions: [GenericSurveyQuestion] = [ ];
+    var audioSurveyType: String = "compressed"
+    var audioSampleRate = 44100
+    var audioBitrate = 64000
+
 
     init?(_ map: Map) {
 
@@ -38,6 +42,9 @@ struct Survey : Mappable  {
         randomize   <- map["settings.randomize"]
         numberOfRandomQuestions <- map["settings.number_of_random_questions"]
         randomizeWithMemory     <- map["settings.randomize_with_memory"]
+        audioSurveyType              <- map["settings.audio_survey_type"]
+        audioSampleRate                    <- map["settings.sample_rate"]
+        audioBitrate                       <- map["settings.bit_rate"]
         questions               <- map["content"];
     }
     

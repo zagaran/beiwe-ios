@@ -95,9 +95,6 @@ struct StudySettings : Mappable {
     var motionOnDurationSeconds = 0;
     var reachability = false;
     var consentSections: [String:ConsentSection] = [:];
-    var audioSurveyType: String = "compressed"
-    var audioSampleRate = 44100
-    var audioBitrate = 64
 
     init?(_ map: Map) {
 
@@ -142,9 +139,6 @@ struct StudySettings : Mappable {
         motionOnDurationSeconds        <- map["device_settings.devicemotion_on_duration_seconds"];
         reachability                   <- map["device_settings.reachability"];
         consentSections                <- map["device_settings.consent_sections"]
-        audioSurveyType              <- map["device_settings.audio_survey_type"]
-        audioSampleRate                    <- map["device_settings.sample_rate"]
-        audioBitrate                       <- map["device_settings.bit_rate"]
     }
     
 }

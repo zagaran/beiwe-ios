@@ -152,15 +152,16 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
     }
     func startRecording() {
         var settings: [String: AnyObject];
-        let format = StudyManager.sharedInstance.currentStudy?.studySettings?.audioSurveyType ?? "compressed"
-        let bitrate = StudyManager.sharedInstance.currentStudy?.studySettings?.audioBitrate ?? 64
-        let samplerate = StudyManager.sharedInstance.currentStudy?.studySettings?.audioSampleRate ?? 44100
+        let format = activeSurvey.survey?.audioSurveyType ?? "compressed"
+        let bitrate = activeSurvey.survey?.audioBitrate ?? 64000
+        let samplerate = activeSurvey.survey?.audioSampleRate ?? 44100
 
         if (format == "compressed") {
             self.suffix = ".mp4"
             settings = [
                 AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
-                AVEncoderBitRateKey: bitrate * 1024,
+                //AVEncoderBitRateKey: bitrate,
+                AVEncoderBitRatePerChannelKey: bitrate,
                 AVSampleRateKey: Double(samplerate),
                 AVNumberOfChannelsKey: 1 as NSNumber,
                 AVEncoderAudioQualityKey: AVAudioQuality.High.rawValue
