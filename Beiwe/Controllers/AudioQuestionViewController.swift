@@ -138,16 +138,18 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
     }
 
     func recordingTimer() {
-        if let recorder = recorder {
+        if let recorder = recorder where recorder.currentTime > 0 {
             currentLength = round(recorder.currentTime * 10) / 10
             if (currentLength >= Double(maxLen)) {
                 currentLength = Double(maxLen)
                 if (recorder.recording) {
+                    resetTimer()
                     recorder.stop()
                 }
             }
 
         }
+        log.info("recordingTimer, currentLength: \(currentLength)")
         updateLengthLabel()
     }
     func startRecording() {
@@ -184,13 +186,15 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
 
         do {
             // 5
+            log.info("Beginning recording")
             recorder = try AVAudioRecorder(URL: filename!, settings: settings)
             recorder?.delegate = self
-            recorder?.record()
+            currentLength = 0;
             state = .Recording
             updateLengthLabel()
             currentLengthLabel.hidden = false
-            currentLength = 0;
+            recorder?.record()
+            resetTimer()
             timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: #selector(recordingTimer), userInfo: nil, repeats: true)
         } catch  let error as NSError{
             log.error("Err: \(error)")
@@ -201,6 +205,7 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
 
     func stopRecording() {
         if let recorder = recorder {
+            resetTimer()
             recorder.stop()
         }
     }
@@ -323,10 +328,15 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
         recordPlayButton.setTitle(text, forState: .Disabled)
 
     }
-    func reset() {
+
+    func resetTimer() {
         if let timer = timer {
             timer.invalidate();
+            self.timer = nil
         }
+    }
+    func reset() {
+        resetTimer()
         filename = nil
         player = nil
         recorder = nil
@@ -349,10 +359,9 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
     }
 
     func audioRecorderDidFinishRecording(recorder: AVAudioRecorder, successfully flag: Bool) {
-        if let timer = timer {
-            timer.invalidate()
-        }
-        if (flag && currentLength > 0) {
+        log.debug("recording finished, success: \(flag), len: \(currentLength)")
+        resetTimer()
+        if (flag && currentLength > 0.0) {
             self.recorder = nil
             state = .Recorded
             saveButton.enabled = true
@@ -371,6 +380,7 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
     }
 
     func audioRecorderEncodeErrorDidOccur(recorder: AVAudioRecorder, error: NSError?) {
+        log.error("Error received in audio recorded: \(error)")
         self.recorder?.deleteRecording()
         reset()
     }
