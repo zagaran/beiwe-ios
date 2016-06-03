@@ -39,6 +39,7 @@ class StudyManager {
             }
             if (studies.count > 0) {
                 self.currentStudy = studies[0];
+                AppDelegate.sharedInstance().setDebuggingUser(self.currentStudy?.patientId ?? "unknown")
             }
             return Promise(true);
         }
