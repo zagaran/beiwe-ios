@@ -149,7 +149,6 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
             }
 
         }
-        log.info("recordingTimer, currentLength: \(currentLength)")
         updateLengthLabel()
     }
     func startRecording() {
@@ -286,6 +285,7 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
 
         return saveEncryptedAudio().then { _ -> Void in
             self.activeSurvey.isComplete = true;
+            StudyManager.sharedInstance.cleanupSurvey(self.activeSurvey)
             StudyManager.sharedInstance.updateActiveSurveys(true);
             HUD.flash(.Success, delay: 0.5)
             self.cleanupAndDismiss()
