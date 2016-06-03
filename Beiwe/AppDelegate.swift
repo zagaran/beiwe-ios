@@ -75,6 +75,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                              message: "Allows us to send you survey notifications")
         pscope.addPermission(LocationAlwaysPermission(),
                              message: "We need this for the data gathering capabilities of the application")
+        pscope.headerLabel.text = ""
 
         do {
             reachability = try Reachability.reachabilityForInternetConnection()
