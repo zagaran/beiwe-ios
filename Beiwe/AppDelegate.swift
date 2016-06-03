@@ -42,7 +42,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let systemLogDestination = XCGNSLogDestination(owner: log, identifier: "advancedLogger.systemLogDestination")
 
         // Optionally set some configuration options
-        systemLogDestination.outputLogLevel = .Debug
+        systemLogDestination.outputLogLevel = debugEnabled ? .Debug : .Warning
         systemLogDestination.showLogIdentifier = false
         systemLogDestination.showFunctionName = false // true
         systemLogDestination.showThreadName = true
@@ -53,6 +53,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Add the destination to the logger
         log.addLogDestination(systemLogDestination)
+
+        let crashlyticsLogDestination = XCGCrashlyticsLogDestination(owner: log, identifier: "advancedlogger.crashlyticsDestination")
+        crashlyticsLogDestination.outputLogLevel = .Debug
+        crashlyticsLogDestination.showLogIdentifier = false
+        crashlyticsLogDestination.showFunctionName = false // true
+        crashlyticsLogDestination.showThreadName = true
+        crashlyticsLogDestination.showLogLevel = false // true
+        crashlyticsLogDestination.showFileName = false // true
+        crashlyticsLogDestination.showLineNumber = false // true
+        crashlyticsLogDestination.showDate = true
+
+        // Add the destination to the logger
+        log.addLogDestination(crashlyticsLogDestination)
+
 
         log.info("applicationDidFinishLaunching")
         log.logAppDetails()
@@ -109,6 +123,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         backView.bottomColor = UIColor.whiteColor()
         self.window?.insertSubview(backView, atIndex: 0)
         */
+        
 
         self.window!.makeKeyAndVisible()
 
