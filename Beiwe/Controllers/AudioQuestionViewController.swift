@@ -261,7 +261,7 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
             } catch {
                 return Promise<Void>(error: BWErrors.IOError)
             }
-            let encFile = EncryptedStorage(type: "voiceRecording", suffix: suffix, patientId: study.patientId!, publicKey: PersistentPasswordManager.sharedInstance.publicKeyName())
+            let encFile = EncryptedStorage(type: "voiceRecording", suffix: suffix, patientId: study.patientId!, publicKey: PersistentPasswordManager.sharedInstance.publicKeyName(study.patientId!))
             return encFile.open().then {
                 return self.writeSomeData(fileHandle, encFile: encFile)
             }.always {

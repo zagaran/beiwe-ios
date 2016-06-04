@@ -66,7 +66,7 @@ class EncryptedStorage {
                 log.info("Create new enc file: \(self.filename)");
             }
             self.handle = try? NSFileHandle(forWritingToURL: self.filename)
-            let rsaLine = try Crypto.sharedInstance.base64ToBase64URL(SwiftyRSA.encryptString(Crypto.sharedInstance.base64ToBase64URL(aesKey.base64EncodedStringWithOptions([])), publicKeyId: PersistentPasswordManager.sharedInstance.publicKeyName(), padding: .None)) + "\n";
+            let rsaLine = try Crypto.sharedInstance.base64ToBase64URL(SwiftyRSA.encryptString(Crypto.sharedInstance.base64ToBase64URL(aesKey.base64EncodedStringWithOptions([])), publicKeyId: PersistentPasswordManager.sharedInstance.publicKeyName(self.patientId), padding: .None)) + "\n";
             self.handle?.writeData(rsaLine.dataUsingEncoding(NSUTF8StringEncoding)!)
             let ivHeader = Crypto.sharedInstance.base64ToBase64URL(iv.base64EncodedStringWithOptions([])) + ":"
             self.handle?.writeData(ivHeader.dataUsingEncoding(NSUTF8StringEncoding)!)
@@ -212,7 +212,7 @@ class DataStorage {
         aesKey = Crypto.sharedInstance.newAesKey(keyLength);
         if let aesKey = aesKey {
             do {
-                let rsaLine = try Crypto.sharedInstance.base64ToBase64URL(SwiftyRSA.encryptString(Crypto.sharedInstance.base64ToBase64URL(aesKey.base64EncodedStringWithOptions([])), publicKeyId: PersistentPasswordManager.sharedInstance.publicKeyName(), padding: .None)) + "\n";
+                let rsaLine = try Crypto.sharedInstance.base64ToBase64URL(SwiftyRSA.encryptString(Crypto.sharedInstance.base64ToBase64URL(aesKey.base64EncodedStringWithOptions([])), publicKeyId: PersistentPasswordManager.sharedInstance.publicKeyName(self.patientId), padding: .None)) + "\n";
                 lines = [ rsaLine ];
                 _writeLine(headers.joinWithSeparator(DataStorage.delimiter))
             } catch {

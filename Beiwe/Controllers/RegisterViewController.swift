@@ -110,15 +110,6 @@ class RegisterViewController: FormViewController {
                                 let study = Study(patientPhone: phoneNumber, patientId: patientId, studySettings: studySettings);
                                 study.clinicianPhoneNumber = clinicianPhone
                                 study.raPhoneNumber = raPhone
-                                if let clientPublicKey = study.studySettings?.clientPublicKey {
-                                    do {
-                                        try PersistentPasswordManager.sharedInstance.storePublicKeyForStudy(clientPublicKey);
-                                    } catch {
-                                        log.error("Failed to store RSA key in keychain.");
-                                    }
-                                } else {
-                                    log.error("No public key found.  Can't store");
-                                }
                                 return StudyManager.sharedInstance.purgeStudies().then {_ in 
                                     return self.db.save(study)
                                 }

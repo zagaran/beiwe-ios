@@ -54,6 +54,16 @@ class StudyManager {
         ApiManager.sharedInstance.password = PersistentPasswordManager.sharedInstance.passwordForStudy() ?? "";
         if let patientId = currentStudy.patientId {
             ApiManager.sharedInstance.patientId = patientId;
+            if let clientPublicKey = currentStudy.studySettings?.clientPublicKey {
+                do {
+                    try PersistentPasswordManager.sharedInstance.storePublicKeyForStudy(clientPublicKey, patientId: patientId);
+                } catch {
+                    log.error("Failed to store RSA key in keychain.");
+                }
+            } else {
+                log.error("No public key found.  Can't store");
+            }
+
         }
     }
     func startStudyDataServices() {
