@@ -31,7 +31,7 @@ struct PersistentPasswordManager {
     }
 
     func storePublicKeyForStudy(publicKey: String, study: String = Constants.defaultStudyId) throws {
-        try SwiftyRSA.storePublicKey(publicKey, keyId: keyForStudy(study, prefix: rsaKeyPrefix))
+        try SwiftyRSA.storePublicKey(publicKey, keyId: publicKeyName(study))
     }
 
     func publicKeyName(study: String = Constants.defaultStudyId) -> String {
