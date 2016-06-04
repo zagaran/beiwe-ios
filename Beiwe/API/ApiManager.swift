@@ -60,15 +60,16 @@ class ApiManager {
 
     func generateHeaders(password: String? = nil) -> [String:String] {
 
+        /*
         var hash = hashedPassword;
         if let password = password {
             hash = Crypto.sharedInstance.sha256Base64URL(password);
         }
         let credentialData = "\(patientId)@\(PersistentAppUUID.sharedInstance.uuid):\(hash)".dataUsingEncoding(NSUTF8StringEncoding)!
         let base64Credentials = credentialData.base64EncodedStringWithOptions([])
-
+        */
         let headers = [
-            "Authorization": "Basic \(base64Credentials)",
+            //"Authorization": "Basic \(base64Credentials)",
             "Beiwe-Api-Version": "2",
             "Accept": "application/vnd.beiwe.api.v2, application/json"
         ]
@@ -77,7 +78,7 @@ class ApiManager {
 
     func makePostRequest<T: ApiRequest where T: Mappable>(requestObject: T, password: String? = nil) -> Promise<(T.ApiReturnType, Int)> {
         var parameters = requestObject.toJSON();
-        parameters["password"] = hashedPassword;
+        parameters["password"] = (password == nil) ? hashedPassword : Crypto.sharedInstance.sha256Base64URL(password!);
         parameters["device_id"] = PersistentAppUUID.sharedInstance.uuid;
         parameters["patient_id"] = patientId;
         //parameters.removeValueForKey("password");
