@@ -504,6 +504,8 @@ class StudyManager {
 
         isUploading = true;
 
+        var size: Int64 = 0
+
         return promiseChain.then { _ -> Promise<Bool> in
             let fileManager = NSFileManager.defaultManager()
             let enumerator = fileManager.enumeratorAtPath(DataStorageManager.uploadDataDirectory().path!);
@@ -514,6 +516,8 @@ class StudyManager {
                 while let filename = enumerator.nextObject() as? String {
                     if (DataStorageManager.sharedInstance.isUploadFile(filename)) {
                         let filePath = DataStorageManager.uploadDataDirectory().URLByAppendingPathComponent(filename);
+                        let fileSize = try! NSFileManager.defaultManager().attributesOfItemAtPath(filePath.path!)[NSFileSize]!.longLongValue
+                        size = size + fileSize
                         let uploadRequest = UploadRequest(fileName: filename, filePath: filePath.path!);
                         let promise: Promise<Bool> =
                             //ApiManager.sharedInstance.makePostRequest(uploadRequest).then { _ -> Promise<Bool> in
@@ -535,6 +539,7 @@ class StudyManager {
             return uploadChain
         }.then { results -> Void in
             log.info("OK uploading \(numFiles). \(results)");
+            log.info("Total Size: \(size)")
             self.isUploading = false;
             }.error { error in
                 log.error("Error uploading: \(error)");

@@ -59,7 +59,7 @@ class MagnetometerManager : DataServiceProtocol {
     }
     func pauseCollecting() {
         log.info("Pausing \(storeType) collection");
-        motionManager.stopGyroUpdates();
+        motionManager.stopMagnetometerUpdates()
         store?.flush();
     }
     func finishCollecting() -> Promise<Void> {

@@ -89,7 +89,7 @@ class DeviceMotionManager : DataServiceProtocol {
     }
     func pauseCollecting() {
         log.info("Pausing \(storeType) collection");
-        motionManager.stopGyroUpdates();
+        motionManager.stopDeviceMotionUpdates();
         store?.flush();
     }
     func finishCollecting() -> Promise<Void> {
