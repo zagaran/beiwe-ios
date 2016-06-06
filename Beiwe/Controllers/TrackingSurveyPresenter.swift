@@ -28,16 +28,18 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
     var timingsStore: DataStorage?;
     var task: ORKTask?;
     var valueChangeHandler: Debouncer<String>?
+    let timingsName: String;
 
     var currentQuestion: GenericSurveyQuestion? = nil;
 
     init(surveyId: String, activeSurvey: ActiveSurvey, survey: Survey) {
+        timingsName = TrackingSurveyPresenter.timingDataType + "_" + surveyId;
+
         super.init();
         self.surveyId = surveyId;
         self.activeSurvey = activeSurvey;
         self.survey = survey;
 
-        let timingsName = TrackingSurveyPresenter.timingDataType + "_" + surveyId;
         timingsStore = DataStorageManager.sharedInstance.createStore(timingsName, headers: TrackingSurveyPresenter.timingsHeaders)
         timingsStore!.sanitize = true;
 
@@ -429,5 +431,9 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
         */
  
         //stepViewController.continueButtonTitle = "Go!"
+    }
+
+    deinit {
+        DataStorageManager.sharedInstance.closeStore(timingsName)
     }
 }

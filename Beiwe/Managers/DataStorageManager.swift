@@ -60,7 +60,7 @@ class EncryptedStorage {
             return Promise(error: DataStorageErrors.NotInitialized)
         }
         return Promise().then(on: queue) {
-            if (!self.fileManager.createFileAtPath(self.filename.path!, contents: nil, attributes: nil)) {
+            if (!self.fileManager.createFileAtPath(self.filename.path!, contents: nil, attributes: [NSFileProtectionKey: NSFileProtectionNone])) {
                 return Promise(error: DataStorageErrors.CantCreateFile)
             } else {
                 log.info("Create new enc file: \(self.filename)");
@@ -212,8 +212,11 @@ class DataStorage {
         aesKey = Crypto.sharedInstance.newAesKey(keyLength);
         if let aesKey = aesKey {
             do {
-                let rsaLine = try Crypto.sharedInstance.base64ToBase64URL(SwiftyRSA.encryptString(Crypto.sharedInstance.base64ToBase64URL(aesKey.base64EncodedStringWithOptions([])), publicKeyId: PersistentPasswordManager.sharedInstance.publicKeyName(self.patientId), padding: .None)) + "\n";
+                let b64aes = Crypto.sharedInstance.base64ToBase64URL(aesKey.base64EncodedStringWithOptions([]))
+                //log.info("B64Aes for \(realFilename!): \(b64aes)")
+                let rsaLine = try Crypto.sharedInstance.base64ToBase64URL(SwiftyRSA.encryptString(b64aes, publicKeyId: PersistentPasswordManager.sharedInstance.publicKeyName(self.patientId), padding: .None)) + "\n";
                 lines = [ rsaLine ];
+                //log.info("RSALine: \(rsaLine)")
                 _writeLine(headers.joinWithSeparator(DataStorage.delimiter))
             } catch {
                 log.error("Failed to RSA encrypt AES key")
@@ -277,10 +280,11 @@ class DataStorage {
                 return Promise();
             }
             let data = self.lines.joinWithSeparator("").dataUsingEncoding(NSUTF8StringEncoding);
+            self.lines = [ ];
             if let filename = self.filename, data = data  {
                 let fileManager = NSFileManager.defaultManager();
                 if (!fileManager.fileExistsAtPath(filename.path!)) {
-                    if (!fileManager.createFileAtPath(filename.path!, contents: data, attributes: nil)) {
+                    if (!fileManager.createFileAtPath(filename.path!, contents: data, attributes: [NSFileProtectionKey: NSFileProtectionNone])) {
                         self.hasError = true;
                         log.error("Failed to create file.");
                     } else {
@@ -291,12 +295,13 @@ class DataStorage {
                         defer {
                             fileHandle.closeFile()
                         }
-                        fileHandle.seekToEndOfFile()
+                        let seekPos = fileHandle.seekToEndOfFile()
                         fileHandle.writeData(data)
                         fileHandle.closeFile()
                         self.bytesWritten = self.bytesWritten + data.length;
-                        log.info("Appended data to file: \(filename)");
+                        log.info("Appended data to file: \(filename), size: \(seekPos)");
                         if (self.bytesWritten > DataStorageManager.MAX_DATAFILE_SIZE) {
+                            log.info("Rolling data file: \(filename)")
                             self.reset();
                         }
                     } else {
@@ -309,7 +314,6 @@ class DataStorage {
                 self.hasError = true;
                 self.reset();
             }
-            self.lines = [ ];
             if (reset) {
                 self.reset()
             }
@@ -353,10 +357,10 @@ class DataStorageManager {
         do {
             try NSFileManager.defaultManager().createDirectoryAtPath(DataStorageManager.currentDataDirectory().path!,
                                                                      withIntermediateDirectories: true,
-                                                                     attributes: nil);
+                                                                     attributes: [NSFileProtectionKey: NSFileProtectionNone]);
             try NSFileManager.defaultManager().createDirectoryAtPath(DataStorageManager.uploadDataDirectory().path!,
                                                                      withIntermediateDirectories: true,
-                                                                     attributes: nil)
+                                                                     attributes: [NSFileProtectionKey: NSFileProtectionNone])
         } catch {
             log.error("Failed to create directories.");
         }
@@ -403,30 +407,73 @@ class DataStorageManager {
     func isUploadFile(filename: String) -> Bool {
         return filename.hasSuffix(DataStorageManager.dataFileSuffix) || filename.hasSuffix(".mp4") || filename.hasSuffix(".wav")
     }
-    func prepareForUpload() -> Promise<Void> {
-        return self._flushAll().then(on: dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
 
-                let fileManager = NSFileManager.defaultManager()
+    func _printFileInfo(file: NSURL) {
+        let path = file.path!
+        var seekPos: UInt64 = 0
+        var firstLine: String = ""
+        log.info("infoBeginForFile: \(path)")
+        if let fileHandle = try? NSFileHandle(forReadingFromURL: file) {
+            defer {
+                fileHandle.closeFile()
+            }
+            let dataString = String(data: fileHandle.readDataOfLength(2048), encoding: NSUTF8StringEncoding)
+            let dataArray = dataString?.characters.split{$0 == "\n"}.map(String.init)
+            if let dataArray = dataArray where dataArray.count > 0 {
+                firstLine = dataArray[0]
+            } else {
+                log.warning("No first line found!!")
+            }
+            seekPos = fileHandle.seekToEndOfFile()
+            fileHandle.closeFile()
+        } else {
+            log.error("Error opening file: \(path) for info");
+        }
+
+        log.info("infoForFile: len: \(seekPos), line: \(firstLine), filename: \(path)")
+
+
+    }
+    func _moveFile(src: NSURL, dst: NSURL) {
+        let fileManager = NSFileManager.defaultManager()
+        do {
+            //_printFileInfo(src)
+            try fileManager.moveItemAtURL(src, toURL: dst)
+            //_printFileInfo(dst)
+            log.info("moved \(src) to \(dst)");
+        } catch {
+            log.error("Error moving \(src) to \(dst)");
+        }
+    }
+    func prepareForUpload() -> Promise<Void> {
+        // self._flushAll()
+        let prepQ = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
+        var filesToUpload: [String] = [ ]
+        /* Flush once to get all of the files currently processing */
+        return self._flushAll().then(on: prepQ) {
+            /* And record there names */
+            let fileManager = NSFileManager.defaultManager()
+
                 let enumerator = fileManager.enumeratorAtPath(DataStorageManager.currentDataDirectory().path!);
 
                 if let enumerator = enumerator {
                     while let filename = enumerator.nextObject() as? String {
                         if (self.isUploadFile(filename)) {
-                            let src = DataStorageManager.currentDataDirectory().URLByAppendingPathComponent(filename);
-                            let dst = DataStorageManager.uploadDataDirectory().URLByAppendingPathComponent(filename);
-                            do {
-                                try fileManager.moveItemAtURL(src, toURL: dst)
-                                log.info("moved \(src) to \(dst)");
-                            } catch {
-                                log.error("Error moving \(src) to \(dst)");
-                            }
+                            filesToUpload.append(filename)
+                        } else {
+                            log.warning("Non upload file sitting in directory: \(filename)")
                         }
                     }
-                    /*
-                     for filename in enumerator.allObjects {
-                     }*/
                 }
-                return Promise();
+                /* Need to flush again, because there is (very slim) one of those files was created after the flush */
+                return self._flushAll()
+            }.then(on: prepQ) {
+                for filename in filesToUpload {
+                    let src = DataStorageManager.currentDataDirectory().URLByAppendingPathComponent(filename);
+                    let dst = DataStorageManager.uploadDataDirectory().URLByAppendingPathComponent(filename);
+                    self._moveFile(src, dst: dst)
+                }
+                return Promise()
         }
     }
 }

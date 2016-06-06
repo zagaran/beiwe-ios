@@ -80,6 +80,8 @@ class StudyManager {
             return;
         }
 
+        log.info("prepareDataServices")
+
         DataStorageManager.sharedInstance.createDirectories();
         /* Move non current files out.  Probably not necessary, would happen later anyway */
         DataStorageManager.sharedInstance.prepareForUpload();
@@ -493,6 +495,7 @@ class StudyManager {
 
         promiseChain = promiseChain.then { _ in
             return DataStorageManager.sharedInstance.prepareForUpload().then {
+                log.info("prepareForUpload finished")
                 return Promise(true)
             };
         }
