@@ -14,15 +14,15 @@ import Crashlytics
 
 class StudyManager {
     static let sharedInstance = StudyManager();
+
+    let MAX_UPLOAD_DATA: Int64 = 250 * (1024 * 1024)
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     let calendar = NSCalendar.currentCalendar();
 
     var currentStudy: Study?;
     var gpsManager: GPSManager?;
     var isUploading = false;
-    var isHandlingPeriodic = false;
     let surveysUpdatedEvent: Signal = Signal();
-
     var isStudyLoaded: Bool {
         return currentStudy != nil;
     }
@@ -203,36 +203,35 @@ class StudyManager {
     }
 
     func periodicNetworkTransfers() {
-        guard let currentStudy = currentStudy where isHandlingPeriodic == false else {
+        guard let currentStudy = currentStudy else {
             return;
         }
 
+        let reachable = self.appDelegate.reachability!.isReachableViaWiFi()
+
         // Good time to compact the database
-        Recline.shared.compact().then { _ -> Void in
-            if (!self.appDelegate.reachability!.isReachableViaWiFi()) {
-                return;
+        let currentTime: Int64 = Int64(NSDate().timeIntervalSince1970);
+        let nextSurvey = currentStudy.nextSurveyCheck ?? 0;
+        let nextUpload = currentStudy.nextUploadCheck ?? 0;
+        if (currentTime > nextSurvey || (reachable && currentStudy.missedSurveyCheck)) {
+            /* This will be saved because setNextUpload saves the study */
+            currentStudy.missedSurveyCheck = !reachable
+            self.setNextSurveyTime().then { _ -> Void in
+                self.checkSurveys();
+                }.error { _ -> Void in
+                    log.error("Error checking for surveys");
             }
-
-            let currentTime: Int64 = Int64(NSDate().timeIntervalSince1970);
-            let nextSurvey = currentStudy.nextSurveyCheck ?? 0;
-            let nextUpload = currentStudy.nextUploadCheck ?? 0;
-            if (currentTime > nextSurvey) {
-                self.setNextSurveyTime().then { _ -> Void in
-                    self.isHandlingPeriodic = false;
-                    self.checkSurveys();
-                    }.error { _ -> Void in
-                        log.error("Error checking for surveys");
-                }
-            }
-            else if (currentTime > nextUpload) {
-                self.setNextUploadTime().then { _ -> Void in
-                    self.upload();
-                    }.error { _ -> Void in
-                        log.error("Error checking for uploads")
-                }
-            }
-
         }
+        else if (currentTime > nextUpload || (reachable && currentStudy.missedUploadCheck)) {
+            /* This will be saved because setNextUpload saves the study */
+            currentStudy.missedUploadCheck = !reachable
+            self.setNextUploadTime().then { _ -> Void in
+                self.upload(!reachable);
+                }.error { _ -> Void in
+                    log.error("Error checking for uploads")
+            }
+        }
+
 
     }
 
@@ -439,7 +438,6 @@ class StudyManager {
             return Promise(false);
         }
         log.info("Checking for surveys...");
-        study.nextSurveyCheck = Int64(NSDate().timeIntervalSince1970) + studySettings.checkForNewSurveysFreqSeconds;
         return Recline.shared.save(study).then { _ -> Promise<([Survey], Int)> in
                 let surveyRequest = GetSurveysRequest();
                 return ApiManager.sharedInstance.arrayPostRequest(surveyRequest);
@@ -461,7 +459,7 @@ class StudyManager {
             return Promise(true);
         }
 
-        study.nextUploadCheck = Int64(NSDate().timeIntervalSince1970) + studySettings.uploadDataFileFrequencySeconds;
+        study.nextUploadCheck = Int64(NSDate().timeIntervalSince1970) +  studySettings.uploadDataFileFrequencySeconds;
         return Recline.shared.save(study).then { _ -> Promise<Bool> in
             return Promise(true);
         }
@@ -479,21 +477,87 @@ class StudyManager {
 
     }
 
-    func upload(surveysOnly: Bool = false) {
-        if (isUploading) {
-            return;
+    func parseFilename(filename: String) -> (type: String, timestamp: Int64, ext: String){
+        let url = NSURL(fileURLWithPath: filename)
+        let pathExtention = url.pathExtension
+        let pathPrefix = url.URLByDeletingPathExtension?.lastPathComponent
+
+        var type = ""
+
+        let pieces = pathPrefix!.characters.split("_")
+        var timestamp: Int64 = 0
+        if (pieces.count > 2) {
+            type = String(pieces[1])
+            timestamp = Int64(String(pieces[pieces.count-1])) ?? 0
         }
 
+
+        return (type: type, timestamp: timestamp, ext: pathExtention ?? "")
+    }
+
+    func purgeUploadData(fileList: [String:Int64], currentStorageUse: Int64) -> Promise<Void> {
+        var used = currentStorageUse
+        return Promise().then(on: dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+            log.error("EXCESSIVE STORAGE USED, used: \(currentStorageUse), WifiAvailable: \(self.appDelegate.reachability!.isReachableViaWiFi())")
+            log.error("Last success: \(self.currentStudy?.lastUploadSuccess)")
+            for (filename, len) in fileList {
+                log.error("file: \(filename), size: \(len)")
+            }
+            let keys = fileList.keys.sort() { (a, b) in
+                let fileA = self.parseFilename(a)
+                let fileB = self.parseFilename(b)
+                return fileA.timestamp < fileB.timestamp
+            }
+
+            for file in keys {
+                let attrs = self.parseFilename(file)
+                if (attrs.ext != "csv" || attrs.type.hasPrefix("survey")) {
+                    log.info("Skipping deletion: \(file)")
+                    continue
+                }
+                let filePath = DataStorageManager.uploadDataDirectory().URLByAppendingPathComponent(file);
+                do {
+                    log.warning("Removing file: \(filePath)")
+                    try NSFileManager.defaultManager().removeItemAtURL(filePath);
+                    used = used - fileList[file]!
+                } catch {
+                    log.error("Error removing file: \(filePath)")
+                }
+
+                if (used < self.MAX_UPLOAD_DATA) {
+                    break
+                }
+
+            }
+
+            //Crashlytics.sharedInstance().recordError(NSError(domain: "com.rf.beiwe.studies.excessive", code: 2, userInfo: nil))
+
+            return Promise()
+        }
+    }
+
+    func clearTempFiles() -> Promise<Void> {
+        return Promise().then(on: dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+            do {
+                let alamoTmpDir = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent("com.alamofire.manager").URLByAppendingPathComponent("multipart.form.data")
+                try NSFileManager.defaultManager().removeItemAtURL(alamoTmpDir)
+            } catch {
+                //log.error("Error removing tmp files: \(error)")
+            }
+            return Promise()
+        }
+    }
+
+    func upload(processOnly: Bool) -> Promise<Void> {
+        if (isUploading) {
+            return Promise();
+        }
         log.info("Checking for uploads...");
+        isUploading = true;
 
         var promiseChain: Promise<Bool>
-        if (surveysOnly) {
-            promiseChain = Promise(true);
-        } else {
-            promiseChain = setNextUploadTime();
-        }
 
-        promiseChain = promiseChain.then { _ in
+        promiseChain = Recline.shared.compact().then { _ -> Promise<Bool> in
             return DataStorageManager.sharedInstance.prepareForUpload().then {
                 log.info("prepareForUpload finished")
                 return Promise(true)
@@ -501,49 +565,73 @@ class StudyManager {
         }
 
         var numFiles = 0;
-
-        isUploading = true;
-
         var size: Int64 = 0
+        var storageInUse: Int64 = 0
+        let q = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
 
-        return promiseChain.then { _ -> Promise<Bool> in
+        var filesToProcess: [String: Int64] = [:];
+        return promiseChain.then(on: q) { (_: Bool) -> Promise<Bool> in
             let fileManager = NSFileManager.defaultManager()
-            let enumerator = fileManager.enumeratorAtPath(DataStorageManager.uploadDataDirectory().path!);
-            
-
+            let enumerator = fileManager.enumeratorAtPath(DataStorageManager.uploadDataDirectory().path!)
             var uploadChain = Promise<Bool>(true)
             if let enumerator = enumerator {
                 while let filename = enumerator.nextObject() as? String {
                     if (DataStorageManager.sharedInstance.isUploadFile(filename)) {
                         let filePath = DataStorageManager.uploadDataDirectory().URLByAppendingPathComponent(filename);
-                        let fileSize = try! NSFileManager.defaultManager().attributesOfItemAtPath(filePath.path!)[NSFileSize]!.longLongValue
+                        let attr = try NSFileManager.defaultManager().attributesOfItemAtPath(filePath.path!)
+                        let fileSize = attr[NSFileSize]!.longLongValue
+                        filesToProcess[filename] = fileSize
                         size = size + fileSize
-                        let uploadRequest = UploadRequest(fileName: filename, filePath: filePath.path!);
-                        let promise: Promise<Bool> =
-                            //ApiManager.sharedInstance.makePostRequest(uploadRequest).then { _ -> Promise<Bool> in
-                            //ApiManager.sharedInstance.makeUploadRequest(uploadRequest, file: filePath).then { _ -> Promise<Bool> in
-
-                            ApiManager.sharedInstance.makeMultipartUploadRequest(uploadRequest, file: filePath).then { _ -> Promise<Bool> in
-                            log.info("Finished uploading: \(filename), removing.");
-                            try fileManager.removeItemAtURL(filePath);
-                            return Promise(true);
-                        }
-                        uploadChain = uploadChain.then {_ in
-                            return promise;
-                        }
-                        numFiles = numFiles + 1;
                         //promises.append(promise);
                     }
                 }
             }
-            return uploadChain
-        }.then { results -> Void in
+            storageInUse = size
+            if (!processOnly) {
+                for (filename, len) in filesToProcess {
+                    let filePath = DataStorageManager.uploadDataDirectory().URLByAppendingPathComponent(filename);
+                    let uploadRequest = UploadRequest(fileName: filename, filePath: filePath.path!);
+                    uploadChain = uploadChain.then {_ in
+                        log.info("Uploading: \(filename)")
+                        return ApiManager.sharedInstance.makeMultipartUploadRequest(uploadRequest, file: filePath).then { _ -> Promise<Bool> in
+                            log.info("Finished uploading: \(filename), removing.");
+                            numFiles = numFiles + 1
+                            try fileManager.removeItemAtURL(filePath);
+                            storageInUse = storageInUse - len
+                            filesToProcess.removeValueForKey(filename)
+                            return Promise(true);
+                        }
+                    }
+                }
+                return uploadChain
+            } else {
+                log.info("Skipping upload, processing only")
+                return Promise(true)
+            }
+        }.then { (results: Bool) -> Promise<Void> in
             log.info("OK uploading \(numFiles). \(results)");
-            log.info("Total Size: \(size)")
-            self.isUploading = false;
-            }.error { error in
-                log.error("Error uploading: \(error)");
-                self.isUploading = false;
+            log.info("Total Size of uploads: \(size)")
+            if let study = self.currentStudy {
+                study.lastUploadSuccess = Int64(NSDate().timeIntervalSince1970)
+                return Recline.shared.save(study).asVoid()
+            } else {
+                return Promise()
+            }
+        }.recover { error -> Void in
+            log.info("Recover")
+        }.then { () -> Promise<Void> in
+            log.info("Size left after upload: \(storageInUse)")
+            if (storageInUse > self.MAX_UPLOAD_DATA) {
+                return self.purgeUploadData(filesToProcess, currentStorageUse: storageInUse)
+            }
+            else {
+                return Promise()
+            }
+        }.then {
+            return self.clearTempFiles()
+        }.always {
+            self.isUploading = false
+            log.info("Always")
         }
     }
 }

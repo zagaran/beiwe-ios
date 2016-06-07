@@ -19,6 +19,9 @@ class Study : ReclineObject {
     var raPhoneNumber: String?;
     var nextUploadCheck: Int64?;
     var nextSurveyCheck: Int64?;
+    var lastUploadSuccess: Int64 = 0
+    var missedSurveyCheck: Bool = false
+    var missedUploadCheck: Bool = false
     var lastBadgeCnt = 0;
     var registerDate: Int64?;
     var receivedAudioSurveys: Int = 0;
@@ -65,6 +68,9 @@ class Study : ReclineObject {
         receivedTrackingSurveys <- map["receivedTrackingSurveys"]
         submittedAudioSurveys  <- map["submittedAudioSurveys"]
         submittedTrackingSurveys <- map["submittedTrackingSurveys"]
+        missedSurveyCheck <- map["missedSurveyCheck"]
+        missedUploadCheck <- map["missedUploadCheck"]
+        lastUploadSuccess <- map["lastUploadSuccess"]
 
     }
 

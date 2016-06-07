@@ -208,7 +208,7 @@ class MainViewController: UIViewController {
     }
     
     @IBAction func Upload(sender: AnyObject) {
-        StudyManager.sharedInstance.upload();
+        StudyManager.sharedInstance.upload(false);
     }
 
 
