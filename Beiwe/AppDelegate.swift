@@ -242,7 +242,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
         print("ApplicationWillEnterForeground");
         if let timeEnteredBackground = timeEnteredBackground, currentStudy = StudyManager.sharedInstance.currentStudy, studySettings = currentStudy.studySettings where isLoggedIn == true {
-            let loginExpires = timeEnteredBackground.dateByAddingTimeInterval(Double(studySettings.secondsBeforeAutoLogout * 1000));
+            let loginExpires = timeEnteredBackground.dateByAddingTimeInterval(Double(studySettings.secondsBeforeAutoLogout));
             if (loginExpires.compare(NSDate()) == NSComparisonResult.OrderedAscending) {
                 // expired.  Log 'em out
                 isLoggedIn = false;
