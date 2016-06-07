@@ -130,6 +130,7 @@ class StudyManager {
 
         study.participantConsented = true;
         DataStorageManager.sharedInstance.setCurrentStudy(study)
+        DataStorageManager.sharedInstance.createDirectories();
         return Recline.shared.save(study).then { _ -> Promise<Bool> in
             return self.checkSurveys();
         }
@@ -217,7 +218,9 @@ class StudyManager {
             /* This will be saved because setNextUpload saves the study */
             currentStudy.missedSurveyCheck = !reachable
             self.setNextSurveyTime().then { _ -> Void in
-                self.checkSurveys();
+                if (reachable) {
+                    self.checkSurveys();
+                }
                 }.error { _ -> Void in
                     log.error("Error checking for surveys");
             }
