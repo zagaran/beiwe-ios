@@ -124,10 +124,10 @@ class Debouncer<T>: NSObject {
 }
 
 func confirmAndCallClinician(presenter: UIViewController, callAssistant: Bool = false) {
-    var msg = "Are you sure you wish to call your primary clincian now?"
+    let msg = "Are you sure you wish to place a call now?"
     var number = StudyManager.sharedInstance.currentStudy?.clinicianPhoneNumber
     if (callAssistant) {
-        msg = "Call your study's research assistant now?"
+        //msg = "Call your study's research assistant now?"
         number = StudyManager.sharedInstance.currentStudy?.raPhoneNumber
     }
     if let phoneNumber = number where AppDelegate.sharedInstance().canOpenTel {
