@@ -15,6 +15,7 @@ import ReachabilitySwift
 import ResearchKit;
 import PermissionScope
 import XCGLogger
+import EmitterKit
 
 let log = XCGLogger(identifier: "advancedLogger", includeDefaultDestinations: false)
 
@@ -32,6 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let pscope = PermissionScope()
     var canOpenTel = false;
     let debugEnabled  = _isDebugAssertConfiguration();
+    let lockEvent = Event<Bool>()
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
@@ -288,10 +290,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationProtectedDataDidBecomeAvailable(application: UIApplication) {
         log.info("applicationProtectedDataDidBecomeAvailable");
+        lockEvent.emit(false);
     }
 
     func applicationProtectedDataWillBecomeUnavailable(application: UIApplication) {
         log.info("applicationProtectedDataWillBecomeUnavailable");
+        lockEvent.emit(true);
     }
     /* Crashlytics functions -- future */
 

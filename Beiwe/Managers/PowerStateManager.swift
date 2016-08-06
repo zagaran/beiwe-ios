@@ -8,12 +8,14 @@
 
 import Foundation
 import PromiseKit
+import EmitterKit
 
 class PowerStateManager : DataServiceProtocol {
 
     let storeType = "powerState";
     let headers = ["timestamp", "event"]
     var store: DataStorage?;
+    var listeners: [Listener] = [];
 
     @objc func batteryStateDidChange(notification: NSNotification){
         // The stage did change: plugged, unplugged, full charge...
@@ -36,6 +38,18 @@ class PowerStateManager : DataServiceProtocol {
         self.store?.flush();
     }
 
+    func didLockUnlock(isLocked: Bool) {
+        log.info("Lock state data changed: \(isLocked)");
+        var data: [String] = [ ];
+        data.append(String(Int64(NSDate().timeIntervalSince1970 * 1000)));
+        let state: String = isLocked ? "Locked" : "Unlocked";
+        data.append(state);
+
+        self.store?.store(data);
+        self.store?.flush();
+
+    }
+
     func initCollecting() -> Bool {
         store = DataStorageManager.sharedInstance.createStore(storeType, headers: headers);
         return true;
@@ -44,12 +58,16 @@ class PowerStateManager : DataServiceProtocol {
     func startCollecting() {
         log.info("Turning \(storeType) collection on");
         UIDevice.currentDevice().batteryMonitoringEnabled = true;
+        listeners += AppDelegate.sharedInstance().lockEvent.on { [weak self] locked in
+            self?.didLockUnlock(locked);
+        }
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.batteryStateDidChange), name: UIDeviceBatteryStateDidChangeNotification, object: nil)
 
     }
     func pauseCollecting() {
         log.info("Pausing \(storeType) collection");
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIDeviceBatteryStateDidChangeNotification, object:nil)
+        listeners = [ ];
         store!.flush();
     }
     func finishCollecting() -> Promise<Void> {
