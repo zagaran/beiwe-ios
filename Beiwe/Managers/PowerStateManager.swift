@@ -13,7 +13,7 @@ import EmitterKit
 class PowerStateManager : DataServiceProtocol {
 
     let storeType = "powerState";
-    let headers = ["timestamp", "event"]
+    let headers = ["timestamp", "event", "level"]
     var store: DataStorage?;
     var listeners: [Listener] = [];
 
@@ -33,6 +33,7 @@ class PowerStateManager : DataServiceProtocol {
             state = "PowerUnknown";
         }
         data.append(state);
+        data.append(String(UIDevice.currentDevice().batteryLevel));
 
         self.store?.store(data);
         self.store?.flush();
@@ -44,6 +45,7 @@ class PowerStateManager : DataServiceProtocol {
         data.append(String(Int64(NSDate().timeIntervalSince1970 * 1000)));
         let state: String = isLocked ? "Locked" : "Unlocked";
         data.append(state);
+        data.append(String(UIDevice.currentDevice().batteryLevel));
 
         self.store?.store(data);
         self.store?.flush();
