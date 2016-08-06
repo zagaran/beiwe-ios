@@ -94,6 +94,7 @@ struct StudySettings : Mappable {
     var motionOffDurationSeconds = 300;
     var motionOnDurationSeconds = 0;
     var reachability = false;
+    var uploadOverCellular = false;
     var consentSections: [String:ConsentSection] = [:];
 
     init?(_ map: Map) {
@@ -139,6 +140,7 @@ struct StudySettings : Mappable {
         motionOnDurationSeconds        <- map["device_settings.devicemotion_on_duration_seconds"];
         reachability                   <- map["device_settings.reachability"];
         consentSections                <- map["device_settings.consent_sections"]
+        uploadOverCellular             <- map["allow_upload_over_cellular_data"]
     }
     
 }

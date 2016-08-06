@@ -204,11 +204,11 @@ class StudyManager {
     }
 
     func periodicNetworkTransfers() {
-        guard let currentStudy = currentStudy else {
+        guard let currentStudy = currentStudy, studySettings = currentStudy.studySettings else {
             return;
         }
 
-        let reachable = self.appDelegate.reachability!.isReachableViaWiFi()
+        let reachable = studySettings.uploadOverCellular ? self.appDelegate.reachability!.isReachable() : self.appDelegate.reachability!.isReachableViaWiFi()
 
         // Good time to compact the database
         let currentTime: Int64 = Int64(NSDate().timeIntervalSince1970);
