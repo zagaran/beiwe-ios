@@ -43,7 +43,11 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        promptLabel.text = activeSurvey.survey?.questions[0].prompt
+        var prompt = activeSurvey.survey?.questions[0].prompt ?? "";
+        for _ in 0...100 {
+            prompt = prompt + "More text goes here! "
+        }
+        promptLabel.text = prompt
 
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Trash, target: self, action:  #selector(cancelButton))
 
@@ -194,6 +198,7 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
             currentLengthLabel.hidden = false
             recorder?.record()
             resetTimer()
+            disableIdleTimer()
             timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: #selector(recordingTimer), userInfo: nil, repeats: true)
         } catch  let error as NSError{
             log.error("Err: \(error)")
@@ -358,9 +363,18 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
         // Dispose of any resources that can be recreated.
     }
 
+    func enableIdleTimer() {
+        UIApplication.sharedApplication().idleTimerDisabled = false;
+    }
+
+    func disableIdleTimer() {
+        UIApplication.sharedApplication().idleTimerDisabled = true;
+    }
+
     func audioRecorderDidFinishRecording(recorder: AVAudioRecorder, successfully flag: Bool) {
         log.debug("recording finished, success: \(flag), len: \(currentLength)")
         resetTimer()
+        enableIdleTimer();
         if (flag && currentLength > 0.0) {
             self.recorder = nil
             state = .Recorded
@@ -381,6 +395,7 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
 
     func audioRecorderEncodeErrorDidOccur(recorder: AVAudioRecorder, error: NSError?) {
         log.error("Error received in audio recorded: \(error)")
+        enableIdleTimer();
         self.recorder?.deleteRecording()
         reset()
     }
