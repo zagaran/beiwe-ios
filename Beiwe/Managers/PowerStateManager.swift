@@ -64,11 +64,13 @@ class PowerStateManager : DataServiceProtocol {
             self?.didLockUnlock(locked);
         }
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.batteryStateDidChange), name: UIDeviceBatteryStateDidChangeNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.batteryStateDidChange), name: UIDeviceBatteryLevelDidChangeNotification, object: nil)
 
     }
     func pauseCollecting() {
         log.info("Pausing \(storeType) collection");
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIDeviceBatteryStateDidChangeNotification, object:nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIDeviceBatteryLevelDidChangeNotification, object:nil)
         listeners = [ ];
         store!.flush();
     }
