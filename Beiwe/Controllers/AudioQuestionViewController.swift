@@ -43,10 +43,12 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        var prompt = activeSurvey.survey?.questions[0].prompt ?? "";
+        let prompt = activeSurvey.survey?.questions[0].prompt ?? "";
+        /* TESTING
         for _ in 0...100 {
             prompt = prompt + "More text goes here! "
         }
+        */
         promptLabel.text = prompt
 
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Trash, target: self, action:  #selector(cancelButton))
@@ -348,7 +350,8 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
         player = nil
         recorder = nil
         state = .Initial
-        saveButton.enabled = false
+        //saveButton.enabled = false
+        saveButton.hidden = true
         reRecordButton.hidden = true
         maxLen = StudyManager.sharedInstance.currentStudy?.studySettings?.voiceRecordingMaxLengthSeconds ?? 60
         //maxLen = 5
@@ -380,7 +383,8 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
         if (flag && currentLength > 0.0) {
             self.recorder = nil
             state = .Recorded
-            saveButton.enabled = true
+            //saveButton.enabled = true
+            saveButton.hidden = false
             reRecordButton.hidden = false
             do {
                 player = try AVAudioPlayer(contentsOfURL: filename!)
