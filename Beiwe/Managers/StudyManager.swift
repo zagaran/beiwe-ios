@@ -73,6 +73,8 @@ class StudyManager {
         setApiCredentials()
         DataStorageManager.sharedInstance.setCurrentStudy(self.currentStudy!);
         self.prepareDataServices();
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.reachabilityChanged), name: ReachabilityChangedNotification, object: nil)
+
     }
 
     func prepareDataServices() {
@@ -158,6 +160,7 @@ class StudyManager {
         }
         */
 
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: ReachabilityChangedNotification, object:nil);
 
         var promise: Promise<Void>
         if (gpsManager != nil) {
@@ -201,6 +204,13 @@ class StudyManager {
             }
         }
 
+    }
+
+    @objc func reachabilityChanged(notification: NSNotification){
+        Promise().then() { () -> Void in
+            log.info("Reachability changed, running periodic.");
+            self.periodicNetworkTransfers();
+        }
     }
 
     func periodicNetworkTransfers() {
