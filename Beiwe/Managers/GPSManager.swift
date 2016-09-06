@@ -45,6 +45,7 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
     static let headers = [ "timestamp", "latitude", "longitude", "altitude", "accuracy"];
     var isDeferringUpdates = false;
     var nextSurveyUpdate: NSTimeInterval = 0;
+    var timer: NSTimer?;
 
     func gpsAllowed() -> Bool {
         return CLLocationManager.locationServicesEnabled() &&  CLLocationManager.authorizationStatus() == .AuthorizedAlways;
@@ -59,7 +60,8 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
         } else {
             // Fallback on earlier versions
         };
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
+        locationManager.distanceFilter = 99999;
         locationManager.requestAlwaysAuthorization();
         locationManager.pausesLocationUpdatesAutomatically = false;
         locationManager.startUpdatingLocation();
@@ -70,6 +72,7 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
         }
 
         areServicesRunning = true
+        startPollTimer(1.0)
 
         return true;
 
@@ -78,6 +81,7 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
     func stopAndClear() -> Promise<Void> {
         locationManager.stopUpdatingLocation();
         areServicesRunning = false
+        clearPollTimer();
         var promises: [Promise<Void>] = [];
         for dataStatus in dataCollectionServices {
             promises.append(dataStatus.handler.finishCollecting())
@@ -88,7 +92,7 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
 
     func dispatchToServices() -> NSTimeInterval {
         let currentDate = NSDate().timeIntervalSince1970;
-        var nextServiceDate = currentDate + (15 * 60);
+        var nextServiceDate = currentDate + (60 * 60);
 
         for dataStatus in dataCollectionServices {
             if let nextToggleTime = dataStatus.nextToggleTime {
@@ -116,16 +120,14 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
         return nextServiceDate;
     }
 
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func pollServices() {
+        log.info("Polling...");
+        clearPollTimer();
         if (!areServicesRunning) {
             return
         }
 
         var nextServiceDate = dispatchToServices();
-
-        if (isCollectingGps) {
-            recordGpsData(manager, locations: locations);
-        }
 
         let currentTime = NSDate().timeIntervalSince1970;
         StudyManager.sharedInstance.periodicNetworkTransfers();
@@ -136,11 +138,38 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
 
         nextServiceDate = min(nextSurveyUpdate, nextServiceDate);
         let nextServiceSeconds = max(nextServiceDate - currentTime, 1.0);
+        startPollTimer(nextServiceSeconds)
 
+    }
+
+    func clearPollTimer() {
+        if let timer = timer {
+            timer.invalidate();
+            self.timer = nil;
+        }
+    }
+
+    func startPollTimer(seconds: Double) {
+        clearPollTimer();
+        timer = NSTimer.scheduledTimerWithTimeInterval(seconds, target: self, selector: #selector(pollServices), userInfo: nil, repeats: false)
+        log.info("Timer set for: \(seconds)");
+    }
+
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if (!areServicesRunning) {
+            return
+        }
+
+        if (isCollectingGps) {
+            recordGpsData(manager, locations: locations);
+        }
+
+        /*
         if (!isCollectingGps && !isDeferringUpdates) {
             locationManager.allowDeferredLocationUpdatesUntilTraveled(10000, timeout: nextServiceSeconds);
             isDeferringUpdates = true;
         }
+        */
 
     }
 
@@ -189,10 +218,14 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
     func startCollecting() {
         log.info("Turning GPS collection on");
         isCollectingGps = true;
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.distanceFilter = kCLDistanceFilterNone;
     }
     func pauseCollecting() {
         log.info("Pausing GPS collection");
         isCollectingGps = false;
+        locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
+        locationManager.distanceFilter = 99999;
         gpsStore?.flush();
     }
     func finishCollecting() -> Promise<Void> {
