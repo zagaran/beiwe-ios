@@ -46,7 +46,6 @@ class ReachabilityManager : DataServiceProtocol {
 
     func startCollecting() {
         log.info("Turning \(storeType) collection on");
-        UIDevice.currentDevice().batteryMonitoringEnabled = true;
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.reachabilityChanged), name: ReachabilityChangedNotification, object: nil)
 
     }
