@@ -40,7 +40,10 @@ class ActiveSurvey : Mappable {
         stepOrder   <- map["stepOrder"];
     }
 
-    func reset() {
+    func reset(survey: Survey? = nil) {
+        if let survey = survey {
+            self.survey = survey;
+        }
         rkAnswers = nil;
         bwAnswers = [:]
         isComplete = false;

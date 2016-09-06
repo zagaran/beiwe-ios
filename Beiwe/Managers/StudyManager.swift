@@ -347,10 +347,13 @@ class StudyManager {
                 if let activeSurvey = study.activeSurveys[id] {
                     /* If it's complete (including surveys we force-completed above) and it's expired, it's time for the next one */
                     if (activeSurvey.isComplete && activeSurvey.expires <= currentTime && activeSurvey.expires > 0) {
-                        activeSurvey.reset();
+                        activeSurvey.reset(survey);
                         activeSurvey.received = activeSurvey.expires;
+                        /*
                         let trackingSurvey: TrackingSurveyPresenter = TrackingSurveyPresenter(surveyId: id, activeSurvey: activeSurvey, survey: survey)
                         trackingSurvey.addTimingsEvent("notified", question: nil)
+                        */
+                        TrackingSurveyPresenter.addTimingsEvent(id, event: "notified");
 
                         surveyDataModified = true;
 

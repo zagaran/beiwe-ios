@@ -278,6 +278,23 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
         
     }
 
+    static func addTimingsEvent(surveyId: String, event: String) {
+        var timingsStore: DataStorage?;
+        let timingsName: String = TrackingSurveyPresenter.timingDataType + "_" + surveyId;
+
+        timingsStore = DataStorageManager.sharedInstance.createStore(timingsName, headers: TrackingSurveyPresenter.timingsHeaders)
+        timingsStore!.sanitize = true;
+        var data: [String] = [ String(Int64(NSDate().timeIntervalSince1970 * 1000)) ]
+        data.append("");
+        data.append("");
+        data.append("");
+        data.append("");
+        data.append("");
+        data.append(event);
+        print("TimingsEvent: \(data.joinWithSeparator(","))")
+        timingsStore?.store(data);
+    }
+
     func addTimingsEvent(event: String, question: GenericSurveyQuestion?, forcedValue: String? = nil) {
         var data: [String] = [ String(Int64(NSDate().timeIntervalSince1970 * 1000)) ]
         if let question = question {
