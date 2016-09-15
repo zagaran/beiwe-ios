@@ -140,7 +140,7 @@ struct StudySettings : Mappable {
         motionOnDurationSeconds        <- map["device_settings.devicemotion_on_duration_seconds"];
         reachability                   <- map["device_settings.reachability"];
         consentSections                <- map["device_settings.consent_sections"]
-        uploadOverCellular             <- map["allow_upload_over_cellular_data"]
+        uploadOverCellular             <- map["device_settings.allow_upload_over_cellular_data"]
     }
     
 }

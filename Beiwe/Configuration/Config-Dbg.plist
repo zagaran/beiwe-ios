@@ -3,6 +3,6 @@
 <plist version="1.0">
 <dict>
 	<key>server-url</key>
-	<string>http://kghome.unwiredservers.com:3000</string>
+	<string>https://rf-beiwe.herokuapp.com</string>
 </dict>
 </plist>
