@@ -44,7 +44,7 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
     var areServicesRunning = false;
     static let headers = [ "timestamp", "latitude", "longitude", "altitude", "accuracy"];
     var isDeferringUpdates = false;
-    var nextSurveyUpdate: NSTimeInterval = 0;
+    var nextSurveyUpdate: NSTimeInterval = 0, nextServiceDate: NSTimeInterval = 0;
     var timer: NSTimer?;
 
     func gpsAllowed() -> Bool {
@@ -127,7 +127,7 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
             return
         }
 
-        var nextServiceDate = dispatchToServices();
+        nextServiceDate = dispatchToServices();
 
         let currentTime = NSDate().timeIntervalSince1970;
         StudyManager.sharedInstance.periodicNetworkTransfers();
@@ -136,16 +136,28 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
             nextSurveyUpdate = StudyManager.sharedInstance.updateActiveSurveys();
         }
 
+        setTimerForService();
+
+    }
+
+    func setTimerForService() {
         nextServiceDate = min(nextSurveyUpdate, nextServiceDate);
+        let currentTime = NSDate().timeIntervalSince1970;
         let nextServiceSeconds = max(nextServiceDate - currentTime, 1.0);
         startPollTimer(nextServiceSeconds)
-
     }
 
     func clearPollTimer() {
         if let timer = timer {
             timer.invalidate();
             self.timer = nil;
+        }
+    }
+
+    func resetNextSurveyUpdate(time: Double) {
+        nextSurveyUpdate = time
+        if (nextSurveyUpdate < nextServiceDate) {
+            setTimerForService();
         }
     }
 

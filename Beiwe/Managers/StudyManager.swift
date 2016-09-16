@@ -439,13 +439,16 @@ class StudyManager {
         */
         UIApplication.sharedApplication().applicationIconBadgeNumber = badgeCnt
 
-        if (surveyDataModified || forceSave) {
+        if (surveyDataModified || forceSave ) {
             surveysUpdatedEvent.emit();
             Recline.shared.save(study).error { _ in
                 log.error("Failed to save study after processing surveys");
             }
         }
 
+        if let gpsManager = gpsManager  {
+            gpsManager.resetNextSurveyUpdate(closestNextSurveyTime);
+        }
         return closestNextSurveyTime;
     }
 
