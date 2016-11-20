@@ -1,26 +1,26 @@
 PODS:
-  - Alamofire (3.3.0)
-  - couchbase-lite-ios (1.2.0):
-    - couchbase-lite-ios/SQLite (= 1.2.0)
-  - couchbase-lite-ios/SQLite (1.2.0)
-  - Crashlytics (3.7.0):
+  - Alamofire (3.5.1)
+  - couchbase-lite-ios (1.3.1):
+    - couchbase-lite-ios/SQLite (= 1.3.1)
+  - couchbase-lite-ios/SQLite (1.3.1)
+  - Crashlytics (3.8.3):
     - Fabric (~> 1.6.3)
-  - EmitterKit (4.0.1)
-  - Eureka (1.5.0)
-  - Fabric (1.6.7)
+  - EmitterKit (4.0.2)
+  - Eureka (1.7.0)
+  - Fabric (1.6.11)
   - Hakuba (2.1.1)
-  - IDZSwiftCommonCrypto (0.7.1)
-  - KeychainSwift (3.0.11)
-  - ObjectMapper (1.1.5)
-  - OMGHTTPURLRQ (3.1.2):
-    - OMGHTTPURLRQ/RQ (= 3.1.2)
-  - OMGHTTPURLRQ/FormURLEncode (3.1.2)
-  - OMGHTTPURLRQ/RQ (3.1.2):
+  - IDZSwiftCommonCrypto (0.8.2)
+  - KeychainSwift (3.0.16)
+  - ObjectMapper (1.5.0)
+  - OMGHTTPURLRQ (3.1.3):
+    - OMGHTTPURLRQ/RQ (= 3.1.3)
+  - OMGHTTPURLRQ/FormURLEncode (3.1.3)
+  - OMGHTTPURLRQ/RQ (3.1.3):
     - OMGHTTPURLRQ/FormURLEncode
     - OMGHTTPURLRQ/UserAgent
-  - OMGHTTPURLRQ/UserAgent (3.1.2)
+  - OMGHTTPURLRQ/UserAgent (3.1.3)
   - PermissionScope (1.0.2)
-  - PKHUD (3.1.0)
+  - PKHUD (3.2.1)
   - PromiseKit (3.1.1):
     - PromiseKit/Foundation (= 3.1.1)
     - PromiseKit/QuartzCore (= 3.1.1)
@@ -33,61 +33,87 @@ PODS:
     - PromiseKit/CorePromise
   - PromiseKit/UIKit (3.1.1):
     - PromiseKit/CorePromise
-  - ReachabilitySwift (2.3.3)
-  - ResearchKit (1.3.0)
+  - ReachabilitySwift (2.4)
+  - ResearchKit (1.4.1)
   - SwiftValidator (3.0.3)
-  - XCGLogger (3.3)
-  - XLActionController (2.0.0):
-    - XLActionController/Core (= 2.0.0)
-  - XLActionController/Core (2.0.0)
+  - XCGLogger (3.6.0)
+  - XLActionController (2.1.0):
+    - XLActionController/Core (= 2.1.0)
+  - XLActionController/Core (2.1.0)
 
 DEPENDENCIES:
   - Alamofire (~> 3.0)
   - couchbase-lite-ios
   - Crashlytics (~> 3.4)
   - EmitterKit (~> 4.0)
-  - Eureka (~> 1.5)
+  - Eureka (from `https://github.com/xmartlabs/Eureka.git`, branch `swift2.3`)
   - Hakuba
-  - IDZSwiftCommonCrypto
+  - IDZSwiftCommonCrypto (from `git@github.com:RocketFarm/IDZSwiftCommonCrypto.git`, branch `swift2.3`)
   - KeychainSwift (~> 3.0)
   - ObjectMapper (~> 1.1)
-  - PermissionScope
-  - PKHUD
+  - PermissionScope (= 1.0.2)
+  - PKHUD (~> 3.0)
   - PromiseKit (~> 3.1.1)
-  - ReachabilitySwift (from `https://github.com/ashleymills/Reachability.swift`)
-  - ResearchKit (= 1.3.0)
+  - ReachabilitySwift (from `https://github.com/ashleymills/Reachability.swift`, branch `swift-2.3`)
+  - ResearchKit (from `https://github.com/ResearchKit/ResearchKit.git`)
   - SwiftValidator (= 3.0.3)
   - XCGLogger (~> 3.3)
-  - XLActionController
+  - XLActionController (from `git@github.com:RocketFarm/XLActionController.git`, branch `swift2.3`)
 
 EXTERNAL SOURCES:
+  Eureka:
+    :branch: swift2.3
+    :git: https://github.com/xmartlabs/Eureka.git
+  IDZSwiftCommonCrypto:
+    :branch: swift2.3
+    :git: git@github.com:RocketFarm/IDZSwiftCommonCrypto.git
   ReachabilitySwift:
+    :branch: swift-2.3
     :git: https://github.com/ashleymills/Reachability.swift
+  ResearchKit:
+    :git: https://github.com/ResearchKit/ResearchKit.git
+  XLActionController:
+    :branch: swift2.3
+    :git: git@github.com:RocketFarm/XLActionController.git
 
 CHECKOUT OPTIONS:
+  Eureka:
+    :commit: be9e11baaba4092c36373e8c8ba774fddd6788cc
+    :git: https://github.com/xmartlabs/Eureka.git
+  IDZSwiftCommonCrypto:
+    :commit: 00cbaf2469d804889c6e821a4e30e1b2894b65ff
+    :git: git@github.com:RocketFarm/IDZSwiftCommonCrypto.git
   ReachabilitySwift:
-    :commit: fa90df50c04f5743fbdf643cbe8d10562d75673d
+    :commit: 833482f68b0904b9cdd6abea7e4f146a06627a48
     :git: https://github.com/ashleymills/Reachability.swift
+  ResearchKit:
+    :commit: 7a4dd58df6753ae71971dfb9b8e09f9c4f56a8a1
+    :git: https://github.com/ResearchKit/ResearchKit.git
+  XLActionController:
+    :commit: d8702aa0aa3be6ba856c7cf6dc40495d45e1c618
+    :git: git@github.com:RocketFarm/XLActionController.git
 
 SPEC CHECKSUMS:
-  Alamofire: 9054db4a1b1ca9e363223183e01cea380159a27c
-  couchbase-lite-ios: 509ee0854830c9d1f1539829f596ad1839680834
-  Crashlytics: c3a2333dea9e2733d2777f730910321fc9e25c0d
-  EmitterKit: ac291d6fbf87237b2098ddbf71fff5c11e94208a
-  Eureka: 2fb37bb50569c62ee3284689d5b7aca694b040e0
-  Fabric: caf7580c725e64db144f610ac65cd60956911dc7
+  Alamofire: 0dfba1184a543e2aa160f4e39cac4e8aba48d223
+  couchbase-lite-ios: e4672e9c623e31584602c0300c299c363acebb05
+  Crashlytics: 2b6dbe138a42395577cfa73dfa1aa7248cadf39e
+  EmitterKit: ac0dced2291745a6dd299a150665e1b3f0844a32
+  Eureka: 2020d9faeef7b7e9adeb9e3d8af779e5931c1897
+  Fabric: 5911403591946b8228ab1c51d98f1d7137e863c6
   Hakuba: bc5a0422290d086c33a6424a26dd58c1a1136e94
-  IDZSwiftCommonCrypto: 320d5d0254b3d5230004bb01ef7753b0777d916c
-  KeychainSwift: 0a4214c910423543a42b0f30f25987d46178b6a5
-  ObjectMapper: 528b1a6677a6acac7747edd508576983e76a9148
-  OMGHTTPURLRQ: 38316b56d88125c600bcdb16df8329147da2b0ee
+  IDZSwiftCommonCrypto: eb7896eca1954a5541a4dca09c0f8c937a07c4d1
+  KeychainSwift: a5bb85cd498ce2217b55e055ec59e9268d83384c
+  ObjectMapper: 386645adca9d9d23b95eda43090b09d66444cf14
+  OMGHTTPURLRQ: a547be1b9721ddfbf9d08aab56ab72dc4c1cc417
   PermissionScope: 860828c5516d349b6f49e5491799cfef33c5ccc7
-  PKHUD: 4167eccdb1b3a892fd80ce2b51cb6ba412a889ab
+  PKHUD: 001c11518f125a273ddf026bcc64918423744ea2
   PromiseKit: 4e8127c22a9b29d1b44958ab2ec762ea6115cbfb
-  ReachabilitySwift: e0f6b6f280effb47731acfaaa2d5ffe223703793
-  ResearchKit: 934a1efefed1a3a9150002a1e4b123d0c86c3f2e
+  ReachabilitySwift: dc7452dab85ff881904215e1a113326ad8d07beb
+  ResearchKit: e308eb4b980784bd2bda6f3716325fa929c000c0
   SwiftValidator: 0b6a48bf10364411b0d64c97f78665ff87ca9f8b
-  XCGLogger: d6e196e78940ff6daab17d6917107876f973fa31
-  XLActionController: 97ed31237413db4d9401c6a559270f4d2b4de136
+  XCGLogger: 53a3efe22e228e8b25ed8184bc074c2b06d48490
+  XLActionController: 085f4baf9246c6e54c6e337f88d045e2e7b3c0bb
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: d7225e0e98b3716aedb5cffe1ebbb1d37ee16861
+
+COCOAPODS: 1.1.1
