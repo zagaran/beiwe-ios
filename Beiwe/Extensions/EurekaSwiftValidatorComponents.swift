@@ -114,7 +114,7 @@ public class _SVFieldCell<T where T: Equatable, T: InputTypeInitiable>: _FieldCe
         //textLabel?.textColor = UIColor.blackColor();
     }
 
-    func showError(field: UITextField, error: ValidationError) {
+    func showError(field: UITextField, error: SwiftValidator.ValidationError) {
         // turn the field to red
         field.textColor = errorColor
         /*

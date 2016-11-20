@@ -67,13 +67,13 @@ class DeviceMotionManager : DataServiceProtocol {
                 data.append(String(motionData.userAcceleration.z))
                 var fieldAccuracy: String;
                 switch(motionData.magneticField.accuracy) {
-                case CMMagneticFieldCalibrationAccuracyUncalibrated:
+                case .Uncalibrated:
                     fieldAccuracy = "uncalibrated"
-                case CMMagneticFieldCalibrationAccuracyLow:
+                case .Low:
                     fieldAccuracy = "low"
-                case CMMagneticFieldCalibrationAccuracyMedium:
+                case .Medium:
                     fieldAccuracy = "medium"
-                case CMMagneticFieldCalibrationAccuracyHigh:
+                case .High:
                     fieldAccuracy = "high"
                 default:
                     fieldAccuracy = "unknown"

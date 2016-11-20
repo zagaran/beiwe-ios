@@ -33,7 +33,7 @@ class ChangePasswordViewController: FormViewController {
         form +++ Section(){ section in
             if (isForgotPassword) {
                 var header = HeaderFooterView<ForgotPasswordHeaderView>(.NibFile(name: "ForgotPasswordHeaderView", bundle: nil))
-                header.onSetupView = { headerView, _, _ in
+                header.onSetupView = { headerView, _ in
                     headerView.patientId.text = StudyManager.sharedInstance.currentStudy?.patientId ?? ""
                     headerView.callButton.addTarget(self, action: #selector(ChangePasswordViewController.callAssistant(_:)), forControlEvents: UIControlEvents.TouchUpInside)
 

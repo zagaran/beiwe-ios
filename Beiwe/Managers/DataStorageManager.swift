@@ -45,8 +45,8 @@ class EncryptedStorage {
         queue = dispatch_queue_create("com.rocketfarm.beiwe.dataqueue." + type, nil)
 
         let name = patientId + "_" + type + "_" + String(Int64(NSDate().timeIntervalSince1970 * 1000));
-        realFilename = DataStorageManager.currentDataDirectory().URLByAppendingPathComponent(name + suffix)
-        filename = NSURL(fileURLWithPath:  NSTemporaryDirectory()).URLByAppendingPathComponent(name + suffix)
+        realFilename = DataStorageManager.currentDataDirectory().URLByAppendingPathComponent(name + suffix)!
+        filename = NSURL(fileURLWithPath:  NSTemporaryDirectory()).URLByAppendingPathComponent(name + suffix)!
         aesKey = Crypto.sharedInstance.newAesKey(keyLength);
         iv = Crypto.sharedInstance.randomBytes(16)
         let arrayKey = Array(UnsafeBufferPointer(start: UnsafePointer<UInt8>(aesKey!.bytes), count: aesKey!.length));
@@ -340,7 +340,7 @@ class DataStorageManager {
                                                            .UserDomainMask, true)
 
         let cacheDir = dirPaths[0]
-        return NSURL(fileURLWithPath: cacheDir).URLByAppendingPathComponent("currentdata");
+        return NSURL(fileURLWithPath: cacheDir).URLByAppendingPathComponent("currentdata")!;
     }
 
     static func uploadDataDirectory() -> NSURL {
@@ -348,7 +348,7 @@ class DataStorageManager {
                                                            .UserDomainMask, true)
 
         let cacheDir = dirPaths[0]
-        return NSURL(fileURLWithPath: cacheDir).URLByAppendingPathComponent("uploaddata");
+        return NSURL(fileURLWithPath: cacheDir).URLByAppendingPathComponent("uploaddata")!;
     }
 
     func createDirectories() {
@@ -471,7 +471,7 @@ class DataStorageManager {
                 for filename in filesToUpload {
                     let src = DataStorageManager.currentDataDirectory().URLByAppendingPathComponent(filename);
                     let dst = DataStorageManager.uploadDataDirectory().URLByAppendingPathComponent(filename);
-                    self._moveFile(src, dst: dst)
+                    self._moveFile(src!, dst: dst!)
                 }
                 return Promise()
         }

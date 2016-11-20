@@ -181,7 +181,7 @@ class StudyManager {
                     while let filename = enumerator.nextObject() as? String {
                         if (true /*filename.hasSuffix(DataStorageManager.dataFileSuffix)*/) {
                             let filePath = DataStorageManager.uploadDataDirectory().URLByAppendingPathComponent(filename);
-                            try fileManager.removeItemAtURL(filePath);
+                            try fileManager.removeItemAtURL(filePath!);
                         }
                     }
                 }
@@ -192,7 +192,7 @@ class StudyManager {
                     while let filename = enumerator.nextObject() as? String {
                         if (true /* filename.hasSuffix(DataStorageManager.dataFileSuffix) */) {
                             let filePath = DataStorageManager.currentDataDirectory().URLByAppendingPathComponent(filename);
-                            try fileManager.removeItemAtURL(filePath);
+                            try fileManager.removeItemAtURL(filePath!);
                         }
                     }
                 }
@@ -537,7 +537,7 @@ class StudyManager {
                 let filePath = DataStorageManager.uploadDataDirectory().URLByAppendingPathComponent(file);
                 do {
                     log.warning("Removing file: \(filePath)")
-                    try NSFileManager.defaultManager().removeItemAtURL(filePath);
+                    try NSFileManager.defaultManager().removeItemAtURL(filePath!);
                     used = used - fileList[file]!
                 } catch {
                     log.error("Error removing file: \(filePath)")
@@ -558,8 +558,8 @@ class StudyManager {
     func clearTempFiles() -> Promise<Void> {
         return Promise().then(on: dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
             do {
-                let alamoTmpDir = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent("com.alamofire.manager").URLByAppendingPathComponent("multipart.form.data")
-                try NSFileManager.defaultManager().removeItemAtURL(alamoTmpDir)
+                let alamoTmpDir = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent("com.alamofire.manager")!.URLByAppendingPathComponent("multipart.form.data")
+                try NSFileManager.defaultManager().removeItemAtURL(alamoTmpDir!)
             } catch {
                 //log.error("Error removing tmp files: \(error)")
             }
@@ -597,7 +597,7 @@ class StudyManager {
                 while let filename = enumerator.nextObject() as? String {
                     if (DataStorageManager.sharedInstance.isUploadFile(filename)) {
                         let filePath = DataStorageManager.uploadDataDirectory().URLByAppendingPathComponent(filename);
-                        let attr = try NSFileManager.defaultManager().attributesOfItemAtPath(filePath.path!)
+                        let attr = try NSFileManager.defaultManager().attributesOfItemAtPath(filePath!.path!)
                         let fileSize = attr[NSFileSize]!.longLongValue
                         filesToProcess[filename] = fileSize
                         size = size + fileSize
@@ -609,13 +609,13 @@ class StudyManager {
             if (!processOnly) {
                 for (filename, len) in filesToProcess {
                     let filePath = DataStorageManager.uploadDataDirectory().URLByAppendingPathComponent(filename);
-                    let uploadRequest = UploadRequest(fileName: filename, filePath: filePath.path!);
+                    let uploadRequest = UploadRequest(fileName: filename, filePath: filePath!.path!);
                     uploadChain = uploadChain.then {_ in
                         log.info("Uploading: \(filename)")
-                        return ApiManager.sharedInstance.makeMultipartUploadRequest(uploadRequest, file: filePath).then { _ -> Promise<Bool> in
+                        return ApiManager.sharedInstance.makeMultipartUploadRequest(uploadRequest, file: filePath!).then { _ -> Promise<Bool> in
                             log.info("Finished uploading: \(filename), removing.");
                             numFiles = numFiles + 1
-                            try fileManager.removeItemAtURL(filePath);
+                            try fileManager.removeItemAtURL(filePath!);
                             storageInUse = storageInUse - len
                             filesToProcess.removeValueForKey(filename)
                             return Promise(true);
