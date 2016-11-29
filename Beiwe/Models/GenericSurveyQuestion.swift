@@ -31,6 +31,7 @@ struct GenericSurveyQuestion : Mappable  {
     var minValue: Int?;
     var selectionValues: [OneSelection] = [];
     var textFieldType: TextFieldType?;
+    var displayIf: [String: AnyObject]?;
 
 
     init?(_ map: Map) {
@@ -47,6 +48,7 @@ struct GenericSurveyQuestion : Mappable  {
         minValue <- (map["min"], transformJsonStringInt)
         textFieldType <- map["text_field_type"]
         selectionValues <- map["answers"]
+        displayIf <- map["display_if"]
     }
     
 }

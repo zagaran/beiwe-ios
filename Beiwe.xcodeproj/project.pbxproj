@@ -19,6 +19,11 @@
 		832FFC331CC9C3CD00F2E1EF /* BWXLCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 832FFC311CC9C3CD00F2E1EF /* BWXLCell.xib */; };
 		832FFC351CCED80200F2E1EF /* AudioQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832FFC341CCED80200F2E1EF /* AudioQuestionViewController.swift */; };
 		833482F71CA2EF7E00A37B35 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833482F61CA2EF7E00A37B35 /* RegisterViewController.swift */; };
+		833765681DED200D00E1B883 /* BWOrderedTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833765671DED200D00E1B883 /* BWOrderedTask.swift */; };
+		8337656A1DED26B100E1B883 /* BWStepNavigationRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833765691DED26B100E1B883 /* BWStepNavigationRule.swift */; };
+		8337656C1DED27B200E1B883 /* BWNavigatableTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8337656B1DED27B200E1B883 /* BWNavigatableTask.swift */; };
+		8337656E1DED321C00E1B883 /* BWSkipStepNavigationRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8337656D1DED321C00E1B883 /* BWSkipStepNavigationRule.swift */; };
+		833765701DEE04D500E1B883 /* ORKStepNavigationRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8337656F1DEE04D500E1B883 /* ORKStepNavigationRule.swift */; };
 		8340ABF51CC7115400D0382F /* ChangePasswordRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8340ABF41CC7115400D0382F /* ChangePasswordRequest.swift */; };
 		8379B45C1CA4F02C00D4C605 /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8379B45B1CA4F02C00D4C605 /* Crypto.swift */; };
 		83914CAD1D00DA1100B01C82 /* ForgotPasswordHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83914CAC1D00DA1100B01C82 /* ForgotPasswordHeaderView.swift */; };
@@ -91,6 +96,11 @@
 		832FFC311CC9C3CD00F2E1EF /* BWXLCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BWXLCell.xib; sourceTree = "<group>"; };
 		832FFC341CCED80200F2E1EF /* AudioQuestionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioQuestionViewController.swift; sourceTree = "<group>"; };
 		833482F61CA2EF7E00A37B35 /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
+		833765671DED200D00E1B883 /* BWOrderedTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BWOrderedTask.swift; sourceTree = "<group>"; };
+		833765691DED26B100E1B883 /* BWStepNavigationRule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BWStepNavigationRule.swift; sourceTree = "<group>"; };
+		8337656B1DED27B200E1B883 /* BWNavigatableTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BWNavigatableTask.swift; sourceTree = "<group>"; };
+		8337656D1DED321C00E1B883 /* BWSkipStepNavigationRule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BWSkipStepNavigationRule.swift; sourceTree = "<group>"; };
+		8337656F1DEE04D500E1B883 /* ORKStepNavigationRule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ORKStepNavigationRule.swift; sourceTree = "<group>"; };
 		8340ABF41CC7115400D0382F /* ChangePasswordRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordRequest.swift; sourceTree = "<group>"; };
 		8379B45B1CA4F02C00D4C605 /* Crypto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Crypto.swift; sourceTree = "<group>"; };
 		83914CAC1D00DA1100B01C82 /* ForgotPasswordHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotPasswordHeaderView.swift; sourceTree = "<group>"; };
@@ -204,6 +214,11 @@
 			isa = PBXGroup;
 			children = (
 				83B2BDF61CC1DCBA007FAE91 /* BWORKScaleAnswerFormat.swift */,
+				833765671DED200D00E1B883 /* BWOrderedTask.swift */,
+				833765691DED26B100E1B883 /* BWStepNavigationRule.swift */,
+				8337656B1DED27B200E1B883 /* BWNavigatableTask.swift */,
+				8337656D1DED321C00E1B883 /* BWSkipStepNavigationRule.swift */,
+				8337656F1DEE04D500E1B883 /* ORKStepNavigationRule.swift */,
 			);
 			path = RK;
 			sourceTree = "<group>";
@@ -561,7 +576,9 @@
 				832FFC261CC866AB00F2E1EF /* UINavigationController+transparent.swift in Sources */,
 				832FFC2D1CC889DB00F2E1EF /* SurveyCell.swift in Sources */,
 				83C2BFCC1CB7484B00B2251B /* GetSurveysRequest.swift in Sources */,
+				833765681DED200D00E1B883 /* BWOrderedTask.swift in Sources */,
 				83AF041F1CACBCC600A37225 /* ParamUploadRequest.swift in Sources */,
+				833765701DEE04D500E1B883 /* ORKStepNavigationRule.swift in Sources */,
 				83AF042B1CAF7F7F00A37225 /* ProximityManager.swift in Sources */,
 				83AF04211CACC1C900A37225 /* MainViewController.swift in Sources */,
 				83B2BDF01CC1C068007FAE91 /* BWORKTaskViewController.swift in Sources */,
@@ -570,6 +587,7 @@
 				83AF043F1CB360F300A37225 /* ConsentManager.swift in Sources */,
 				83C7D3831CB5943B00BC7285 /* BWBorderedButton.m in Sources */,
 				83C295F81CBA048F0016DD95 /* ActiveSurvey.swift in Sources */,
+				8337656E1DED321C00E1B883 /* BWSkipStepNavigationRule.swift in Sources */,
 				83AF04151CAB556800A37225 /* GPSManager.swift in Sources */,
 				83AF042D1CB0D21700A37225 /* GyroManager.swift in Sources */,
 				83C295F21CB817AD0016DD95 /* Survey.swift in Sources */,
@@ -586,6 +604,7 @@
 				83C7D3841CB5943B00BC7285 /* BWTextButton.m in Sources */,
 				83B2BDF71CC1DCBA007FAE91 /* BWORKScaleAnswerFormat.swift in Sources */,
 				83C295F41CB831330016DD95 /* GenericSurveyQuestion.swift in Sources */,
+				8337656C1DED27B200E1B883 /* BWNavigatableTask.swift in Sources */,
 				83AF043B1CB3451A00A37225 /* OnboardingManager.swift in Sources */,
 				83AF043D1CB35D2000A37225 /* LoginViewController.swift in Sources */,
 				83AF04191CAB843D00A37225 /* SwiftyRSA.swift in Sources */,
@@ -595,6 +614,7 @@
 				832FFC241CC863F400F2E1EF /* AppColors.swift in Sources */,
 				83B2BDF31CC1D5AA007FAE91 /* UIColor.swift in Sources */,
 				83AF042F1CB0D48D00A37225 /* MagnetometerManager.swift in Sources */,
+				8337656A1DED26B100E1B883 /* BWStepNavigationRule.swift in Sources */,
 				83E3DE8E1CA477D200EB5349 /* ApiManager.swift in Sources */,
 				83AF04291CAF748C00A37225 /* PowerStateManager.swift in Sources */,
 				83AF04351CB0E2BB00A37225 /* ReachabilityManager.swift in Sources */,
