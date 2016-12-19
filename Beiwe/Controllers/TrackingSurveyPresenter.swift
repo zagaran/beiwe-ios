@@ -52,15 +52,17 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
         timingsStore!.sanitize = true;
 
 
-        guard  let stepOrder = activeSurvey.stepOrder where questions.count > 0 else {
+        guard  let stepOrder = activeSurvey.stepOrder /*where questions.count > 0 */ else {
             return;
         }
 
 
         let numQuestions = survey.randomize ? min(questions.count, survey.numberOfRandomQuestions ?? 999) : questions.count;
+        /*
         if (numQuestions == 0) {
             return;
         }
+        */
 
         var hasOptionalSteps: Bool = false;
         var steps = [ORKStep]();
