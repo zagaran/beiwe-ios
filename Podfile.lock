@@ -87,7 +87,7 @@ CHECKOUT OPTIONS:
     :commit: 833482f68b0904b9cdd6abea7e4f146a06627a48
     :git: https://github.com/ashleymills/Reachability.swift
   ResearchKit:
-    :commit: 7a4dd58df6753ae71971dfb9b8e09f9c4f56a8a1
+    :commit: e4918e28bd484f5110f01dc1d1b4babe0f098477
     :git: https://github.com/ResearchKit/ResearchKit.git
   XLActionController:
     :commit: d8702aa0aa3be6ba856c7cf6dc40495d45e1c618
