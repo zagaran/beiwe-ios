@@ -16,7 +16,7 @@ target 'Beiwe' do
   pod 'ResearchKit', :git => 'https://github.com/ResearchKit/ResearchKit.git'
   pod 'ReachabilitySwift', :git => 'https://github.com/ashleymills/Reachability.swift', :branch => 'swift-2.3'
   pod 'EmitterKit', '~> 4.0'
-  pod 'PermissionScope', '1.0.2'
+  pod 'PermissionScope', :git => 'git@github.com:RocketFarm/PermissionScope', :branch => 'loc-notif-only'
   pod 'Hakuba'
   pod 'XLActionController', :git => 'git@github.com:RocketFarm/XLActionController.git', :branch => 'swift2.3'
   pod 'XCGLogger', '~> 3.3'
