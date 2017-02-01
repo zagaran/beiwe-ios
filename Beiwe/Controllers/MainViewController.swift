@@ -57,7 +57,7 @@ class MainViewController: UIViewController {
             self?.refreshSurveys();
         }
 
-        if (true || AppDelegate.sharedInstance().debugEnabled) {
+        if (AppDelegate.sharedInstance().debugEnabled) {
             addDebugMenu();
         }
 
