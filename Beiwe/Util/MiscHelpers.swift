@@ -74,18 +74,18 @@ let transformNotification = TransformOf<UILocalNotification, String>(fromJSON: {
         return nil
 })
 
-let transformJsonStringInt = TransformOf<Int, String>(fromJSON: { (value: String?) -> Int? in
+let transformJsonStringInt = TransformOf<Int, Any>(fromJSON: { (value: Any?) -> Int? in
     // transform value from String? to Int?
-    guard let value = value else {
-        return nil;
+    if let value = value as? Int {
+        return value;
     }
-    return Int(value)
-    }, toJSON: { (value: Int?) -> String? in
+    if let value = value as? String {
+        return Int(value)
+    }
+    return nil;
+    }, toJSON: { (value: Int?) -> Int? in
         // transform value from Int? to String?
-        if let value = value {
-            return String(value)
-        }
-        return nil
+        return value;
 })
 
 class Debouncer<T>: NSObject {
