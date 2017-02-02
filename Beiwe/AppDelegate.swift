@@ -74,10 +74,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         log.logAppDetails()
 
         pscope.addPermission(NotificationsPermission(notificationCategories: nil),
-                             message: "Allows us to send you survey notifications")
+                             message: "Allows Beiwe to send you survey notifications.")
         pscope.addPermission(LocationAlwaysPermission(),
-                             message: "We need this for the data gathering capabilities of the application")
+                             message: "Beiwe needs this for the data gathering capabilities of the application.")
         pscope.headerLabel.text = ""
+        pscope.bodyLabel.text = "To proceed with the study, Beiwe needs access to your location and notifications.";
+        //pscope.bodyLabel.font = pscope.bodyLabel.font.fontWithSize(10);
+        //pscope.bodyLabel.sizeToFit();
 
         do {
             reachability = try Reachability.reachabilityForInternetConnection()

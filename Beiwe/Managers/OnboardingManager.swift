@@ -18,10 +18,12 @@ class OnboardingManager : NSObject, ORKTaskViewControllerDelegate {
         let instructionStep = ORKInstructionStep(identifier: "WelcomeStep")
         instructionStep.image = UIImage(named: "welcome-image")
         instructionStep.title = "Welcome";
-        instructionStep.text = "Welcome to the Beiwe Study App! Please have your registration user id and password handy.  It should have been provided to you by your clinician.";
+//        instructionStep.text = "Welcome to the Beiwe Study App! Please have your registration user id and password handy.  It should have been provided to you by your clinician.";
+        instructionStep.text = "Welcome to the Beiwe Research Platform. Please have your user ID and password, which were given to you by your clinician, available as you begin the registration process.";
         return instructionStep;
     }
 
+    /*
     var SecondStep: ORKStep {
         let instructionStep = ORKInstructionStep(identifier: "SecondStep")
         instructionStep.title = "Blah Blah page 2!";
@@ -35,6 +37,7 @@ class OnboardingManager : NSObject, ORKTaskViewControllerDelegate {
         instructionStep.text = "Please have your registration user id and password handy.  It should have been provided to you by your clinician.";
         return instructionStep;
     }
+    */
 
 
     override init() {

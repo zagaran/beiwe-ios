@@ -53,9 +53,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>For medical research</string>
+	<string>Beiwe needs your location to properly conduct medical research.</string>
 	<key>NSMotionUsageDescription</key>
-	<string>For medical research</string>
+	<string>Beiwe needs access to your sensors to properly conduct medical research.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>

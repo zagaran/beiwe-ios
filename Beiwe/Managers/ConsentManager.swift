@@ -45,7 +45,8 @@ class ConsentManager : NSObject, ORKTaskViewControllerDelegate {
     var PermissionsStep: ORKStep {
         let instructionStep = ORKInstructionStep(identifier: StepIds.Permission.rawValue)
         instructionStep.title = "Permissions";
-        instructionStep.text = "This app requires your access to your location at all times.  It just won't work without it.  We'd also like to notify you when it's time to fill out the next survey";
+        //instructionStep.text = "This app requires your access to your location at all times.  It just won't work without it.  We'd also like to notify you when it's time to fill out the next survey";
+        instructionStep.text = "Beiwe needs access to your location for the passive data gathering capabilities of this app. Beiwe will also send you notifications to notify you of new surveys.";
         return instructionStep;
     }
 
