@@ -3,6 +3,6 @@
 <plist version="1.0">
 <dict>
 	<key>server-url</key>
-	<string>https://rf-beiwe.herokuapp.com</string>
+	<string>https://staging.beiwe.org</string>
 </dict>
 </plist>
