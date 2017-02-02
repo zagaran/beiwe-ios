@@ -20,7 +20,7 @@ class MainViewController: UIViewController {
 
     @IBOutlet weak var callClinicianButton: UIButton!
     @IBOutlet weak var footerSeperator: UIView!
-    @IBOutlet weak var activeSurveyHeader: UIView!
+    @IBOutlet var activeSurveyHeader: UIView!
     @IBOutlet var emptySurveyHeader: UIView!
     @IBOutlet weak var surveyTableView: UITableView!
     override func viewDidLoad() {
@@ -123,6 +123,8 @@ class MainViewController: UIViewController {
         if (gestureRecognizer.state != .Ended) {
             return
         }
+
+        refreshSurveys();
 
         let actionController = BWXLActionController()
         actionController.settings.cancelView.backgroundColor = AppColors.highlightColor
