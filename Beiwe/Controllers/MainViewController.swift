@@ -185,6 +185,11 @@ class MainViewController: UIViewController {
                 self.changePassword(self);
             }
             });
+        actionController.addAction(Action(ActionData(title: "Call Study Staff"), style: .Default) { (action) in
+            dispatch_async(dispatch_get_main_queue()) {
+                confirmAndCallClinician(self, callAssistant: true)
+            }
+            });
         actionController.addAction(Action(ActionData(title: "Logout"), style: .Default) { (action) in
             dispatch_async(dispatch_get_main_queue()) {
                 self.logout(self);
@@ -196,7 +201,6 @@ class MainViewController: UIViewController {
                 self.leaveStudy(self);
             }
             });
-
         self.presentViewController(actionController, animated: true) {
             
         }
