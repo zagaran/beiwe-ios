@@ -78,7 +78,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         pscope.addPermission(LocationAlwaysPermission(),
                              message: "Beiwe needs this for the data gathering capabilities of the application.")
         pscope.headerLabel.text = ""
-        pscope.bodyLabel.text = "To proceed with the study, Beiwe needs access to your location and notifications.";
+        pscope.bodyLabel.text = "Beiwe needs access to your location and notifications.";
         //pscope.bodyLabel.font = pscope.bodyLabel.font.fontWithSize(10);
         //pscope.bodyLabel.sizeToFit();
 
