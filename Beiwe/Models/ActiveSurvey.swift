@@ -55,16 +55,35 @@ class ActiveSurvey : Mappable {
         if (survey.randomize) {
             shuffle(&steps);
         }
+        log.info("shuffle steps \(steps)");
 
         let numQuestions = survey.randomize ? min(survey.questions.count, survey.numberOfRandomQuestions ?? 999) : survey.questions.count;
-        if (survey.randomizeWithMemory && stepOrder != nil) {
+        if var order = stepOrder where survey.randomizeWithMemory && numQuestions > 0 {
             // We must have already asked a bunch of questions, otherwise stepOrder would be nil.  Remvoe them
-            stepOrder?.removeFirst(min(numQuestions, stepOrder!.count));
-            if (stepOrder!.count < numQuestions) {
-                stepOrder?.appendContentsOf(steps);
+            order.removeFirst(min(numQuestions, order.count));
+            // remove all in stepOrder that are greater than count.  Could happen if questions are deleted
+            // after stepOrder already set...
+            order = order.filter({ $0 < survey.questions.count });
+            if (order.count < numQuestions) {
+                order.appendContentsOf(steps);
             }
+            /* If we have a repeat in the first X steps, move it to the end and try again.. */
+            log.info("proposed order \(order)");
+            var index:Int=numQuestions - 1;
+            while(index > 0) {
+                let val = order[index];
+                if order[0..<index].contains(val) {
+                    order.removeAtIndex(index);
+                    order.append(val);
+                } else {
+                    index = index - 1;
+                }
+            }
+            stepOrder = order;
+            log.info("proposed stepOrder \(stepOrder)");
         } else {
-            stepOrder = Array(steps.prefix(numQuestions));
+            stepOrder = steps;
         }
+        log.info("final stepOrder \(stepOrder)");
     }
 }
