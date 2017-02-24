@@ -113,7 +113,7 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
                     }
                 }
                 if let step = step {
-                    step.title = "Question"
+                    step.title = ""; //"Question"
                     step.text =  question.prompt
                     steps += [step];
                     questionIdToQuestion[question.questionId] = question;
