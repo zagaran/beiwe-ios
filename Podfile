@@ -15,7 +15,7 @@ target 'Beiwe' do
   pod 'ResearchKit', :git => 'https://github.com/ResearchKit/ResearchKit.git'
   pod 'ReachabilitySwift'
   pod 'EmitterKit', '~> 5.1'
-  pod 'PermissionScope', :git => 'https://github.com/RocketFarm/PermissionScope'
+  pod 'PermissionScope'
   pod 'Hakuba', :git => 'https://github.com/eskizyen/Hakuba.git', :branch => 'Swift3'
   pod 'XLActionController', :git => 'https://github.com/xmartlabs/XLActionController.git', :branch => 'swift4'
   pod 'XCGLogger', '~> 5.0.1'
@@ -30,7 +30,7 @@ post_install do |installer|
   end
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
-      if (target.name == 'XCGLogger')
+      if (target.name == 'XCGLogger' || target.name == 'PermissionScope')
           config.build_settings['SWIFT_VERSION'] = '3.2'
       else
           config.build_settings['SWIFT_VERSION'] = '4.0'

@@ -24,7 +24,11 @@ class RegisterViewController: FormViewController {
         // Do any additional setup after loading the view.
 
         let font = UIFont.systemFont(ofSize: 13.0);
-        SVAccountRow.defaultCellSetup = { cell, row in
+        SVURLRow.defaultCellSetup = { cell, row in
+            cell.textLabel?.font = font
+            cell.detailTextLabel?.font = font;
+        }
+        SVTextRow.defaultCellSetup = { cell, row in
             cell.textLabel?.font = font
             cell.detailTextLabel?.font = font;
         }
@@ -37,6 +41,12 @@ class RegisterViewController: FormViewController {
             cell.detailTextLabel?.font = font;
         }
         form +++ Section("Register for Study")
+            <<< SVURLRow("server") {
+                $0.title = "Study Sever:"
+                $0.placeholder = "Server Address";
+                $0.rules = [RequiredRule()]
+                $0.autoValidation = autoValidation
+            }
             <<< SVAccountRow("patientId") {
                 $0.title = "User ID:"
                 $0.placeholder = "User ID";
@@ -100,14 +110,20 @@ class RegisterViewController: FormViewController {
                         let tempPassword: String? = formValues["tempPassword"] as! String?;
                         let clinicianPhone: String? = formValues["clinicianPhone"] as! String?;
                         let raPhone: String? = formValues["raPhone"] as! String?;
+                        var customApiUrl: String?;
+                        let server: String? = formValues["server"] as! String?;
+                        if let server = server {
+                            customApiUrl = "https://" + server
+                        }
                         if let patientId = patientId, let phoneNumber = phoneNumber, let newPassword = newPassword, let clinicianPhone = clinicianPhone, let raPhone = raPhone {
                             let registerStudyRequest = RegisterStudyRequest(patientId: patientId, phoneNumber: phoneNumber, newPassword: newPassword)
                             ApiManager.sharedInstance.password = tempPassword ?? "";
                             ApiManager.sharedInstance.patientId = patientId;
+                            ApiManager.sharedInstance.customApiUrl = customApiUrl;
                             ApiManager.sharedInstance.makePostRequest(registerStudyRequest).then {
                                 (studySettings, _) -> Promise<Study> in
                                 PersistentPasswordManager.sharedInstance.storePassword(newPassword);
-                                let study = Study(patientPhone: phoneNumber, patientId: patientId, studySettings: studySettings);
+                                let study = Study(patientPhone: phoneNumber, patientId: patientId, studySettings: studySettings, apiUrl: customApiUrl);
                                 study.clinicianPhoneNumber = clinicianPhone
                                 study.raPhoneNumber = raPhone
                                 return StudyManager.sharedInstance.purgeStudies().then {_ in 

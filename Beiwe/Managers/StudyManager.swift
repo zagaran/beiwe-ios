@@ -32,13 +32,13 @@ class StudyManager {
         gpsManager = nil;
         return firstly { 
             return Recline.shared.queryAll()
-        }.then { studies -> Promise<Bool> in
+            }.then { (studies: [Study]) -> Promise<Bool> in
             if (studies.count > 1) {
                 log.error("Multiple Studies: \(studies)")
                 Crashlytics.sharedInstance().recordError(NSError(domain: "com.rf.beiwe.studies", code: 1, userInfo: nil))
             }
             if (studies.count > 0) {
-                self.currentStudy = studies[0] as! Study;
+                self.currentStudy = studies[0];
                 AppDelegate.sharedInstance().setDebuggingUser(self.currentStudy?.patientId ?? "unknown")
             }
             return Promise(value: true);
@@ -52,6 +52,7 @@ class StudyManager {
         }
         /* Setup APIManager's security */
         ApiManager.sharedInstance.password = PersistentPasswordManager.sharedInstance.passwordForStudy() ?? "";
+        ApiManager.sharedInstance.customApiUrl = currentStudy.customApiUrl;
         if let patientId = currentStudy.patientId {
             ApiManager.sharedInstance.patientId = patientId;
             if let clientPublicKey = currentStudy.studySettings?.clientPublicKey {
@@ -141,7 +142,7 @@ class StudyManager {
     func purgeStudies() -> Promise<Bool> {
         return firstly {
             return Recline.shared.queryAll()
-            }.then { studies -> Promise<Bool> in
+            }.then { (studies: [Study]) -> Promise<Bool> in
                 var promise = Promise<Bool>(value: true)
                 for study in studies {
                     promise = promise.then { _ in

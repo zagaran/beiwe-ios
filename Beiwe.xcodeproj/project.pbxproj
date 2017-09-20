@@ -12,7 +12,6 @@
 		832FFC241CC863F400F2E1EF /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832FFC231CC863F400F2E1EF /* AppColors.swift */; };
 		832FFC261CC866AB00F2E1EF /* UINavigationController+transparent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832FFC251CC866AB00F2E1EF /* UINavigationController+transparent.swift */; };
 		832FFC281CC86A0800F2E1EF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 832FFC271CC86A0800F2E1EF /* Assets.xcassets */; };
-		832FFC2A1CC8805A00F2E1EF /* UIAppearance+Swift.m in Sources */ = {isa = PBXBuildFile; fileRef = 832FFC291CC8805A00F2E1EF /* UIAppearance+Swift.m */; };
 		832FFC2D1CC889DB00F2E1EF /* SurveyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832FFC2C1CC889DB00F2E1EF /* SurveyCell.swift */; };
 		832FFC2F1CC9C30E00F2E1EF /* BWXLAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832FFC2E1CC9C30E00F2E1EF /* BWXLAction.swift */; };
 		832FFC321CC9C3CD00F2E1EF /* ActionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832FFC301CC9C3CD00F2E1EF /* ActionData.swift */; };
@@ -88,8 +87,6 @@
 		832FFC231CC863F400F2E1EF /* AppColors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
 		832FFC251CC866AB00F2E1EF /* UINavigationController+transparent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UINavigationController+transparent.swift"; sourceTree = "<group>"; };
 		832FFC271CC86A0800F2E1EF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		832FFC291CC8805A00F2E1EF /* UIAppearance+Swift.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAppearance+Swift.m"; sourceTree = "<group>"; };
-		832FFC2B1CC8809900F2E1EF /* UIAppearance+Swift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIAppearance+Swift.h"; sourceTree = "<group>"; };
 		832FFC2C1CC889DB00F2E1EF /* SurveyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurveyCell.swift; sourceTree = "<group>"; };
 		832FFC2E1CC9C30E00F2E1EF /* BWXLAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BWXLAction.swift; sourceTree = "<group>"; };
 		832FFC301CC9C3CD00F2E1EF /* ActionData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionData.swift; sourceTree = "<group>"; };
@@ -251,8 +248,6 @@
 				83C7D3811CB5943B00BC7285 /* BWTextButton.h */,
 				83C7D3821CB5943B00BC7285 /* BWTextButton.m */,
 				83B2BDF11CC1D330007FAE91 /* ORKTaskViewController+BW.h */,
-				832FFC291CC8805A00F2E1EF /* UIAppearance+Swift.m */,
-				832FFC2B1CC8809900F2E1EF /* UIAppearance+Swift.h */,
 			);
 			path = ObjC;
 			sourceTree = "<group>";
@@ -658,7 +653,6 @@
 				83E3DE731CA37F7600EB5349 /* MiscHelpers.swift in Sources */,
 				832FFC1E1CC8506900F2E1EF /* GradientView.swift in Sources */,
 				832FFC2F1CC9C30E00F2E1EF /* BWXLAction.swift in Sources */,
-				832FFC2A1CC8805A00F2E1EF /* UIAppearance+Swift.m in Sources */,
 				83AF04271CADA02A00A37225 /* AccelerometerManager.swift in Sources */,
 				832FFC321CC9C3CD00F2E1EF /* ActionData.swift in Sources */,
 				832FFC351CCED80200F2E1EF /* AudioQuestionViewController.swift in Sources */,

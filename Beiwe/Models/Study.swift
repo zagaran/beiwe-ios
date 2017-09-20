@@ -28,6 +28,7 @@ class Study : ReclineObject {
     var receivedTrackingSurveys: Int = 0;
     var submittedAudioSurveys: Int = 0;
     var submittedTrackingSurveys: Int = 0;
+    var customApiUrl: String?;
 
     var surveys: [Survey] = [ ];
     var activeSurveys: [String:ActiveSurvey] = [:]
@@ -35,24 +36,21 @@ class Study : ReclineObject {
 
     var participantConsented: Bool = false;
 
-    init(patientPhone: String, patientId: String, studySettings: StudySettings, studyId: String = Constants.defaultStudyId) {
+    init(patientPhone: String, patientId: String, studySettings: StudySettings, apiUrl: String?, studyId: String = Constants.defaultStudyId) {
         super.init();
         self.patientPhoneNumber = patientPhone;
         self.studySettings = studySettings;
         self.studyId = studyId;
         self.patientId = patientId;
         self.registerDate = Int64(Date().timeIntervalSince1970);
+        self.customApiUrl = apiUrl;
     }
 
-    required init?(_ map: Map) {
+    required init?(map: Map) {
         super.init(map: map);
 
     }
     
-    required init?(map: Map) {
-        fatalError("init(map:) has not been implemented")
-    }
-
     // Mappable
     override func mapping(map: Map) {
         super.mapping(map: map);
@@ -75,6 +73,7 @@ class Study : ReclineObject {
         missedSurveyCheck <- map["missedSurveyCheck"]
         missedUploadCheck <- map["missedUploadCheck"]
         lastUploadSuccess <- map["lastUploadSuccess"]
+        customApiUrl <- map["customApiUrl"]
 
     }
 

@@ -42,7 +42,7 @@ struct BodyResponse: Mappable {
 
 class ApiManager {
     static let sharedInstance = ApiManager();
-    fileprivate let baseApiUrl = Configuration.sharedInstance.settings["server-url"] as! String;
+    fileprivate let defaultBaseApiUrl = Configuration.sharedInstance.settings["server-url"] as! String;
     fileprivate var deviceId = PersistentAppUUID.sharedInstance.uuid;
 
     fileprivate var hashedPassword = "";
@@ -57,6 +57,12 @@ class ApiManager {
     }
 
     var patientId: String = "";
+    var customApiUrl: String?;
+    var baseApiUrl: String {
+        get {
+            return customApiUrl ?? defaultBaseApiUrl;
+        }
+    }
 
     func generateHeaders(_ password: String? = nil) -> [String:String] {
 
@@ -104,7 +110,7 @@ class ApiManager {
                             if (T.ApiReturnType.self == BodyResponse.self) {
                                 returnObject = BodyResponse(body: response.result.value) as? T.ApiReturnType;
                             } else {
-                                returnObject = Mapper<T.ApiReturnType>().map(JSONObject: response.result.value);
+                                returnObject = Mapper<T.ApiReturnType>().map(JSONString: response.result.value ?? "");
                             }
                             if let returnObject = returnObject {
                                 resolve((returnObject, statusCode ?? 0));
@@ -140,7 +146,7 @@ class ApiManager {
                             reject(ApiErrors.failedStatus(code: statusCode));
                         } else {
                             var returnObject: [T.ApiReturnType]?;
-                            returnObject = Mapper<T.ApiReturnType>().mapArray(JSONObject: response.result.value);
+                            returnObject = Mapper<T.ApiReturnType>().mapArray(JSONString: response.result.value ?? "");
                             if let returnObject = returnObject {
                                 resolve((returnObject, statusCode ?? 0));
                             } else {
@@ -188,7 +194,7 @@ class ApiManager {
                             if (T.ApiReturnType.self == BodyResponse.self) {
                                 returnObject = BodyResponse(body: response.result.value) as? T.ApiReturnType;
                             } else {
-                                returnObject = Mapper<T.ApiReturnType>().map(JSONObject: response.result.value);
+                                returnObject = Mapper<T.ApiReturnType>().map(JSONString: response.result.value ?? "");
                             }
                             if let returnObject = returnObject {
                                 resolve((returnObject, statusCode ?? 0));
@@ -250,7 +256,7 @@ class ApiManager {
                                     if (T.ApiReturnType.self == BodyResponse.self) {
                                         returnObject = BodyResponse(body: response.result.value) as? T.ApiReturnType;
                                     } else {
-                                        returnObject = Mapper<T.ApiReturnType>().map(JSONObject: response.result.value);
+                                        returnObject = Mapper<T.ApiReturnType>().map(JSONString: response.result.value ?? "");
                                     }
                                     if let returnObject = returnObject {
                                         resolve((returnObject, statusCode ?? 0));

@@ -102,8 +102,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         /* Colors */
 
-        let rkAppearance = UIView.my_appearanceWhenContained(in: ORKTaskViewController.self)
-        rkAppearance?.tintColor = AppColors.tintColor;
+        //let rkAppearance = UIView.my_appearanceWhenContained(in: ORKTaskViewController.self)
+        let rkAppearance = UIView.appearance(whenContainedInInstancesOf: [ORKTaskViewController.self])
+        rkAppearance.tintColor = AppColors.tintColor;
         //rkAppearance.backgroundColor = UIColor.clearColor() // AppColors.gradientBottom;
 
         /*
