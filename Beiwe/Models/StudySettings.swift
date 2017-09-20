@@ -46,7 +46,7 @@ struct ConsentSection: Mappable {
     var text: String = "";
     var more: String = "";
 
-    init?(_ map: Map) {
+    init?(map: Map) {
 
     }
 
@@ -97,7 +97,7 @@ struct StudySettings : Mappable {
     var uploadOverCellular = false;
     var consentSections: [String:ConsentSection] = [:];
 
-    init?(_ map: Map) {
+    init?(map: Map) {
 
     }
 

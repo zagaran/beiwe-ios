@@ -51,7 +51,7 @@ class OnboardingManager : NSObject, ORKTaskViewControllerDelegate {
 
 
         let task = ORKOrderedTask(identifier: "OnboardingTask", steps: steps)
-        onboardingViewController = ORKTaskViewController(task: task, taskRunUUID: nil);
+        onboardingViewController = ORKTaskViewController(task: task, taskRun: nil);
         onboardingViewController.showsProgressInNavigationBar = false;
         onboardingViewController.delegate = self;
         retainSelf = self;
@@ -63,34 +63,34 @@ class OnboardingManager : NSObject, ORKTaskViewControllerDelegate {
     }
 
     /* ORK Delegates */
-    func taskViewController(taskViewController: ORKTaskViewController, didFinishWithReason reason: ORKTaskViewControllerFinishReason, error: NSError?) {
+    func taskViewController(_ taskViewController: ORKTaskViewController, didFinishWith reason: ORKTaskViewControllerFinishReason, error: Error?) {
         //Handle results with taskViewController.result
         //taskViewController.dismissViewControllerAnimated(true, completion: nil)
         closeOnboarding();
         log.info("Onboarding closed");
     }
 
-    func taskViewController(taskViewController: ORKTaskViewController, didChangeResult result: ORKTaskResult) {
+    func taskViewController(_ taskViewController: ORKTaskViewController, didChange result: ORKTaskResult) {
 
         return;
     }
 
-    func taskViewController(taskViewController: ORKTaskViewController, shouldPresentStep step: ORKStep) -> Bool {
+    func taskViewController(_ taskViewController: ORKTaskViewController, shouldPresent step: ORKStep) -> Bool {
         return true;
     }
 
-    func taskViewController(taskViewController: ORKTaskViewController, learnMoreForStep stepViewController: ORKStepViewController) {
+    func taskViewController(_ taskViewController: ORKTaskViewController, learnMoreForStep stepViewController: ORKStepViewController) {
         // Present modal...
-        let refreshAlert = UIAlertController(title: "Learning more!", message: "You're smart now", preferredStyle: UIAlertControllerStyle.Alert)
+        let refreshAlert = UIAlertController(title: "Learning more!", message: "You're smart now", preferredStyle: UIAlertControllerStyle.alert)
 
-        refreshAlert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: { (action: UIAlertAction!) in
+        refreshAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
         }))
 
 
-        onboardingViewController.presentViewController(refreshAlert, animated: true, completion: nil)
+        onboardingViewController.present(refreshAlert, animated: true, completion: nil)
     }
 
-    func taskViewController(taskViewController: ORKTaskViewController, hasLearnMoreForStep step: ORKStep) -> Bool {
+    func taskViewController(_ taskViewController: ORKTaskViewController, hasLearnMoreFor step: ORKStep) -> Bool {
         switch(step.identifier) {
             case "SecondStep":
                 return true;
@@ -98,11 +98,11 @@ class OnboardingManager : NSObject, ORKTaskViewControllerDelegate {
         }
     }
 
-    func taskViewController(taskViewController: ORKTaskViewController, viewControllerForStep step: ORKStep) -> ORKStepViewController? {
+    func taskViewController(_ taskViewController: ORKTaskViewController, viewControllerFor step: ORKStep) -> ORKStepViewController? {
         return nil;
     }
 
-    func taskViewController(taskViewController: ORKTaskViewController, stepViewControllerWillAppear stepViewController: ORKStepViewController) {
+    func taskViewController(_ taskViewController: ORKTaskViewController, stepViewControllerWillAppear stepViewController: ORKStepViewController) {
         if let identifier = stepViewController.step?.identifier {
             switch(identifier) {
                 case "WelcomeStep":
@@ -111,7 +111,7 @@ class OnboardingManager : NSObject, ORKTaskViewControllerDelegate {
                 case "WaitForRegister":
                     let registerViewController = RegisterViewController();
                     registerViewController.dismiss = { [unowned self] didRegister in
-                        self.onboardingViewController.dismissViewControllerAnimated(true, completion: nil);
+                        self.onboardingViewController.dismiss(animated: true, completion: nil);
                         if (!didRegister) {
                             self.onboardingViewController.goBackward();
                         } else {
@@ -121,7 +121,7 @@ class OnboardingManager : NSObject, ORKTaskViewControllerDelegate {
                         }
 
                     }
-                    onboardingViewController.presentViewController(registerViewController, animated: true, completion: nil)
+                    onboardingViewController.present(registerViewController, animated: true, completion: nil)
             default: break
             }
         }

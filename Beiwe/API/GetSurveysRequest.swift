@@ -18,7 +18,7 @@ struct GetSurveysRequest : Mappable, ApiRequest {
     init() {
     }
 
-    init?(_ map: Map) {
+    init?(map: Map) {
 
     }
 

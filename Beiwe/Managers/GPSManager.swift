@@ -22,7 +22,7 @@ class DataServiceStatus {
     let onDurationSeconds: Double;
     let offDurationSeconds: Double;
     var currentlyOn: Bool;
-    var nextToggleTime: NSDate?;
+    var nextToggleTime: Date?;
     let handler: DataServiceProtocol;
 
     init(onDurationSeconds: Int, offDurationSeconds: Int, handler: DataServiceProtocol) {
@@ -30,7 +30,7 @@ class DataServiceStatus {
         self.offDurationSeconds = Double(offDurationSeconds);
         self.handler = handler;
         currentlyOn = false;
-        nextToggleTime = NSDate();
+        nextToggleTime = Date();
         // nextToggleTime = NSDate().dateByAddingTimeInterval(self.offDurationSeconds);
     }
 }
@@ -44,17 +44,17 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
     var areServicesRunning = false;
     static let headers = [ "timestamp", "latitude", "longitude", "altitude", "accuracy"];
     var isDeferringUpdates = false;
-    var nextSurveyUpdate: NSTimeInterval = 0, nextServiceDate: NSTimeInterval = 0;
-    var timer: NSTimer?;
+    var nextSurveyUpdate: TimeInterval = 0, nextServiceDate: TimeInterval = 0;
+    var timer: Timer?;
 
     func gpsAllowed() -> Bool {
-        return CLLocationManager.locationServicesEnabled() &&  CLLocationManager.authorizationStatus() == .AuthorizedAlways;
+        return CLLocationManager.locationServicesEnabled() &&  CLLocationManager.authorizationStatus() == .authorizedAlways;
     }
 
     func startGpsAndTimer() -> Bool {
 
         locationManager.delegate = self;
-        locationManager.activityType = CLActivityType.Other;
+        locationManager.activityType = CLActivityType.other;
         if #available(iOS 9.0, *) {
             locationManager.allowsBackgroundLocationUpdates = true
         } else {
@@ -87,11 +87,11 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
             promises.append(dataStatus.handler.finishCollecting())
         }
         dataCollectionServices.removeAll();
-        return when(promises)
+        return when(fulfilled: promises);
     }
 
-    func dispatchToServices() -> NSTimeInterval {
-        let currentDate = NSDate().timeIntervalSince1970;
+    func dispatchToServices() -> TimeInterval {
+        let currentDate = Date().timeIntervalSince1970;
         var nextServiceDate = currentDate + (60 * 60);
 
         for dataStatus in dataCollectionServices {
@@ -101,7 +101,7 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
                     if (dataStatus.currentlyOn) {
                         dataStatus.handler.pauseCollecting();
                         dataStatus.currentlyOn = false;
-                        dataStatus.nextToggleTime = NSDate(timeIntervalSince1970: currentDate + dataStatus.offDurationSeconds);
+                        dataStatus.nextToggleTime = Date(timeIntervalSince1970: currentDate + dataStatus.offDurationSeconds);
                     } else {
                         dataStatus.handler.startCollecting();
                         dataStatus.currentlyOn = true;
@@ -109,7 +109,7 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
                         if (dataStatus.offDurationSeconds == 0) {
                             dataStatus.nextToggleTime = nil;
                         } else {
-                            dataStatus.nextToggleTime = NSDate(timeIntervalSince1970: currentDate + dataStatus.onDurationSeconds);
+                            dataStatus.nextToggleTime = Date(timeIntervalSince1970: currentDate + dataStatus.onDurationSeconds);
                         }
                     }
                     serviceDate = dataStatus.nextToggleTime?.timeIntervalSince1970 ?? DBL_MAX;
@@ -129,7 +129,7 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
 
         nextServiceDate = dispatchToServices();
 
-        let currentTime = NSDate().timeIntervalSince1970;
+        let currentTime = Date().timeIntervalSince1970;
         StudyManager.sharedInstance.periodicNetworkTransfers();
 
         if (currentTime > nextSurveyUpdate) {
@@ -142,7 +142,7 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
 
     func setTimerForService() {
         nextServiceDate = min(nextSurveyUpdate, nextServiceDate);
-        let currentTime = NSDate().timeIntervalSince1970;
+        let currentTime = Date().timeIntervalSince1970;
         let nextServiceSeconds = max(nextServiceDate - currentTime, 1.0);
         startPollTimer(nextServiceSeconds)
     }
@@ -154,20 +154,20 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
         }
     }
 
-    func resetNextSurveyUpdate(time: Double) {
+    func resetNextSurveyUpdate(_ time: Double) {
         nextSurveyUpdate = time
         if (nextSurveyUpdate < nextServiceDate) {
             setTimerForService();
         }
     }
 
-    func startPollTimer(seconds: Double) {
+    func startPollTimer(_ seconds: Double) {
         clearPollTimer();
-        timer = NSTimer.scheduledTimerWithTimeInterval(seconds, target: self, selector: #selector(pollServices), userInfo: nil, repeats: false)
+        timer = Timer.scheduledTimer(timeInterval: seconds, target: self, selector: #selector(pollServices), userInfo: nil, repeats: false)
         log.info("Timer set for: \(seconds)");
     }
 
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if (!areServicesRunning) {
             return
         }
@@ -185,11 +185,11 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
 
     }
 
-    func locationManager(manager: CLLocationManager, didFinishDeferredUpdatesWithError error: NSError?) {
+    func locationManager(_ manager: CLLocationManager, didFinishDeferredUpdatesWithError error: Error?) {
         isDeferringUpdates = false;
     }
 
-    func recordGpsData(manager: CLLocationManager, locations: [CLLocation]) {
+    func recordGpsData(_ manager: CLLocationManager, locations: [CLLocation]) {
         //print("Record locations: \(locations)");
         for loc in locations {
             var data: [String] = [];
@@ -205,7 +205,7 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
         }
     }
 
-    func addDataService(on: Int, off: Int, handler: DataServiceProtocol) {
+    func addDataService(_ on: Int, off: Int, handler: DataServiceProtocol) {
         let dataServiceStatus = DataServiceStatus(onDurationSeconds: on, offDurationSeconds: off, handler: handler);
         if  handler.initCollecting() {
             dataCollectionServices.append(dataServiceStatus);
@@ -213,7 +213,7 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
 
     }
 
-    func addDataService(handler: DataServiceProtocol) {
+    func addDataService(_ handler: DataServiceProtocol) {
         addDataService(1, off: 0, handler: handler);
     }
     /* Data service protocol */

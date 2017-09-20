@@ -24,16 +24,16 @@ class DeviceMotionManager : DataServiceProtocol {
     var offset: Double = 0;
 
     func initCollecting() -> Bool {
-        guard  motionManager.deviceMotionAvailable else {
+        guard  motionManager.isDeviceMotionAvailable else {
             log.info("DeviceMotion not available.  Not initializing collection");
             return false;
         }
 
         store = DataStorageManager.sharedInstance.createStore(storeType, headers: headers);
         // Get NSTimeInterval of uptime i.e. the delta: now - bootTime
-        let uptime: NSTimeInterval = NSProcessInfo.processInfo().systemUptime;
+        let uptime: TimeInterval = ProcessInfo.processInfo.systemUptime;
         // Now since 1970
-        let nowTimeIntervalSince1970: NSTimeInterval  = NSDate().timeIntervalSince1970;
+        let nowTimeIntervalSince1970: TimeInterval  = Date().timeIntervalSince1970;
         // Voila our offset
         self.offset = nowTimeIntervalSince1970 - uptime;
         motionManager.deviceMotionUpdateInterval = 0.1;
@@ -42,10 +42,10 @@ class DeviceMotionManager : DataServiceProtocol {
 
     func startCollecting() {
         log.info("Turning \(storeType) collection on");
-        let queue = NSOperationQueue()
+        let queue = OperationQueue()
 
 
-        motionManager.startDeviceMotionUpdatesUsingReferenceFrame(CMAttitudeReferenceFrame.XArbitraryZVertical, toQueue: queue) {
+        motionManager.startDeviceMotionUpdates(using: CMAttitudeReferenceFrame.xArbitraryZVertical, to: queue) {
             (motionData, error) in
 
             if let motionData = motionData {
@@ -67,13 +67,13 @@ class DeviceMotionManager : DataServiceProtocol {
                 data.append(String(motionData.userAcceleration.z))
                 var fieldAccuracy: String;
                 switch(motionData.magneticField.accuracy) {
-                case .Uncalibrated:
+                case .uncalibrated:
                     fieldAccuracy = "uncalibrated"
-                case .Low:
+                case .low:
                     fieldAccuracy = "low"
-                case .Medium:
+                case .medium:
                     fieldAccuracy = "medium"
-                case .High:
+                case .high:
                     fieldAccuracy = "high"
                 default:
                     fieldAccuracy = "unknown"

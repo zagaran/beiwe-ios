@@ -34,7 +34,7 @@ struct GenericSurveyQuestion : Mappable  {
     var displayIf: [String: AnyObject]?;
 
 
-    init?(_ map: Map) {
+    init?(map: Map) {
 
     }
 

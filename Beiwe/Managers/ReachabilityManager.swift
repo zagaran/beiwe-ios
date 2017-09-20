@@ -16,13 +16,13 @@ class ReachabilityManager : DataServiceProtocol {
     let headers = ["timestamp", "event"]
     var store: DataStorage?;
 
-    @objc func reachabilityChanged(notification: NSNotification){
+    @objc func reachabilityChanged(_ notification: Notification){
         guard let reachability = AppDelegate.sharedInstance().reachability else {
             return;
         }
         var reachState: String;
-        if reachability.isReachable() {
-            if reachability.isReachableViaWiFi() {
+        if reachability.isReachable {
+            if reachability.isReachableViaWiFi {
                 reachState = "wifi";
             } else {
                 reachState = "cellular";
@@ -32,7 +32,7 @@ class ReachabilityManager : DataServiceProtocol {
         }
 
         var data: [String] = [ ];
-        data.append(String(Int64(NSDate().timeIntervalSince1970 * 1000)));
+        data.append(String(Int64(Date().timeIntervalSince1970 * 1000)));
         data.append(reachState);
 
         self.store?.store(data);
@@ -46,12 +46,12 @@ class ReachabilityManager : DataServiceProtocol {
 
     func startCollecting() {
         log.info("Turning \(storeType) collection on");
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.reachabilityChanged), name: ReachabilityChangedNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.reachabilityChanged), name: ReachabilityChangedNotification, object: nil)
 
     }
     func pauseCollecting() {
         log.info("Pausing \(storeType) collection");
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: ReachabilityChangedNotification, object:nil)
+        NotificationCenter.default.removeObserver(self, name: ReachabilityChangedNotification, object:nil)
         store!.flush();
     }
     func finishCollecting() -> Promise<Void> {

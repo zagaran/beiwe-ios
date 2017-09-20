@@ -31,48 +31,52 @@ import Eureka
 import SwiftValidator
 import ObjectiveC
 
-public class _SVFieldCell<T where T: Equatable, T: InputTypeInitiable>: _FieldCell<T> {
+open class _SVFieldCell<T>: _FieldCell<T> where T: Equatable, T: InputTypeInitiable {
 
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
 
-    lazy public var validationLabel: UILabel = {
+    lazy open var validationLabel: UILabel = {
         [unowned self] in
         let validationLabel = UILabel()
         validationLabel.translatesAutoresizingMaskIntoConstraints = false
-        validationLabel.font = validationLabel.font.fontWithSize(10.0)
+        validationLabel.font = validationLabel.font.withSize(10.0)
         return validationLabel
         }()
 
-    public override func setup() {
+    open override func setup() {
         super.setup()
-        textField.autocorrectionType = .Default
-        textField.autocapitalizationType = .Sentences
-        textField.keyboardType = .Default
+        textField.autocorrectionType = .default
+        textField.autocapitalizationType = .sentences
+        textField.keyboardType = .default
 
         self.height = {
             60
         }
         contentView.addSubview(validationLabel)
 
-        let sameLeading: NSLayoutConstraint = NSLayoutConstraint(item: self.contentView, attribute: .Leading, relatedBy: .Equal, toItem: self.validationLabel, attribute: .Leading, multiplier: 1, constant: -20)
-        let sameTrailing: NSLayoutConstraint = NSLayoutConstraint(item: self.textField, attribute: .Trailing, relatedBy: .Equal, toItem: self.validationLabel, attribute: .Trailing, multiplier: 1, constant: 0)
-        let sameBottom: NSLayoutConstraint = NSLayoutConstraint(item: self.contentView, attribute: .Bottom, relatedBy: .Equal, toItem: self.validationLabel, attribute: .Bottom, multiplier: 1, constant: 4)
+        let sameLeading: NSLayoutConstraint = NSLayoutConstraint(item: self.contentView, attribute: .leading, relatedBy: .equal, toItem: self.validationLabel, attribute: .leading, multiplier: 1, constant: -20)
+        let sameTrailing: NSLayoutConstraint = NSLayoutConstraint(item: self.textField, attribute: .trailing, relatedBy: .equal, toItem: self.validationLabel, attribute: .trailing, multiplier: 1, constant: 0)
+        let sameBottom: NSLayoutConstraint = NSLayoutConstraint(item: self.contentView, attribute: .bottom, relatedBy: .equal, toItem: self.validationLabel, attribute: .bottom, multiplier: 1, constant: 4)
         let all: [NSLayoutConstraint] = [sameLeading, sameTrailing, sameBottom]
 
         contentView.addConstraints(all)
 
-        validationLabel.textAlignment = NSTextAlignment.Right
+        validationLabel.textAlignment = NSTextAlignment.right
         validationLabel.adjustsFontSizeToFitWidth = true
         resetField()
     }
 
-    func setRules(rules: [Rule]?) {
+    func setRules(_ rules: [Rule]?) {
         self.rules = rules
     }
 
-    override public func textFieldDidChange(textField: UITextField) {
+    override open func textFieldDidChange(_ textField: UITextField) {
         super.textFieldDidChange(textField)
 
         if autoValidation {
@@ -100,7 +104,7 @@ public class _SVFieldCell<T where T: Equatable, T: InputTypeInitiable>: _FieldCe
                 self.resetField()
                 for (field, error) in errors {
                     self.valid = false
-                    self.showError(field, error: error)
+                    self.showError(field as! UITextField, error: error)
                 }
             })
         } else {
@@ -109,12 +113,12 @@ public class _SVFieldCell<T where T: Equatable, T: InputTypeInitiable>: _FieldCe
     }
 
     func resetField() {
-        validationLabel.hidden = true
-        textField.textColor = UIColor.blackColor()
+        validationLabel.isHidden = true
+        textField.textColor = UIColor.black
         //textLabel?.textColor = UIColor.blackColor();
     }
 
-    func showError(field: UITextField, error: SwiftValidator.ValidationError) {
+    func showError(_ field: UITextField, error: SwiftValidator.ValidationError) {
         // turn the field to red
         field.textColor = errorColor
         /*
@@ -126,7 +130,7 @@ public class _SVFieldCell<T where T: Equatable, T: InputTypeInitiable>: _FieldCe
         //self.textLabel?.textColor = errorColor
         self.validationLabel.textColor = errorColor
         error.errorLabel?.text = error.errorMessage // works if you added labels
-        error.errorLabel?.hidden = false
+        error.errorLabel?.isHidden = false
     }
 
     var validator: Validator? {
@@ -138,11 +142,11 @@ public class _SVFieldCell<T where T: Equatable, T: InputTypeInitiable>: _FieldCe
         }
     }
 
-    var errorColor: UIColor = UIColor.redColor()
+    var errorColor: UIColor = UIColor.red
     var autoValidation = true
     var rules: [Rule]? = nil
 
-    private var rulesRegistered = false
+    fileprivate var rulesRegistered = false
     var valid = false
 }
 
@@ -159,12 +163,12 @@ public protocol SVRow {
     func validate();
 }
 
-public class _SVTextRow<Cell: _SVFieldCell<String> where Cell: BaseCell, Cell: CellType, Cell: TextFieldCell, Cell.Value == String>: FieldRow<String, Cell>, SVRow {
+open class _SVTextRow<Cell: _SVFieldCell<String>>: FieldRow<Cell>, SVRow where Cell: BaseCell, Cell: CellType, Cell: TextFieldCell, Cell.Value == String {
     public required init(tag: String?) {
         super.init(tag: tag)
     }
 
-    public var errorColor: UIColor {
+    open var errorColor: UIColor {
         get {
             return self.cell.errorColor
         }
@@ -173,7 +177,7 @@ public class _SVTextRow<Cell: _SVFieldCell<String> where Cell: BaseCell, Cell: C
         }
     }
 
-    public var rules: [Rule]? {
+    open var rules: [Rule]? {
         get {
             return self.cell.rules
         }
@@ -182,7 +186,7 @@ public class _SVTextRow<Cell: _SVFieldCell<String> where Cell: BaseCell, Cell: C
         }
     }
 
-    public var autoValidation: Bool {
+    open var autoValidation: Bool {
         get {
             return self.cell.autoValidation
         }
@@ -191,110 +195,114 @@ public class _SVTextRow<Cell: _SVFieldCell<String> where Cell: BaseCell, Cell: C
         }
     }
 
-    public var valid: Bool {
+    open var valid: Bool {
         get {
             return self.cell.valid
         }
     }
 
-    public func validate() {
+    open func validate() {
         self.cell.validate()
     }
 }
 
-public class SVTextCell: _SVFieldCell<String>, CellType {
+open class SVTextCell: _SVFieldCell<String>, CellType {
 
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
 
-    public override func setup() {
+    open override func setup() {
         super.setup()
-        textField.autocorrectionType = .Default
-        textField.autocapitalizationType = .Sentences
-        textField.keyboardType = .Default
+        textField.autocorrectionType = .default
+        textField.autocapitalizationType = .sentences
+        textField.keyboardType = .default
     }
 }
 
-public class SVAccountCell: SVTextCell {
+open class SVAccountCell: SVTextCell {
 
-    public override func setup() {
+    open override func setup() {
         super.setup()
-        textField.autocorrectionType = .No
-        textField.autocapitalizationType = .None
-        textField.keyboardType = .ASCIICapable
+        textField.autocorrectionType = .no
+        textField.autocapitalizationType = .none
+        textField.keyboardType = .asciiCapable
     }
 }
 
-public class SVPhoneCell: SVTextCell {
+open class SVPhoneCell: SVTextCell {
 
-    public override func setup() {
+    open override func setup() {
         super.setup()
-        textField.keyboardType = .PhonePad
+        textField.keyboardType = .phonePad
     }
 }
 
-public class SVSimplePhoneCell: SVTextCell {
+open class SVSimplePhoneCell: SVTextCell {
 
-    public override func setup() {
+    open override func setup() {
         super.setup()
-        textField.keyboardType = .NumberPad
+        textField.keyboardType = .numberPad
     }
 }
 
-public class SVNameCell: SVTextCell {
+open class SVNameCell: SVTextCell {
 
-    public override func setup() {
+    open override func setup() {
         super.setup()
-        textField.autocorrectionType = .No
-        textField.autocapitalizationType = .Words
-        textField.keyboardType = .ASCIICapable    }
+        textField.autocorrectionType = .no
+        textField.autocapitalizationType = .words
+        textField.keyboardType = .asciiCapable    }
 }
 
-public class SVEmailCell: SVTextCell {
+open class SVEmailCell: SVTextCell {
 
-    public override func setup() {
+    open override func setup() {
         super.setup()
-        textField.autocorrectionType = .No
-        textField.autocapitalizationType = .None
-        textField.keyboardType = .EmailAddress
+        textField.autocorrectionType = .no
+        textField.autocapitalizationType = .none
+        textField.keyboardType = .emailAddress
     }
 }
 
-public class SVPasswordCell: SVTextCell {
+open class SVPasswordCell: SVTextCell {
 
-    public override func setup() {
+    open override func setup() {
         super.setup()
-        textField.autocorrectionType = .No
-        textField.autocapitalizationType = .None
-        textField.keyboardType = .ASCIICapable
-        textField.secureTextEntry = true
+        textField.autocorrectionType = .no
+        textField.autocapitalizationType = .none
+        textField.keyboardType = .asciiCapable
+        textField.isSecureTextEntry = true
     }
 }
 
-public class SVURLCell: SVTextCell {
+open class SVURLCell: SVTextCell {
 
-    public override func setup() {
+    open override func setup() {
         super.setup()
-        textField.autocorrectionType = .No
-        textField.autocapitalizationType = .None
+        textField.autocorrectionType = .no
+        textField.autocapitalizationType = .none
         textField.keyboardType = .URL    }
 }
 
-public class SVZipCodeCell: SVTextCell {
+open class SVZipCodeCell: SVTextCell {
 
-    public override func setup() {
+    open override func setup() {
         super.setup()
-        textField.autocorrectionType = .No
-        textField.autocapitalizationType = .AllCharacters
-        textField.keyboardType = .NumbersAndPunctuation
+        textField.autocorrectionType = .no
+        textField.autocapitalizationType = .allCharacters
+        textField.keyboardType = .numbersAndPunctuation
     }
 }
 
 
 extension Form {
 
-    private struct AssociatedKey {
+    fileprivate struct AssociatedKey {
         static var validator: UInt8 = 0
         static var dataValid: UInt8 = 0
     }

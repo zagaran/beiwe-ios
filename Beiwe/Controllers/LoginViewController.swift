@@ -21,16 +21,16 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 
         var clinicianText: String;
         clinicianText = StudyManager.sharedInstance.currentStudy?.studySettings?.callClinicianText ?? "Contact Clinician"
-        callClinicianButton.setTitle(clinicianText, forState: UIControlState.Normal)
-        callClinicianButton.setTitle(clinicianText, forState: UIControlState.Highlighted)
+        callClinicianButton.setTitle(clinicianText, for: UIControlState())
+        callClinicianButton.setTitle(clinicianText, for: UIControlState.highlighted)
         if #available(iOS 9.0, *) {
-            callClinicianButton.setTitle(clinicianText, forState: UIControlState.Focused)
+            callClinicianButton.setTitle(clinicianText, for: UIControlState.focused)
         } else {
             // Fallback on earlier versions
         }
 
         password.delegate = self
-        loginButton.enabled = false;
+        loginButton.isEnabled = false;
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tap))
         view.addGestureRecognizer(tapGesture)
 
@@ -42,39 +42,39 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func loginPressed(sender: AnyObject) {
+    @IBAction func loginPressed(_ sender: AnyObject) {
         password.resignFirstResponder();
         PKHUD.sharedHUD.dimsBackground = true;
         PKHUD.sharedHUD.userInteractionOnUnderlyingViewsEnabled = false;
 
-        if let password = password.text where password.characters.count > 0 {
+        if let password = password.text, password.characters.count > 0 {
             if (AppDelegate.sharedInstance().checkPasswordAndLogin(password)) {
-                HUD.flash(.Success, delay: 0.5);
+                HUD.flash(.success, delay: 0.5);
                 AppDelegate.sharedInstance().transitionToCurrentAppState();
             } else {
-                HUD.flash(.Error, delay: 1);
+                HUD.flash(.error, delay: 1);
             }
         }
     }
 
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         loginPressed(self);
         textField.resignFirstResponder();
         return true;
     }
 
-    func tap(gesture: UITapGestureRecognizer) {
+    func tap(_ gesture: UITapGestureRecognizer) {
         password.resignFirstResponder()
     }
 
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
 
         // Find out what the text field will be after adding the current edit
-        if let text = (password.text as NSString?)?.stringByReplacingCharactersInRange(range, withString: string) {
+        if let text = (password.text as NSString?)?.replacingCharacters(in: range, with: string) {
             if !text.isEmpty{//Checking if the input field is not empty
-                loginButton.enabled = true //Enabling the button
+                loginButton.isEnabled = true //Enabling the button
             } else {
-                loginButton.enabled = false //Disabling the button
+                loginButton.isEnabled = false //Disabling the button
             }
         }
 
@@ -82,11 +82,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         return true
     }
 
-    func textFieldShouldEndEditing(textField: UITextField) -> Bool {
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         return true;
     }
 
-    @IBAction func forgotPassword(sender: AnyObject) {
+    @IBAction func forgotPassword(_ sender: AnyObject) {
         /*
         var steps = [ORKStep]();
 
@@ -105,9 +105,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         let vc = ChangePasswordViewController();
         vc.isForgotPassword = true;
         vc.finished = { _ in
-            self.dismissViewControllerAnimated(true, completion: nil);
+            self.dismiss(animated: true, completion: nil);
         }
-        presentViewController(vc, animated: true, completion: nil);
+        present(vc, animated: true, completion: nil);
 
     }
 
@@ -129,7 +129,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     */
 
-    @IBAction func callClinician(sender: AnyObject) {
+    @IBAction func callClinician(_ sender: AnyObject) {
         confirmAndCallClinician(self);
     }
 

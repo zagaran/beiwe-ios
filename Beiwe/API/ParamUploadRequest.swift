@@ -21,14 +21,14 @@ struct ParamUploadRequest : Mappable, ApiRequest {
     init(fileName: String, filePath: String) {
         self.fileName = fileName;
         do {
-            self.fileData = try NSString(contentsOfFile: filePath, encoding: NSUTF8StringEncoding) as String;
+            self.fileData = try NSString(contentsOfFile: filePath, encoding: String.Encoding.utf8.rawValue) as String;
         } catch {
             log.error("Error reading file for upload: \(error)");
             fileData = "";
         }
     }
 
-    init?(_ map: Map) {
+    init?(map: Map) {
 
     }
 

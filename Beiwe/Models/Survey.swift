@@ -29,7 +29,7 @@ struct Survey : Mappable  {
     var audioBitrate = 64000
 
 
-    init?(_ map: Map) {
+    init?(map: Map) {
 
     }
 

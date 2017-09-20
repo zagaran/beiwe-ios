@@ -11,9 +11,9 @@ import Security
 import PromiseKit
 import IDZSwiftCommonCrypto
 
-enum DataStorageErrors : ErrorType {
-    case CantCreateFile
-    case NotInitialized
+enum DataStorageErrors : Error {
+    case cantCreateFile
+    case notInitialized
 
 }
 class EncryptedStorage {
@@ -23,17 +23,17 @@ class EncryptedStorage {
     let keyLength = 128;
 
     var type: String;
-    var aesKey: NSData?;
-    var iv: NSData?
+    var aesKey: Data?;
+    var iv: Data?
     var publicKey: String;
-    var filename: NSURL;
-    var realFilename: NSURL
+    var filename: URL;
+    var realFilename: URL
     var patientId: String;
-    let queue: dispatch_queue_t
+    let queue: DispatchQueue
     var currentData: NSMutableData = NSMutableData()
     var hasData = false
-    var handle: NSFileHandle?
-    let fileManager = NSFileManager.defaultManager();
+    var handle: FileHandle?
+    let fileManager = FileManager.default;
     var sc: StreamCryptor
 
 
@@ -42,34 +42,34 @@ class EncryptedStorage {
         self.publicKey = publicKey;
         self.type = type;
 
-        queue = dispatch_queue_create("com.rocketfarm.beiwe.dataqueue." + type, nil)
+        queue = DispatchQueue(label: "com.rocketfarm.beiwe.dataqueue." + type, attributes: [])
 
-        let name = patientId + "_" + type + "_" + String(Int64(NSDate().timeIntervalSince1970 * 1000));
-        realFilename = DataStorageManager.currentDataDirectory().URLByAppendingPathComponent(name + suffix)!
-        filename = NSURL(fileURLWithPath:  NSTemporaryDirectory()).URLByAppendingPathComponent(name + suffix)!
+        let name = patientId + "_" + type + "_" + String(Int64(Date().timeIntervalSince1970 * 1000));
+        realFilename = DataStorageManager.currentDataDirectory().appendingPathComponent(name + suffix)
+        filename = URL(fileURLWithPath:  NSTemporaryDirectory()).appendingPathComponent(name + suffix)
         aesKey = Crypto.sharedInstance.newAesKey(keyLength);
         iv = Crypto.sharedInstance.randomBytes(16)
-        let arrayKey = Array(UnsafeBufferPointer(start: UnsafePointer<UInt8>(aesKey!.bytes), count: aesKey!.length));
-        let arrayIv = Array(UnsafeBufferPointer(start: UnsafePointer<UInt8>(iv!.bytes), count: iv!.length));
-        sc = StreamCryptor(operation: .Encrypt, algorithm: .AES, options: .PKCS7Padding, key: arrayKey, iv: arrayIv)
+        let arrayKey = Array(UnsafeBufferPointer(start: (aesKey! as NSData).bytes.bindMemory(to: UInt8.self, capacity: aesKey!.count), count: aesKey!.count));
+        let arrayIv = Array(UnsafeBufferPointer(start: (iv! as NSData).bytes.bindMemory(to: UInt8.self, capacity: iv!.count), count: iv!.count));
+        sc = StreamCryptor(operation: .encrypt, algorithm: .aes, options: .PKCS7Padding, key: arrayKey, iv: arrayIv)
 
     }
 
     func open() -> Promise<Void> {
-        guard let aesKey = aesKey, iv = iv else {
-            return Promise(error: DataStorageErrors.NotInitialized)
+        guard let aesKey = aesKey, let iv = iv else {
+            return Promise(error: DataStorageErrors.notInitialized)
         }
         return Promise().then(on: queue) {
-            if (!self.fileManager.createFileAtPath(self.filename.path!, contents: nil, attributes: [NSFileProtectionKey: NSFileProtectionNone])) {
-                return Promise(error: DataStorageErrors.CantCreateFile)
+            if (!self.fileManager.createFile(atPath: self.filename.path, contents: nil, attributes: [FileAttributeKey.protectionKey.rawValue: FileProtectionType.none])) {
+                return Promise(error: DataStorageErrors.cantCreateFile)
             } else {
                 log.info("Create new enc file: \(self.filename)");
             }
-            self.handle = try? NSFileHandle(forWritingToURL: self.filename)
-            let rsaLine = try Crypto.sharedInstance.base64ToBase64URL(SwiftyRSA.encryptString(Crypto.sharedInstance.base64ToBase64URL(aesKey.base64EncodedStringWithOptions([])), publicKeyId: PersistentPasswordManager.sharedInstance.publicKeyName(self.patientId), padding: .None)) + "\n";
-            self.handle?.writeData(rsaLine.dataUsingEncoding(NSUTF8StringEncoding)!)
-            let ivHeader = Crypto.sharedInstance.base64ToBase64URL(iv.base64EncodedStringWithOptions([])) + ":"
-            self.handle?.writeData(ivHeader.dataUsingEncoding(NSUTF8StringEncoding)!)
+            self.handle = try? FileHandle(forWritingTo: self.filename)
+            let rsaLine = try Crypto.sharedInstance.base64ToBase64URL(SwiftyRSA.encryptString(Crypto.sharedInstance.base64ToBase64URL(aesKey.base64EncodedString()), publicKeyId: PersistentPasswordManager.sharedInstance.publicKeyName(self.patientId), padding: [])) + "\n";
+            self.handle?.write(rsaLine.data(using: String.Encoding.utf8)!)
+            let ivHeader = Crypto.sharedInstance.base64ToBase64URL(iv.base64EncodedString()) + ":"
+            self.handle?.write(ivHeader.data(using: String.Encoding.utf8)!)
             return Promise()
         }
 
@@ -81,55 +81,55 @@ class EncryptedStorage {
             if let handle = self.handle {
                 handle.closeFile()
                 self.handle = nil
-                try NSFileManager.defaultManager().moveItemAtURL(self.filename, toURL: self.realFilename)
+                try FileManager.default.moveItem(at: self.filename, to: self.realFilename)
                 log.info("moved temp data file \(self.filename) to \(self.realFilename)");
             }
             return Promise()
         }
     }
 
-    func _write(data: NSData, len: Int) -> Promise<Int> {
+    func _write(_ data: NSData, len: Int) -> Promise<Int> {
         if (len == 0) {
-            return Promise(0);
+            return Promise(value: 0);
         }
         return Promise().then(on: queue) {
             self.hasData = true
-            let dataToWriteBuffer = UnsafeMutablePointer<Void>(data.bytes)
+            let dataToWriteBuffer = UnsafeMutableRawPointer(mutating: data.bytes)
             let dataToWrite = NSData(bytesNoCopy: dataToWriteBuffer, length: len, freeWhenDone: false)
-            let encodedData: String = Crypto.sharedInstance.base64ToBase64URL(dataToWrite.base64EncodedStringWithOptions([]))
-            self.handle?.writeData(encodedData.dataUsingEncoding(NSUTF8StringEncoding)!)
-            return Promise(len)
+            let encodedData: String = Crypto.sharedInstance.base64ToBase64URL(dataToWrite.base64EncodedString(options: []))
+            self.handle?.write(encodedData.data(using: String.Encoding.utf8)!)
+            return Promise(value: len)
         }
 
     }
 
-    func write(data: NSData?, writeLen: Int, isFlush: Bool = false) -> Promise<Void> {
+    func write(_ data: NSData?, writeLen: Int, isFlush: Bool = false) -> Promise<Void> {
         return Promise().then(on: queue) {
             if (data != nil && writeLen != 0) {
                 // Need to encrypt data
-                let encryptLen = self.sc.getOutputLength(writeLen)
-                let bufferOut = UnsafeMutablePointer<Void>.alloc(encryptLen)
+                let encryptLen = self.sc.getOutputLength(inputByteCount: writeLen)
+                let bufferOut = UnsafeMutablePointer<Void>.allocate(capacity: encryptLen)
                 var byteCount: Int = 0
-                let bufferIn = UnsafeMutablePointer<Void>(data!.bytes)
-                self.sc.update(bufferIn, byteCountIn: writeLen, bufferOut: bufferOut, byteCapacityOut: encryptLen, byteCountOut: &byteCount)
-                self.currentData.appendData(NSData(bytesNoCopy: bufferOut, length: byteCount))
+                let bufferIn = UnsafeMutableRawPointer(mutating: data!.bytes)
+                self.sc.update(bufferIn: bufferIn, byteCountIn: writeLen, bufferOut: bufferOut, byteCapacityOut: encryptLen, byteCountOut: &byteCount)
+                self.currentData.append(NSData(bytesNoCopy: bufferOut, length: byteCount) as Data)
             }
             if (isFlush) {
-                let encryptLen = self.sc.getOutputLength(0, isFinal: true)
+                let encryptLen = self.sc.getOutputLength(inputByteCount: 0, isFinal: true)
                 if (encryptLen > 0) {
-                    let bufferOut = UnsafeMutablePointer<Void>.alloc(encryptLen)
+                    let bufferOut = UnsafeMutablePointer<Void>.allocate(capacity: encryptLen)
                     var byteCount: Int = 0
-                    self.sc.final(bufferOut, byteCapacityOut: encryptLen, byteCountOut: &byteCount)
+                    self.sc.final(bufferOut: bufferOut, byteCapacityOut: encryptLen, byteCountOut: &byteCount)
                     let finalData = NSData(bytesNoCopy: bufferOut, length: byteCount);
 
-                    let count = finalData.length / sizeof(UInt8)
+                    let count = finalData.length / MemoryLayout<UInt8>.size
 
                     // create array of appropriate length:
-                    var array = [UInt8](count: count, repeatedValue: 0)
+                    var array = [UInt8](repeating: 0, count: count)
 
                     // copy bytes into array
-                    finalData.getBytes(&array, length:count * sizeof(UInt8))
-                    self.currentData.appendData(finalData)
+                    finalData.getBytes(&array, length:count * MemoryLayout<UInt8>.size)
+                    self.currentData.append(finalData as Data)
                 }
             }
             // Only write multiples of 3, since we are base64 encoding and would otherwise end up with padding
@@ -141,7 +141,7 @@ class EncryptedStorage {
             }
             return self._write(self.currentData, len: evenLength)
             }.then(on: queue) { evenLength in
-                self.currentData.replaceBytesInRange(NSRange(0..<evenLength), withBytes: nil, length: 0)
+                self.currentData.replaceBytes(in: NSRange(0..<evenLength), withBytes: nil, length: 0)
         }
     }
 
@@ -163,11 +163,11 @@ class DataStorage {
     var headers: [String];
     var type: String;
     var lines: [String] = [ ];
-    var aesKey: NSData?;
+    var aesKey: Data?;
     var publicKey: String;
     var hasData: Bool = false;
-    var filename: NSURL?;
-    var realFilename: NSURL?
+    var filename: URL?;
+    var realFilename: URL?
     var dataPoints = 0;
     var patientId: String;
     var bytesWritten = 0;
@@ -175,7 +175,7 @@ class DataStorage {
     var noBuffer = false;
     var sanitize = false;
     let moveOnClose: Bool
-    let queue: dispatch_queue_t
+    let queue: DispatchQueue
 
 
     init(type: String, headers: [String], patientId: String, publicKey: String, moveOnClose: Bool = false) {
@@ -185,23 +185,23 @@ class DataStorage {
         self.headers = headers;
         self.moveOnClose = moveOnClose
 
-        queue = dispatch_queue_create("com.rocketfarm.beiwe.dataqueue." + type, nil)
+        queue = DispatchQueue(label: "com.rocketfarm.beiwe.dataqueue." + type, attributes: [])
         reset();
     }
 
-    private func reset() {
-        if let filename = filename, realFilename = realFilename where moveOnClose == true && hasData == true {
+    fileprivate func reset() {
+        if let filename = filename, let realFilename = realFilename, moveOnClose == true && hasData == true {
             do {
-                try NSFileManager.defaultManager().moveItemAtURL(filename, toURL: realFilename)
+                try FileManager.default.moveItem(at: filename, to: realFilename)
                 log.info("moved temp data file \(filename) to \(realFilename)");
             } catch {
                 log.error("Error moving temp data \(filename) to \(realFilename)");
             }
         }
-        let name = patientId + "_" + type + "_" + String(Int64(NSDate().timeIntervalSince1970 * 1000));
-        realFilename = DataStorageManager.currentDataDirectory().URLByAppendingPathComponent(name + DataStorageManager.dataFileSuffix)
+        let name = patientId + "_" + type + "_" + String(Int64(Date().timeIntervalSince1970 * 1000));
+        realFilename = DataStorageManager.currentDataDirectory().appendingPathComponent(name + DataStorageManager.dataFileSuffix)
         if (moveOnClose) {
-            filename = NSURL(fileURLWithPath:  NSTemporaryDirectory()).URLByAppendingPathComponent(name + DataStorageManager.dataFileSuffix) ;
+            filename = URL(fileURLWithPath:  NSTemporaryDirectory()).appendingPathComponent(name + DataStorageManager.dataFileSuffix) ;
         } else {
             filename = realFilename
         }
@@ -212,12 +212,12 @@ class DataStorage {
         aesKey = Crypto.sharedInstance.newAesKey(keyLength);
         if let aesKey = aesKey {
             do {
-                let b64aes = Crypto.sharedInstance.base64ToBase64URL(aesKey.base64EncodedStringWithOptions([]))
+                let b64aes = Crypto.sharedInstance.base64ToBase64URL(aesKey.base64EncodedString(options: []))
                 //log.info("B64Aes for \(realFilename!): \(b64aes)")
-                let rsaLine = try Crypto.sharedInstance.base64ToBase64URL(SwiftyRSA.encryptString(b64aes, publicKeyId: PersistentPasswordManager.sharedInstance.publicKeyName(self.patientId), padding: .None)) + "\n";
+                let rsaLine = try Crypto.sharedInstance.base64ToBase64URL(SwiftyRSA.encryptString(b64aes, publicKeyId: PersistentPasswordManager.sharedInstance.publicKeyName(self.patientId), padding: SecPadding())) + "\n";
                 lines = [ rsaLine ];
                 //log.info("RSALine: \(rsaLine)")
-                _writeLine(headers.joinWithSeparator(DataStorage.delimiter))
+                _writeLine(headers.joined(separator: DataStorage.delimiter))
             } catch {
                 log.error("Failed to RSA encrypt AES key")
                 hasError = true;
@@ -229,12 +229,12 @@ class DataStorage {
     }
 
 
-    private func _writeLine(line: String) {
-        let iv: NSData? = Crypto.sharedInstance.randomBytes(16);
-        if let iv = iv, aesKey = aesKey {
+    fileprivate func _writeLine(_ line: String) {
+        let iv: Data? = Crypto.sharedInstance.randomBytes(16);
+        if let iv = iv, let aesKey = aesKey {
             let encrypted = Crypto.sharedInstance.aesEncrypt(iv, key: aesKey, plainText: line);
             if let encrypted = encrypted  {
-                lines.append(Crypto.sharedInstance.base64ToBase64URL(iv.base64EncodedStringWithOptions([])) + ":" + Crypto.sharedInstance.base64ToBase64URL(encrypted.base64EncodedStringWithOptions([])) + "\n")
+                lines.append(Crypto.sharedInstance.base64ToBase64URL(iv.base64EncodedString(options: [])) + ":" + Crypto.sharedInstance.base64ToBase64URL(encrypted.base64EncodedString(options: [])) + "\n")
                 if (lines.count >= flushLines) {
                     flush(false);
                 }
@@ -245,7 +245,7 @@ class DataStorage {
         }
     }
 
-    private func writeLine(line: String) {
+    fileprivate func writeLine(_ line: String) {
         hasData = true;
         dataPoints = dataPoints + 1;
         _writeLine(line);
@@ -254,24 +254,24 @@ class DataStorage {
         }
     }
 
-    func store(data: [String]) -> Promise<Void> {
+    func store(_ data: [String]) -> Promise<Void> {
         return Promise().then(on: queue) {
             var sanitizedData: [String];
             if (self.sanitize) {
                 sanitizedData = [];
                 for str in data {
-                    sanitizedData.append(str.stringByReplacingOccurrencesOfString(",", withString: ";").stringByReplacingOccurrencesOfString("[\t\n\r]", withString: " ", options: .RegularExpressionSearch))
+                    sanitizedData.append(str.replacingOccurrences(of: ",", with: ";").replacingOccurrences(of: "[\t\n\r]", with: " ", options: .regularExpression))
                 }
             } else {
                 sanitizedData = data;
             }
-            let csv = sanitizedData.joinWithSeparator(DataStorage.delimiter);
+            let csv = sanitizedData.joined(separator: DataStorage.delimiter);
             self.writeLine(csv)
             return Promise()
         }
     }
 
-    func flush(reset: Bool = false) -> Promise<Void> {
+    func flush(_ reset: Bool = false) -> Promise<Void> {
         return Promise().then(on: queue) {
             if (!self.hasData || self.lines.count == 0) {
                 if (reset) {
@@ -279,26 +279,26 @@ class DataStorage {
                 }
                 return Promise();
             }
-            let data = self.lines.joinWithSeparator("").dataUsingEncoding(NSUTF8StringEncoding);
+            let data = self.lines.joined(separator: "").data(using: String.Encoding.utf8);
             self.lines = [ ];
-            if let filename = self.filename, data = data  {
-                let fileManager = NSFileManager.defaultManager();
-                if (!fileManager.fileExistsAtPath(filename.path!)) {
-                    if (!fileManager.createFileAtPath(filename.path!, contents: data, attributes: [NSFileProtectionKey: NSFileProtectionNone])) {
+            if let filename = self.filename, let data = data  {
+                let fileManager = FileManager.default;
+                if (!fileManager.fileExists(atPath: filename.path)) {
+                    if (!fileManager.createFile(atPath: filename.path, contents: data, attributes: [FileAttributeKey.protectionKey.rawValue: FileProtectionType.none])) {
                         self.hasError = true;
                         log.error("Failed to create file.");
                     } else {
                         log.info("Create new data file: \(filename)");
                     }
                 } else {
-                    if let fileHandle = try? NSFileHandle(forWritingToURL: filename) {
+                    if let fileHandle = try? FileHandle(forWritingTo: filename) {
                         defer {
                             fileHandle.closeFile()
                         }
                         let seekPos = fileHandle.seekToEndOfFile()
-                        fileHandle.writeData(data)
+                        fileHandle.write(data)
                         fileHandle.closeFile()
-                        self.bytesWritten = self.bytesWritten + data.length;
+                        self.bytesWritten = self.bytesWritten + data.count;
                         log.info("Appended data to file: \(filename), size: \(seekPos)");
                         if (self.bytesWritten > DataStorageManager.MAX_DATAFILE_SIZE) {
                             log.info("Rolling data file: \(filename)")
@@ -335,47 +335,47 @@ class DataStorageManager {
     var storageTypes: [String: DataStorage] = [:];
     var study: Study?;
 
-    static func currentDataDirectory() -> NSURL {
-        let dirPaths = NSSearchPathForDirectoriesInDomains(.CachesDirectory,
-                                                           .UserDomainMask, true)
+    static func currentDataDirectory() -> URL {
+        let dirPaths = NSSearchPathForDirectoriesInDomains(.cachesDirectory,
+                                                           .userDomainMask, true)
 
         let cacheDir = dirPaths[0]
-        return NSURL(fileURLWithPath: cacheDir).URLByAppendingPathComponent("currentdata")!;
+        return URL(fileURLWithPath: cacheDir).appendingPathComponent("currentdata");
     }
 
-    static func uploadDataDirectory() -> NSURL {
-        let dirPaths = NSSearchPathForDirectoriesInDomains(.CachesDirectory,
-                                                           .UserDomainMask, true)
+    static func uploadDataDirectory() -> URL {
+        let dirPaths = NSSearchPathForDirectoriesInDomains(.cachesDirectory,
+                                                           .userDomainMask, true)
 
         let cacheDir = dirPaths[0]
-        return NSURL(fileURLWithPath: cacheDir).URLByAppendingPathComponent("uploaddata")!;
+        return URL(fileURLWithPath: cacheDir).appendingPathComponent("uploaddata");
     }
 
     func createDirectories() {
 
 
         do {
-            try NSFileManager.defaultManager().createDirectoryAtPath(DataStorageManager.currentDataDirectory().path!,
+            try FileManager.default.createDirectory(atPath: DataStorageManager.currentDataDirectory().path,
                                                                      withIntermediateDirectories: true,
-                                                                     attributes: [NSFileProtectionKey: NSFileProtectionNone]);
-            try NSFileManager.defaultManager().createDirectoryAtPath(DataStorageManager.uploadDataDirectory().path!,
+                                                                     attributes: [FileAttributeKey.protectionKey.rawValue: FileProtectionType.none]);
+            try FileManager.default.createDirectory(atPath: DataStorageManager.uploadDataDirectory().path,
                                                                      withIntermediateDirectories: true,
-                                                                     attributes: [NSFileProtectionKey: NSFileProtectionNone])
+                                                                     attributes: [FileAttributeKey.protectionKey.rawValue: FileProtectionType.none])
         } catch {
             log.error("Failed to create directories.");
         }
     }
 
-    func setCurrentStudy(study: Study) {
+    func setCurrentStudy(_ study: Study) {
         self.study = study;
         if let publicKey = study.studySettings?.clientPublicKey {
             self.publicKey = publicKey
         }
     }
 
-    func createStore(type: String, headers: [String]) -> DataStorage? {
+    func createStore(_ type: String, headers: [String]) -> DataStorage? {
         if (storageTypes[type] == nil) {
-            if let publicKey = publicKey, patientId = study?.patientId {
+            if let publicKey = publicKey, let patientId = study?.patientId {
                 storageTypes[type] = DataStorage(type: type, headers: headers, patientId: patientId, publicKey: publicKey);
             } else {
                 log.error("No public key found! Can't store data");
@@ -385,9 +385,9 @@ class DataStorageManager {
         return storageTypes[type]!;
     }
 
-    func closeStore(type: String) -> Promise<Void> {
+    func closeStore(_ type: String) -> Promise<Void> {
         if let storage = storageTypes[type] {
-            self.storageTypes.removeValueForKey(type);
+            self.storageTypes.removeValue(forKey: type);
             return storage.flush(false);
         }
         return Promise();
@@ -399,27 +399,27 @@ class DataStorageManager {
         for (_, storage) in storageTypes {
             promises.append(storage.closeAndReset());
         }
-        return when(promises)
+        return when(fulfilled: promises)
     }
 
     
 
-    func isUploadFile(filename: String) -> Bool {
+    func isUploadFile(_ filename: String) -> Bool {
         return filename.hasSuffix(DataStorageManager.dataFileSuffix) || filename.hasSuffix(".mp4") || filename.hasSuffix(".wav")
     }
 
-    func _printFileInfo(file: NSURL) {
-        let path = file.path!
+    func _printFileInfo(_ file: URL) {
+        let path = file.path
         var seekPos: UInt64 = 0
         var firstLine: String = ""
         log.info("infoBeginForFile: \(path)")
-        if let fileHandle = try? NSFileHandle(forReadingFromURL: file) {
+        if let fileHandle = try? FileHandle(forReadingFrom: file) {
             defer {
                 fileHandle.closeFile()
             }
-            let dataString = String(data: fileHandle.readDataOfLength(2048), encoding: NSUTF8StringEncoding)
+            let dataString = String(data: fileHandle.readData(ofLength: 2048), encoding: String.Encoding.utf8)
             let dataArray = dataString?.characters.split{$0 == "\n"}.map(String.init)
-            if let dataArray = dataArray where dataArray.count > 0 {
+            if let dataArray = dataArray, dataArray.count > 0 {
                 firstLine = dataArray[0]
             } else {
                 log.warning("No first line found!!")
@@ -434,11 +434,11 @@ class DataStorageManager {
 
 
     }
-    func _moveFile(src: NSURL, dst: NSURL) {
-        let fileManager = NSFileManager.defaultManager()
+    func _moveFile(_ src: URL, dst: URL) {
+        let fileManager = FileManager.default
         do {
             //_printFileInfo(src)
-            try fileManager.moveItemAtURL(src, toURL: dst)
+            try fileManager.moveItem(at: src, to: dst)
             //_printFileInfo(dst)
             log.info("moved \(src) to \(dst)");
         } catch {
@@ -447,14 +447,14 @@ class DataStorageManager {
     }
     func prepareForUpload() -> Promise<Void> {
         // self._flushAll()
-        let prepQ = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
+        let prepQ = DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default)
         var filesToUpload: [String] = [ ]
         /* Flush once to get all of the files currently processing */
         return self._flushAll().then(on: prepQ) {
             /* And record there names */
-            let fileManager = NSFileManager.defaultManager()
+            let fileManager = FileManager.default
 
-                let enumerator = fileManager.enumeratorAtPath(DataStorageManager.currentDataDirectory().path!);
+                let enumerator = fileManager.enumerator(atPath: DataStorageManager.currentDataDirectory().path);
 
                 if let enumerator = enumerator {
                     while let filename = enumerator.nextObject() as? String {
@@ -469,9 +469,9 @@ class DataStorageManager {
                 return self._flushAll()
             }.then(on: prepQ) {
                 for filename in filesToUpload {
-                    let src = DataStorageManager.currentDataDirectory().URLByAppendingPathComponent(filename);
-                    let dst = DataStorageManager.uploadDataDirectory().URLByAppendingPathComponent(filename);
-                    self._moveFile(src!, dst: dst!)
+                    let src = DataStorageManager.currentDataDirectory().appendingPathComponent(filename);
+                    let dst = DataStorageManager.uploadDataDirectory().appendingPathComponent(filename);
+                    self._moveFile(src, dst: dst)
                 }
                 return Promise()
         }

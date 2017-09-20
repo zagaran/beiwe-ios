@@ -21,13 +21,13 @@ struct OpFunction {
     let minArgs: Int;
     let maxArgs: Int;
     let evalFunc: ([NSNumber]) -> NSNumber;
-    init(minArgs: Int, maxArgs: Int, evalFunc: ([NSNumber]) -> NSNumber) {
+    init(minArgs: Int, maxArgs: Int, evalFunc: @escaping ([NSNumber]) -> NSNumber) {
         self.minArgs = minArgs;
         self.maxArgs = maxArgs;
         self.evalFunc = evalFunc;
     }
 
-    func eval(args: [NSNumber?]) -> NSNumber {
+    func eval(_ args: [NSNumber?]) -> NSNumber {
         if (args.count < minArgs || (maxArgs != -1 && args.count > maxArgs)) {
             return 0;
         }
@@ -57,22 +57,22 @@ class BWSkipStepNavigationRule : ORKSkipStepNavigationRule {
             return (args[0].doubleValue >= args[1].doubleValue) ? 1 : 0;
         };
         opDict["not"] = OpFunction(minArgs: 1, maxArgs: 1) { args in
-            return (args[0].integerValue == 0) ? 1 : 0;
+            return (args[0].intValue == 0) ? 1 : 0;
         };
         opDict["and"] = OpFunction(minArgs: 1, maxArgs: -1) { args in
-            var hasAFalse = args.contains { $0.integerValue == 0 };
+            var hasAFalse = args.contains { $0.intValue == 0 };
             return hasAFalse ? 0 : 1;
         };
         opDict["or"] = OpFunction(minArgs: 1, maxArgs: -1) { args in
-            var hasATrue = args.contains { $0.integerValue != 0 };
+            var hasATrue = args.contains { $0.intValue != 0 };
             return hasATrue ? 1 : 0;
         };
         opDict["nand"] = OpFunction(minArgs: 1, maxArgs: -1) { args in
-            var hasAFalse = args.contains { $0.integerValue == 0 };
+            var hasAFalse = args.contains { $0.intValue == 0 };
             return hasAFalse ? 1 : 0;
         };
         opDict["nor"] = OpFunction(minArgs: 1, maxArgs: -1) { args in
-            var hasATrue = args.contains { $0.integerValue != 0 };
+            var hasATrue = args.contains { $0.intValue != 0 };
             return hasATrue ? 0 : 1;
         };
 
@@ -89,29 +89,29 @@ class BWSkipStepNavigationRule : ORKSkipStepNavigationRule {
         super.init(coder: coder);
     }
     
-    override func stepShouldSkipWithTaskResult(taskResult: ORKTaskResult) -> Bool {
+    override func stepShouldSkip(with taskResult: ORKTaskResult) -> Bool {
         guard let displayIf = displayIf else {
             return false;
         }
 
-        if let res = evaluateLogic(displayIf, taskResult: taskResult) {
+        if let res = evaluateLogic(displayIf as AnyObject, taskResult: taskResult) {
             log.info("displayIf eval: \(res)");
-            return res.integerValue == 0;
+            return res.intValue == 0;
         } else {
             return true;
         }
     }
 
-    func valueForStepResult(stepResult: ORKStepResult) -> NSNumber? {
-        if let results = stepResult.results where results.count > 0 {
+    func valueForStepResult(_ stepResult: ORKStepResult) -> NSNumber? {
+        if let results = stepResult.results, results.count > 0 {
             switch (results[0]) {
             case let choiceResult as ORKChoiceQuestionResult:
                 if let choiceAnswers = choiceResult.choiceAnswers {
                     for idx in 0...choiceAnswers.count {
                         if let num: NSNumber = choiceAnswers[idx] as? NSNumber {
-                            let numValue: Int = num.integerValue;
+                            let numValue: Int = num.intValue;
                             if (numValue >= 0) {
-                                return numValue;
+                                return numValue as NSNumber;
                             }
                         }
                     }
@@ -119,7 +119,7 @@ class BWSkipStepNavigationRule : ORKSkipStepNavigationRule {
                 return nil;
             case let questionResult as ORKQuestionResult:
                 if let answer = questionResult.answer {
-                    return Double(String(answer));
+                    return Double(String(describing: answer)) as NSNumber?;
                 }
 
                 return nil;
@@ -138,7 +138,7 @@ class BWSkipStepNavigationRule : ORKSkipStepNavigationRule {
     }
 
 
-    func evaluateLogic(value: AnyObject, taskResult: ORKTaskResult) -> NSNumber? {
+    func evaluateLogic(_ value: AnyObject, taskResult: ORKTaskResult) -> NSNumber? {
         switch(value) {
         case let x as NSNumber:
             // If it's a number, just return it
@@ -146,7 +146,7 @@ class BWSkipStepNavigationRule : ORKSkipStepNavigationRule {
         case let questionId as NSString:
             // If it's a string, return nil or the value of the question answer
             if let questionIdStr = questionId as? String {
-                let stepResult = taskResult.stepResultForStepIdentifier(questionIdStr);
+                let stepResult = taskResult.stepResult(forStepIdentifier: questionIdStr);
                 if let stepResult = stepResult {
                     return valueForStepResult(stepResult);
                 } else {
@@ -160,7 +160,7 @@ class BWSkipStepNavigationRule : ORKSkipStepNavigationRule {
             for (key, val) in dict {
                 ar.append(OpTuple(op: key, values: val));
             }
-            return evaluateLogic(OpTuple(op: "and", values: ar), taskResult: taskResult);
+            return evaluateLogic(OpTuple(op: "and", values: ar as AnyObject), taskResult: taskResult);
         case let opTuple as OpTuple:
             // It's an operator, evaluate all of the array elements
             // If it's not an array, treat it as a single value and force into an array

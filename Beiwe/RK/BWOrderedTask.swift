@@ -7,13 +7,13 @@
 //
 
 class BWOrderedTask: ORKOrderedTask {
-    override func stepAfterStep(step: ORKStep?, withResult result: ORKTaskResult) -> ORKStep? {
+    override func step(after step: ORKStep?, with result: ORKTaskResult) -> ORKStep? {
         log.info("stepAfterStep for \(step?.identifier)");
-        return super.stepAfterStep(step, withResult: result);
+        return super.step(after: step, with: result);
     }
 
-    override func stepBeforeStep(step: ORKStep?, withResult result: ORKTaskResult) -> ORKStep? {
+    override func step(before step: ORKStep?, with result: ORKTaskResult) -> ORKStep? {
         log.info("stepBeforeStep for \(step?.identifier)");
-        return super.stepBeforeStep(step, withResult: result);
+        return super.step(before: step, with: result);
     }
 }

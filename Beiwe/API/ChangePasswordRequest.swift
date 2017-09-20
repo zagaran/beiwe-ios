@@ -21,7 +21,7 @@ struct ChangePasswordRequest : Mappable, ApiRequest {
         self.newPassword = newPassword;
     }
 
-    init?(_ map: Map) {
+    init?(map: Map) {
 
     }
 

@@ -15,11 +15,11 @@ class ProximityManager : DataServiceProtocol {
     let headers = ["timestamp", "event"]
     var store: DataStorage?;
 
-    @objc func proximityStateDidChange(notification: NSNotification){
+    @objc func proximityStateDidChange(_ notification: Notification){
         // The stage did change: plugged, unplugged, full charge...
         var data: [String] = [ ];
-        data.append(String(Int64(NSDate().timeIntervalSince1970 * 1000)));
-        data.append(UIDevice.currentDevice().proximityState ? "NearUser" : "NotNearUser");
+        data.append(String(Int64(Date().timeIntervalSince1970 * 1000)));
+        data.append(UIDevice.current.proximityState ? "NearUser" : "NotNearUser");
 
         self.store?.store(data);
         self.store?.flush();
@@ -32,13 +32,13 @@ class ProximityManager : DataServiceProtocol {
 
     func startCollecting() {
         log.info("Turning \(storeType) collection on");
-        UIDevice.currentDevice().proximityMonitoringEnabled = true;
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.proximityStateDidChange), name: UIDeviceProximityStateDidChangeNotification, object: nil)
+        UIDevice.current.isProximityMonitoringEnabled = true;
+        NotificationCenter.default.addObserver(self, selector: #selector(self.proximityStateDidChange), name: NSNotification.Name.UIDeviceProximityStateDidChange, object: nil)
 
     }
     func pauseCollecting() {
         log.info("Pausing \(storeType) collection");
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIDeviceProximityStateDidChangeNotification, object:nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIDeviceProximityStateDidChange, object:nil)
         store!.flush();
     }
     func finishCollecting() -> Promise<Void> {

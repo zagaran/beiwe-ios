@@ -16,14 +16,14 @@ class RegisterViewController: FormViewController {
 
     let autoValidation = false;
     let db = Recline.shared;
-    var dismiss: ((didRegister: Bool) -> Void)?;
+    var dismiss: ((_ didRegister: Bool) -> Void)?;
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
 
-        let font = UIFont.systemFontOfSize(13.0);
+        let font = UIFont.systemFont(ofSize: 13.0);
         SVAccountRow.defaultCellSetup = { cell, row in
             cell.textLabel?.font = font
             cell.detailTextLabel?.font = font;
@@ -91,7 +91,7 @@ class RegisterViewController: FormViewController {
                     if (self.form.validateAll()) {
                         PKHUD.sharedHUD.dimsBackground = true;
                         PKHUD.sharedHUD.userInteractionOnUnderlyingViewsEnabled = false;
-                        HUD.show(.Progress);
+                        HUD.show(.progress);
                         let formValues = self.form.values();
                         let patientId: String? = formValues["patientId"] as! String?;
                         //let phoneNumber: String? = formValues["phone"] as! String?;
@@ -100,7 +100,7 @@ class RegisterViewController: FormViewController {
                         let tempPassword: String? = formValues["tempPassword"] as! String?;
                         let clinicianPhone: String? = formValues["clinicianPhone"] as! String?;
                         let raPhone: String? = formValues["raPhone"] as! String?;
-                        if let patientId = patientId, phoneNumber = phoneNumber, newPassword = newPassword, clinicianPhone = clinicianPhone, raPhone = raPhone {
+                        if let patientId = patientId, let phoneNumber = phoneNumber, let newPassword = newPassword, let clinicianPhone = clinicianPhone, let raPhone = raPhone {
                             let registerStudyRequest = RegisterStudyRequest(patientId: patientId, phoneNumber: phoneNumber, newPassword: newPassword)
                             ApiManager.sharedInstance.password = tempPassword ?? "";
                             ApiManager.sharedInstance.patientId = patientId;
@@ -114,35 +114,35 @@ class RegisterViewController: FormViewController {
                                     return self.db.save(study)
                                 }
                             }.then { _ -> Promise<Bool> in
-                                HUD.flash(.Success, delay: 1);
+                                HUD.flash(.success, delay: 1);
                                 return StudyManager.sharedInstance.loadDefaultStudy();
                             }.then { _ -> Void in
                                 AppDelegate.sharedInstance().isLoggedIn = true;
                                 if let dismiss = self.dismiss {
-                                    dismiss(didRegister: true);
+                                    dismiss(true);
                                 } else {
-                                    self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil);
+                                    self.presentingViewController?.dismiss(animated: true, completion: nil);
                                 }
-                            }.error { error -> Void in
+                            }.catch { error -> Void in
                                 print("error received from register: \(error)");
                                 var delay = 2.0;
                                 var err: HUDContentType;
                                 switch error {
-                                case ApiErrors.FailedStatus(let code):
+                                case ApiErrors.failedStatus(let code):
                                     switch code {
                                     case 403, 401:
-                                        err = .LabeledError(title: "Registration failed", subtitle: "Incorrect patient ID or Password");
+                                        err = .labeledError(title: "Registration failed", subtitle: "Incorrect patient ID or Password");
                                     case 405:
-                                        err = .Label("UserID already registered on another device.  Please contact your study administrator to unregister any previous devices that may have been used");
+                                        err = .label("UserID already registered on another device.  Please contact your study administrator to unregister any previous devices that may have been used");
                                         delay = 10.0;
                                     case 400:
-                                        err = .Label("This device could not be registered under the provided patient ID.  Please contact your study administrator");
+                                        err = .label("This device could not be registered under the provided patient ID.  Please contact your study administrator");
                                         delay = 10.0;
                                     default:
-                                        err = .LabeledError(title: "Registration failed", subtitle: "Communication error");
+                                        err = .labeledError(title: "Registration failed", subtitle: "Communication error");
                                     }
                                 default:
-                                    err = .LabeledError(title: "Registration failed", subtitle: "Communication error");
+                                    err = .labeledError(title: "Registration failed", subtitle: "Communication error");
                                 }
                                 HUD.flash(err, delay: delay)
                             }
@@ -155,14 +155,14 @@ class RegisterViewController: FormViewController {
                 $0.title = "Cancel";
                 }.onCellSelection { [unowned self] cell, row in
                     if let dismiss = self.dismiss {
-                        dismiss(didRegister: false);
+                        dismiss(false);
                     } else {
-                        self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil);
+                        self.presentingViewController?.dismiss(animated: true, completion: nil);
                     }
         }
 
-        let passwordRow: SVPasswordRow? = form.rowByTag("password");
-        let confirmRow: SVPasswordRow? = form.rowByTag("confirmPassword");
+        let passwordRow: SVPasswordRow? = form.rowBy(tag: "password");
+        let confirmRow: SVPasswordRow? = form.rowBy(tag: "confirmPassword");
         confirmRow!.rules = [ConfirmationRule(confirmField: passwordRow!.cell.textField)]
 
 

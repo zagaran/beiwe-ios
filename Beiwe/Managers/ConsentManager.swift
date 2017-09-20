@@ -21,7 +21,7 @@ enum StepIds : String {
 
 class WaitForPermissionsRule : ORKStepNavigationRule {
     let nextTask: ((ORKTaskResult) -> String)
-    init(nextTask: ((taskResult: ORKTaskResult) -> String)) {
+    init(nextTask: @escaping ((_ taskResult: ORKTaskResult) -> String)) {
         self.nextTask = nextTask
 
         super.init(coder: NSCoder())!
@@ -30,12 +30,13 @@ class WaitForPermissionsRule : ORKStepNavigationRule {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    override func identifierForDestinationStepWithTaskResult(taskResult: ORKTaskResult)  -> String {
+    override func identifierForDestinationStep(with taskResult: ORKTaskResult)  -> String {
         return self.nextTask(taskResult)
     }
 }
 
 class ConsentManager : NSObject, ORKTaskViewControllerDelegate {
+
 
     let pscope = AppDelegate.sharedInstance().pscope;
     var retainSelf: AnyObject?;
@@ -79,8 +80,8 @@ class ConsentManager : NSObject, ORKTaskViewControllerDelegate {
         let studyConsentSections = StudyManager.sharedInstance.currentStudy?.studySettings?.consentSections ?? [:];
 
 
-        let overviewSection = ORKConsentSection(type: .Overview);
-        if let welcomeStudySection = studyConsentSections["welcome"] where !welcomeStudySection.text.isEmpty {
+        let overviewSection = ORKConsentSection(type: .overview);
+        if let welcomeStudySection = studyConsentSections["welcome"], !welcomeStudySection.text.isEmpty {
             overviewSection.summary = welcomeStudySection.text
             if (!welcomeStudySection.more.isEmpty) {
                 overviewSection.content = welcomeStudySection.more
@@ -90,20 +91,20 @@ class ConsentManager : NSObject, ORKTaskViewControllerDelegate {
         }
 
         let consentSectionTypes: [(ORKConsentSectionType, String)] = [
-            (.DataGathering, "data_gathering"),
-            (.Privacy, "privacy"),
-            (.DataUse, "data_use"),
-            (.TimeCommitment, "time_commitment"),
-            (.StudySurvey, "study_survey"),
-            (.StudyTasks, "study_tasks"),
-            (.Withdrawing, "withdrawing")
+            (.dataGathering, "data_gathering"),
+            (.privacy, "privacy"),
+            (.dataUse, "data_use"),
+            (.timeCommitment, "time_commitment"),
+            (.studySurvey, "study_survey"),
+            (.studyTasks, "study_tasks"),
+            (.withdrawing, "withdrawing")
         ]
 
 
         var hasAdditionalConsent = false;
         var consentSections: [ORKConsentSection] = [overviewSection];
         for (contentSectionType, bwType) in consentSectionTypes {
-            if let bwSection = studyConsentSections[bwType] where !bwSection.text.isEmpty {
+            if let bwSection = studyConsentSections[bwType], !bwSection.text.isEmpty {
                 hasAdditionalConsent = true;
                 let consentSection = ORKConsentSection(type: contentSectionType)
                 consentSection.summary = bwSection.text
@@ -124,7 +125,7 @@ class ConsentManager : NSObject, ORKTaskViewControllerDelegate {
         //let signature = consentDocument.signatures!.first!
 
         if (hasAdditionalConsent) {
-            let reviewConsentStep = ORKConsentReviewStep(identifier: StepIds.ConsentReview.rawValue, signature: nil, inDocument: consentDocument)
+            let reviewConsentStep = ORKConsentReviewStep(identifier: StepIds.ConsentReview.rawValue, signature: nil, in: consentDocument)
 
             reviewConsentStep.text = "Review Consent"
             reviewConsentStep.reasonForConsent = "Consent to join study"
@@ -136,14 +137,14 @@ class ConsentManager : NSObject, ORKTaskViewControllerDelegate {
         //let waitForPermissionRule = WaitForPermissionsRule(coder: NSCoder())
         //task.setNavigationRule(waitForPermissionRule!, forTriggerStepIdentifier: StepIds.WaitForPermissions.rawValue)
         task.setNavigationRule(WaitForPermissionsRule() { [weak self] taskResult -> String in
-            if (self?.pscope.statusLocationAlways() == .Authorized) {
+            if (self?.pscope.statusLocationAlways() == .authorized) {
                 return StepIds.VisualConsent.rawValue
             } else {
                 return StepIds.WarningStep.rawValue
             }
 
             }, forTriggerStepIdentifier: StepIds.WaitForPermissions.rawValue)
-        consentViewController = ORKTaskViewController(task: task, taskRunUUID: nil);
+        consentViewController = ORKTaskViewController(task: task, taskRun: nil);
         consentViewController.showsProgressInNavigationBar = false;
         consentViewController.delegate = self;
         retainSelf = self;
@@ -155,14 +156,15 @@ class ConsentManager : NSObject, ORKTaskViewControllerDelegate {
     }
 
     func hasRequiredPermissions() -> Bool {
-        return (pscope.statusNotifications() == .Authorized && pscope.statusLocationAlways() == .Authorized);
+        return (pscope.statusNotifications() == .authorized && pscope.statusLocationAlways() == .authorized);
     }
 
     /* ORK Delegates */
-    func taskViewController(taskViewController: ORKTaskViewController, didFinishWithReason reason: ORKTaskViewControllerFinishReason, error: NSError?) {
+
+    func taskViewController(_ taskViewController: ORKTaskViewController, didFinishWith reason: ORKTaskViewControllerFinishReason, error: Error?) {
         //Handle results with taskViewController.result
         //taskViewController.dismissViewControllerAnimated(true, completion: nil)
-        if (reason == ORKTaskViewControllerFinishReason.Discarded) {
+        if (reason == ORKTaskViewControllerFinishReason.discarded) {
             StudyManager.sharedInstance.leaveStudy().then { _ -> Void in
                 self.closeOnboarding();
             }
@@ -173,12 +175,12 @@ class ConsentManager : NSObject, ORKTaskViewControllerDelegate {
         }
     }
 
-    func taskViewController(taskViewController: ORKTaskViewController, didChangeResult result: ORKTaskResult) {
+    func taskViewController(_ taskViewController: ORKTaskViewController, didChange result: ORKTaskResult) {
 
         return;
     }
 
-    func taskViewController(taskViewController: ORKTaskViewController, shouldPresentStep step: ORKStep) -> Bool {
+    func taskViewController(_ taskViewController: ORKTaskViewController, shouldPresent step: ORKStep) -> Bool {
         /*
         if let identifier = StepIds(rawValue: step.identifier) {
             switch(identifier) {
@@ -195,26 +197,26 @@ class ConsentManager : NSObject, ORKTaskViewControllerDelegate {
 
     }
 
-    func taskViewController(taskViewController: ORKTaskViewController, learnMoreForStep stepViewController: ORKStepViewController) {
+    func taskViewController(_ taskViewController: ORKTaskViewController, learnMoreForStep stepViewController: ORKStepViewController) {
         // Present modal...
-        let refreshAlert = UIAlertController(title: "Learning more!", message: "You're smart now", preferredStyle: UIAlertControllerStyle.Alert)
+        let refreshAlert = UIAlertController(title: "Learning more!", message: "You're smart now", preferredStyle: UIAlertControllerStyle.alert)
 
-        refreshAlert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: { (action: UIAlertAction!) in
+        refreshAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
         }))
 
 
-        consentViewController.presentViewController(refreshAlert, animated: true, completion: nil)
+        consentViewController.present(refreshAlert, animated: true, completion: nil)
     }
 
-    func taskViewController(taskViewController: ORKTaskViewController, hasLearnMoreForStep step: ORKStep) -> Bool {
+    func taskViewController(_ taskViewController: ORKTaskViewController, hasLearnMoreFor step: ORKStep) -> Bool {
         return false;
     }
 
-    func taskViewController(taskViewController: ORKTaskViewController, viewControllerForStep step: ORKStep) -> ORKStepViewController? {
+    func taskViewController(_ taskViewController: ORKTaskViewController, viewControllerFor step: ORKStep) -> ORKStepViewController? {
         return nil;
     }
 
-    func taskViewController(taskViewController: ORKTaskViewController, stepViewControllerWillAppear stepViewController: ORKStepViewController) {
+    func taskViewController(_ taskViewController: ORKTaskViewController, stepViewControllerWillAppear stepViewController: ORKStepViewController) {
         stepViewController.cancelButtonItem!.title = "Leave Study";
 
         if let identifier = StepIds(rawValue: stepViewController.step?.identifier ?? "") {
@@ -232,7 +234,7 @@ class ConsentManager : NSObject, ORKTaskViewControllerDelegate {
             case .Permission:
                 stepViewController.continueButtonTitle = "Permissions";
             case .WarningStep:
-                if (pscope.statusLocationAlways() == .Authorized) {
+                if (pscope.statusLocationAlways() == .authorized) {
                     stepViewController.goForward();
                 } else {
                     stepViewController.continueButtonTitle = "Continue";

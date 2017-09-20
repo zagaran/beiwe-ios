@@ -13,12 +13,12 @@ class Configuration {
     var settings: Dictionary<String, AnyObject> = [:];
 
     init() {
-        if let path = NSBundle.mainBundle().pathForResource("Config-Default", ofType: "plist"), dict = NSDictionary(contentsOfFile: path) as? [String: AnyObject] {
+        if let path = Bundle.main.path(forResource: "Config-Default", ofType: "plist"), let dict = NSDictionary(contentsOfFile: path) as? [String: AnyObject] {
             for (key,value) in dict {
                 settings[key] = value;
             }
         }
-        if let path = NSBundle.mainBundle().pathForResource("Config", ofType: "plist"), dict = NSDictionary(contentsOfFile: path) as? [String: AnyObject] {
+        if let path = Bundle.main.path(forResource: "Config", ofType: "plist"), let dict = NSDictionary(contentsOfFile: path) as? [String: AnyObject] {
             for (key,value) in dict {
                 settings[key] = value;
             }

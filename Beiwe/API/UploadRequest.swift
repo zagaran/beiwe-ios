@@ -29,7 +29,7 @@ struct UploadRequest : Mappable, ApiRequest {
         */
     }
 
-    init?(_ map: Map) {
+    init?(map: Map) {
 
     }
 

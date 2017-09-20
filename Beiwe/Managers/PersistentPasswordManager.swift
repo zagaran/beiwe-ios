@@ -11,10 +11,10 @@ import KeychainSwift;
 
 struct PersistentPasswordManager {
     static let sharedInstance = PersistentPasswordManager();
-    static let bundlePrefix = (NSBundle.mainBundle().bundleIdentifier ?? "com.rocketarmstudios.beiwe")
-    private let keychain: KeychainSwift
-    private let passwordKeyPrefix = "password:";
-    private let rsaKeyPrefix = PersistentPasswordManager.bundlePrefix + ".rsapk.";
+    static let bundlePrefix = (Bundle.main.bundleIdentifier ?? "com.rocketarmstudios.beiwe")
+    fileprivate let keychain: KeychainSwift
+    fileprivate let passwordKeyPrefix = "password:";
+    fileprivate let rsaKeyPrefix = PersistentPasswordManager.bundlePrefix + ".rsapk.";
 
     init() {
         #if (arch(i386) || arch(x86_64)) && os(iOS)
@@ -24,24 +24,24 @@ struct PersistentPasswordManager {
         #endif
     }
 
-    private func keyForStudy(study: String, prefix: String) -> String {
+    fileprivate func keyForStudy(_ study: String, prefix: String) -> String {
         let key = prefix + study;
         return key;
     }
 
-    func passwordForStudy(study: String = Constants.defaultStudyId) -> String? {
+    func passwordForStudy(_ study: String = Constants.defaultStudyId) -> String? {
         return keychain.get(keyForStudy(study, prefix: passwordKeyPrefix));
     }
 
-    func storePassword(password: String, study: String = Constants.defaultStudyId) {
-        keychain.set(password, forKey: keyForStudy(study, prefix: passwordKeyPrefix), withAccess: .AccessibleAlwaysThisDeviceOnly);
+    func storePassword(_ password: String, study: String = Constants.defaultStudyId) {
+        keychain.set(password, forKey: keyForStudy(study, prefix: passwordKeyPrefix), withAccess: .accessibleAlwaysThisDeviceOnly);
     }
 
-    func storePublicKeyForStudy(publicKey: String, patientId: String, study: String = Constants.defaultStudyId) throws {
+    func storePublicKeyForStudy(_ publicKey: String, patientId: String, study: String = Constants.defaultStudyId) throws {
         try SwiftyRSA.storePublicKey(publicKey, keyId: publicKeyName(patientId, study: study))
     }
 
-    func publicKeyName(patientId: String, study: String = Constants.defaultStudyId) -> String {
+    func publicKeyName(_ patientId: String, study: String = Constants.defaultStudyId) -> String {
         return keyForStudy(study, prefix: rsaKeyPrefix) + "." + patientId;
     }
 

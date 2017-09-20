@@ -12,17 +12,17 @@ import KeychainSwift;
 struct PersistentAppUUID {
     static let sharedInstance = PersistentAppUUID();
 
-    private let keychain = KeychainSwift()
-    private let uuidKey = "privateAppUuid";
+    fileprivate let keychain = KeychainSwift()
+    fileprivate let uuidKey = "privateAppUuid";
 
     let uuid: String;
 
-    private init() {
+    fileprivate init() {
         if let u = keychain.get(uuidKey) {
             uuid = u;
         } else {
-            uuid = NSUUID().UUIDString;
-            keychain.set(uuid, forKey: uuidKey, withAccess: .AccessibleAlwaysThisDeviceOnly);
+            uuid = UUID().uuidString;
+            keychain.set(uuid, forKey: uuidKey, withAccess: .accessibleAlwaysThisDeviceOnly);
         }
     }
 }

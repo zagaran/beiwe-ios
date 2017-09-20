@@ -9,31 +9,26 @@
 import Foundation
 import ObjectMapper
 
-enum BWErrors : ErrorType {
-    case IOError
+enum BWErrors : Error {
+    case ioError
 }
-func delay(delay:Double, closure:()->()) {
-    dispatch_after(
-        dispatch_time(
-            DISPATCH_TIME_NOW,
-            Int64(delay * Double(NSEC_PER_SEC))
-        ),
-        dispatch_get_main_queue(), closure)
+func delay(_ delay:Double, closure:@escaping ()->()) {
+    DispatchQueue.main.asyncAfter(
+        deadline: DispatchTime.now() + Double(Int64(delay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: closure)
 }
 
 func platform() -> String {
     var size : Int = 0 // as Ben Stahl noticed in his answer
     sysctlbyname("hw.machine", nil, &size, nil, 0)
-    var machine = [CChar](count: Int(size), repeatedValue: 0)
+    var machine = [CChar](repeating: 0, count: Int(size))
     sysctlbyname("hw.machine", &machine, &size, nil, 0)
-    return String.fromCString(machine)!
+    return String(cString: machine)
 }
 
-func shuffle<C: MutableCollectionType where C.Index == Int>(inout list: C) -> C {
-    let c = list.count
-    if c < 2 { return list }
-    for i in 0..<(c - 1) {
-        let j = Int(arc4random_uniform(UInt32(c - i))) + i
+func shuffle<C: MutableCollection>(_ list: inout C) -> C where C.Index == Int {
+    if list.count < 2 { return list }
+    for i in list.startIndex ..< list.endIndex - 1 {
+        let j = Int(arc4random_uniform(UInt32(list.endIndex - i))) + i
         if i != j {
             swap(&list[i], &list[j])
         }
@@ -41,17 +36,17 @@ func shuffle<C: MutableCollectionType where C.Index == Int>(inout list: C) -> C 
     return list
 }
 
-let transformNSData = TransformOf<NSData, String>(fromJSON: { encoded in
+let transformNSData = TransformOf<Data, String>(fromJSON: { encoded in
     // transform value from String? to Int?
     if let str = encoded {
-        return NSData(base64EncodedString: str, options: []);
+        return Data(base64Encoded: str, options: []);
     } else {
         return nil;
     }
     }, toJSON: { value -> String? in
         // transform value from Int? to String?
         if let value = value {
-            return value.base64EncodedStringWithOptions([]);
+            return value.base64EncodedString(options: []);
         }
         return nil
 })
@@ -59,17 +54,17 @@ let transformNSData = TransformOf<NSData, String>(fromJSON: { encoded in
 let transformNotification = TransformOf<UILocalNotification, String>(fromJSON: { encoded -> UILocalNotification? in
     // transform value from String? to Int?
     if let str = encoded {
-        let data = NSData(base64EncodedString: str, options: []);
+        let data = Data(base64Encoded: str, options: []);
         if let data = data {
-            return NSKeyedUnarchiver.unarchiveObjectWithData(data) as! UILocalNotification?;
+            return NSKeyedUnarchiver.unarchiveObject(with: data) as! UILocalNotification?;
         }
     }
     return nil;
     }, toJSON: { value -> String? in
         // transform value from Int? to String?
         if let value = value {
-            let data = NSKeyedArchiver.archivedDataWithRootObject(value);
-            return data.base64EncodedStringWithOptions([]);
+            let data = NSKeyedArchiver.archivedData(withRootObject: value);
+            return data.base64EncodedString(options:[]);
         }
         return nil
 })
@@ -90,22 +85,22 @@ let transformJsonStringInt = TransformOf<Int, Any>(fromJSON: { (value: Any?) -> 
 
 class Debouncer<T>: NSObject {
     var arg: T?;
-    var callback: ((arg: T?) -> ())
+    var callback: ((_ arg: T?) -> ())
     var delay: Double
-    weak var timer: NSTimer?
+    weak var timer: Timer?
 
-    init(delay: Double, callback: ((arg: T?) -> ())) {
+    init(delay: Double, callback: @escaping ((_ arg: T?) -> ())) {
         self.delay = delay
         self.callback = callback
     }
 
-    func call(arg: T?) {
+    func call(_ arg: T?) {
         self.arg = arg;
         if (delay == 0) {
             fireNow();
         } else {
             timer?.invalidate()
-            let nextTimer = NSTimer.scheduledTimerWithTimeInterval(delay, target: self, selector: #selector(fireNow), userInfo: nil, repeats: false)
+            let nextTimer = Timer.scheduledTimer(timeInterval: delay, target: self, selector: #selector(fireNow), userInfo: nil, repeats: false)
             timer = nextTimer
         }
     }
@@ -119,28 +114,28 @@ class Debouncer<T>: NSObject {
 
     func fireNow() {
         timer = nil;
-        self.callback(arg: arg)
+        self.callback(arg)
     }
 }
 
-func confirmAndCallClinician(presenter: UIViewController, callAssistant: Bool = false) {
+func confirmAndCallClinician(_ presenter: UIViewController, callAssistant: Bool = false) {
     let msg = "Are you sure you wish to place a call now?"
     var number = StudyManager.sharedInstance.currentStudy?.clinicianPhoneNumber
     if (callAssistant) {
         //msg = "Call your study's research assistant now?"
         number = StudyManager.sharedInstance.currentStudy?.raPhoneNumber
     }
-    if let phoneNumber = number where AppDelegate.sharedInstance().canOpenTel {
-        if let phoneUrl = NSURL(string: "tel:" + phoneNumber) {
-            let callAlert = UIAlertController(title: "Confirm", message: msg, preferredStyle: UIAlertControllerStyle.Alert)
+    if let phoneNumber = number, AppDelegate.sharedInstance().canOpenTel {
+        if let phoneUrl = URL(string: "tel:" + phoneNumber) {
+            let callAlert = UIAlertController(title: "Confirm", message: msg, preferredStyle: UIAlertControllerStyle.alert)
 
-            callAlert.addAction(UIAlertAction(title: "Ok", style: .Default) { (action: UIAlertAction!) in
-                UIApplication.sharedApplication().openURL(phoneUrl)
+            callAlert.addAction(UIAlertAction(title: "Ok", style: .default) { (action: UIAlertAction!) in
+                UIApplication.shared.openURL(phoneUrl)
                 })
-            callAlert.addAction(UIAlertAction(title: "Cancel", style: .Default) { (action: UIAlertAction!) in
+            callAlert.addAction(UIAlertAction(title: "Cancel", style: .default) { (action: UIAlertAction!) in
                 print("Call cancelled.");
                 })
-            presenter.presentViewController(callAlert, animated: true) {
+            presenter.present(callAlert, animated: true) {
                 // ...
             }
         }

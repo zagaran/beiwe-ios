@@ -19,17 +19,17 @@ class AccelerometerManager : DataServiceProtocol {
     var offset: Double = 0;
 
     func initCollecting() -> Bool {
-        guard  motionManager.accelerometerAvailable else {
+        guard  motionManager.isAccelerometerAvailable else {
             log.info("Accel not available.  Not initializing collection");
             return false;
         }
 
         store = DataStorageManager.sharedInstance.createStore(storeType, headers: headers);
         // Get NSTimeInterval of uptime i.e. the delta: now - bootTime
-        let uptime: NSTimeInterval = NSProcessInfo.processInfo().systemUptime;
+        let uptime: TimeInterval = ProcessInfo.processInfo.systemUptime;
 
         // Now since 1970
-        let nowTimeIntervalSince1970: NSTimeInterval  = NSDate().timeIntervalSince1970;
+        let nowTimeIntervalSince1970: TimeInterval  = Date().timeIntervalSince1970;
 
         // Voila our offset
         self.offset = nowTimeIntervalSince1970 - uptime;
@@ -41,10 +41,10 @@ class AccelerometerManager : DataServiceProtocol {
 
     func startCollecting() {
         log.info("Turning \(storeType) collection on");
-        let queue = NSOperationQueue()
+        let queue = OperationQueue()
 
 
-        motionManager.startAccelerometerUpdatesToQueue(queue) {
+        motionManager.startAccelerometerUpdates(to: queue) {
             (accelData, error) in
 
             if let accelData = accelData {

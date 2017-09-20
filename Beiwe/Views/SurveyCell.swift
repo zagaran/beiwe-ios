@@ -12,7 +12,7 @@ import Hakuba
 class SurveyCellModel: CellModel {
     let activeSurvey: ActiveSurvey;
 
-    init(activeSurvey: ActiveSurvey, selectionHandler: SelectionHandler) {
+    init(activeSurvey: ActiveSurvey, selectionHandler: @escaping SelectionHandler) {
         self.activeSurvey = activeSurvey;
         super.init(cell: SurveyCell.self, selectionHandler: selectionHandler)
     }
@@ -32,18 +32,18 @@ class SurveyCell: Cell, CellType {
 
 
         var desc: String;
-        if let surveyType = cellmodel.activeSurvey.survey?.surveyType where surveyType == .AudioSurvey {
+        if let surveyType = cellmodel.activeSurvey.survey?.surveyType, surveyType == .AudioSurvey {
             desc = "Audio Survey";
         } else {
             desc = "Survey";
         }
         descriptionLabel.text = desc;
         newLabel.text = (cellmodel.activeSurvey.bwAnswers.count > 0) ? "incomplete" : "new";
-        backgroundColor = UIColor.clearColor();
+        backgroundColor = UIColor.clear;
         //selectionStyle = UITableViewCellSelectionStyle.None;
         let bgColorView = UIView()
         bgColorView.backgroundColor = AppColors.highlightColor
         selectedBackgroundView = bgColorView
-        selected = false;
+        isSelected = false;
     }
 }

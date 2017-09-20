@@ -17,14 +17,14 @@ class ChangePasswordViewController: FormViewController {
     let autoValidation = false;
     let db = Recline.shared;
     var isForgotPassword = false;
-    var finished: ((changed: Bool) -> Void)?;
+    var finished: ((_ changed: Bool) -> Void)?;
 
     override func viewDidLoad() {
         //self.view = GradientView()
         super.viewDidLoad()
 
         if (isForgotPassword) {
-            tableView?.backgroundColor = UIColor.whiteColor()
+            tableView?.backgroundColor = UIColor.white
         }
         //tableView?.backgroundColor = UIColor.clearColor()
 
@@ -32,10 +32,10 @@ class ChangePasswordViewController: FormViewController {
 
         form +++ Section(){ section in
             if (isForgotPassword) {
-                var header = HeaderFooterView<ForgotPasswordHeaderView>(.NibFile(name: "ForgotPasswordHeaderView", bundle: nil))
+                var header = HeaderFooterView<ForgotPasswordHeaderView>(.nibFile(name: "ForgotPasswordHeaderView", bundle: nil))
                 header.onSetupView = { headerView, _ in
                     headerView.patientId.text = StudyManager.sharedInstance.currentStudy?.patientId ?? ""
-                    headerView.callButton.addTarget(self, action: #selector(ChangePasswordViewController.callAssistant(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+                    headerView.callButton.addTarget(self, action: #selector(ChangePasswordViewController.callAssistant(_:)), for: UIControlEvents.touchUpInside)
 
                 }
                 section.header = header
@@ -45,7 +45,7 @@ class ChangePasswordViewController: FormViewController {
             }
             <<< SVPasswordRow("currentPassword") {
                 $0.title = isForgotPassword ? "Temporary Password:" : "Current Password:"
-                let placeholder: String = String($0.title!.lowercaseString.characters.dropLast())
+                let placeholder: String = String($0.title!.lowercased().characters.dropLast())
                 $0.placeholder = placeholder
                 $0.rules = [RequiredRule()]
                 $0.autoValidation = autoValidation
@@ -70,36 +70,36 @@ class ChangePasswordViewController: FormViewController {
                     if (self.form.validateAll()) {
                         PKHUD.sharedHUD.dimsBackground = true;
                         PKHUD.sharedHUD.userInteractionOnUnderlyingViewsEnabled = false;
-                        HUD.show(.Progress);
+                        HUD.show(.progress);
                         let formValues = self.form.values();
                         let newPassword: String? = formValues["password"] as! String?;
                         let currentPassword: String? = formValues["currentPassword"] as! String?;
-                        if let newPassword = newPassword, currentPassword = currentPassword {
+                        if let newPassword = newPassword, let currentPassword = currentPassword {
                             let changePasswordRequest = ChangePasswordRequest(newPassword: newPassword);
                             ApiManager.sharedInstance.makePostRequest(changePasswordRequest, password: currentPassword).then {
                                 (body, code) -> Void in
                                 log.info("Password changed");
                                 PersistentPasswordManager.sharedInstance.storePassword(newPassword);
-                                HUD.flash(.Success, delay: 1);
+                                HUD.flash(.success, delay: 1);
                                 if let finished = self.finished {
-                                    finished(changed: true);
+                                    finished(true);
                                 } else {
-                                    self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil);
+                                    self.presentingViewController?.dismiss(animated: true, completion: nil);
                                 }
-                            }.error { error -> Void in
+                            }.catch { error -> Void in
                                     log.info("error received from change password: \(error)");
                                     let delay = 2.0;
                                     var err: HUDContentType;
                                     switch error {
-                                    case ApiErrors.FailedStatus(let code):
+                                    case ApiErrors.failedStatus(let code):
                                         switch code {
                                         case 403, 401:
-                                            err = .LabeledError(title: "Failed", subtitle: "Incorrect Password");
+                                            err = .labeledError(title: "Failed", subtitle: "Incorrect Password");
                                         default:
-                                            err = .LabeledError(title: "Failed", subtitle: "Communication error");
+                                            err = .labeledError(title: "Failed", subtitle: "Communication error");
                                         }
                                     default:
-                                        err = .LabeledError(title: "Failed", subtitle: "Communication error");
+                                        err = .labeledError(title: "Failed", subtitle: "Communication error");
                                     }
                                     HUD.flash(err, delay: delay)
                             }
@@ -112,13 +112,13 @@ class ChangePasswordViewController: FormViewController {
                 $0.title = "Cancel";
                 }.onCellSelection { [unowned self] cell, row in
                     if let finished = self.finished {
-                        finished(changed: false);
+                        finished(false);
                     } else {
-                        self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil);
+                        self.presentingViewController?.dismiss(animated: true, completion: nil);
                     }
         }
-        let passwordRow: SVPasswordRow? = form.rowByTag("password");
-        let confirmRow: SVPasswordRow? = form.rowByTag("confirmPassword");
+        let passwordRow: SVPasswordRow? = form.rowBy(tag: "password");
+        let confirmRow: SVPasswordRow? = form.rowBy(tag: "confirmPassword");
         confirmRow!.rules = [ConfirmationRule(confirmField: passwordRow!.cell.textField)]
 
 
@@ -130,7 +130,7 @@ class ChangePasswordViewController: FormViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    func callAssistant(sender:UIButton!) {
+    func callAssistant(_ sender:UIButton!) {
         confirmAndCallClinician(self, callAssistant: true)
     }
     

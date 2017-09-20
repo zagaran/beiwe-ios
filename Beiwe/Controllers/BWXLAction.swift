@@ -23,7 +23,7 @@
 
 import XLActionController
 
-public class BWXLCell: ActionCell {
+open class BWXLCell: ActionCell {
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
@@ -34,19 +34,19 @@ public class BWXLCell: ActionCell {
         super.init(coder: aDecoder)
     }
     
-    public override func awakeFromNib() {
+    open override func awakeFromNib() {
         super.awakeFromNib()
         initialize()
     }
     
     func initialize() {
         //backgroundColor = .clearColor()
-        backgroundColor = AppColors.Beiwe2.colorWithAlphaComponent(0.8)
+        backgroundColor = AppColors.Beiwe2.withAlphaComponent(0.8)
         let backgroundView = UIView()
-        backgroundView.backgroundColor = UIColor.clearColor() // UIColor.whiteColor().colorWithAlphaComponent(0.3)
+        backgroundView.backgroundColor = UIColor.clear // UIColor.whiteColor().colorWithAlphaComponent(0.3)
         selectedBackgroundView = backgroundView
-        actionTitleLabel?.textColor = .whiteColor()
-        actionTitleLabel?.textAlignment = .Left
+        actionTitleLabel?.textColor = .white
+        actionTitleLabel?.textAlignment = .left
         
     }
 }
@@ -64,30 +64,30 @@ public struct BWXLHeaderData {
     }
 }
 
-public class BWXLHeaderView: UICollectionReusableView {
+open class BWXLHeaderView: UICollectionReusableView {
     
-    public lazy var imageView: UIImageView = {
-        let imageView = UIImageView(frame: CGRectZero)
+    open lazy var imageView: UIImageView = {
+        let imageView = UIImageView(frame: CGRect.zero)
         imageView.image = UIImage(named: "sp-header-icon")
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
-    public lazy var title: UILabel = {
-        let title = UILabel(frame: CGRectZero)
+    open lazy var title: UILabel = {
+        let title = UILabel(frame: CGRect.zero)
         title.font = UIFont(name: "HelveticaNeue-Bold", size: 18)
         title.text = "The Fast And ... The Furious Soundtrack Collection"
-        title.textColor = UIColor.whiteColor()
+        title.textColor = UIColor.white
         title.translatesAutoresizingMaskIntoConstraints = false
         title.sizeToFit()
         return title
     }()
     
-    public lazy var artist: UILabel = {
-        let discArtist = UILabel(frame: CGRectZero)
+    open lazy var artist: UILabel = {
+        let discArtist = UILabel(frame: CGRect.zero)
         discArtist.font = UIFont(name: "HelveticaNeue", size: 16)
         discArtist.text = "Various..."
-        discArtist.textColor = UIColor.whiteColor().colorWithAlphaComponent(0.8)
+        discArtist.textColor = UIColor.white.withAlphaComponent(0.8)
         discArtist.translatesAutoresizingMaskIntoConstraints = false
         discArtist.sizeToFit()
         return discArtist
@@ -102,20 +102,20 @@ public class BWXLHeaderView: UICollectionReusableView {
         super.init(coder: aDecoder)
     }
     
-    public override func awakeFromNib() {
+    open override func awakeFromNib() {
         super.awakeFromNib()
         initialize()
     }
     
     func initialize() {
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = .clearColor()
+        backgroundColor = .clear
         addSubview(imageView)
         addSubview(title)
         addSubview(artist)
         let separator: UIView = {
-            let separator = UIView(frame: CGRectZero)
-            separator.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.3)
+            let separator = UIView(frame: CGRect.zero)
+            separator.backgroundColor = UIColor.white.withAlphaComponent(0.3)
             separator.translatesAutoresizingMaskIntoConstraints = false
             return separator
         }()
@@ -125,40 +125,40 @@ public class BWXLHeaderView: UICollectionReusableView {
         let metrics = [ "icow": 54, "icoh": 54 ]
         let options = NSLayoutFormatOptions()
         
-        addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-15-[ico(icow)]-10-[title]-15-|", options: options, metrics: metrics, views: views))
-        addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[separator]|", options: options, metrics: metrics, views: views))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[ico(icow)]-10-[title]-15-|", options: options, metrics: metrics, views: views))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[separator]|", options: options, metrics: metrics, views: views))
         
-        addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-10-[ico(icoh)]", options: options, metrics: metrics, views: views))
-        addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-18-[title][artist]", options: .AlignAllLeft, metrics: metrics, views: views))
-        addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[separator(1)]|", options: options, metrics: metrics, views: views))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[ico(icoh)]", options: options, metrics: metrics, views: views))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-18-[title][artist]", options: .alignAllLeft, metrics: metrics, views: views))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[separator(1)]|", options: options, metrics: metrics, views: views))
     }
 }
 
-public class BWXLActionController: ActionController<BWXLCell, ActionData, BWXLHeaderView, BWXLHeaderData, UICollectionReusableView, Void> {
+open class BWXLActionController: ActionController<BWXLCell, ActionData, BWXLHeaderView, BWXLHeaderData, UICollectionReusableView, Void> {
     
-    private lazy var blurView: UIVisualEffectView = {
-        let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .Dark))
-        blurView.autoresizingMask = UIViewAutoresizing.FlexibleHeight.union(.FlexibleWidth)
+    fileprivate lazy var blurView: UIVisualEffectView = {
+        let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
+        blurView.autoresizingMask = UIViewAutoresizing.flexibleHeight.union(.flexibleWidth)
         return blurView
     }()
     
-    public override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
         //backgroundView.addSubview(blurView)
         
         cancelView?.frame.origin.y = view.bounds.size.height // Starts hidden below screen
-        cancelView?.layer.shadowColor = UIColor.blackColor().CGColor
-        cancelView?.layer.shadowOffset = CGSizeMake(0, -4)
+        cancelView?.layer.shadowColor = UIColor.black.cgColor
+        cancelView?.layer.shadowOffset = CGSize(width: 0, height: -4)
         cancelView?.layer.shadowRadius = 2
         cancelView?.layer.shadowOpacity = 0.8
     }
     
-    public override func viewWillAppear(animated: Bool) {
+    open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         blurView.frame = backgroundView.bounds
     }
     
-    public override init(nibName nibNameOrNil: String? = nil, bundle nibBundleOrNil: NSBundle? = nil) {
+    public override init(nibName nibNameOrNil: String? = nil, bundle nibBundleOrNil: Bundle? = nil) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         settings.behavior.bounces = true
         settings.behavior.scrollEnabled = true
@@ -166,12 +166,12 @@ public class BWXLActionController: ActionController<BWXLCell, ActionData, BWXLHe
         settings.animation.scale = nil
         settings.animation.present.springVelocity = 0.0
         
-        cellSpec = .NibFile(nibName: "BWXLCell", bundle: NSBundle(forClass: BWXLCell.self), height: { _ in 60 })
-        headerSpec = .CellClass( height: { _ in 84 })
+        cellSpec = .nibFile(nibName: "BWXLCell", bundle: Bundle(for: BWXLCell.self), height: { _ in 60 })
+        headerSpec = .cellClass( height: { _ in 84 })
         
         onConfigureCellForAction = { [weak self] cell, action, indexPath in
             cell.setup(action.data?.title, detail: action.data?.subtitle, image: action.data?.image)
-            cell.separatorView?.hidden = indexPath.item == (self?.collectionView.numberOfItemsInSection(indexPath.section))! - 1
+            cell.separatorView?.isHidden = indexPath.item == (self?.collectionView.numberOfItems(inSection: indexPath.section))! - 1
             cell.alpha = action.enabled ? 1.0 : 0.5
             //cell.actionTitleLabel?.textColor = action.style == .Destructive ? AppColors.Beiwe5 : UIColor.whiteColor();
         }
@@ -182,12 +182,16 @@ public class BWXLActionController: ActionController<BWXLCell, ActionData, BWXLHe
         }
     }
     
-    public override func performCustomDismissingAnimation(presentedView: UIView, presentingView: UIView) {
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    open override func performCustomDismissingAnimation(_ presentedView: UIView, presentingView: UIView) {
         super.performCustomDismissingAnimation(presentedView, presentingView: presentingView)
         cancelView?.frame.origin.y = view.bounds.size.height + 10
     }
     
-    public override func onWillPresentView() {
+    open override func onWillPresentView() {
         cancelView?.frame.origin.y = view.bounds.size.height
     }
 }

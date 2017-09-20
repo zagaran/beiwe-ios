@@ -11,12 +11,12 @@ import PromiseKit
 import ObjectMapper
 
 class ReclineObject : Mappable {
-    private var _id: String?
+    fileprivate var _id: String?
 
     init() {
     }
 
-    required init?(_ map: Map) {
+    required init?(map: Map) {
     }
 
     // Mappable
@@ -31,7 +31,7 @@ struct ReclineMetadata : Mappable {
     init(type: String) {
         self.type = type;
     }
-    init?(_ map: Map) {
+    init?(map: Map) {
 
     }
 
@@ -39,12 +39,12 @@ struct ReclineMetadata : Mappable {
         type        <- map["type"];
     }
 }
-enum ReclineErrors: ErrorType {
-    case DatabaseNotOpen
+enum ReclineErrors: Error {
+    case databaseNotOpen
 }
 class Recline {
     static let kReclineMetadataKey = "reclineMetadata";
-    static let queue = dispatch_queue_create("com.rocketfarm.beiwe.recline.queue", nil)
+    static let queue = DispatchQueue(label: "com.rocketfarm.beiwe.recline.queue", attributes: [])
     static let shared = Recline();
     var manager: CBLManager!;
     var db: CBLDatabase?;
@@ -53,12 +53,12 @@ class Recline {
     init() {
     }
 
-    func _open(dbName: String = "default") -> Promise<BooleanType> {
+    func _open(_ dbName: String = "default") -> Promise<Bool> {
         return Promise { resolve, reject in
             self.db = try manager.databaseNamed(dbName);
             self.typesView = self.db!.viewNamed("reclineType")
             typesView!.setMapBlock({ (doc, emit) in
-                if let reclineMeta = Mapper<ReclineMetadata>().map(doc[Recline.kReclineMetadataKey]) {
+                if let reclineMeta = Mapper<ReclineMetadata>().map(JSONObject: doc[Recline.kReclineMetadataKey]) {
                     if let type = reclineMeta.type {
                         emit(type, Mapper<ReclineMetadata>().toJSON(reclineMeta));
                     }
@@ -69,12 +69,12 @@ class Recline {
         }
     }
 
-    func open(dbName: String = "default") -> Promise<BooleanType> {
+    func open(_ dbName: String = "default") -> Promise<Bool> {
         return Promise().then(on: Recline.queue) {
             if (self.manager == nil) {
-                let cbloptions = CBLManagerOptions(readOnly: false, fileProtection: NSDataWritingOptions.DataWritingFileProtectionNone)
-                let poptions=UnsafeMutablePointer<CBLManagerOptions>.alloc(1)
-                poptions.initialize(cbloptions)
+                let cbloptions = CBLManagerOptions(readOnly: false, fileProtection: NSData.WritingOptions.noFileProtection)
+                let poptions=UnsafeMutablePointer<CBLManagerOptions>.allocate(capacity: 1)
+                poptions.initialize(to: cbloptions)
                 try self.manager = CBLManager(directory: CBLManager.defaultDirectory(), options: poptions)
                 self.manager.dispatchQueue = Recline.queue
             }
@@ -83,21 +83,21 @@ class Recline {
         }
     }
 
-    func _save<T: ReclineObject>(obj: T) -> Promise<T> {
+    func _save<T: ReclineObject>(_ obj: T) -> Promise<T> {
         return Promise { resolve, reject in
             guard let db = db else {
-                return reject(ReclineErrors.DatabaseNotOpen);
+                return reject(ReclineErrors.databaseNotOpen);
             }
 
             var doc: CBLDocument?
             if let _id = obj._id {
-                doc = db.documentWithID(_id)
+                doc = db.document(withID: _id)
             } else {
                 doc = db.createDocument()
             }
 
             var newProps = Mapper<T>().toJSON(obj);
-            let reclineMeta = ReclineMetadata(type: String(obj.dynamicType));
+            let reclineMeta = ReclineMetadata(type: String(describing: type(of: obj)));
             newProps[Recline.kReclineMetadataKey] = Mapper<ReclineMetadata>().toJSON(reclineMeta);
             newProps["_id"] = doc?.properties?["_id"]
             newProps["_rev"] = doc?.properties?["_rev"]
@@ -109,21 +109,21 @@ class Recline {
 
     }
 
-    func save<T: ReclineObject>(obj: T) -> Promise<T> {
+    func save<T: ReclineObject>(_ obj: T) -> Promise<T> {
         return Promise().then(on: Recline.queue) {
             return self._save(obj)
         }
     }
 
 
-    func _load<T: ReclineObject>(docId: String) -> Promise<T?> {
+    func _load<T: ReclineObject>(_ docId: String) -> Promise<T?> {
         return Promise { resolve, reject in
             guard let db = db else {
-                return reject(ReclineErrors.DatabaseNotOpen);
+                return reject(ReclineErrors.databaseNotOpen);
             }
-            let doc: CBLDocument? = db.documentWithID(docId);
+            let doc: CBLDocument? = db.document(withID: docId);
             if let doc = doc {
-                if let newObj = Mapper<T>().map(doc.properties)  {
+                if let newObj = Mapper<T>().map(JSONObject: doc.properties)  {
                     newObj._id = doc.properties?["_id"] as? String
                     return resolve(newObj);
                 }
@@ -132,7 +132,7 @@ class Recline {
         }
     }
 
-    func load<T: ReclineObject>(docId: String) -> Promise<T?> {
+    func load<T: ReclineObject>(_ docId: String) -> Promise<T?> {
         return Promise().then(on: Recline.queue) {
             self._load(docId);
         }
@@ -142,7 +142,7 @@ class Recline {
     func _queryAll<T: ReclineObject>() -> Promise<[T]> {
         return Promise { resolve, reject in
             guard let typesView = typesView else {
-                return reject(ReclineErrors.DatabaseNotOpen);
+                return reject(ReclineErrors.databaseNotOpen);
             }
 
             let query = typesView.createQuery();
@@ -153,12 +153,13 @@ class Recline {
                     promises.append(load(docId))
                 }
             }
-            return when(promises).then(on: Recline.queue)  { results -> Void in
+            when(fulfilled: promises).then(on: Recline.queue)  { results -> Void in
                 //resolve([]);
                 resolve(results.filter { $0 != nil}.map { $0! }  );
-                }.error { err in
+                }.catch { err in
                     reject(err)
                 }
+            
         }
 
     }
@@ -170,11 +171,11 @@ class Recline {
     }
 
 
-    func _purge<T: ReclineObject>(obj: T) -> Promise<Bool> {
+    func _purge<T: ReclineObject>(_ obj: T) -> Promise<Bool> {
         return Promise { resolve, reject in
 
             if let _id = obj._id {
-                try db?.documentWithID(_id)?.purgeDocument()
+                try db?.document(withID: _id)?.purgeDocument()
                 return resolve(true);
             } else {
                 return resolve(true);
@@ -184,7 +185,7 @@ class Recline {
         
     }
 
-    func purge<T: ReclineObject>(obj: T) -> Promise<Bool> {
+    func purge<T: ReclineObject>(_ obj: T) -> Promise<Bool> {
         return Promise().then(on: Recline.queue) {
             return self._purge(obj)
         }

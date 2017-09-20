@@ -17,35 +17,35 @@ class PowerStateManager : DataServiceProtocol {
     var store: DataStorage?;
     var listeners: [Listener] = [];
 
-    @objc func batteryStateDidChange(notification: NSNotification){
+    @objc func batteryStateDidChange(_ notification: Notification){
         // The stage did change: plugged, unplugged, full charge...
         var data: [String] = [ ];
-        data.append(String(Int64(NSDate().timeIntervalSince1970 * 1000)));
+        data.append(String(Int64(Date().timeIntervalSince1970 * 1000)));
         var state: String;
-        switch(UIDevice.currentDevice().batteryState) {
-        case .Charging:
+        switch(UIDevice.current.batteryState) {
+        case .charging:
             state = "Charging";
-        case .Full:
+        case .full:
             state = "Full";
-        case .Unplugged:
+        case .unplugged:
             state = "Unplugged";
-        case .Unknown:
+        case .unknown:
             state = "PowerUnknown";
         }
         data.append(state);
-        data.append(String(UIDevice.currentDevice().batteryLevel));
+        data.append(String(UIDevice.current.batteryLevel));
 
         self.store?.store(data);
         self.store?.flush();
     }
 
-    func didLockUnlock(isLocked: Bool) {
+    func didLockUnlock(_ isLocked: Bool) {
         log.info("Lock state data changed: \(isLocked)");
         var data: [String] = [ ];
-        data.append(String(Int64(NSDate().timeIntervalSince1970 * 1000)));
+        data.append(String(Int64(Date().timeIntervalSince1970 * 1000)));
         let state: String = isLocked ? "Locked" : "Unlocked";
         data.append(state);
-        data.append(String(UIDevice.currentDevice().batteryLevel));
+        data.append(String(UIDevice.current.batteryLevel));
 
         self.store?.store(data);
         self.store?.flush();
@@ -59,18 +59,18 @@ class PowerStateManager : DataServiceProtocol {
 
     func startCollecting() {
         log.info("Turning \(storeType) collection on");
-        UIDevice.currentDevice().batteryMonitoringEnabled = true;
+        UIDevice.current.isBatteryMonitoringEnabled = true;
         listeners += AppDelegate.sharedInstance().lockEvent.on { [weak self] locked in
             self?.didLockUnlock(locked);
         }
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.batteryStateDidChange), name: UIDeviceBatteryStateDidChangeNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.batteryStateDidChange), name: UIDeviceBatteryLevelDidChangeNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.batteryStateDidChange), name: NSNotification.Name.UIDeviceBatteryStateDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.batteryStateDidChange), name: NSNotification.Name.UIDeviceBatteryLevelDidChange, object: nil)
 
     }
     func pauseCollecting() {
         log.info("Pausing \(storeType) collection");
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIDeviceBatteryStateDidChangeNotification, object:nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIDeviceBatteryLevelDidChangeNotification, object:nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIDeviceBatteryStateDidChange, object:nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIDeviceBatteryLevelDidChange, object:nil)
         listeners = [ ];
         store!.flush();
     }

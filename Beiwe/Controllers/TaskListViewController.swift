@@ -14,7 +14,7 @@ class TaskListViewController: FormViewController {
 
     let surveySelected = Event<String>();
     let pendingSection =  Section("Pending Study Tasks");
-    let dateFormatter = NSDateFormatter();
+    let dateFormatter = DateFormatter();
     var listeners: [Listener] = [];
 
     override func viewDidLoad() {
@@ -37,12 +37,12 @@ class TaskListViewController: FormViewController {
         pendingSection.removeAll();
 
         if let activeSurveys = StudyManager.sharedInstance.currentStudy?.activeSurveys {
-            let sortedSurveys = activeSurveys.sort { (s1, s2) -> Bool in
+            let sortedSurveys = activeSurveys.sorted { (s1, s2) -> Bool in
                 return s1.1.received > s2.1.received;
             }
 
             for (id,survey) in sortedSurveys {
-                if let surveyType = survey.survey?.surveyType where !survey.isComplete {
+                if let surveyType = survey.survey?.surveyType, !survey.isComplete {
                     cnt = cnt + 1;
                     var title: String;
                     switch(surveyType) {
@@ -51,8 +51,8 @@ class TaskListViewController: FormViewController {
                     case .AudioSurvey:
                         title = "Audio Quest."
                     }
-                    let dt = NSDate(timeIntervalSince1970: survey.received);
-                    let sdt = dateFormatter.stringFromDate(dt);
+                    let dt = Date(timeIntervalSince1970: survey.received);
+                    let sdt = dateFormatter.string(from: dt);
                     title = title + " recvd. " + sdt
                     pendingSection    <<< ButtonRow(id) {
                         $0.title = title

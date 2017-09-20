@@ -16,13 +16,13 @@ class StudyManager {
     static let sharedInstance = StudyManager();
 
     let MAX_UPLOAD_DATA: Int64 = 250 * (1024 * 1024)
-    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-    let calendar = NSCalendar.currentCalendar();
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    let calendar = Calendar.current;
 
     var currentStudy: Study?;
     var gpsManager: GPSManager?;
     var isUploading = false;
-    let surveysUpdatedEvent: Signal = Signal();
+    let surveysUpdatedEvent: Event<Void> = Event();
     var isStudyLoaded: Bool {
         return currentStudy != nil;
     }
@@ -41,13 +41,13 @@ class StudyManager {
                 self.currentStudy = studies[0];
                 AppDelegate.sharedInstance().setDebuggingUser(self.currentStudy?.patientId ?? "unknown")
             }
-            return Promise(true);
+            return Promise(value: true);
         }
 
     }
 
     func setApiCredentials() {
-        guard let currentStudy = currentStudy where gpsManager == nil else {
+        guard let currentStudy = currentStudy, gpsManager == nil else {
             return;
         }
         /* Setup APIManager's security */
@@ -73,7 +73,7 @@ class StudyManager {
         setApiCredentials()
         DataStorageManager.sharedInstance.setCurrentStudy(self.currentStudy!);
         self.prepareDataServices();
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.reachabilityChanged), name: ReachabilityChangedNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.reachabilityChanged), name: ReachabilityChangedNotification, object: nil)
 
     }
 
@@ -122,11 +122,11 @@ class StudyManager {
     }
 
     func setConsented() -> Promise<Bool> {
-        guard let study = currentStudy, studySettings = study.studySettings else {
-            return Promise(false);
+        guard let study = currentStudy, let studySettings = study.studySettings else {
+            return Promise(value: false);
         }
         setApiCredentials()
-        let currentTime: Int64 = Int64(NSDate().timeIntervalSince1970);
+        let currentTime: Int64 = Int64(Date().timeIntervalSince1970);
         study.nextUploadCheck = currentTime + studySettings.uploadDataFileFrequencySeconds;
         study.nextSurveyCheck = currentTime + studySettings.checkForNewSurveysFreqSeconds;
 
@@ -142,7 +142,7 @@ class StudyManager {
         return firstly { _ -> Promise<[Study]> in
             return Recline.shared.queryAll()
             }.then { studies -> Promise<Bool> in
-                var promise = Promise<Bool>(true)
+                var promise = Promise<Bool>(value: true)
                 for study in studies {
                     promise = promise.then { _ in
                         return Recline.shared.purge(study)
@@ -160,7 +160,7 @@ class StudyManager {
         }
         */
 
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: ReachabilityChangedNotification, object:nil);
+        NotificationCenter.default.removeObserver(self, name: ReachabilityChangedNotification, object:nil);
 
         var promise: Promise<Void>
         if (gpsManager != nil) {
@@ -170,43 +170,43 @@ class StudyManager {
         }
 
 
-        UIApplication.sharedApplication().cancelAllLocalNotifications()
+        UIApplication.shared.cancelAllLocalNotifications()
         return promise.then {
             self.gpsManager = nil;
                 return self.purgeStudies().then { _ -> Promise<Bool> in
-                let fileManager = NSFileManager.defaultManager()
-                var enumerator = fileManager.enumeratorAtPath(DataStorageManager.uploadDataDirectory().path!);
+                let fileManager = FileManager.default
+                var enumerator = fileManager.enumerator(atPath: DataStorageManager.uploadDataDirectory().path);
 
                 if let enumerator = enumerator {
                     while let filename = enumerator.nextObject() as? String {
                         if (true /*filename.hasSuffix(DataStorageManager.dataFileSuffix)*/) {
-                            let filePath = DataStorageManager.uploadDataDirectory().URLByAppendingPathComponent(filename);
-                            try fileManager.removeItemAtURL(filePath!);
+                            let filePath = DataStorageManager.uploadDataDirectory().appendingPathComponent(filename);
+                            try fileManager.removeItem(at: filePath);
                         }
                     }
                 }
 
-                enumerator = fileManager.enumeratorAtPath(DataStorageManager.currentDataDirectory().path!);
+                enumerator = fileManager.enumerator(atPath: DataStorageManager.currentDataDirectory().path);
 
                 if let enumerator = enumerator {
                     while let filename = enumerator.nextObject() as? String {
                         if (true /* filename.hasSuffix(DataStorageManager.dataFileSuffix) */) {
-                            let filePath = DataStorageManager.currentDataDirectory().URLByAppendingPathComponent(filename);
-                            try fileManager.removeItemAtURL(filePath!);
+                            let filePath = DataStorageManager.currentDataDirectory().appendingPathComponent(filename);
+                            try fileManager.removeItem(at: filePath);
                         }
                     }
                 }
                 
                 self.currentStudy = nil;
                 
-                return Promise(true);
+                return Promise(value: true);
                 
             }
         }
 
     }
 
-    @objc func reachabilityChanged(notification: NSNotification){
+    @objc func reachabilityChanged(_ notification: Notification){
         Promise().then() { () -> Void in
             log.info("Reachability changed, running periodic.");
             self.periodicNetworkTransfers();
@@ -214,14 +214,14 @@ class StudyManager {
     }
 
     func periodicNetworkTransfers() {
-        guard let currentStudy = currentStudy, studySettings = currentStudy.studySettings else {
+        guard let currentStudy = currentStudy, let studySettings = currentStudy.studySettings else {
             return;
         }
 
-        let reachable = studySettings.uploadOverCellular ? self.appDelegate.reachability!.isReachable() : self.appDelegate.reachability!.isReachableViaWiFi()
+        let reachable = studySettings.uploadOverCellular ? self.appDelegate.reachability!.isReachable : self.appDelegate.reachability!.isReachableViaWiFi
 
         // Good time to compact the database
-        let currentTime: Int64 = Int64(NSDate().timeIntervalSince1970);
+        let currentTime: Int64 = Int64(Date().timeIntervalSince1970);
         let nextSurvey = currentStudy.nextSurveyCheck ?? 0;
         let nextUpload = currentStudy.nextUploadCheck ?? 0;
         if (currentTime > nextSurvey || (reachable && currentStudy.missedSurveyCheck)) {
@@ -231,7 +231,7 @@ class StudyManager {
                 if (reachable) {
                     self.checkSurveys();
                 }
-                }.error { _ -> Void in
+                }.catch { _ -> Void in
                     log.error("Error checking for surveys");
             }
         }
@@ -240,7 +240,7 @@ class StudyManager {
             currentStudy.missedUploadCheck = !reachable
             self.setNextUploadTime().then { _ -> Void in
                 self.upload(!reachable);
-                }.error { _ -> Void in
+                }.catch { _ -> Void in
                     log.error("Error checking for uploads")
             }
         }
@@ -248,7 +248,7 @@ class StudyManager {
 
     }
 
-    func cleanupSurvey(activeSurvey: ActiveSurvey) {
+    func cleanupSurvey(_ activeSurvey: ActiveSurvey) {
         removeNotificationForSurvey(activeSurvey);
         if let surveyId = activeSurvey.survey?.surveyId {
             let timingsName = TrackingSurveyPresenter.timingDataType + "_" + surveyId;
@@ -256,8 +256,8 @@ class StudyManager {
         }
     }
 
-    func submitSurvey(activeSurvey: ActiveSurvey, surveyPresenter: TrackingSurveyPresenter? = nil) {
-        if let survey = activeSurvey.survey, surveyId = survey.surveyId, surveyType = survey.surveyType where surveyType == .TrackingSurvey {
+    func submitSurvey(_ activeSurvey: ActiveSurvey, surveyPresenter: TrackingSurveyPresenter? = nil) {
+        if let survey = activeSurvey.survey, let surveyId = survey.surveyId, let surveyType = survey.surveyType, surveyType == .TrackingSurvey {
             var trackingSurvey: TrackingSurveyPresenter;
             if (surveyPresenter == nil) {
                 trackingSurvey = TrackingSurveyPresenter(surveyId: surveyId, activeSurvey: activeSurvey, survey: survey)
@@ -282,31 +282,31 @@ class StudyManager {
         cleanupSurvey(activeSurvey);
     }
 
-    func removeNotificationForSurvey(survey: ActiveSurvey) {
+    func removeNotificationForSurvey(_ survey: ActiveSurvey) {
         guard let notification = survey.notification else {
             return;
         }
 
         log.info("Cancelling notification: \(notification.alertBody), \(notification.userInfo)")
 
-        UIApplication.sharedApplication().cancelLocalNotification(notification);
+        UIApplication.shared.cancelLocalNotification(notification);
         survey.notification = nil;
     }
 
-    func updateActiveSurveys(forceSave: Bool = false) -> NSTimeInterval {
+    func updateActiveSurveys(_ forceSave: Bool = false) -> TimeInterval {
         log.info("Updating active surveys...")
-        let currentDate = NSDate();
+        let currentDate = Date();
         let currentTime = currentDate.timeIntervalSince1970;
-        let currentDay = calendar.component(.Weekday, fromDate: currentDate) - 1;
-        let nowDateComponents = calendar.components([NSCalendarUnit.Day, NSCalendarUnit.Year, NSCalendarUnit.Month, NSCalendarUnit.TimeZone], fromDate: currentDate);
+        let currentDay = (calendar as NSCalendar).component(.weekday, from: currentDate) - 1;
+        var nowDateComponents = (calendar as NSCalendar).components([NSCalendar.Unit.day, NSCalendar.Unit.year, NSCalendar.Unit.month, NSCalendar.Unit.timeZone], from: currentDate);
         nowDateComponents.hour = 0;
         nowDateComponents.minute = 0;
         nowDateComponents.second = 0;
 
-        var closestNextSurveyTime: NSTimeInterval = currentTime + (60.0*60.0*24.0*7);
+        var closestNextSurveyTime: TimeInterval = currentTime + (60.0*60.0*24.0*7);
 
-        guard let study = currentStudy, dayBegin = calendar.dateFromComponents(nowDateComponents)  else {
-            return NSDate().dateByAddingTimeInterval((15.0*60.0)).timeIntervalSince1970;
+        guard let study = currentStudy, let dayBegin = calendar.date(from: nowDateComponents)  else {
+            return Date().addingTimeInterval((15.0*60.0)).timeIntervalSince1970;
         }
 
 
@@ -329,10 +329,10 @@ class StudyManager {
             /* Find the next scheduled date that is >= now */
             outer: for day in 0..<7 {
                 let dayIdx = (day + currentDay) % 7;
-                let timings = survey.timings[dayIdx].sort()
+                let timings = survey.timings[dayIdx].sorted()
 
                 for dayTime in timings {
-                    let possibleNxt = dayBegin.dateByAddingTimeInterval((Double(day) * 24.0 * 60.0 * 60.0) + Double(dayTime)).timeIntervalSince1970;
+                    let possibleNxt = dayBegin.addingTimeInterval((Double(day) * 24.0 * 60.0 * 60.0) + Double(dayTime)).timeIntervalSince1970;
                     if (possibleNxt > currentTime ) {
                         next = possibleNxt;
                         break outer
@@ -351,7 +351,7 @@ class StudyManager {
                     /* Schedule it for the next upcoming time, or immediately if triggerOnFirstDownload is true */
                     study.activeSurveys[id]?.expires = survey.triggerOnFirstDownload ? currentTime : next;
                     study.activeSurveys[id]?.isComplete = true;
-                    log.info("Added survey \(id), expires: \(NSDate(timeIntervalSince1970: study.activeSurveys[id]!.expires))");
+                    log.info("Added survey \(id), expires: \(Date(timeIntervalSince1970: study.activeSurveys[id]!.expires))");
                     surveyDataModified = true;
                 }
                 if let activeSurvey = study.activeSurveys[id] {
@@ -397,7 +397,7 @@ class StudyManager {
                                 "survey_id": id
                             ];
                             log.info("Sending Survey notif: \(body), \(localNotif.userInfo)")
-                            UIApplication.sharedApplication().scheduleLocalNotification(localNotif);
+                            UIApplication.shared.scheduleLocalNotification(localNotif);
                             activeSurvey.notification = localNotif;
 
                         }
@@ -417,7 +417,7 @@ class StudyManager {
         for (id, activeSurvey) in study.activeSurveys {
             if (activeSurvey.isComplete && !allSurveyIds.contains(id)) {
                 cleanupSurvey(activeSurvey);
-                study.activeSurveys.removeValueForKey(id);
+                study.activeSurveys.removeValue(forKey: id);
                 surveyDataModified = true;
             } else if (!activeSurvey.isComplete) {
                 if (activeSurvey.expires > 0) {
@@ -437,11 +437,11 @@ class StudyManager {
             UIApplication.sharedApplication().scheduleLocalNotification(localNotif);
         }
         */
-        UIApplication.sharedApplication().applicationIconBadgeNumber = badgeCnt
+        UIApplication.shared.applicationIconBadgeNumber = badgeCnt
 
         if (surveyDataModified || forceSave ) {
             surveysUpdatedEvent.emit();
-            Recline.shared.save(study).error { _ in
+            Recline.shared.save(study).catch { _ in
                 log.error("Failed to save study after processing surveys");
             }
         }
@@ -453,8 +453,8 @@ class StudyManager {
     }
 
     func checkSurveys() -> Promise<Bool> {
-        guard let study = currentStudy, studySettings = study.studySettings else {
-            return Promise(false);
+        guard let study = currentStudy, let studySettings = study.studySettings else {
+            return Promise(value: false);
         }
         log.info("Checking for surveys...");
         return Recline.shared.save(study).then { _ -> Promise<([Survey], Int)> in
@@ -466,44 +466,44 @@ class StudyManager {
                 return Recline.shared.save(study).asVoid();
             }.then {
                 self.updateActiveSurveys();
-                return Promise(true);
+                return Promise(value: true);
             }.recover { _ -> Promise<Bool> in
-                return Promise(false);
+                return Promise(value: false);
         }
 
     }
 
     func setNextUploadTime() -> Promise<Bool> {
-        guard let study = currentStudy, studySettings = study.studySettings else {
-            return Promise(true);
+        guard let study = currentStudy, let studySettings = study.studySettings else {
+            return Promise(value: true);
         }
 
-        study.nextUploadCheck = Int64(NSDate().timeIntervalSince1970) +  studySettings.uploadDataFileFrequencySeconds;
+        study.nextUploadCheck = Int64(Date().timeIntervalSince1970) +  studySettings.uploadDataFileFrequencySeconds;
         return Recline.shared.save(study).then { _ -> Promise<Bool> in
-            return Promise(true);
+            return Promise(value: true);
         }
     }
 
     func setNextSurveyTime() -> Promise<Bool> {
-        guard let study = currentStudy, studySettings = study.studySettings else {
-            return Promise(true);
+        guard let study = currentStudy, let studySettings = study.studySettings else {
+            return Promise(value: true);
         }
 
-        study.nextSurveyCheck = Int64(NSDate().timeIntervalSince1970) + studySettings.checkForNewSurveysFreqSeconds
+        study.nextSurveyCheck = Int64(Date().timeIntervalSince1970) + studySettings.checkForNewSurveysFreqSeconds
         return Recline.shared.save(study).then { _ -> Promise<Bool> in
-            return Promise(true);
+            return Promise(value: true);
         }
 
     }
 
-    func parseFilename(filename: String) -> (type: String, timestamp: Int64, ext: String){
-        let url = NSURL(fileURLWithPath: filename)
+    func parseFilename(_ filename: String) -> (type: String, timestamp: Int64, ext: String){
+        let url = URL(fileURLWithPath: filename)
         let pathExtention = url.pathExtension
-        let pathPrefix = url.URLByDeletingPathExtension?.lastPathComponent
+        let pathPrefix = url.deletingPathExtension().lastPathComponent
 
         var type = ""
 
-        let pieces = pathPrefix!.characters.split("_")
+        let pieces = pathPrefix.characters.split(separator: "_")
         var timestamp: Int64 = 0
         if (pieces.count > 2) {
             type = String(pieces[1])
@@ -514,15 +514,15 @@ class StudyManager {
         return (type: type, timestamp: timestamp, ext: pathExtention ?? "")
     }
 
-    func purgeUploadData(fileList: [String:Int64], currentStorageUse: Int64) -> Promise<Void> {
+    func purgeUploadData(_ fileList: [String:Int64], currentStorageUse: Int64) -> Promise<Void> {
         var used = currentStorageUse
-        return Promise().then(on: dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-            log.error("EXCESSIVE STORAGE USED, used: \(currentStorageUse), WifiAvailable: \(self.appDelegate.reachability!.isReachableViaWiFi())")
+        return Promise().then(on: DispatchQueue.global(qos: .default)) {
+            log.error("EXCESSIVE STORAGE USED, used: \(currentStorageUse), WifiAvailable: \(self.appDelegate.reachability!.isReachableViaWiFi)")
             log.error("Last success: \(self.currentStudy?.lastUploadSuccess)")
             for (filename, len) in fileList {
                 log.error("file: \(filename), size: \(len)")
             }
-            let keys = fileList.keys.sort() { (a, b) in
+            let keys = fileList.keys.sorted() { (a, b) in
                 let fileA = self.parseFilename(a)
                 let fileB = self.parseFilename(b)
                 return fileA.timestamp < fileB.timestamp
@@ -534,10 +534,10 @@ class StudyManager {
                     log.info("Skipping deletion: \(file)")
                     continue
                 }
-                let filePath = DataStorageManager.uploadDataDirectory().URLByAppendingPathComponent(file);
+                let filePath = DataStorageManager.uploadDataDirectory().appendingPathComponent(file);
                 do {
                     log.warning("Removing file: \(filePath)")
-                    try NSFileManager.defaultManager().removeItemAtURL(filePath!);
+                    try FileManager.default.removeItem(at: filePath);
                     used = used - fileList[file]!
                 } catch {
                     log.error("Error removing file: \(filePath)")
@@ -556,10 +556,10 @@ class StudyManager {
     }
 
     func clearTempFiles() -> Promise<Void> {
-        return Promise().then(on: dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+        return Promise().then(on: DispatchQueue.global(qos: .default)) {
             do {
-                let alamoTmpDir = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent("com.alamofire.manager")!.URLByAppendingPathComponent("multipart.form.data")
-                try NSFileManager.defaultManager().removeItemAtURL(alamoTmpDir!)
+                let alamoTmpDir = NSURL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("com.alamofire.manager")!.appendingPathComponent("multipart.form.data")
+                try FileManager.default.removeItem(at: alamoTmpDir)
             } catch {
                 //log.error("Error removing tmp files: \(error)")
             }
@@ -567,7 +567,7 @@ class StudyManager {
         }
     }
 
-    func upload(processOnly: Bool) -> Promise<Void> {
+    func upload(_ processOnly: Bool) -> Promise<Void> {
         if (isUploading) {
             return Promise();
         }
@@ -579,28 +579,28 @@ class StudyManager {
         promiseChain = Recline.shared.compact().then { _ -> Promise<Bool> in
             return DataStorageManager.sharedInstance.prepareForUpload().then {
                 log.info("prepareForUpload finished")
-                return Promise(true)
+                return Promise(value: true)
             };
         }
 
         var numFiles = 0;
         var size: Int64 = 0
         var storageInUse: Int64 = 0
-        let q = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
+        let q = DispatchQueue.global(qos: .default)
 
         var filesToProcess: [String: Int64] = [:];
         return promiseChain.then(on: q) { (_: Bool) -> Promise<Bool> in
-            let fileManager = NSFileManager.defaultManager()
-            let enumerator = fileManager.enumeratorAtPath(DataStorageManager.uploadDataDirectory().path!)
-            var uploadChain = Promise<Bool>(true)
+            let fileManager = FileManager.default
+            let enumerator = fileManager.enumerator(atPath: DataStorageManager.uploadDataDirectory().path)
+            var uploadChain = Promise<Bool>(value: true)
             if let enumerator = enumerator {
                 while let filename = enumerator.nextObject() as? String {
                     if (DataStorageManager.sharedInstance.isUploadFile(filename)) {
-                        let filePath = DataStorageManager.uploadDataDirectory().URLByAppendingPathComponent(filename);
-                        let attr = try NSFileManager.defaultManager().attributesOfItemAtPath(filePath!.path!)
-                        let fileSize = attr[NSFileSize]!.longLongValue
+                        let filePath = DataStorageManager.uploadDataDirectory().appendingPathComponent(filename);
+                        let attr = try FileManager.default.attributesOfItem(atPath: filePath.path)
+                        let fileSize = (attr[FileAttributeKey.size]! as AnyObject).longLongValue
                         filesToProcess[filename] = fileSize
-                        size = size + fileSize
+                        size = size + fileSize!
                         //promises.append(promise);
                     }
                 }
@@ -608,24 +608,24 @@ class StudyManager {
             storageInUse = size
             if (!processOnly) {
                 for (filename, len) in filesToProcess {
-                    let filePath = DataStorageManager.uploadDataDirectory().URLByAppendingPathComponent(filename);
-                    let uploadRequest = UploadRequest(fileName: filename, filePath: filePath!.path!);
+                    let filePath = DataStorageManager.uploadDataDirectory().appendingPathComponent(filename);
+                    let uploadRequest = UploadRequest(fileName: filename, filePath: filePath.path);
                     uploadChain = uploadChain.then {_ in
                         log.info("Uploading: \(filename)")
-                        return ApiManager.sharedInstance.makeMultipartUploadRequest(uploadRequest, file: filePath!).then { _ -> Promise<Bool> in
+                        return ApiManager.sharedInstance.makeMultipartUploadRequest(uploadRequest, file: filePath).then { _ -> Promise<Bool> in
                             log.info("Finished uploading: \(filename), removing.");
                             numFiles = numFiles + 1
-                            try fileManager.removeItemAtURL(filePath!);
+                            try fileManager.removeItem(at: filePath);
                             storageInUse = storageInUse - len
-                            filesToProcess.removeValueForKey(filename)
-                            return Promise(true);
+                            filesToProcess.removeValue(forKey: filename)
+                            return Promise(value: true);
                         }
                     }
                 }
                 return uploadChain
             } else {
                 log.info("Skipping upload, processing only")
-                return Promise(true)
+                return Promise(value: true)
             }
         }.then { (results: Bool) -> Promise<Void> in
             log.info("OK uploading \(numFiles). \(results)");

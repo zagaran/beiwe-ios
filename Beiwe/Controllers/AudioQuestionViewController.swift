@@ -15,19 +15,19 @@ import PromiseKit
 class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDelegate {
 
     enum AudioState {
-        case Initial
-        case Recording
-        case Recorded
-        case Playing
+        case initial
+        case recording
+        case recorded
+        case playing
     }
     var activeSurvey: ActiveSurvey!
     var maxLen: Int = 60;
     var recordingSession: AVAudioSession!
     var recorder: AVAudioRecorder?
     var player: AVAudioPlayer?
-    var filename: NSURL?
-    var state: AudioState = .Initial
-    var timer: NSTimer?
+    var filename: URL?
+    var state: AudioState = .initial
+    var timer: Timer?
     var currentLength: Double = 0
     var suffix = ".mp4"
     let OUTPUT_CHUNK_SIZE = 128 * 1024
@@ -51,7 +51,7 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
         */
         promptLabel.text = prompt
 
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Trash, target: self, action:  #selector(cancelButton))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action:  #selector(cancelButton))
 
         reset()
 
@@ -61,7 +61,7 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
             try recordingSession.setCategory(AVAudioSessionCategoryPlayAndRecord)
             try recordingSession.setActive(true)
             recordingSession.requestRecordPermission() { [unowned self] (allowed: Bool) -> Void in
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     if !allowed {
                         self.fail()
                     }
@@ -78,7 +78,7 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
             activeSurvey.bwAnswers["A"] = "A"
             Recline.shared.save(study).then {_ in
                 log.info("Saved.");
-                }.error { e in
+                }.catch { e in
                     log.error("Error saving updated answers: \(e)");
             }
         }
@@ -89,7 +89,7 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
     func cleanupAndDismiss() {
         if let filename = filename {
             do {
-                try NSFileManager.defaultManager().removeItemAtURL(filename)
+                try FileManager.default.removeItem(at: filename)
             } catch { }
             self.filename = nil
         }
@@ -100,24 +100,24 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
         player = nil;
         recorder = nil
         StudyManager.sharedInstance.surveysUpdatedEvent.emit();
-        self.navigationController?.popViewControllerAnimated(true)
+        self.navigationController?.popViewController(animated: true)
     }
     func cancelButton() {
-        if (state != .Initial) {
-            let alertController = UIAlertController(title: "Abandon recording?", message: "", preferredStyle: .ActionSheet)
+        if (state != .initial) {
+            let alertController = UIAlertController(title: "Abandon recording?", message: "", preferredStyle: .actionSheet)
 
-            let leaveAction = UIAlertAction(title: "Abandon", style: .Destructive) { (action) in
-                dispatch_async(dispatch_get_main_queue()) {
+            let leaveAction = UIAlertAction(title: "Abandon", style: .destructive) { (action) in
+                DispatchQueue.main.async {
                     self.cleanupAndDismiss()
                 }
             }
             alertController.addAction(leaveAction)
-            let cancelAction = UIAlertAction(title: "Cancel", style: .Default) { (action) in
+            let cancelAction = UIAlertAction(title: "Cancel", style: .default) { (action) in
             }
             alertController.addAction(cancelAction)
 
 
-            self.presentViewController(alertController, animated: true) {
+            self.present(alertController, animated: true) {
             }
 
         } else {
@@ -126,16 +126,16 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
     }
 
     func fail() {
-        let alertController = UIAlertController(title: "Recording", message: "Unable to record.  You must allow access to the microphone to answer an audio question", preferredStyle: .Alert)
+        let alertController = UIAlertController(title: "Recording", message: "Unable to record.  You must allow access to the microphone to answer an audio question", preferredStyle: .alert)
 
-        let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
-            dispatch_async(dispatch_get_main_queue()) {
+        let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+            DispatchQueue.main.async {
                 self.cleanupAndDismiss()
             }
         }
         alertController.addAction(OKAction)
 
-        self.presentViewController(alertController, animated: true) {
+        self.present(alertController, animated: true) {
         }
     }
 
@@ -144,11 +144,11 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
     }
 
     func recordingTimer() {
-        if let recorder = recorder where recorder.currentTime > 0 {
+        if let recorder = recorder, recorder.currentTime > 0 {
             currentLength = round(recorder.currentTime * 10) / 10
             if (currentLength >= Double(maxLen)) {
                 currentLength = Double(maxLen)
-                if (recorder.recording) {
+                if (recorder.isRecording) {
                     resetTimer()
                     recorder.stop()
                 }
@@ -166,42 +166,42 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
         if (format == "compressed") {
             self.suffix = ".mp4"
             settings = [
-                AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
+                AVFormatIDKey: Int(kAudioFormatMPEG4AAC) as AnyObject,
                 //AVEncoderBitRateKey: bitrate,
-                AVEncoderBitRatePerChannelKey: bitrate,
-                AVSampleRateKey: Double(samplerate),
+                AVEncoderBitRatePerChannelKey: bitrate as AnyObject,
+                AVSampleRateKey: Double(samplerate) as AnyObject,
                 AVNumberOfChannelsKey: 1 as NSNumber,
-                AVEncoderAudioQualityKey: AVAudioQuality.High.rawValue
+                AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue as AnyObject
             ]
         } else if (format == "raw") {
             self.suffix = ".wav"
             settings = [
-                AVFormatIDKey: Int(kAudioFormatLinearPCM),
+                AVFormatIDKey: Int(kAudioFormatLinearPCM) as AnyObject,
                 //AVEncoderBitRateKey: bitrate * 1024,
-                AVSampleRateKey: Double(samplerate),
+                AVSampleRateKey: Double(samplerate) as AnyObject,
                 AVNumberOfChannelsKey: 1 as NSNumber,
-                AVEncoderAudioQualityKey: AVAudioQuality.High.rawValue
+                AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue as AnyObject
             ]
         } else {
             return fail()
         }
 
 
-        filename = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent(NSUUID().UUIDString + suffix)
+        filename = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(UUID().uuidString + suffix)
 
         do {
             // 5
             log.info("Beginning recording")
-            recorder = try AVAudioRecorder(URL: filename!, settings: settings)
+            recorder = try AVAudioRecorder(url: filename!, settings: settings)
             recorder?.delegate = self
             currentLength = 0;
-            state = .Recording
+            state = .recording
             updateLengthLabel()
-            currentLengthLabel.hidden = false
+            currentLengthLabel.isHidden = false
             recorder?.record()
             resetTimer()
             disableIdleTimer()
-            timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: #selector(recordingTimer), userInfo: nil, repeats: true)
+            timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(recordingTimer), userInfo: nil, repeats: true)
         } catch  let error as NSError{
             log.error("Err: \(error)")
             fail()
@@ -218,7 +218,7 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
 
     func playRecording() {
         if let player = player {
-            state = .Playing
+            state = .playing
             player.play()
             updateRecordButton()
         }
@@ -226,31 +226,31 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
 
     func stopPlaying() {
         if let player = player {
-            state = .Recorded
+            state = .recorded
             player.stop()
             player.currentTime = 0.0
             updateRecordButton()
         }
     }
 
-    @IBAction func recordCancelPressed(sender: AnyObject) {
+    @IBAction func recordCancelPressed(_ sender: AnyObject) {
         switch(state) {
-        case .Initial:
+        case .initial:
             startRecording()
-        case .Recording:
+        case .recording:
             stopRecording()
-        case .Recorded:
+        case .recorded:
             playRecording()
-        case .Playing:
+        case .playing:
             stopPlaying()
         }
     }
 
-    func writeSomeData(handle: NSFileHandle, encFile: EncryptedStorage) -> Promise<Void> {
-        return Promise().then(on: dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND , 0)) {
-            let data: NSData = handle.readDataOfLength(self.OUTPUT_CHUNK_SIZE)
-            if (data.length > 0) {
-                return encFile.write(data, writeLen: data.length).then {
+    func writeSomeData(_ handle: FileHandle, encFile: EncryptedStorage) -> Promise<Void> {
+        return Promise().then(on: DispatchQueue.global(qos: .background)) {
+            let data: Data = handle.readData(ofLength: self.OUTPUT_CHUNK_SIZE)
+            if (data.count > 0) {
+                return encFile.write(data as NSData, writeLen: data.count).then {
                     return self.writeSomeData(handle, encFile: encFile)
                 }
             }
@@ -262,11 +262,11 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
 
     func saveEncryptedAudio() -> Promise<Void> {
         if let study = StudyManager.sharedInstance.currentStudy {
-            var fileHandle: NSFileHandle
+            var fileHandle: FileHandle
             do {
-                fileHandle = try NSFileHandle(forReadingFromURL: filename!)
+                fileHandle = try FileHandle(forReadingFrom: filename!)
             } catch {
-                return Promise<Void>(error: BWErrors.IOError)
+                return Promise<Void>(error: BWErrors.ioError)
             }
             let surveyId = self.activeSurvey.survey?.surveyId;
             let name = "voiceRecording" + "_" + surveyId!;
@@ -277,7 +277,7 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
                 fileHandle.closeFile()
             }
         } else {
-            return Promise<Void>(error: BWErrors.IOError)
+            return Promise<Void>(error: BWErrors.ioError)
         }
         /*
         return Promise<Void> { fulfill, reject in
@@ -286,20 +286,20 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
         }
         */
     }
-    @IBAction func saveButtonPressed(sender: AnyObject) {
+    @IBAction func saveButtonPressed(_ sender: AnyObject) {
         PKHUD.sharedHUD.dimsBackground = true;
         PKHUD.sharedHUD.userInteractionOnUnderlyingViewsEnabled = false;
 
-        HUD.show(.LabeledProgress(title: "Saving", subtitle: ""))
+        HUD.show(.labeledProgress(title: "Saving", subtitle: ""))
 
-        return saveEncryptedAudio().then { _ -> Void in
+         saveEncryptedAudio().then { _ -> Void in
             self.activeSurvey.isComplete = true;
             StudyManager.sharedInstance.cleanupSurvey(self.activeSurvey)
             StudyManager.sharedInstance.updateActiveSurveys(true);
-            HUD.flash(.Success, delay: 0.5)
+            HUD.flash(.success, delay: 0.5)
             self.cleanupAndDismiss()
-        }.error { _ in
-            HUD.flash(.LabeledError(title: "Error Saving", subtitle: "Audio answer not sent"), delay: 2.0) { finished in
+        }.catch { _ in
+            HUD.flash(.labeledError(title: "Error Saving", subtitle: "Audio answer not sent"), delay: 2.0) { finished in
                 self.cleanupAndDismiss()
             }
         }
@@ -325,16 +325,16 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
         */
         var text: String
         switch(state) {
-        case .Initial:
+        case .initial:
             text = "Record"
-        case .Playing, .Recording:
+        case .playing, .recording:
             text = "Stop"
-        case .Recorded:
+        case .recorded:
             text = "Play"
         }
-        recordPlayButton.setTitle(text, forState: .Highlighted)
-        recordPlayButton.setTitle(text, forState: .Normal)
-        recordPlayButton.setTitle(text, forState: .Disabled)
+        recordPlayButton.setTitle(text, for: .highlighted)
+        recordPlayButton.setTitle(text, for: UIControlState())
+        recordPlayButton.setTitle(text, for: .disabled)
 
     }
 
@@ -349,17 +349,17 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
         filename = nil
         player = nil
         recorder = nil
-        state = .Initial
+        state = .initial
         //saveButton.enabled = false
-        saveButton.hidden = true
-        reRecordButton.hidden = true
+        saveButton.isHidden = true
+        reRecordButton.isHidden = true
         maxLen = StudyManager.sharedInstance.currentStudy?.studySettings?.voiceRecordingMaxLengthSeconds ?? 60
         //maxLen = 5
         maxLengthLabel.text = "Maximum length \(maxLen) seconds"
-        currentLengthLabel.hidden = true
+        currentLengthLabel.isHidden = true
         updateRecordButton()
     }
-    @IBAction func reRecordButtonPressed(sender: AnyObject) {
+    @IBAction func reRecordButtonPressed(_ sender: AnyObject) {
         recorder?.deleteRecording()
         reset()
     }
@@ -369,25 +369,25 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
     }
 
     func enableIdleTimer() {
-        UIApplication.sharedApplication().idleTimerDisabled = false;
+        UIApplication.shared.isIdleTimerDisabled = false;
     }
 
     func disableIdleTimer() {
-        UIApplication.sharedApplication().idleTimerDisabled = true;
+        UIApplication.shared.isIdleTimerDisabled = true;
     }
 
-    func audioRecorderDidFinishRecording(recorder: AVAudioRecorder, successfully flag: Bool) {
+    func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
         log.debug("recording finished, success: \(flag), len: \(currentLength)")
         resetTimer()
         enableIdleTimer();
         if (flag && currentLength > 0.0) {
             self.recorder = nil
-            state = .Recorded
+            state = .recorded
             //saveButton.enabled = true
-            saveButton.hidden = false
-            reRecordButton.hidden = false
+            saveButton.isHidden = false
+            reRecordButton.isHidden = false
             do {
-                player = try AVAudioPlayer(contentsOfURL: filename!)
+                player = try AVAudioPlayer(contentsOf: filename!)
                 player?.delegate = self
             } catch {
                 reset()
@@ -399,16 +399,16 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
         }
     }
 
-    func audioRecorderEncodeErrorDidOccur(recorder: AVAudioRecorder, error: NSError?) {
+    func audioRecorderEncodeErrorDidOccur(_ recorder: AVAudioRecorder, error: Error?) {
         log.error("Error received in audio recorded: \(error)")
         enableIdleTimer();
         self.recorder?.deleteRecording()
         reset()
     }
 
-    func audioPlayerDidFinishPlaying(player: AVAudioPlayer, successfully flag: Bool) {
-        if (state == .Playing) {
-            state = .Recorded
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        if (state == .playing) {
+            state = .recorded
             updateRecordButton()
         }
     }

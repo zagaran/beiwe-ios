@@ -29,10 +29,10 @@ struct RegisterStudyRequest : Mappable, ApiRequest {
 
     init() {
         //
-        if let version = NSBundle.mainBundle().infoDictionary?["CFBundleVersion"] as? String {
+        if let version = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
             appVersion = version;
         }
-        let uiDevice = UIDevice.currentDevice();
+        let uiDevice = UIDevice.current;
         osName = uiDevice.systemName;
         osVersion = uiDevice.systemVersion;
         product = uiDevice.model;
@@ -47,7 +47,7 @@ struct RegisterStudyRequest : Mappable, ApiRequest {
         self.newPassword = newPassword;
     }
 
-    init?(_ map: Map) {
+    init?(map: Map) {
 
     }
 

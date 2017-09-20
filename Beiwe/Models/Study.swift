@@ -41,17 +41,21 @@ class Study : ReclineObject {
         self.studySettings = studySettings;
         self.studyId = studyId;
         self.patientId = patientId;
-        self.registerDate = Int64(NSDate().timeIntervalSince1970);
+        self.registerDate = Int64(Date().timeIntervalSince1970);
     }
 
     required init?(_ map: Map) {
-        super.init(map);
+        super.init(map: map);
 
+    }
+    
+    required init?(map: Map) {
+        fatalError("init(map:) has not been implemented")
     }
 
     // Mappable
     override func mapping(map: Map) {
-        super.mapping(map);
+        super.mapping(map: map);
         patientPhoneNumber     <- map["phoneNumber"];
         studySettings   <- map["studySettings"];
         studyId   <- map["studyId"];
@@ -59,11 +63,11 @@ class Study : ReclineObject {
         participantConsented <- map["participantConsented"];
         clinicianPhoneNumber <- map["clinicianPhoneNumber"];
         raPhoneNumber <- map["raPhoneNumber"];
-        nextSurveyCheck <- (map["nextSurveyCheck"], TransformOf<Int64, NSNumber>(fromJSON: { $0?.longLongValue }, toJSON: { $0.map { NSNumber(longLong: $0) } }))
-        nextUploadCheck <- (map["nextUploadCheck"], TransformOf<Int64, NSNumber>(fromJSON: { $0?.longLongValue }, toJSON: { $0.map { NSNumber(longLong: $0) } }))
+        nextSurveyCheck <- (map["nextSurveyCheck"], TransformOf<Int64, NSNumber>(fromJSON: { $0?.int64Value }, toJSON: { $0.map { NSNumber(value: $0) } }))
+        nextUploadCheck <- (map["nextUploadCheck"], TransformOf<Int64, NSNumber>(fromJSON: { $0?.int64Value }, toJSON: { $0.map { NSNumber(value: $0) } }))
         surveys    <- map["surveys"];
         activeSurveys   <- map["active_surveys"]
-        registerDate <- (map["registerDate"], TransformOf<Int64, NSNumber>(fromJSON: { $0?.longLongValue }, toJSON: { $0.map { NSNumber(longLong: $0) } }))
+        registerDate <- (map["registerDate"], TransformOf<Int64, NSNumber>(fromJSON: { $0?.int64Value }, toJSON: { $0.map { NSNumber(value: $0) } }))
         receivedAudioSurveys <- map["receivedAudioSurveys"]
         receivedTrackingSurveys <- map["receivedTrackingSurveys"]
         submittedAudioSurveys  <- map["submittedAudioSurveys"]
