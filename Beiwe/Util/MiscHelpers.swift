@@ -30,7 +30,7 @@ func shuffle<C: MutableCollection>(_ list: inout C) -> C where C.Index == Int {
     for i in list.startIndex ..< list.endIndex - 1 {
         let j = Int(arc4random_uniform(UInt32(list.endIndex - i))) + i
         if i != j {
-            swap(&list[i], &list[j])
+            list.swapAt(i, j)
         }
     }
     return list
@@ -112,7 +112,7 @@ class Debouncer<T>: NSObject {
         }
     }
 
-    func fireNow() {
+    @objc func fireNow() {
         timer = nil;
         self.callback(arg)
     }

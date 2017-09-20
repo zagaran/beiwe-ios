@@ -357,7 +357,7 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
 
     func closeSurvey() {
         retainSelf = nil;
-        StudyManager.sharedInstance.surveysUpdatedEvent.emit();
+        StudyManager.sharedInstance.surveysUpdatedEvent.emit(0);
         parent?.dismiss(animated: true, completion: nil);
     }
 

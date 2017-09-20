@@ -51,7 +51,7 @@ open class SwiftyRSAError: NSError {
 open class SwiftyRSA: NSObject {
 
     fileprivate var keyTags: [Data] = []
-    fileprivate static let defaultPadding: SecPadding = .PKCS1
+    public static let defaultPadding: SecPadding = .PKCS1
 
     // MARK: - Public Shorthands
 

@@ -130,7 +130,7 @@ class ChangePasswordViewController: FormViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    func callAssistant(_ sender:UIButton!) {
+    @objc func callAssistant(_ sender:UIButton!) {
         confirmAndCallClinician(self, callAssistant: true)
     }
     

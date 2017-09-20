@@ -22,7 +22,7 @@ class StudyManager {
     var currentStudy: Study?;
     var gpsManager: GPSManager?;
     var isUploading = false;
-    let surveysUpdatedEvent: Event<Void> = Event();
+    let surveysUpdatedEvent: Event<Int> = Event<Int>();
     var isStudyLoaded: Bool {
         return currentStudy != nil;
     }
@@ -30,7 +30,7 @@ class StudyManager {
     func loadDefaultStudy() -> Promise<Bool> {
         currentStudy = nil;
         gpsManager = nil;
-        return firstly { _ -> Promise<[Study]> in
+        return firstly { 
             return Recline.shared.queryAll()
         }.then { studies -> Promise<Bool> in
             if (studies.count > 1) {
@@ -38,7 +38,7 @@ class StudyManager {
                 Crashlytics.sharedInstance().recordError(NSError(domain: "com.rf.beiwe.studies", code: 1, userInfo: nil))
             }
             if (studies.count > 0) {
-                self.currentStudy = studies[0];
+                self.currentStudy = studies[0] as! Study;
                 AppDelegate.sharedInstance().setDebuggingUser(self.currentStudy?.patientId ?? "unknown")
             }
             return Promise(value: true);
@@ -127,8 +127,8 @@ class StudyManager {
         }
         setApiCredentials()
         let currentTime: Int64 = Int64(Date().timeIntervalSince1970);
-        study.nextUploadCheck = currentTime + studySettings.uploadDataFileFrequencySeconds;
-        study.nextSurveyCheck = currentTime + studySettings.checkForNewSurveysFreqSeconds;
+        study.nextUploadCheck = currentTime + Int64(studySettings.uploadDataFileFrequencySeconds);
+        study.nextSurveyCheck = currentTime + Int64(studySettings.checkForNewSurveysFreqSeconds);
 
         study.participantConsented = true;
         DataStorageManager.sharedInstance.setCurrentStudy(study)
@@ -139,7 +139,7 @@ class StudyManager {
     }
 
     func purgeStudies() -> Promise<Bool> {
-        return firstly { _ -> Promise<[Study]> in
+        return firstly {
             return Recline.shared.queryAll()
             }.then { studies -> Promise<Bool> in
                 var promise = Promise<Bool>(value: true)
@@ -440,7 +440,7 @@ class StudyManager {
         UIApplication.shared.applicationIconBadgeNumber = badgeCnt
 
         if (surveyDataModified || forceSave ) {
-            surveysUpdatedEvent.emit();
+            surveysUpdatedEvent.emit(0)
             Recline.shared.save(study).catch { _ in
                 log.error("Failed to save study after processing surveys");
             }
@@ -478,7 +478,7 @@ class StudyManager {
             return Promise(value: true);
         }
 
-        study.nextUploadCheck = Int64(Date().timeIntervalSince1970) +  studySettings.uploadDataFileFrequencySeconds;
+        study.nextUploadCheck = Int64(Date().timeIntervalSince1970) +  Int64(studySettings.uploadDataFileFrequencySeconds);
         return Recline.shared.save(study).then { _ -> Promise<Bool> in
             return Promise(value: true);
         }
@@ -489,7 +489,7 @@ class StudyManager {
             return Promise(value: true);
         }
 
-        study.nextSurveyCheck = Int64(Date().timeIntervalSince1970) + studySettings.checkForNewSurveysFreqSeconds
+        study.nextSurveyCheck = Int64(Date().timeIntervalSince1970) + Int64(studySettings.checkForNewSurveysFreqSeconds)
         return Recline.shared.save(study).then { _ -> Promise<Bool> in
             return Promise(value: true);
         }

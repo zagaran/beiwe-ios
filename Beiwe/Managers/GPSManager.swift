@@ -120,7 +120,7 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
         return nextServiceDate;
     }
 
-    func pollServices() {
+    @objc func pollServices() {
         log.info("Polling...");
         clearPollTimer();
         if (!areServicesRunning) {

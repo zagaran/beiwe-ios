@@ -99,10 +99,10 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
         player?.stop()
         player = nil;
         recorder = nil
-        StudyManager.sharedInstance.surveysUpdatedEvent.emit();
+        StudyManager.sharedInstance.surveysUpdatedEvent.emit(0);
         self.navigationController?.popViewController(animated: true)
     }
-    func cancelButton() {
+    @objc func cancelButton() {
         if (state != .initial) {
             let alertController = UIAlertController(title: "Abandon recording?", message: "", preferredStyle: .actionSheet)
 
@@ -143,7 +143,7 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
         currentLengthLabel.text = "Length: \(currentLength) seconds"
     }
 
-    func recordingTimer() {
+    @objc func recordingTimer() {
         if let recorder = recorder, recorder.currentTime > 0 {
             currentLength = round(recorder.currentTime * 10) / 10
             if (currentLength >= Double(maxLen)) {

@@ -10,7 +10,7 @@
 #ifndef ORKTaskViewController_BW_h
 #define ORKTaskViewController_BW_h
 
-#import "ORKTaskViewController.h"
+#import "ResearchKit/ORKTaskViewController.h"
 
 @interface ORKTaskViewController (BW)
 - (void)presentCancelOptions:(BOOL)saveable sender:(UIBarButtonItem *)sender;

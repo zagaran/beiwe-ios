@@ -63,7 +63,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         return true;
     }
 
-    func tap(_ gesture: UITapGestureRecognizer) {
+    @objc func tap(_ gesture: UITapGestureRecognizer) {
         password.resignFirstResponder()
     }
 

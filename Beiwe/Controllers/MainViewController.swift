@@ -53,7 +53,7 @@ class MainViewController: UIViewController {
         } else {
             // Fallback on earlier versions
         }
-        listeners += StudyManager.sharedInstance.surveysUpdatedEvent.on { [weak self] in
+        listeners += StudyManager.sharedInstance.surveysUpdatedEvent.on { [weak self] data in
             self?.refreshSurveys();
         }
 
@@ -119,7 +119,7 @@ class MainViewController: UIViewController {
         self.view.addGestureRecognizer(tapRecognizer)
     }
 
-    func debugTap(_ gestureRecognizer: UIGestureRecognizer) {
+    @objc func debugTap(_ gestureRecognizer: UIGestureRecognizer) {
         if (gestureRecognizer.state != .ended) {
             return
         }
@@ -150,7 +150,7 @@ class MainViewController: UIViewController {
         
 
     }
-    func userButton() {
+    @objc func userButton() {
         /*
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
 

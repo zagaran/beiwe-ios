@@ -60,7 +60,7 @@ class EncryptedStorage {
             return Promise(error: DataStorageErrors.notInitialized)
         }
         return Promise().then(on: queue) {
-            if (!self.fileManager.createFile(atPath: self.filename.path, contents: nil, attributes: [FileAttributeKey.protectionKey.rawValue: FileProtectionType.none])) {
+            if (!self.fileManager.createFile(atPath: self.filename.path, contents: nil, attributes: [FileAttributeKey(rawValue: FileAttributeKey.protectionKey.rawValue): FileProtectionType.none])) {
                 return Promise(error: DataStorageErrors.cantCreateFile)
             } else {
                 log.info("Create new enc file: \(self.filename)");
@@ -284,7 +284,7 @@ class DataStorage {
             if let filename = self.filename, let data = data  {
                 let fileManager = FileManager.default;
                 if (!fileManager.fileExists(atPath: filename.path)) {
-                    if (!fileManager.createFile(atPath: filename.path, contents: data, attributes: [FileAttributeKey.protectionKey.rawValue: FileProtectionType.none])) {
+                    if (!fileManager.createFile(atPath: filename.path, contents: data, attributes: [FileAttributeKey(rawValue: FileAttributeKey.protectionKey.rawValue): FileProtectionType.none])) {
                         self.hasError = true;
                         log.error("Failed to create file.");
                     } else {
@@ -357,10 +357,10 @@ class DataStorageManager {
         do {
             try FileManager.default.createDirectory(atPath: DataStorageManager.currentDataDirectory().path,
                                                                      withIntermediateDirectories: true,
-                                                                     attributes: [FileAttributeKey.protectionKey.rawValue: FileProtectionType.none]);
+                                                                     attributes: [FileAttributeKey(rawValue: FileAttributeKey.protectionKey.rawValue): FileProtectionType.none]);
             try FileManager.default.createDirectory(atPath: DataStorageManager.uploadDataDirectory().path,
                                                                      withIntermediateDirectories: true,
-                                                                     attributes: [FileAttributeKey.protectionKey.rawValue: FileProtectionType.none])
+                                                                     attributes: [FileAttributeKey(rawValue: FileAttributeKey.protectionKey.rawValue): FileProtectionType.none])
         } catch {
             log.error("Failed to create directories.");
         }
