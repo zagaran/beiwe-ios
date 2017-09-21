@@ -141,10 +141,33 @@ open class BWXLActionController: ActionController<BWXLCell, ActionData, BWXLHead
         blurView.autoresizingMask = UIViewAutoresizing.flexibleHeight.union(.flexibleWidth)
         return blurView
     }()
-    
+
+
+    fileprivate func _setUpContentInsetForHeight(_ height: CGFloat) {
+        let currentInset = collectionView.contentInset
+        let bottomInset = settings.cancelView.showCancel ? settings.cancelView.height : currentInset.bottom
+        var topInset = height - contentHeight
+
+        if settings.cancelView.showCancel {
+            topInset -= settings.cancelView.height
+        }
+
+        topInset = max(topInset, max(30, height - contentHeight))
+
+        collectionView.contentInset = UIEdgeInsets(top: topInset, left: currentInset.left, bottom: bottomInset, right: currentInset.right)
+    }
+
     open override func viewDidLoad() {
+
         super.viewDidLoad()
         //backgroundView.addSubview(blurView)
+
+        /* Hack.  Why does iOS 11 fail? */
+        if #available(iOS 11.0, *) {
+            contentHeight = contentHeight + 20;
+            _setUpContentInsetForHeight(view.frame.height)
+        }
+
         
         cancelView?.frame.origin.y = view.bounds.size.height // Starts hidden below screen
         cancelView?.layer.shadowColor = UIColor.black.cgColor
@@ -163,6 +186,8 @@ open class BWXLActionController: ActionController<BWXLCell, ActionData, BWXLHead
         settings.behavior.bounces = true
         settings.behavior.scrollEnabled = true
         settings.cancelView.showCancel = true
+        settings.cancelView.hideCollectionViewBehindCancelView = false
+        //settings.cancelView.height = 50
         settings.animation.scale = nil
         settings.animation.present.springVelocity = 0.0
         
