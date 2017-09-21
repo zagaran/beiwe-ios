@@ -14,6 +14,8 @@ import PromiseKit
 
 class RegisterViewController: FormViewController {
 
+    static let commErrDelay = 7.0
+    static let commErr = "The server you are trying to register with is currently unavailable, or you have entered an incorrect server address.  Please verify the server address."
     let autoValidation = false;
     let db = Recline.shared;
     var dismiss: ((_ didRegister: Bool) -> Void)?;
@@ -155,10 +157,12 @@ class RegisterViewController: FormViewController {
                                         err = .label("This device could not be registered under the provided patient ID.  Please contact your study administrator");
                                         delay = 10.0;
                                     default:
-                                        err = .labeledError(title: "Registration failed", subtitle: "Communication error");
+                                        err = .label(RegisterViewController.commErr);
+                                        delay = RegisterViewController.commErrDelay
                                     }
                                 default:
-                                    err = .labeledError(title: "Registration failed", subtitle: "Communication error");
+                                    err = .label(RegisterViewController.commErr);
+                                    delay = RegisterViewController.commErrDelay
                                 }
                                 HUD.flash(err, delay: delay)
                             }
