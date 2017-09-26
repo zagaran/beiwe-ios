@@ -65,6 +65,7 @@ class PowerStateManager : DataServiceProtocol {
         }
         NotificationCenter.default.addObserver(self, selector: #selector(self.batteryStateDidChange), name: NSNotification.Name.UIDeviceBatteryStateDidChange, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.batteryStateDidChange), name: NSNotification.Name.UIDeviceBatteryLevelDidChange, object: nil)
+        AppEventManager.sharedInstance.logAppEvent(event: "powerstate_on", msg: "PowerState collection on")
 
     }
     func pauseCollecting() {
@@ -73,6 +74,7 @@ class PowerStateManager : DataServiceProtocol {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIDeviceBatteryLevelDidChange, object:nil)
         listeners = [ ];
         store!.flush();
+        AppEventManager.sharedInstance.logAppEvent(event: "powerstate_off", msg: "PowerState collection off")
     }
     func finishCollecting() -> Promise<Void> {
         log.info("Finish collecting \(storeType) collection");

@@ -43,7 +43,6 @@ class AccelerometerManager : DataServiceProtocol {
         log.info("Turning \(storeType) collection on");
         let queue = OperationQueue()
 
-
         motionManager.startAccelerometerUpdates(to: queue) {
             (accelData, error) in
 
@@ -59,11 +58,13 @@ class AccelerometerManager : DataServiceProtocol {
                 self.store?.store(data);
             }
         }
+        AppEventManager.sharedInstance.logAppEvent(event: "accel_on", msg: "Accel collection on")
     }
     func pauseCollecting() {
         log.info("Pausing \(storeType) collection");
         motionManager.stopAccelerometerUpdates();
         store?.flush();
+        AppEventManager.sharedInstance.logAppEvent(event: "accel_off", msg: "Accel collection off")
     }
     func finishCollecting() -> Promise<Void> {
         print ("Finishing \(storeType) collecting");

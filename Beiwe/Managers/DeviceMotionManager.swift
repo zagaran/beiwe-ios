@@ -86,11 +86,13 @@ class DeviceMotionManager : DataServiceProtocol {
                 self.store?.store(data);
             }
         }
+        AppEventManager.sharedInstance.logAppEvent(event: "devicemotion_on", msg: "DeviceMotion collection on")
     }
     func pauseCollecting() {
         log.info("Pausing \(storeType) collection");
         motionManager.stopDeviceMotionUpdates();
         store?.flush();
+        AppEventManager.sharedInstance.logAppEvent(event: "devicemotion_off", msg: "DeviceMotion collection off")
     }
     func finishCollecting() -> Promise<Void> {
         print ("Finishing \(storeType) collecting");

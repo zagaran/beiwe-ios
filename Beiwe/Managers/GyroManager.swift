@@ -56,11 +56,13 @@ class GyroManager : DataServiceProtocol {
                 self.store?.store(data);
             }
         }
+        AppEventManager.sharedInstance.logAppEvent(event: "gyro_on", msg: "Gyro collection on")
     }
     func pauseCollecting() {
         log.info("Pausing \(storeType) collection");
         motionManager.stopGyroUpdates();
         store?.flush();
+        AppEventManager.sharedInstance.logAppEvent(event: "gyro_off", msg: "Gyro collection off")
     }
     func finishCollecting() -> Promise<Void> {
         print ("Finishing \(storeType) collecting");

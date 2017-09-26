@@ -73,6 +73,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         log.info("applicationDidFinishLaunching")
         log.logAppDetails()
 
+        AppEventManager.sharedInstance.didLaunch(launchOptions: launchOptions);
+
+
         pscope.addPermission(NotificationsPermission(notificationCategories: nil),
                              message: "Allows Beiwe to send you survey notifications.")
         pscope.addPermission(LocationAlwaysPermission(),
@@ -226,6 +229,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         log.info("applicationDidEnterBackground")
         timeEnteredBackground = Date();
+        AppEventManager.sharedInstance.logAppEvent(event: "background", msg: "Application entered background")
 
     }
 
@@ -262,11 +266,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         log.info("applicationDidBecomeActive")
+        AppEventManager.sharedInstance.logAppEvent(event: "foreground", msg: "Application entered foreground")
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         log.info("applicationWillTerminate")
+        AppEventManager.sharedInstance.logAppEvent(event: "terminate", msg: "Application terminating")
     }
 
     func displayCurrentMainView() {
@@ -295,11 +301,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationProtectedDataDidBecomeAvailable(_ application: UIApplication) {
         log.info("applicationProtectedDataDidBecomeAvailable");
         lockEvent.emit(false);
+        AppEventManager.sharedInstance.logAppEvent(event: "unlocked", msg: "Phone/keystore unlocked")
     }
 
     func applicationProtectedDataWillBecomeUnavailable(_ application: UIApplication) {
         log.info("applicationProtectedDataWillBecomeUnavailable");
         lockEvent.emit(true);
+        AppEventManager.sharedInstance.logAppEvent(event: "locked", msg: "Phone/keystore locked")
+        
     }
     /* Crashlytics functions -- future */
 

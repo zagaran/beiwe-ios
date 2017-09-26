@@ -123,6 +123,7 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
     @objc func pollServices() {
         log.info("Polling...");
         clearPollTimer();
+        AppEventManager.sharedInstance.logAppEvent(event: "poll_service", msg: "Polling service")
         if (!areServicesRunning) {
             return
         }
@@ -165,6 +166,7 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
         clearPollTimer();
         timer = Timer.scheduledTimer(timeInterval: seconds, target: self, selector: #selector(pollServices), userInfo: nil, repeats: false)
         log.info("Timer set for: \(seconds)");
+        AppEventManager.sharedInstance.logAppEvent(event: "set_timer", msg: "Set timer for \(seconds) seconds", d1: String(seconds))
     }
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -229,12 +231,14 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
     }
     func startCollecting() {
         log.info("Turning GPS collection on");
+        AppEventManager.sharedInstance.logAppEvent(event: "gps_on", msg: "GPS collection on")
         isCollectingGps = true;
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.distanceFilter = kCLDistanceFilterNone;
     }
     func pauseCollecting() {
         log.info("Pausing GPS collection");
+        AppEventManager.sharedInstance.logAppEvent(event: "gps_off", msg: "GPS collection off")
         isCollectingGps = false;
         locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
         locationManager.distanceFilter = 99999;
