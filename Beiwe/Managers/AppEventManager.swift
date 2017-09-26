@@ -21,7 +21,7 @@ class AppEventManager : DataServiceProtocol {
     }
     var didLogLaunch: Bool = false;
 
-    let storeType = "appEvent";
+    let storeType = "ios_log";
     let headers = ["timestamp", "launchId",  "memory", "battery", "event", "msg", "d1", "d2", "d3", "d4"]
     var store: DataStorage?;
     var listeners: [Listener] = [];

@@ -201,7 +201,7 @@ class DataStorage {
         }
         let name = patientId + "_" + type + "_" + String(Int64(Date().timeIntervalSince1970 * 1000));
         self.name = name
-        if (type != "appEvent") {
+        if (type != "ios_log") {
             AppEventManager.sharedInstance.logAppEvent(event: "file_create", msg: "Init new data file", d1: name)
         }
 
@@ -280,7 +280,7 @@ class DataStorage {
     func flush(_ reset: Bool = false) -> Promise<Void> {
         return Promise().then(on: queue) {
             if (!self.hasData || self.lines.count == 0) {
-                if (self.type != "appEvent") {
+                if (self.type != "ios_log") {
                     AppEventManager.sharedInstance.logAppEvent(event: "file_empty", msg: "Discarding empty data file", d1: self.name)
                 }
 
