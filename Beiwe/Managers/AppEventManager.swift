@@ -22,7 +22,7 @@ class AppEventManager : DataServiceProtocol {
     var didLogLaunch: Bool = false;
 
     let storeType = "appEvent";
-    let headers = ["timestamp", "launchId", "event", "msg", "d1", "d2", "d3", "d4"]
+    let headers = ["timestamp", "launchId",  "memory", "battery", "event", "msg", "d1", "d2", "d3", "d4"]
     var store: DataStorage?;
     var listeners: [Listener] = [];
     var isStoreOpen: Bool {
@@ -58,6 +58,27 @@ class AppEventManager : DataServiceProtocol {
     }
      */
 
+    func getMemory() -> String {
+
+        var taskInfo = mach_task_basic_info()
+        var count = mach_msg_type_number_t(MemoryLayout<mach_task_basic_info>.size)/4
+        let kerr: kern_return_t = withUnsafeMutablePointer(to: &taskInfo) {
+            $0.withMemoryRebound(to: integer_t.self, capacity: 1) {
+                task_info(mach_task_self_, task_flavor_t(MACH_TASK_BASIC_INFO), $0, &count)
+            }
+        }
+        if kerr == KERN_SUCCESS {
+            let usedMegabytes = taskInfo.resident_size/1000000
+            //print("used megabytes: \(usedMegabytes)")
+            return String(usedMegabytes)
+        } else {
+            print("Error with task_info(): " +
+                (String(cString: mach_error_string(kerr), encoding: String.Encoding.ascii) ?? "unknown error"))
+            return ""
+        }
+
+    }
+
     func logAppEvent(event: String, msg: String = "", d1: String = "", d2: String = "", d3: String = "", d4: String = "") {
         if store == nil {
             return
@@ -65,6 +86,8 @@ class AppEventManager : DataServiceProtocol {
         var data: [String] = [ ];
         data.append(String(Int64(Date().timeIntervalSince1970 * 1000)));
         data.append(launchId);
+        data.append(getMemory())
+        data.append(String(UIDevice.current.batteryLevel))
         data.append(event);
         data.append(msg);
         data.append(d1)

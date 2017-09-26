@@ -273,6 +273,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         log.info("applicationWillTerminate")
         AppEventManager.sharedInstance.logAppEvent(event: "terminate", msg: "Application terminating")
+
+        let dispatchGroup = DispatchGroup();
+
+        dispatchGroup.enter()
+        StudyManager.sharedInstance.stop().then(on: DispatchQueue.global(qos: .default)) { _ in
+            dispatchGroup.leave()
+            }.catch(on: DispatchQueue.global(qos: .default)) {_ in 
+                dispatchGroup.leave()
+        }
+
+        dispatchGroup.wait();
+        log.info("applicationWillTerminate exiting")
+    }
+
+    func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
+        log.info("applicationDidReceiveMemoryWarning")
+        AppEventManager.sharedInstance.logAppEvent(event: "memory_warn", msg: "Application received memory warning")
     }
 
     func displayCurrentMainView() {

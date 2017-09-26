@@ -154,6 +154,24 @@ class StudyManager {
         }
     }
 
+    func stop() -> Promise<Bool> {
+        var promise: Promise<Void>
+        if (gpsManager != nil) {
+            promise = gpsManager!.stopAndClear()
+        } else {
+            promise = Promise();
+        }
+
+        return promise.then(on: DispatchQueue.global(qos: .default)) {
+            //self.gpsManager = nil;
+            self.currentStudy = nil;
+            return Promise(value: true)
+            }.catch(on: DispatchQueue.global(qos: .default)) {_ in
+                print("Caught err")
+        }
+
+    }
+
     func leaveStudy() -> Promise<Bool> {
 
         /*

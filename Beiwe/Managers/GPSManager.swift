@@ -82,12 +82,37 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
         locationManager.stopUpdatingLocation();
         areServicesRunning = false
         clearPollTimer();
+        var promise = Promise();
+        for dataStatus in dataCollectionServices {
+            promise = promise.then(on: DispatchQueue.global(qos: .default)) {
+                dataStatus.handler.finishCollecting().then(on: DispatchQueue.global(qos: .default)) {
+                    print("Returned from finishCollecting")
+                    return Promise()
+
+                    }.catch(on: DispatchQueue.global(qos: .default)) {_ in
+                        print("err from finish collecting")
+                }
+            }
+        }
+
+        dataCollectionServices.removeAll();
+        return promise;/*.then(on: DispatchQueue.global(qos: .default)) {
+        } */
+
+        /*
         var promises: [Promise<Void>] = [];
         for dataStatus in dataCollectionServices {
-            promises.append(dataStatus.handler.finishCollecting())
+            promises.append(dataStatus.handler.finishCollecting().then(on: DispatchQueue.global(qos: .default)) {
+                print("Returned from finishCollecting")
+                return Promise()
+
+                }.catch(on: DispatchQueue.global(qos: .default)) {_ in
+                    print("err from finish collecting")
+            })
         }
         dataCollectionServices.removeAll();
-        return when(fulfilled: promises);
+        return when(fulfilled: promises, on: DispatchQueue.global(qos: .default));
+         */
     }
 
     func dispatchToServices() -> TimeInterval {
