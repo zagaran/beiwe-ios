@@ -176,6 +176,7 @@ class DataStorage {
     var sanitize = false;
     let moveOnClose: Bool
     let queue: DispatchQueue
+    var name = ""
 
 
     init(type: String, headers: [String], patientId: String, publicKey: String, moveOnClose: Bool = false) {
@@ -199,6 +200,11 @@ class DataStorage {
             }
         }
         let name = patientId + "_" + type + "_" + String(Int64(Date().timeIntervalSince1970 * 1000));
+        self.name = name
+        if (type != "appEvent") {
+            AppEventManager.sharedInstance.logAppEvent(event: "file_create", msg: "Init new data file", d1: name)
+        }
+
         realFilename = DataStorageManager.currentDataDirectory().appendingPathComponent(name + DataStorageManager.dataFileSuffix)
         if (moveOnClose) {
             filename = URL(fileURLWithPath:  NSTemporaryDirectory()).appendingPathComponent(name + DataStorageManager.dataFileSuffix) ;
@@ -274,6 +280,10 @@ class DataStorage {
     func flush(_ reset: Bool = false) -> Promise<Void> {
         return Promise().then(on: queue) {
             if (!self.hasData || self.lines.count == 0) {
+                if (self.type != "appEvent") {
+                    AppEventManager.sharedInstance.logAppEvent(event: "file_empty", msg: "Discarding empty data file", d1: self.name)
+                }
+
                 if (reset) {
                     self.reset()
                 }

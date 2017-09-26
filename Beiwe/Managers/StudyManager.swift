@@ -634,6 +634,7 @@ class StudyManager {
                         log.info("Uploading: \(filename)")
                         return ApiManager.sharedInstance.makeMultipartUploadRequest(uploadRequest, file: filePath).then { _ -> Promise<Bool> in
                             log.info("Finished uploading: \(filename), removing.");
+                            AppEventManager.sharedInstance.logAppEvent(event: "uploaded", msg: "Uploaded data file", d1: filename)
                             numFiles = numFiles + 1
                             try fileManager.removeItem(at: filePath);
                             storageInUse = storageInUse - len
@@ -661,6 +662,7 @@ class StudyManager {
         }.then { () -> Promise<Void> in
             log.info("Size left after upload: \(storageInUse)")
             if (storageInUse > self.MAX_UPLOAD_DATA) {
+                AppEventManager.sharedInstance.logAppEvent(event: "purge", msg: "Purging too large data files", d1: String(storageInUse))
                 return self.purgeUploadData(filesToProcess, currentStorageUse: storageInUse)
             }
             else {
