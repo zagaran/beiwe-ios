@@ -202,7 +202,7 @@ class DataStorage {
         let name = patientId + "_" + type + "_" + String(Int64(Date().timeIntervalSince1970 * 1000));
         self.name = name
         if (type != "ios_log") {
-            AppEventManager.sharedInstance.logAppEvent(event: "file_create", msg: "Init new data file", d1: name)
+            AppEventManager.sharedInstance.logAppEvent(event: "file_init", msg: "Init new data file", d1: name)
         }
 
         realFilename = DataStorageManager.currentDataDirectory().appendingPathComponent(name + DataStorageManager.dataFileSuffix)
@@ -280,10 +280,11 @@ class DataStorage {
     func flush(_ reset: Bool = false) -> Promise<Void> {
         return Promise().then(on: queue) {
             if (!self.hasData || self.lines.count == 0) {
+                /*
                 if (self.type != "ios_log") {
                     AppEventManager.sharedInstance.logAppEvent(event: "file_empty", msg: "Discarding empty data file", d1: self.name)
                 }
-
+                */
                 if (reset) {
                     self.reset()
                 }
@@ -291,6 +292,9 @@ class DataStorage {
             }
             let data = self.lines.joined(separator: "").data(using: String.Encoding.utf8);
             self.lines = [ ];
+            if (self.type != "ios_log") {
+                AppEventManager.sharedInstance.logAppEvent(event: "file_flush", msg: "Flushing lines to file", d1: self.name, d2: String(self.lines.count))
+            }
             if let filename = self.filename, let data = data  {
                 let fileManager = FileManager.default;
                 if (!fileManager.fileExists(atPath: filename.path)) {
@@ -299,6 +303,9 @@ class DataStorage {
                         log.error("Failed to create file.");
                     } else {
                         log.info("Create new data file: \(filename)");
+                    }
+                    if (self.type != "ios_log") {
+                        AppEventManager.sharedInstance.logAppEvent(event: "file_create", msg: "Create new data file", d1: self.name, d2: String(self.hasError))
                     }
                 } else {
                     if let fileHandle = try? FileHandle(forWritingTo: filename) {
