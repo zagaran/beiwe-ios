@@ -291,9 +291,10 @@ class DataStorage {
                 return Promise();
             }
             let data = self.lines.joined(separator: "").data(using: String.Encoding.utf8);
+            let lineCount = self.lines.count
             self.lines = [ ];
             if (self.type != "ios_log") {
-                AppEventManager.sharedInstance.logAppEvent(event: "file_flush", msg: "Flushing lines to file", d1: self.name, d2: String(self.lines.count))
+                AppEventManager.sharedInstance.logAppEvent(event: "file_flush", msg: "Flushing lines to file", d1: self.name, d2: String(lineCount))
             }
             if let filename = self.filename, let data = data  {
                 let fileManager = FileManager.default;

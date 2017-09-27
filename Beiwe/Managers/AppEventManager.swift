@@ -32,6 +32,21 @@ class AppEventManager : DataServiceProtocol {
     func didLaunch(launchOptions: [UIApplicationLaunchOptionsKey: Any]?) {
         self.launchOptions = ""
         self.launchTimestamp = Date();
+        if ((launchOptions?.index(forKey: UIApplicationLaunchOptionsKey.location)) != nil) {
+            self.launchOptions = "location"
+            /*
+            let localNotif = UILocalNotification();
+            //localNotif.fireDate = currentDate;
+
+            let body: String = "Beiwe was Launched in the background";
+
+            localNotif.alertBody = body;
+            localNotif.soundName = UILocalNotificationDefaultSoundName;
+            UIApplication.shared.scheduleLocalNotification(localNotif);
+             */
+
+        }
+        /*
         if let launchOptions = launchOptions {
             for (kind, _) in launchOptions {
                 if (self.launchOptions != "") {
@@ -40,6 +55,7 @@ class AppEventManager : DataServiceProtocol {
                 self.launchOptions = self.launchOptions + String(describing: kind)
             }
         }
+         */
         log.info("AppEvent didLaunch, launchId: \(launchId), options: \(self.launchOptions)");
     }
 
