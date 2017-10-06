@@ -641,6 +641,9 @@ class StudyManager {
                             filesToProcess.removeValue(forKey: filename)
                             return Promise(value: true);
                         }
+                    }.recover { error -> Promise<Bool> in
+                        AppEventManager.sharedInstance.logAppEvent(event: "upload_file_failed", msg: "Failed Uploaded data file", d1: filename)
+                        return Promise(value: true)
                     }
                 }
                 return uploadChain
@@ -651,6 +654,7 @@ class StudyManager {
         }.then { (results: Bool) -> Promise<Void> in
             log.info("OK uploading \(numFiles). \(results)");
             log.info("Total Size of uploads: \(size)")
+            AppEventManager.sharedInstance.logAppEvent(event: "upload_complete", msg: "Upload Complete", d1: String(numFiles))
             if let study = self.currentStudy {
                 study.lastUploadSuccess = Int64(NSDate().timeIntervalSince1970)
                 return Recline.shared.save(study).asVoid()
@@ -659,6 +663,7 @@ class StudyManager {
             }
         }.recover { error -> Void in
             log.info("Recover")
+            AppEventManager.sharedInstance.logAppEvent(event: "upload_incomplete", msg: "Upload Incomplete", d1: String(storageInUse))
         }.then { () -> Promise<Void> in
             log.info("Size left after upload: \(storageInUse)")
             if (storageInUse > self.MAX_UPLOAD_DATA) {

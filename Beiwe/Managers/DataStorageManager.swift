@@ -172,11 +172,13 @@ class DataStorage {
     var patientId: String;
     var bytesWritten = 0;
     var hasError = false;
+    var errMsg: String = "";
     var noBuffer = false;
     var sanitize = false;
     let moveOnClose: Bool
     let queue: DispatchQueue
     var name = ""
+    var logClosures:[()->()] = [ ]
 
 
     init(type: String, headers: [String], patientId: String, publicKey: String, moveOnClose: Bool = false) {
@@ -187,7 +189,17 @@ class DataStorage {
         self.moveOnClose = moveOnClose
 
         queue = DispatchQueue(label: "com.rocketfarm.beiwe.dataqueue." + type, attributes: [])
+        logClosures = [ ]
         reset();
+        outputLogClosures();
+    }
+
+    fileprivate func outputLogClosures() {
+        let tmpLogClosures: [()->()] = logClosures
+        logClosures = []
+        for c in tmpLogClosures {
+            c();
+        }
     }
 
     fileprivate func reset() {
@@ -201,9 +213,6 @@ class DataStorage {
         }
         let name = patientId + "_" + type + "_" + String(Int64(Date().timeIntervalSince1970 * 1000));
         self.name = name
-        if (type != "ios_log") {
-            AppEventManager.sharedInstance.logAppEvent(event: "file_init", msg: "Init new data file", d1: name)
-        }
 
         realFilename = DataStorageManager.currentDataDirectory().appendingPathComponent(name + DataStorageManager.dataFileSuffix)
         if (moveOnClose) {
@@ -225,13 +234,22 @@ class DataStorage {
                 //log.info("RSALine: \(rsaLine)")
                 _writeLine(headers.joined(separator: DataStorage.delimiter))
             } catch {
-                log.error("Failed to RSA encrypt AES key")
+                errMsg = "Failed to RSA encrypt AES key"
+                log.error(errMsg)
                 hasError = true;
             }
         } else {
-            log.error("Failed to generate AES key")
+            errMsg = "Failed to generate AES key"
+            log.error(errMsg)
             hasError = true;
         }
+
+        if (type != "ios_log") {
+            self.logClosures.append() {
+                AppEventManager.sharedInstance.logAppEvent(event: "file_init", msg: "Init new data file", d1: name, d2: String(self.hasError), d3: self.errMsg)
+            }
+        }
+
     }
 
 
@@ -246,7 +264,8 @@ class DataStorage {
                 }
             }
         } else {
-            log.error("Can't generate IV, skipping data");
+            self.errMsg = "Can't generate IV, skipping data"
+            log.error(self.errMsg);
             hasError = true;
         }
     }
@@ -279,12 +298,8 @@ class DataStorage {
 
     func flush(_ reset: Bool = false) -> Promise<Void> {
         return Promise().then(on: queue) {
+            self.logClosures = [ ];
             if (!self.hasData || self.lines.count == 0) {
-                /*
-                if (self.type != "ios_log") {
-                    AppEventManager.sharedInstance.logAppEvent(event: "file_empty", msg: "Discarding empty data file", d1: self.name)
-                }
-                */
                 if (reset) {
                     self.reset()
                 }
@@ -294,19 +309,24 @@ class DataStorage {
             let lineCount = self.lines.count
             self.lines = [ ];
             if (self.type != "ios_log") {
-                AppEventManager.sharedInstance.logAppEvent(event: "file_flush", msg: "Flushing lines to file", d1: self.name, d2: String(lineCount))
+                self.logClosures.append() {
+                    AppEventManager.sharedInstance.logAppEvent(event: "file_flush", msg: "Flushing lines to file", d1: self.name, d2: String(lineCount))
+                }
             }
             if let filename = self.filename, let data = data  {
                 let fileManager = FileManager.default;
                 if (!fileManager.fileExists(atPath: filename.path)) {
                     if (!fileManager.createFile(atPath: filename.path, contents: data, attributes: [FileAttributeKey(rawValue: FileAttributeKey.protectionKey.rawValue): FileProtectionType.none])) {
                         self.hasError = true;
-                        log.error("Failed to create file.");
+                        self.errMsg = "Failed to create file."
+                        log.error(self.errMsg);
                     } else {
                         log.info("Create new data file: \(filename)");
                     }
                     if (self.type != "ios_log") {
-                        AppEventManager.sharedInstance.logAppEvent(event: "file_create", msg: "Create new data file", d1: self.name, d2: String(self.hasError))
+                        self.logClosures.append() {
+                            AppEventManager.sharedInstance.logAppEvent(event: "file_create", msg: "Create new data file", d1: self.name, d2: String(self.hasError), d3: self.errMsg)
+                        }
                     }
                 } else {
                     if let fileHandle = try? FileHandle(forWritingTo: filename) {
@@ -324,17 +344,30 @@ class DataStorage {
                         }
                     } else {
                         self.hasError = true;
-                        log.error("Error opening file for writing");
+                        self.errMsg = "Error opening file for writing"
+                        log.error(self.errMsg);
+                        if (self.type != "ios_log") {
+                            self.logClosures.append() {
+                                AppEventManager.sharedInstance.logAppEvent(event: "file_err", msg: "Error writing to file", d1: self.name, d2: String(self.hasError), d3: self.errMsg)
+                            }
+                        }
                     }
                 }
             } else {
-                print("No filename.  NO data??");
+                self.errMsg = "No filename.  NO data??"
+                print(self.errMsg);
                 self.hasError = true;
+                if (self.type != "ios_log") {
+                    self.logClosures.append() {
+                        AppEventManager.sharedInstance.logAppEvent(event: "file_err", msg: "Error writing to file", d1: self.name, d2: String(self.hasError), d3: self.errMsg)
+                    }
+                }
                 self.reset();
             }
             if (reset) {
                 self.reset()
             }
+            self.outputLogClosures()
             return Promise()
         }
     }

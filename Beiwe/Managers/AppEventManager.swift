@@ -19,6 +19,7 @@ class AppEventManager : DataServiceProtocol {
     var launchId: String {
         return String(Int64(launchTimestamp.timeIntervalSince1970 * 1000))
     }
+    var seq = 0
     var didLogLaunch: Bool = false;
 
     let storeType = "ios_log";
@@ -109,7 +110,9 @@ class AppEventManager : DataServiceProtocol {
         data.append(d1)
         data.append(d2)
         data.append(d3)
-        data.append(d4)
+        //data.append(d4)
+        data.append(String(seq))
+        seq = seq + 1
 
 
         self.store?.store(data);
