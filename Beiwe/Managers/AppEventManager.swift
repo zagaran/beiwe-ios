@@ -126,7 +126,11 @@ class AppEventManager : DataServiceProtocol {
         store = DataStorageManager.sharedInstance.createStore(storeType, headers: headers);
         if (!didLogLaunch) {
             didLogLaunch = true
-            logAppEvent(event: "launch", msg: "Application launch", d1: launchOptions)
+            var appVersion = ""
+            if let version = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
+                appVersion = version;
+            }
+            logAppEvent(event: "launch", msg: "Application launch", d1: launchOptions, d2: appVersion)
         }
         return true;
     }

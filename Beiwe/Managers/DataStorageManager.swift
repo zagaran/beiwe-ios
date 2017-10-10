@@ -35,12 +35,14 @@ class EncryptedStorage {
     var handle: FileHandle?
     let fileManager = FileManager.default;
     var sc: StreamCryptor
+    var secKeyRef: SecKey?
 
 
-    init(type: String, suffix: String, patientId: String, publicKey: String) {
+    init(type: String, suffix: String, patientId: String, publicKey: String, keyRef: SecKey?) {
         self.patientId = patientId;
         self.publicKey = publicKey;
         self.type = type;
+        self.secKeyRef = keyRef
 
         queue = DispatchQueue(label: "com.rocketfarm.beiwe.dataqueue." + type, attributes: [])
 
@@ -66,8 +68,13 @@ class EncryptedStorage {
                 log.info("Create new enc file: \(self.filename)");
             }
             self.handle = try? FileHandle(forWritingTo: self.filename)
-            let rsaLine = try Crypto.sharedInstance.base64ToBase64URL(SwiftyRSA.encryptString(Crypto.sharedInstance.base64ToBase64URL(aesKey.base64EncodedString()), publicKeyId: PersistentPasswordManager.sharedInstance.publicKeyName(self.patientId), padding: [])) + "\n";
-            self.handle?.write(rsaLine.data(using: String.Encoding.utf8)!)
+            var rsaLine: String?
+            if let keyRef = self.secKeyRef {
+                rsaLine = try Crypto.sharedInstance.base64ToBase64URL(SwiftyRSA.encryptString(Crypto.sharedInstance.base64ToBase64URL(aesKey.base64EncodedString()), publicKey: keyRef, padding: [])) + "\n";
+            } else {
+                rsaLine = try Crypto.sharedInstance.base64ToBase64URL(SwiftyRSA.encryptString(Crypto.sharedInstance.base64ToBase64URL(aesKey.base64EncodedString()), publicKeyId: PersistentPasswordManager.sharedInstance.publicKeyName(self.patientId), padding: [])) + "\n";
+            }
+            self.handle?.write(rsaLine!.data(using: String.Encoding.utf8)!)
             let ivHeader = Crypto.sharedInstance.base64ToBase64URL(iv.base64EncodedString()) + ":"
             self.handle?.write(ivHeader.data(using: String.Encoding.utf8)!)
             return Promise()
@@ -179,14 +186,16 @@ class DataStorage {
     let queue: DispatchQueue
     var name = ""
     var logClosures:[()->()] = [ ]
+    var secKeyRef: SecKey?
 
 
-    init(type: String, headers: [String], patientId: String, publicKey: String, moveOnClose: Bool = false) {
+    init(type: String, headers: [String], patientId: String, publicKey: String, moveOnClose: Bool = false, keyRef: SecKey?) {
         self.patientId = patientId;
         self.publicKey = publicKey;
         self.type = type;
         self.headers = headers;
         self.moveOnClose = moveOnClose
+        self.secKeyRef = keyRef
 
         queue = DispatchQueue(label: "com.rocketfarm.beiwe.dataqueue." + type, attributes: [])
         logClosures = [ ]
@@ -213,6 +222,8 @@ class DataStorage {
         }
         let name = patientId + "_" + type + "_" + String(Int64(Date().timeIntervalSince1970 * 1000));
         self.name = name
+        errMsg = ""
+        hasError = false;
 
         realFilename = DataStorageManager.currentDataDirectory().appendingPathComponent(name + DataStorageManager.dataFileSuffix)
         if (moveOnClose) {
@@ -227,19 +238,23 @@ class DataStorage {
         aesKey = Crypto.sharedInstance.newAesKey(keyLength);
         if let aesKey = aesKey {
             do {
-                let b64aes = Crypto.sharedInstance.base64ToBase64URL(aesKey.base64EncodedString(options: []))
-                //log.info("B64Aes for \(realFilename!): \(b64aes)")
-                let rsaLine = try Crypto.sharedInstance.base64ToBase64URL(SwiftyRSA.encryptString(b64aes, publicKeyId: PersistentPasswordManager.sharedInstance.publicKeyName(self.patientId), padding: SecPadding())) + "\n";
-                lines = [ rsaLine ];
-                //log.info("RSALine: \(rsaLine)")
+                var rsaLine: String?
+                if let keyRef = self.secKeyRef {
+                    rsaLine = try Crypto.sharedInstance.base64ToBase64URL(SwiftyRSA.encryptString(Crypto.sharedInstance.base64ToBase64URL(aesKey.base64EncodedString()), publicKey: keyRef, padding: [])) + "\n";
+                } else {
+                    rsaLine = try Crypto.sharedInstance.base64ToBase64URL(SwiftyRSA.encryptString(Crypto.sharedInstance.base64ToBase64URL(aesKey.base64EncodedString()), publicKeyId: PersistentPasswordManager.sharedInstance.publicKeyName(self.patientId), padding: [])) + "\n";
+                }
+                lines = [ rsaLine! ];
                 _writeLine(headers.joined(separator: DataStorage.delimiter))
-            } catch {
-                errMsg = "Failed to RSA encrypt AES key"
+            } catch let unkErr {
+                errMsg = "RSAEncErr: " + String(describing: unkErr)
+                lines = [ errMsg + "\n" ];
                 log.error(errMsg)
                 hasError = true;
             }
         } else {
             errMsg = "Failed to generate AES key"
+            lines = [ errMsg + "\n" ];
             log.error(errMsg)
             hasError = true;
         }
@@ -385,6 +400,7 @@ class DataStorageManager {
     var publicKey: String?;
     var storageTypes: [String: DataStorage] = [:];
     var study: Study?;
+    var secKeyRef: SecKey?;
 
     static func currentDataDirectory() -> URL {
         let dirPaths = NSSearchPathForDirectoriesInDomains(.cachesDirectory,
@@ -417,17 +433,19 @@ class DataStorageManager {
         }
     }
 
-    func setCurrentStudy(_ study: Study) {
+    func setCurrentStudy(_ study: Study, secKeyRef: SecKey?) {
         self.study = study;
+        self.secKeyRef = secKeyRef
         if let publicKey = study.studySettings?.clientPublicKey {
             self.publicKey = publicKey
         }
+
     }
 
     func createStore(_ type: String, headers: [String]) -> DataStorage? {
         if (storageTypes[type] == nil) {
             if let publicKey = publicKey, let patientId = study?.patientId {
-                storageTypes[type] = DataStorage(type: type, headers: headers, patientId: patientId, publicKey: publicKey);
+                storageTypes[type] = DataStorage(type: type, headers: headers, patientId: patientId, publicKey: publicKey, keyRef: secKeyRef);
             } else {
                 log.error("No public key found! Can't store data");
                 return nil;
@@ -526,5 +544,9 @@ class DataStorageManager {
                 }
                 return Promise()
         }
+    }
+
+    func createEncryptedFile(type: String, suffix: String) -> EncryptedStorage {
+        return EncryptedStorage(type: type, suffix: suffix, patientId: study!.patientId!, publicKey: PersistentPasswordManager.sharedInstance.publicKeyName(study!.patientId!), keyRef: secKeyRef)
     }
 }

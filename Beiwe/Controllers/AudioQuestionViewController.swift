@@ -270,7 +270,7 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
             }
             let surveyId = self.activeSurvey.survey?.surveyId;
             let name = "voiceRecording" + "_" + surveyId!;
-            let encFile = EncryptedStorage(type: name, suffix: suffix, patientId: study.patientId!, publicKey: PersistentPasswordManager.sharedInstance.publicKeyName(study.patientId!))
+            let encFile = DataStorageManager.sharedInstance.createEncryptedFile(type: name, suffix: suffix)
             return encFile.open().then {
                 return self.writeSomeData(fileHandle, encFile: encFile)
             }.always {

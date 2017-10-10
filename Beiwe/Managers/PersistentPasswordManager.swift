@@ -37,8 +37,9 @@ struct PersistentPasswordManager {
         keychain.set(password, forKey: keyForStudy(study, prefix: passwordKeyPrefix), withAccess: .accessibleAlwaysThisDeviceOnly);
     }
 
-    func storePublicKeyForStudy(_ publicKey: String, patientId: String, study: String = Constants.defaultStudyId) throws {
-        try SwiftyRSA.storePublicKey(publicKey, keyId: publicKeyName(patientId, study: study))
+    func storePublicKeyForStudy(_ publicKey: String, patientId: String, study: String = Constants.defaultStudyId) throws -> SecKey {
+        let keyref = try SwiftyRSA.storePublicKey(publicKey, keyId: publicKeyName(patientId, study: study))
+        return keyref
     }
 
     func publicKeyName(_ patientId: String, study: String = Constants.defaultStudyId) -> String {

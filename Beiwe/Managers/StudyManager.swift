@@ -18,6 +18,7 @@ class StudyManager {
     let MAX_UPLOAD_DATA: Int64 = 250 * (1024 * 1024)
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     let calendar = Calendar.current;
+    var keyRef: SecKey?;
 
     var currentStudy: Study?;
     var gpsManager: GPSManager?;
@@ -50,6 +51,7 @@ class StudyManager {
         guard let currentStudy = currentStudy, gpsManager == nil else {
             return;
         }
+        var pkey: SecKey?;
         /* Setup APIManager's security */
         ApiManager.sharedInstance.password = PersistentPasswordManager.sharedInstance.passwordForStudy() ?? "";
         ApiManager.sharedInstance.customApiUrl = currentStudy.customApiUrl;
@@ -57,7 +59,8 @@ class StudyManager {
             ApiManager.sharedInstance.patientId = patientId;
             if let clientPublicKey = currentStudy.studySettings?.clientPublicKey {
                 do {
-                    try PersistentPasswordManager.sharedInstance.storePublicKeyForStudy(clientPublicKey, patientId: patientId);
+                    let pkey = try PersistentPasswordManager.sharedInstance.storePublicKeyForStudy(clientPublicKey, patientId: patientId);
+                    keyRef = pkey
                 } catch {
                     log.error("Failed to store RSA key in keychain.");
                 }
@@ -72,7 +75,7 @@ class StudyManager {
             return;
         }
         setApiCredentials()
-        DataStorageManager.sharedInstance.setCurrentStudy(self.currentStudy!);
+        DataStorageManager.sharedInstance.setCurrentStudy(self.currentStudy!, secKeyRef: keyRef);
         self.prepareDataServices();
         NotificationCenter.default.addObserver(self, selector: #selector(self.reachabilityChanged), name: ReachabilityChangedNotification, object: nil)
 
@@ -133,7 +136,7 @@ class StudyManager {
         study.nextSurveyCheck = currentTime + Int64(studySettings.checkForNewSurveysFreqSeconds);
 
         study.participantConsented = true;
-        DataStorageManager.sharedInstance.setCurrentStudy(study)
+        DataStorageManager.sharedInstance.setCurrentStudy(study, secKeyRef: keyRef)
         DataStorageManager.sharedInstance.createDirectories();
         return Recline.shared.save(study).then { _ -> Promise<Bool> in
             return self.checkSurveys();

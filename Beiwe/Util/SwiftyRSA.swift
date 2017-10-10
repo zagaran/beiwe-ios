@@ -73,16 +73,22 @@ open class SwiftyRSA: NSObject {
         return try rsa.encryptString(str, publicKey: key, padding: padding)
     }
 
+    open class func encryptString(_ str: String, publicKey: SecKey, padding: SecPadding = defaultPadding) throws -> String {
+        let rsa = SwiftyRSA()
+        return try rsa.encryptString(str, publicKey: publicKey, padding: padding)
+    }
+
     open class func decryptString(_ str: String, privateKeyPEM: String, padding: SecPadding = defaultPadding) throws -> String {
         let rsa = SwiftyRSA()
         let key = try rsa.privateKeyFromPEMString(privateKeyPEM)
         return try rsa.decryptString(str, privateKey: key, padding: padding)
     }
 
-    open class func storePublicKey(_ publicKeyPEM: String, keyId: String) throws  {
+    open class func storePublicKey(_ publicKeyPEM: String, keyId: String) throws -> SecKey  {
         let rsa = SwiftyRSA()
         let data = try rsa.dataFromPEMKey(publicKeyPEM)
-        try rsa.addKey(data, isPublic: true, keyId: keyId)
+        let keyref = try rsa.addKey(data, isPublic: true, keyId: keyId)
+        return keyref
     }
 
 
@@ -120,7 +126,7 @@ open class SwiftyRSA: NSObject {
 
         let status = SecKeyEncrypt(publicKey, padding, plainTextData, plainTextDataLength, &encryptedData, &encryptedDataLength)
         if status != noErr {
-            throw SwiftyRSAError(message: "Couldn't encrypt provided string. OSStatus: \(status)")
+            throw SwiftyRSAError(message: "encryptStringErr. OSStatus: \(status)")
         }
 
         let data = Data(bytes: UnsafePointer<UInt8>(encryptedData), count: encryptedDataLength)
@@ -230,10 +236,10 @@ open class SwiftyRSA: NSObject {
         var keyRef: AnyObject? = nil
         keyDict.setObject(NSNumber(value: true as Bool), forKey: kSecReturnRef as! NSCopying)
         keyDict.setObject(kSecAttrKeyTypeRSA,   forKey: kSecAttrKeyType as! NSCopying)
-        SecItemCopyMatching(keyDict as CFDictionary, &keyRef)
+        let status = SecItemCopyMatching(keyDict as CFDictionary, &keyRef)
 
         guard let unwrappedKeyRef = keyRef else {
-            throw SwiftyRSAError(message: "Couldn't get key reference from the keychain")
+            throw SwiftyRSAError(message: "fetchKeyErr. OSStatus: \(status)")
         }
         
         return unwrappedKeyRef as! SecKey
