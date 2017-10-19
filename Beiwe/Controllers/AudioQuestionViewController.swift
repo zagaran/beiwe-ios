@@ -255,12 +255,14 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
                 }
             }
             /* We're done... */
+            AppEventManager.sharedInstance.logAppEvent(event: "audio_save_closing", msg: "Closing audio file", d1: encFile.realFilename.lastPathComponent)
             return encFile.close()
         }
 
     }
 
     func saveEncryptedAudio() -> Promise<Void> {
+        
         if let study = StudyManager.sharedInstance.currentStudy {
             var fileHandle: FileHandle
             do {
@@ -291,6 +293,7 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
         PKHUD.sharedHUD.userInteractionOnUnderlyingViewsEnabled = false;
 
         HUD.show(.labeledProgress(title: "Saving", subtitle: ""))
+        AppEventManager.sharedInstance.logAppEvent(event: "audio_save", msg: "Save audio pressed")
 
          saveEncryptedAudio().then { _ -> Void in
             self.activeSurvey.isComplete = true;
@@ -298,7 +301,8 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
             StudyManager.sharedInstance.updateActiveSurveys(true);
             HUD.flash(.success, delay: 0.5)
             self.cleanupAndDismiss()
-        }.catch { _ in
+        }.catch { err in
+            AppEventManager.sharedInstance.logAppEvent(event: "audio_save_fail", msg: "Save audio failed", d1: String(describing: err))
             HUD.flash(.labeledError(title: "Error Saving", subtitle: "Audio answer not sent"), delay: 2.0) { finished in
                 self.cleanupAndDismiss()
             }
