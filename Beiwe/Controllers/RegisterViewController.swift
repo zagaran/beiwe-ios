@@ -42,14 +42,17 @@ class RegisterViewController: FormViewController {
             cell.textLabel?.font = font
             cell.detailTextLabel?.font = font;
         }
-        form +++ Section("Register for Study")
-            <<< SVURLRow("server") {
-                $0.title = "Study Sever:"
+        let configServer = Configuration.sharedInstance.settings["config-server"] as? Bool ?? false;
+        var section = Section("Register for Study")
+        if (configServer) {
+            section = section <<< SVURLRow("server") {
+                $0.title = "Study Server:"
                 $0.placeholder = "Server Address";
                 $0.rules = [RequiredRule()]
                 $0.autoValidation = autoValidation
             }
-            <<< SVAccountRow("patientId") {
+        }
+        section = section <<< SVAccountRow("patientId") {
                 $0.title = "User ID:"
                 $0.placeholder = "User ID";
                 $0.rules = [RequiredRule()]
@@ -113,7 +116,10 @@ class RegisterViewController: FormViewController {
                         let clinicianPhone: String? = formValues["clinicianPhone"] as! String?;
                         let raPhone: String? = formValues["raPhone"] as! String?;
                         var customApiUrl: String?;
-                        let server: String? = formValues["server"] as! String?;
+                        var server: String?
+                        if (configServer) {
+                            server = formValues["server"] as! String?;
+                        }
                         if let server = server {
                             customApiUrl = "https://" + server
                         }
@@ -180,6 +186,8 @@ class RegisterViewController: FormViewController {
                         self.presentingViewController?.dismiss(animated: true, completion: nil);
                     }
         }
+
+        form +++ section
 
         let passwordRow: SVPasswordRow? = form.rowBy(tag: "password");
         let confirmRow: SVPasswordRow? = form.rowBy(tag: "confirmPassword");
