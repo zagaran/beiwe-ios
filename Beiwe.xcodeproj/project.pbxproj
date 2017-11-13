@@ -1101,8 +1101,8 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Jukka-Pekka Onnela (6M52R5C7FT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Jukka-Pekka Onnela (6M52R5C7FT)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Harvard University (UHX83HR959)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Harvard University (UHX83HR959)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_BITCODE = NO;
@@ -1133,14 +1133,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				BUNDLE_ID_SUFFIX = "";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 6M52R5C7FT;
+				DEVELOPMENT_TEAM = UHX83HR959;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Beiwe/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = harvard.lab.onnela.beiwe.ios;
 				PRODUCT_NAME = Beiwe2;
-				PROVISIONING_PROFILE = "2e83479d-5eb9-48c4-8c61-a4cb45836653";
-				PROVISIONING_PROFILE_SPECIFIER = "Beiwe Provisioning Profile";
+				PROVISIONING_PROFILE = "29cf203d-4ae5-4bca-b10e-8535d61933e8";
+				PROVISIONING_PROFILE_SPECIFIER = "Beiwe2 app";
 				SWIFT_OBJC_BRIDGING_HEADER = "Beiwe-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
