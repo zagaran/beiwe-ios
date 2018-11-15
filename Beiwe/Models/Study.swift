@@ -29,6 +29,8 @@ class Study : ReclineObject {
     var submittedAudioSurveys: Int = 0;
     var submittedTrackingSurveys: Int = 0;
     var customApiUrl: String?;
+    var fuzzGpsLongitudeOffset: Double = 0.0;
+    var fuzzGpsLatitudeOffset: Double = 0.0;
 
     var surveys: [Survey] = [ ];
     var activeSurveys: [String:ActiveSurvey] = [:]
@@ -74,7 +76,8 @@ class Study : ReclineObject {
         missedUploadCheck <- map["missedUploadCheck"]
         lastUploadSuccess <- map["lastUploadSuccess"]
         customApiUrl <- map["customApiUrl"]
-
+        fuzzGpsLongitudeOffset <- map["fuzzGpsLongitudeOffset"]
+        fuzzGpsLatitudeOffset <- map["fuzzGpsLatitudeOffset"]
     }
 
 }

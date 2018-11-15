@@ -92,6 +92,12 @@ class StudyManager {
         /* Move non current files out.  Probably not necessary, would happen later anyway */
         DataStorageManager.sharedInstance.prepareForUpload();
         gpsManager = GPSManager();
+        
+        // Check if gps fuzzing is enabled for currentStudy
+        gpsManager?.enableGpsFuzzing = studySettings.fuzzGps ? true : false
+        gpsManager?.fuzzGpsLatitudeOffset = (currentStudy?.fuzzGpsLatitudeOffset)!
+        gpsManager?.fuzzGpsLongitudeOffset = (currentStudy?.fuzzGpsLongitudeOffset)!
+        
         gpsManager!.addDataService(AppEventManager.sharedInstance)
         if (studySettings.gps && studySettings.gpsOnDurationSeconds > 0) {
             gpsManager!.addDataService(studySettings.gpsOnDurationSeconds, off: studySettings.gpsOffDurationSeconds, handler: gpsManager!)
