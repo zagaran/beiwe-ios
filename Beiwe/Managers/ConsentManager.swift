@@ -24,10 +24,10 @@ class WaitForPermissionsRule : ORKStepNavigationRule {
     init(nextTask: @escaping ((_ taskResult: ORKTaskResult) -> String)) {
         self.nextTask = nextTask
 
-        super.init(coder: NSCoder())!
+        super.init(coder: NSCoder())
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     override func identifierForDestinationStep(with taskResult: ORKTaskResult)  -> String {

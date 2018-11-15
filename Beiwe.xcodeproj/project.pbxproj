@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1173B23E1EF4B39C998B16DD /* Pods_Beiwe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3F49D21194624D3A52EF64D /* Pods_Beiwe.framework */; };
 		831CC5801F79AF6400CDEFB0 /* AppEventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831CC57F1F79AF6400CDEFB0 /* AppEventManager.swift */; };
 		832FFC1E1CC8506900F2E1EF /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832FFC1D1CC8506900F2E1EF /* GradientView.swift */; };
 		832FFC221CC85A7C00F2E1EF /* BWButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832FFC211CC85A7C00F2E1EF /* BWButton.swift */; };
@@ -75,15 +76,13 @@
 		83F98C441C923C3600E0B64B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83F98C421C923C3600E0B64B /* LaunchScreen.storyboard */; };
 		83FDCFD81CBC8E4700AFF716 /* TrackingSurveyPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FDCFD71CBC8E4700AFF716 /* TrackingSurveyPresenter.swift */; };
 		83FDCFDA1CBCB6D300AFF716 /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FDCFD91CBCB6D300AFF716 /* ChangePasswordViewController.swift */; };
-		D7393008AC8F91CFA8F75459 /* Pods_Beiwe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D01E03E1685830D938B345DA /* Pods_Beiwe.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0C28CF531AD7B3D35000BA28 /* Pods-Beiwe.testflight kg.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beiwe.testflight kg.xcconfig"; path = "Pods/Target Support Files/Pods-Beiwe/Pods-Beiwe.testflight kg.xcconfig"; sourceTree = "<group>"; };
-		1859E756C67EFE5FEECB7BEE /* Pods-Beiwe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beiwe.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Beiwe/Pods-Beiwe.debug.xcconfig"; sourceTree = "<group>"; };
-		36EDF07B2D8E6AF15C179925 /* Pods-Beiwe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beiwe.release.xcconfig"; path = "Pods/Target Support Files/Pods-Beiwe/Pods-Beiwe.release.xcconfig"; sourceTree = "<group>"; };
-		38F9762E5747F220806BB64A /* Pods-Beiwe.testflight external.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beiwe.testflight external.xcconfig"; path = "Pods/Target Support Files/Pods-Beiwe/Pods-Beiwe.testflight external.xcconfig"; sourceTree = "<group>"; };
+		17C4B8175F8CF5B5407DEA50 /* Pods-Beiwe.testflight kg.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beiwe.testflight kg.xcconfig"; path = "Pods/Target Support Files/Pods-Beiwe/Pods-Beiwe.testflight kg.xcconfig"; sourceTree = "<group>"; };
 		4D73594BB9D98FBE3AA1E023 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6BE1CD8AB3101933EE9A89CE /* Pods-Beiwe.testflight internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beiwe.testflight internal.xcconfig"; path = "Pods/Target Support Files/Pods-Beiwe/Pods-Beiwe.testflight internal.xcconfig"; sourceTree = "<group>"; };
+		7804DE752C816F583949D1A4 /* Pods-Beiwe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beiwe.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Beiwe/Pods-Beiwe.debug.xcconfig"; sourceTree = "<group>"; };
 		831CC57F1F79AF6400CDEFB0 /* AppEventManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEventManager.swift; sourceTree = "<group>"; };
 		832FFC1D1CC8506900F2E1EF /* GradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		832FFC211CC85A7C00F2E1EF /* BWButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BWButton.swift; sourceTree = "<group>"; };
@@ -163,9 +162,10 @@
 		83F98C451C923C3600E0B64B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		83FDCFD71CBC8E4700AFF716 /* TrackingSurveyPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingSurveyPresenter.swift; sourceTree = "<group>"; };
 		83FDCFD91CBCB6D300AFF716 /* ChangePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewController.swift; sourceTree = "<group>"; };
-		D01E03E1685830D938B345DA /* Pods_Beiwe.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Beiwe.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D4903A730C06BC2993F77F77 /* Pods-Beiwe.testflight internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beiwe.testflight internal.xcconfig"; path = "Pods/Target Support Files/Pods-Beiwe/Pods-Beiwe.testflight internal.xcconfig"; sourceTree = "<group>"; };
-		FB6A8DD0D5BBD86CEBD12A4A /* Pods-Beiwe.harvard.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beiwe.harvard.xcconfig"; path = "Pods/Target Support Files/Pods-Beiwe/Pods-Beiwe.harvard.xcconfig"; sourceTree = "<group>"; };
+		94A69B255EC17D5859DD273C /* Pods-Beiwe.harvard.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beiwe.harvard.xcconfig"; path = "Pods/Target Support Files/Pods-Beiwe/Pods-Beiwe.harvard.xcconfig"; sourceTree = "<group>"; };
+		A3F49D21194624D3A52EF64D /* Pods_Beiwe.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Beiwe.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D16F300F4AD663617AEF4916 /* Pods-Beiwe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beiwe.release.xcconfig"; path = "Pods/Target Support Files/Pods-Beiwe/Pods-Beiwe.release.xcconfig"; sourceTree = "<group>"; };
+		F69132CC13AD41995B997EEB /* Pods-Beiwe.testflight external.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beiwe.testflight external.xcconfig"; path = "Pods/Target Support Files/Pods-Beiwe/Pods-Beiwe.testflight external.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -173,22 +173,22 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D7393008AC8F91CFA8F75459 /* Pods_Beiwe.framework in Frameworks */,
+				1173B23E1EF4B39C998B16DD /* Pods_Beiwe.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0E527189090F10B66CB4ACB6 /* Pods */ = {
+		4424C1B68D81046E90E74510 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				1859E756C67EFE5FEECB7BEE /* Pods-Beiwe.debug.xcconfig */,
-				D4903A730C06BC2993F77F77 /* Pods-Beiwe.testflight internal.xcconfig */,
-				0C28CF531AD7B3D35000BA28 /* Pods-Beiwe.testflight kg.xcconfig */,
-				38F9762E5747F220806BB64A /* Pods-Beiwe.testflight external.xcconfig */,
-				36EDF07B2D8E6AF15C179925 /* Pods-Beiwe.release.xcconfig */,
-				FB6A8DD0D5BBD86CEBD12A4A /* Pods-Beiwe.harvard.xcconfig */,
+				7804DE752C816F583949D1A4 /* Pods-Beiwe.debug.xcconfig */,
+				6BE1CD8AB3101933EE9A89CE /* Pods-Beiwe.testflight internal.xcconfig */,
+				17C4B8175F8CF5B5407DEA50 /* Pods-Beiwe.testflight kg.xcconfig */,
+				F69132CC13AD41995B997EEB /* Pods-Beiwe.testflight external.xcconfig */,
+				D16F300F4AD663617AEF4916 /* Pods-Beiwe.release.xcconfig */,
+				94A69B255EC17D5859DD273C /* Pods-Beiwe.harvard.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -197,7 +197,7 @@
 			isa = PBXGroup;
 			children = (
 				4D73594BB9D98FBE3AA1E023 /* Pods.framework */,
-				D01E03E1685830D938B345DA /* Pods_Beiwe.framework */,
+				A3F49D21194624D3A52EF64D /* Pods_Beiwe.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -356,7 +356,7 @@
 				83F98C381C923C3600E0B64B /* Beiwe */,
 				83F98C371C923C3600E0B64B /* Products */,
 				5EEADFF9AED027E0BE53BF6C /* Frameworks */,
-				0E527189090F10B66CB4ACB6 /* Pods */,
+				4424C1B68D81046E90E74510 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -400,7 +400,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 83F98C481C923C3600E0B64B /* Build configuration list for PBXNativeTarget "Beiwe" */;
 			buildPhases = (
-				75362CF9B47E2F2739460379 /* [CP] Check Pods Manifest.lock */,
+				3117C101E3641DF554EA5CF8 /* [CP] Check Pods Manifest.lock */,
 				83F98C321C923C3600E0B64B /* Sources */,
 				83F98C331C923C3600E0B64B /* Frameworks */,
 				83F98C341C923C3600E0B64B /* Resources */,
@@ -408,8 +408,7 @@
 				83F98C501C925F2500E0B64B /* ShellScript */,
 				83F98C511C925F6F00E0B64B /* ShellScript */,
 				83F98C4F1C9250A600E0B64B /* Run Script */,
-				01F202B01C005ABDD8F3C785 /* [CP] Embed Pods Frameworks */,
-				758CE49DFF02DD1C661AE1B2 /* [CP] Copy Pods Resources */,
+				A0946EA2265200164FEAE555 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -432,8 +431,9 @@
 				TargetAttributes = {
 					83F98C351C923C3600E0B64B = {
 						CreatedOnToolsVersion = 7.2;
-						DevelopmentTeam = 6M52R5C7FT;
+						DevelopmentTeam = WRY9L72ZUW;
 						LastSwiftMigration = 0830;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -473,85 +473,26 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		01F202B01C005ABDD8F3C785 /* [CP] Embed Pods Frameworks */ = {
+		3117C101E3641DF554EA5CF8 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Beiwe/Pods-Beiwe-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
-				"${BUILT_PRODUCTS_DIR}/EmitterKit/EmitterKit.framework",
-				"${BUILT_PRODUCTS_DIR}/Eureka/Eureka.framework",
-				"${BUILT_PRODUCTS_DIR}/Hakuba/Hakuba.framework",
-				"${BUILT_PRODUCTS_DIR}/IDZSwiftCommonCrypto/IDZSwiftCommonCrypto.framework",
-				"${BUILT_PRODUCTS_DIR}/KeychainSwift/KeychainSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/ObjcExceptionBridging/ObjcExceptionBridging.framework",
-				"${BUILT_PRODUCTS_DIR}/ObjectMapper/ObjectMapper.framework",
-				"${BUILT_PRODUCTS_DIR}/PKHUD/PKHUD.framework",
-				"${BUILT_PRODUCTS_DIR}/PermissionScope/PermissionScope.framework",
-				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
-				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/ReachabilitySwift.framework",
-				"${BUILT_PRODUCTS_DIR}/ResearchKit/ResearchKit.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftValidator/SwiftValidator.framework",
-				"${BUILT_PRODUCTS_DIR}/XCGLogger/XCGLogger.framework",
-				"${BUILT_PRODUCTS_DIR}/XLActionController/XLActionController.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/EmitterKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Eureka.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Hakuba.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IDZSwiftCommonCrypto.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjcExceptionBridging.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjectMapper.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PKHUD.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PermissionScope.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReachabilitySwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ResearchKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftValidator.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XCGLogger.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XLActionController.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Beiwe/Pods-Beiwe-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		75362CF9B47E2F2739460379 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+			inputFileListPaths = (
 			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-Beiwe-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		758CE49DFF02DD1C661AE1B2 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Beiwe/Pods-Beiwe-resources.sh\"\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		83E3DE861CA3A41E00EB5349 /* ShellScript */ = {
@@ -565,7 +506,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo \"Bundle ID: \" ${PRODUCT_BUNDLE_IDENTIFIER}\necho \"Product name: \" ${PRODUCT_NAME}\necho \"Copy Configuration files: ${TARGET_NAME_SUFFIX}\"\nCONFIG_NAME=${TARGET_NAME_SUFFIX}\nif [ \"$CONFIG_NAME\" == \"\" ]; then\n    CONFIG_NAME=\"Prod\"\nfi\necho $CONFIG_NAME\ncp \"${SRCROOT}/Beiwe/Configuration/Config-Default.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app\"\ncp \"${SRCROOT}/Beiwe/Configuration/Config-${CONFIG_NAME}.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/Config.plist\"";
+			shellScript = "echo \"Bundle ID: \" ${PRODUCT_BUNDLE_IDENTIFIER}\necho \"Product name: \" ${PRODUCT_NAME}\necho \"Copy Configuration files: ${TARGET_NAME_SUFFIX}\"\nCONFIG_NAME=${TARGET_NAME_SUFFIX}\nif [ \"$CONFIG_NAME\" == \"\" ]; then\n    CONFIG_NAME=\"Prod\"\nfi\necho $CONFIG_NAME\ncp \"${SRCROOT}/Beiwe/Configuration/Config-Default.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app\"\ncp \"${SRCROOT}/Beiwe/Configuration/Config-${CONFIG_NAME}.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/Config.plist\"\n";
 		};
 		83F98C4F1C9250A600E0B64B /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -606,6 +547,58 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Skip icon badging for now...\nexit 0\nif [[ \"$CONFIGURATION\" == \"Release\" ]]; then\n  exit 0\nfi\nIFS=$'\\n'\n#VERSION=`git describe --dirty |sed -e \"s/^[^0-9]*//\"`\nBUILD=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\")\nVERSION=$(/usr/libexec/PlistBuddy -c \"Print CFBundleShortVersionString\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\")\n#VERSION=\"0.1.2-243-abcdefg\"\nPATH=${PATH}:/usr/local/bin\necho \"Ver: $VERSION, build: $BUILD\"\n\nfunction generateIcon () {\n    BASE_IMAGE_NAME=$1\n\n    TARGET_PATH=\"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/${BASE_IMAGE_NAME}\"\n    echo $TARGET_PATH\n    echo $SRCROOT\n    echo $(find ${SRCROOT} -name \"AppIcon60x60@2x.png\")\n    BASE_IMAGE_PATH=$(find ${SRCROOT} -name ${BASE_IMAGE_NAME})\n    WIDTH=$(identify -format %w ${BASE_IMAGE_PATH})\n    NAME_FONT_SIZE=$(echo \"$WIDTH * .20\" | bc -l)\n    VERSION_FONT_SIZE=$(echo \"$WIDTH * .12\" | bc -l)\n    echo \"font size $NAME_FONT_SIZE, $VERSION_FONT_SIZE\"\n\n\n    convert ${BASE_IMAGE_PATH} -fill white -font Times-Bold -pointsize ${NAME_FONT_SIZE} -gravity north -annotate +0+3 ${TARGET_NAME_SUFFIX} -gravity south -pointsize ${VERSION_FONT_SIZE} -annotate +0+5 \"${BUILD}\" ${TARGET_PATH}\n}\n\ngenerateIcon \"AppIcon60x60@2x.png\"\n#generateIcon \"AppIcon60x60@3x.png\"\n#generateIcon \"AppIcon76x76~ipad.png\"\n#generateIcon \"AppIcon76x76@2x~ipad.png\"";
+		};
+		A0946EA2265200164FEAE555 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Beiwe/Pods-Beiwe-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/EmitterKit/EmitterKit.framework",
+				"${BUILT_PRODUCTS_DIR}/Eureka/Eureka.framework",
+				"${BUILT_PRODUCTS_DIR}/Hakuba/Hakuba.framework",
+				"${BUILT_PRODUCTS_DIR}/IDZSwiftCommonCrypto/IDZSwiftCommonCrypto.framework",
+				"${BUILT_PRODUCTS_DIR}/KeychainSwift/KeychainSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/ObjcExceptionBridging/ObjcExceptionBridging.framework",
+				"${BUILT_PRODUCTS_DIR}/ObjectMapper/ObjectMapper.framework",
+				"${BUILT_PRODUCTS_DIR}/PKHUD/PKHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/PermissionScope/PermissionScope.framework",
+				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
+				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/ReachabilitySwift.framework",
+				"${BUILT_PRODUCTS_DIR}/ResearchKit/ResearchKit.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftValidator/SwiftValidator.framework",
+				"${BUILT_PRODUCTS_DIR}/XCGLogger/XCGLogger.framework",
+				"${BUILT_PRODUCTS_DIR}/XLActionController/XLActionController.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/EmitterKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Eureka.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Hakuba.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IDZSwiftCommonCrypto.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjcExceptionBridging.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjectMapper.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PKHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PermissionScope.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReachabilitySwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ResearchKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftValidator.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XCGLogger.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XLActionController.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Beiwe/Pods-Beiwe-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -757,17 +750,22 @@
 		};
 		83AF04231CAD6CE700A37225 /* TestFlight KG */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0C28CF531AD7B3D35000BA28 /* Pods-Beiwe.testflight kg.xcconfig */;
+			baseConfigurationReference = 17C4B8175F8CF5B5407DEA50 /* Pods-Beiwe.testflight kg.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				BUNDLE_ID_SUFFIX = kgint;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = WRY9L72ZUW;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Beiwe/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.rocketfarmstudios.kg.beiwe.kgint;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zagaran.beiwe.jj;
 				PRODUCT_NAME = "$(TARGET_NAME)${TARGET_NAME_SUFFIX}";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Beiwe-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -855,8 +853,8 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Jukka-Pekka Onnela (6M52R5C7FT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Jukka-Pekka Onnela (6M52R5C7FT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_BITCODE = NO;
@@ -882,20 +880,23 @@
 		};
 		83F98C491C923C3600E0B64B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1859E756C67EFE5FEECB7BEE /* Pods-Beiwe.debug.xcconfig */;
+			baseConfigurationReference = 7804DE752C816F583949D1A4 /* Pods-Beiwe.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				BUNDLE_ID_SUFFIX = debug;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = G7SF52LNB8;
+				DEVELOPMENT_TEAM = WRY9L72ZUW;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Beiwe/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.rocketfarmstudios.beiwe.debug;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zagaran.beiwe.jj;
 				PRODUCT_NAME = "$(TARGET_NAME)${TARGET_NAME_SUFFIX}";
-				PROVISIONING_PROFILE = "5a46d0b3-ef70-4afe-8cdb-a59d454b8e34";
-				PROVISIONING_PROFILE_SPECIFIER = "New Beiwe pp";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Beiwe-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
@@ -906,19 +907,22 @@
 		};
 		83F98C4A1C923C3600E0B64B /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 36EDF07B2D8E6AF15C179925 /* Pods-Beiwe.release.xcconfig */;
+			baseConfigurationReference = D16F300F4AD663617AEF4916 /* Pods-Beiwe.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				BUNDLE_ID_SUFFIX = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 6M52R5C7FT;
+				DEVELOPMENT_TEAM = WRY9L72ZUW;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Beiwe/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = lab.onnela.beiwe.ios;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zagaran.beiwe.jj;
 				PRODUCT_NAME = "$(TARGET_NAME)${TARGET_NAME_SUFFIX}";
-				PROVISIONING_PROFILE = "2e83479d-5eb9-48c4-8c61-a4cb45836653";
-				PROVISIONING_PROFILE_SPECIFIER = "Beiwe Provisioning Profile";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Beiwe-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -983,17 +987,22 @@
 		};
 		83F98C4C1C9243A800E0B64B /* TestFlight Internal */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D4903A730C06BC2993F77F77 /* Pods-Beiwe.testflight internal.xcconfig */;
+			baseConfigurationReference = 6BE1CD8AB3101933EE9A89CE /* Pods-Beiwe.testflight internal.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				BUNDLE_ID_SUFFIX = tfint;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = WRY9L72ZUW;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Beiwe/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.rocketfarmstudios.beiwe.tint;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zagaran.beiwe.jj;
 				PRODUCT_NAME = "$(TARGET_NAME)${TARGET_NAME_SUFFIX}";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Beiwe-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1058,17 +1067,22 @@
 		};
 		83F98C4E1C9243BB00E0B64B /* TestFlight External */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 38F9762E5747F220806BB64A /* Pods-Beiwe.testflight external.xcconfig */;
+			baseConfigurationReference = F69132CC13AD41995B997EEB /* Pods-Beiwe.testflight external.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				BUNDLE_ID_SUFFIX = tfext;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = WRY9L72ZUW;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Beiwe/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.rocketfarmstudios.beiwe.text;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zagaran.beiwe.jj;
 				PRODUCT_NAME = "$(TARGET_NAME)${TARGET_NAME_SUFFIX}";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Beiwe-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1101,8 +1115,8 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Harvard University (UHX83HR959)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Harvard University (UHX83HR959)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_BITCODE = NO;
@@ -1128,19 +1142,22 @@
 		};
 		83FCB39C1F99485B0039366A /* Harvard */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FB6A8DD0D5BBD86CEBD12A4A /* Pods-Beiwe.harvard.xcconfig */;
+			baseConfigurationReference = 94A69B255EC17D5859DD273C /* Pods-Beiwe.harvard.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				BUNDLE_ID_SUFFIX = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = UHX83HR959;
+				DEVELOPMENT_TEAM = WRY9L72ZUW;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Beiwe/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = harvard.lab.onnela.beiwe.ios;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zagaran.beiwe.jj;
 				PRODUCT_NAME = Beiwe2;
-				PROVISIONING_PROFILE = "29cf203d-4ae5-4bca-b10e-8535d61933e8";
-				PROVISIONING_PROFILE_SPECIFIER = "Beiwe2 app";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Beiwe-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;

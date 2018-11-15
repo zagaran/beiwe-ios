@@ -1,24 +1,25 @@
-platform :ios, '9.0'
+platform :ios, '9.1'
 
 target 'Beiwe' do
   use_frameworks!
   pod 'Crashlytics', '~> 3.4'
   pod 'KeychainSwift', '~> 8.0'
-  pod "PromiseKit", "~> 4.4"
+  pod "PromiseKit"
   pod 'Alamofire', '~> 4.5'
-  pod 'ObjectMapper', :git => 'https://github.com/Hearst-DD/ObjectMapper.git', :branch => 'swift-4'
-  pod 'Eureka', :git => 'https://github.com/xmartlabs/Eureka.git', :branch => 'feature/Xcode9-Swift4'
+  pod 'ObjectMapper', :git => 'https://github.com/Hearst-DD/ObjectMapper.git', :branch => 'master'
+  pod 'Eureka'
   pod 'SwiftValidator', :git => 'https://github.com/jpotts18/SwiftValidator.git', :branch => 'master'
   pod "PKHUD", :git => 'https://github.com/pkluz/PKHUD.git', :branch => 'swift4'
-  pod 'IDZSwiftCommonCrypto', '~> 0.9'
+  pod 'IDZSwiftCommonCrypto'
   pod 'couchbase-lite-ios'
-  pod 'ResearchKit', :git => 'https://github.com/ResearchKit/ResearchKit.git'
-  pod 'ReachabilitySwift'
+  pod 'ResearchKit'
+  pod 'ReachabilitySwift', '~>3'
   pod 'EmitterKit', '~> 5.1'
-  pod 'PermissionScope', :git => 'git@github.com:RocketFarm/PermissionScope.git', :branch => 'master'
+  pod 'PermissionScope', :git => 'https://github.com/RocketFarm/PermissionScope.git', :branch => 'master'
   pod 'Hakuba', :git => 'https://github.com/eskizyen/Hakuba.git', :branch => 'Swift3'
-  pod 'XLActionController', :git => 'https://github.com/xmartlabs/XLActionController.git', :branch => 'swift4'
+  pod 'XLActionController'
   pod 'XCGLogger', '~> 5.0.1'
+
 end
 
 post_install do |installer|

@@ -81,11 +81,11 @@ class BWSkipStepNavigationRule : ORKSkipStepNavigationRule {
         }();
 
     convenience init(displayIf: [String:AnyObject]) {
-        self.init(coder: NSCoder())!;
+        self.init(coder: NSCoder());
         self.displayIf = displayIf;
     }
 
-    required init?(coder: NSCoder) {
+    required init(coder: NSCoder) {
         super.init(coder: coder);
     }
     

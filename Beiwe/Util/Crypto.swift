@@ -31,9 +31,9 @@ class Crypto {
 
     func randomBytes(_ length: Int) -> Data? {
         var data = Data(count: length)
-        let result = data.withUnsafeMutableBytes {
+        let result = data.withUnsafeMutableBytes { [count=data.count]
             (mutableBytes: UnsafeMutablePointer<UInt8>) -> Int32 in
-            SecRandomCopyBytes(kSecRandomDefault, data.count, mutableBytes)
+            SecRandomCopyBytes(kSecRandomDefault, count, mutableBytes)
         }
 
         if (result == errSecSuccess) {
