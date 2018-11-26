@@ -31,7 +31,6 @@ class DataServiceStatus {
         self.handler = handler;
         currentlyOn = false;
         nextToggleTime = Date();
-        // nextToggleTime = NSDate().dateByAddingTimeInterval(self.offDurationSeconds);
     }
 }
 
@@ -46,6 +45,9 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
     var isDeferringUpdates = false;
     var nextSurveyUpdate: TimeInterval = 0, nextServiceDate: TimeInterval = 0;
     var timer: Timer?;
+    var enableGpsFuzzing: Bool = false;
+    var fuzzGpsLatitudeOffset: Double = 0.0;
+    var fuzzGpsLongitudeOffset: Double = 0.0;
 
     func gpsAllowed() -> Bool {
         return CLLocationManager.locationServicesEnabled() &&  CLLocationManager.authorizationStatus() == .authorizedAlways;
@@ -96,23 +98,7 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
         }
 
         dataCollectionServices.removeAll();
-        return promise;/*.then(on: DispatchQueue.global(qos: .default)) {
-        } */
-
-        /*
-        var promises: [Promise<Void>] = [];
-        for dataStatus in dataCollectionServices {
-            promises.append(dataStatus.handler.finishCollecting().then(on: DispatchQueue.global(qos: .default)) {
-                print("Returned from finishCollecting")
-                return Promise()
-
-                }.catch(on: DispatchQueue.global(qos: .default)) {_ in
-                    print("err from finish collecting")
-            })
-        }
-        dataCollectionServices.removeAll();
-        return when(fulfilled: promises, on: DispatchQueue.global(qos: .default));
-         */
+        return promise;
     }
 
     func dispatchToServices() -> TimeInterval {
@@ -202,14 +188,6 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
         if (isCollectingGps) {
             recordGpsData(manager, locations: locations);
         }
-
-        /*
-        if (!isCollectingGps && !isDeferringUpdates) {
-            locationManager.allowDeferredLocationUpdatesUntilTraveled(10000, timeout: nextServiceSeconds);
-            isDeferringUpdates = true;
-        }
-        */
-
     }
 
     func locationManager(_ manager: CLLocationManager, didFinishDeferredUpdatesWithError error: Error?) {
@@ -222,10 +200,15 @@ class GPSManager : NSObject, CLLocationManagerDelegate, DataServiceProtocol {
             var data: [String] = [];
 
             //     static let headers = [ "timestamp", "latitude", "longitude", "altitude", "accuracy", "vert_accuracy"];
-
+            var lat = loc.coordinate.latitude
+            var lng = loc.coordinate.longitude
+            if enableGpsFuzzing {
+                lat = lat + fuzzGpsLatitudeOffset
+                lng = ((lng + fuzzGpsLongitudeOffset + 180.0).truncatingRemainder(dividingBy: 360.0) ) - 180.0
+            }
             data.append(String(Int64(loc.timestamp.timeIntervalSince1970 * 1000)))
-            data.append(String(loc.coordinate.latitude))
-            data.append(String(loc.coordinate.longitude))
+            data.append(String(lat))
+            data.append(String(lng))
             data.append(String(loc.altitude))
             data.append(String(loc.horizontalAccuracy))
             gpsStore?.store(data);

@@ -96,6 +96,7 @@ struct StudySettings : Mappable {
     var reachability = false;
     var uploadOverCellular = false;
     var consentSections: [String:ConsentSection] = [:];
+    var fuzzGps = false;
 
     init?(map: Map) {
 
@@ -141,6 +142,7 @@ struct StudySettings : Mappable {
         reachability                   <- map["device_settings.reachability"];
         consentSections                <- map["device_settings.consent_sections"]
         uploadOverCellular             <- map["device_settings.allow_upload_over_cellular_data"]
+        fuzzGps                        <- map["device_settings.use_gps_fuzzing"]
     }
     
 }

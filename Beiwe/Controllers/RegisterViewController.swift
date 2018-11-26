@@ -134,7 +134,11 @@ class RegisterViewController: FormViewController {
                                 let study = Study(patientPhone: phoneNumber, patientId: patientId, studySettings: studySettings, apiUrl: customApiUrl);
                                 study.clinicianPhoneNumber = clinicianPhone
                                 study.raPhoneNumber = raPhone
-                                return StudyManager.sharedInstance.purgeStudies().then {_ in 
+                                if studySettings.fuzzGps {
+                                    study.fuzzGpsLatitudeOffset = self._generateLatitudeOffset()
+                                    study.fuzzGpsLongitudeOffset = self._generateLongitudeOffset()
+                                }
+                                return StudyManager.sharedInstance.purgeStudies().then {_ in
                                     return self.db.save(study)
                                 }
                             }.then { _ -> Promise<Bool> in
@@ -202,6 +206,28 @@ class RegisterViewController: FormViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    
+    /*
+     Generates a random offset between -1 and 1 (thats not between -0.2 and 0.2)
+    */
+    func _generateLatitudeOffset() -> Double {
+        var ran = Double.random(in: -1...1)
+        while(ran <= 0.2 && ran >= -0.2) {
+            ran = Double.random(in: -1...1)
+        }
+        return ran
+    }
+    
+    /*
+     Generates a random offset between -180 and 180 (thats not between -10 and 10)
+    */
+    func _generateLongitudeOffset() -> Double {
+        var ran = Double.random(in: -180...180)
+        while(ran <= 10 && ran >= -10) {
+            ran = Double.random(in: -180...180)
+        }
+        return ran
+    }
 
     /*
     // MARK: - Navigation
