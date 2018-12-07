@@ -10,6 +10,7 @@ import UIKit
 
 class ForgotPasswordHeaderView: UIView {
 
+    @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var patientId: UILabel!
     @IBOutlet weak var callButton: UIButton!
     /*

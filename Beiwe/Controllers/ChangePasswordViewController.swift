@@ -36,7 +36,11 @@ class ChangePasswordViewController: FormViewController {
                 header.onSetupView = { headerView, _ in
                     headerView.patientId.text = StudyManager.sharedInstance.currentStudy?.patientId ?? ""
                     headerView.callButton.addTarget(self, action: #selector(ChangePasswordViewController.callAssistant(_:)), for: UIControlEvents.touchUpInside)
-
+                    // Hide call button if it's disabled in the study settings
+                    if !(StudyManager.sharedInstance.currentStudy?.studySettings?.callResearchAssistantButtonEnabled)! {
+                        headerView.descriptionLabel.text = "Please contact your study's staff and provide them with your Patient ID so they can give you a temporary password."
+                        headerView.callButton.isHidden = true
+                    }
                 }
                 section.header = header
             } else {

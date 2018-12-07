@@ -15,6 +15,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var callClinicianButton: UIButton!
     @IBOutlet weak var loginButton: BWBorderedButton!
     @IBOutlet weak var password: UITextField!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.presentTransparentNavigationBar();
@@ -25,8 +26,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         callClinicianButton.setTitle(clinicianText, for: UIControlState.highlighted)
         if #available(iOS 9.0, *) {
             callClinicianButton.setTitle(clinicianText, for: UIControlState.focused)
-        } else {
-            // Fallback on earlier versions
+        }
+        // Hide call button if it's disabled in the study settings
+        if !(StudyManager.sharedInstance.currentStudy?.studySettings?.callClinicianButtonEnabled)! {
+            callClinicianButton.isHidden = true
         }
 
         password.delegate = self

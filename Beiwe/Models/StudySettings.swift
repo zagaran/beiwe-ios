@@ -97,7 +97,9 @@ struct StudySettings : Mappable {
     var uploadOverCellular = false;
     var consentSections: [String:ConsentSection] = [:];
     var fuzzGps = false;
-
+    var callClinicianButtonEnabled = true;
+    var callResearchAssistantButtonEnabled = true;
+    
     init?(map: Map) {
 
     }
@@ -143,6 +145,8 @@ struct StudySettings : Mappable {
         consentSections                <- map["device_settings.consent_sections"]
         uploadOverCellular             <- map["device_settings.allow_upload_over_cellular_data"]
         fuzzGps                        <- map["device_settings.use_gps_fuzzing"]
+        callClinicianButtonEnabled     <- map["device_settings.call_clinician_button_enabled"]
+        callResearchAssistantButtonEnabled  <- map["device_settings.call_research_assistant_button_enabled"]
     }
     
 }

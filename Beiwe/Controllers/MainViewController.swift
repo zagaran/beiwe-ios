@@ -18,6 +18,7 @@ class MainViewController: UIViewController {
     var hakuba: Hakuba!;
     var selectedSurvey: ActiveSurvey?
 
+    @IBOutlet weak var haveAQuestionLabel: UILabel!
     @IBOutlet weak var callClinicianButton: UIButton!
     @IBOutlet weak var footerSeperator: UIView!
     @IBOutlet var activeSurveyHeader: UIView!
@@ -50,9 +51,14 @@ class MainViewController: UIViewController {
         callClinicianButton.setTitle(clinicianText, for: UIControlState.highlighted)
         if #available(iOS 9.0, *) {
             callClinicianButton.setTitle(clinicianText, for: UIControlState.focused)
-        } else {
-            // Fallback on earlier versions
         }
+        
+        // Hide call button if it's disabled in the study settings
+        if !(StudyManager.sharedInstance.currentStudy?.studySettings?.callClinicianButtonEnabled)! {
+            haveAQuestionLabel.isHidden = true
+            callClinicianButton.isHidden = true
+        }
+        
         listeners += StudyManager.sharedInstance.surveysUpdatedEvent.on { [weak self] data in
             self?.refreshSurveys();
         }
@@ -146,35 +152,9 @@ class MainViewController: UIViewController {
         self.present(actionController, animated: true) {
 
         }
-        
-        
-
     }
+    
     @objc func userButton() {
-        /*
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
-
-        alertController.addAction(UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
-            // ...
-            });
-
-        alertController.addAction(UIAlertAction(title: "Change Password", style: .Default) { (action) in
-            self.changePassword(self)
-            });
-
-        alertController.addAction(UIAlertAction(title: "Logout", style: .Default) { (action) in
-            self.logout(self);
-            });
-
-        alertController.addAction(UIAlertAction(title: "Leave Study", style: .Destructive) { (action) in
-            self.leaveStudy(self);
-            });
-
-        self.presentViewController(alertController, animated: true) {
-            // ...
-        }
-        */
-
         let actionController = BWXLActionController()
         actionController.settings.cancelView.backgroundColor = AppColors.highlightColor
 
@@ -184,29 +164,29 @@ class MainViewController: UIViewController {
             DispatchQueue.main.async {
                 self.changePassword(self);
             }
+        });
+        
+        // Only add Call button if it's enabled by the study
+        if (StudyManager.sharedInstance.currentStudy?.studySettings?.callResearchAssistantButtonEnabled)! {
+            actionController.addAction(Action(ActionData(title: "Call Study Staff"), style: .default) { (action) in
+                DispatchQueue.main.async {
+                    confirmAndCallClinician(self, callAssistant: true)
+                }
             });
-        actionController.addAction(Action(ActionData(title: "Call Study Staff"), style: .default) { (action) in
-            DispatchQueue.main.async {
-                confirmAndCallClinician(self, callAssistant: true)
-            }
-            });
+        }
+        
         actionController.addAction(Action(ActionData(title: "Logout"), style: .default) { (action) in
             DispatchQueue.main.async {
                 self.logout(self);
             }
 
-            });
+        });
         actionController.addAction(Action(ActionData(title: "Leave Study"), style: .destructive) { (action) in
             DispatchQueue.main.async {
                 self.leaveStudy(self);
             }
-            });
-        self.present(actionController, animated: true) {
-            
-        }
-
-
-
+        });
+        self.present(actionController, animated: true)
     }
 
     func infoButton() {
@@ -220,7 +200,6 @@ class MainViewController: UIViewController {
 
     @IBAction func callClinician(_ sender: AnyObject) {
         // Present modal...
-
         confirmAndCallClinician(self);
     }
 
