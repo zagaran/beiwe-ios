@@ -343,7 +343,18 @@ class StudyManager {
 
         /* For all active surveys that aren't complete, but have expired, submit them */
         for (id, activeSurvey) in study.activeSurveys {
-            if (!activeSurvey.isComplete && activeSurvey.expires > 0 && activeSurvey.expires <= currentTime) {
+            //TODO: we need to determine the correct exclusion logic, currently this submits ALL permanent surveys when ANY permanent survey loads.
+            //whenever you try to update the list of active surveys, you end up saving the current informaiton for any active survey, including all "alwaysAvailable" surveys.
+            // this means you get way to many files per availableAlways survey.
+            // This function gets called whenever you try to display the home page, thus it happens at a very odd time.
+            // the submit survey action needs to be insterted for always available surveys whenever the survey is closed/finished, but hte current codebase
+            // does not close out the current state, aka clear out existing survey state and create a new file.
+            if (
+                (!activeSurvey.isComplete && activeSurvey.expires > 0 && activeSurvey.expires <= currentTime)
+                    ||
+                (activeSurvey.survey?.alwaysAvailable ?? false && activeSurvey.isComplete)
+                ) {
+                print("HI I AM SUBMITTING WOOOOOO")
                 log.info("ActiveSurvey \(id) expired.");
                 activeSurvey.isComplete = true;
                 surveyDataModified = true;
@@ -373,12 +384,22 @@ class StudyManager {
                     closestNextSurveyTime = min(closestNextSurveyTime, next);
                 }
                 allSurveyIds.append(id);
-                /* If we don't know about this survey already, add it in there */
+                /* If we don't know about this survey already, add it in there for TRIGGERONFIRSTDOWNLOAD surverys*/
                 if study.activeSurveys[id] == nil && (survey.triggerOnFirstDownload || next > 0) {
                     log.info("Adding survey  \(id) to active surveys");
                     study.activeSurveys[id] = ActiveSurvey(survey: survey);
                     /* Schedule it for the next upcoming time, or immediately if triggerOnFirstDownload is true */
                     study.activeSurveys[id]?.expires = survey.triggerOnFirstDownload ? currentTime : next;
+                    study.activeSurveys[id]?.isComplete = true;
+                    log.info("Added survey \(id), expires: \(Date(timeIntervalSince1970: study.activeSurveys[id]!.expires))");
+                    surveyDataModified = true;
+                }
+                /* We want to display permanent surveys as active, and expect to change some details below (currently identical to the actions we take on a regular active survey) */
+                else if study.activeSurveys[id] == nil && (survey.alwaysAvailable || next > 0) {
+                    log.info("Adding survey  \(id) to active surveys");
+                    study.activeSurveys[id] = ActiveSurvey(survey: survey);
+                    /* Schedule it for the next upcoming time, or immediately if alwaysAvailable is true */
+                    study.activeSurveys[id]?.expires = survey.alwaysAvailable ? currentTime : next;
                     study.activeSurveys[id]?.isComplete = true;
                     log.info("Added survey \(id), expires: \(Date(timeIntervalSince1970: study.activeSurveys[id]!.expires))");
                     surveyDataModified = true;

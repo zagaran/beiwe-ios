@@ -85,9 +85,13 @@ class MainViewController: UIViewController {
                 return s1.1.received > s2.1.received;
             }
 
-            for (_,survey) in sortedSurveys {
-                if (!survey.isComplete) {
-                    let cellmodel = SurveyCellModel(activeSurvey: survey) { [weak self] cell in
+            // because surveys do not have their state cleared when the done button is pressed, the buttons retain
+            // the incomplete label and tapping on a finished always available survey results in loading to the "done" buttton on that survey.
+            // (and creating a new file. see comments in StudyManager.swift for explination of this behavior.)
+            
+            for (_,active_survey) in sortedSurveys {
+                if (!active_survey.isComplete || active_survey.survey?.alwaysAvailable ?? false) {
+                    let cellmodel = SurveyCellModel(activeSurvey: active_survey) { [weak self] cell in
                         cell.isSelected = false;
                         if let strongSelf = self, let surveyCell = cell as? SurveyCell, let surveyId = surveyCell.cellmodel?.activeSurvey.survey?.surveyId {
                             strongSelf.presentSurvey(surveyId)
