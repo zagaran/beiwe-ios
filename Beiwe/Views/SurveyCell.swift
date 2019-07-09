@@ -38,7 +38,12 @@ class SurveyCell: Cell, CellType {
             desc = "Survey";
         }
         descriptionLabel.text = desc;
-        newLabel.text = (cellmodel.activeSurvey.bwAnswers.count > 0) ? "incomplete" : "new";
+        if(cellmodel.activeSurvey.survey?.alwaysAvailable ?? false){
+            newLabel.text = "available";
+        }
+        else{
+            newLabel.text = (cellmodel.activeSurvey.bwAnswers.count > 0) ? "incomplete" : "new";
+        }
         backgroundColor = UIColor.clear;
         //selectionStyle = UITableViewCellSelectionStyle.None;
         let bgColorView = UIView()
