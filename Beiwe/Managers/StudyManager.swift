@@ -343,18 +343,26 @@ class StudyManager {
 
         /* For all active surveys that aren't complete, but have expired, submit them */
         for (id, activeSurvey) in study.activeSurveys {
+            // THIS is basically the same thing as the else if statement below, EXCEPT we are resetting the survey.
+            // this is so that we reset the state for a permananent survey. If we do not have this,
+            // the survey stays at the "done" stage after you have completed the survey and does not allow
+            // you to go back and retake a survey.  also, every time you load the survey to the done page,
+            // it resaves a new version of the data in a file.
+            if(activeSurvey.survey?.alwaysAvailable ?? false && activeSurvey.isComplete){
+//                print("submitted 1")
+                log.info("ActiveSurvey \(id) expired.");
+                activeSurvey.isComplete = true;
+                surveyDataModified = true;
+                //  adding submitSurvey creates a new file; therefore we get 2 files of data- one when you
+                //  hit the confirm button and one when this code executes. we DO NOT KNOW why this is in the else if statement
+                //  below - however we are not keeping it in this if statement for the aforementioned problem.
+                // submitSurvey(activeSurvey)
+                activeSurvey.reset(activeSurvey.survey)
+            }
             //TODO: we need to determine the correct exclusion logic, currently this submits ALL permanent surveys when ANY permanent survey loads.
-            //whenever you try to update the list of active surveys, you end up saving the current informaiton for any active survey, including all "alwaysAvailable" surveys.
-            // this means you get way to many files per availableAlways survey.
             // This function gets called whenever you try to display the home page, thus it happens at a very odd time.
-            // the submit survey action needs to be insterted for always available surveys whenever the survey is closed/finished, but hte current codebase
-            // does not close out the current state, aka clear out existing survey state and create a new file.
-            if (
-                (!activeSurvey.isComplete && activeSurvey.expires > 0 && activeSurvey.expires <= currentTime)
-                    ||
-                (activeSurvey.survey?.alwaysAvailable ?? false && activeSurvey.isComplete)
-                ) {
-                print("HI I AM SUBMITTING WOOOOOO")
+            else if (!activeSurvey.isComplete && activeSurvey.expires > 0 && activeSurvey.expires <= currentTime) {
+//                print("submitted 2")
                 log.info("ActiveSurvey \(id) expired.");
                 activeSurvey.isComplete = true;
                 surveyDataModified = true;
@@ -395,7 +403,7 @@ class StudyManager {
                     surveyDataModified = true;
                 }
                 /* We want to display permanent surveys as active, and expect to change some details below (currently identical to the actions we take on a regular active survey) */
-                else if study.activeSurveys[id] == nil && (survey.alwaysAvailable || next > 0) {
+                else if study.activeSurveys[id] == nil && (survey.alwaysAvailable) {
                     log.info("Adding survey  \(id) to active surveys");
                     study.activeSurveys[id] = ActiveSurvey(survey: survey);
                     /* Schedule it for the next upcoming time, or immediately if alwaysAvailable is true */
