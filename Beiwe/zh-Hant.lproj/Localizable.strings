@@ -1,0 +1,7 @@
+/* 
+  Localizable.strings
+*/
+
+"welcome_screen_title" = "歡迎";
+"welcome_screen_body_text" = "歡迎來到Beiwe研究平台。 在您開始註冊過程時，請提供您的臨床醫生提供的用戶ID和密碼。";
+"welcome_screen_go_to_registration_button_text" = "去註冊";

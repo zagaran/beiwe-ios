@@ -1,0 +1,7 @@
+/* 
+  Localizable.strings
+*/
+
+"welcome_screen_title" = "Welcome";
+"welcome_screen_body_text" = "Welcome to the Beiwe Research Platform. Please have your user ID and password, which were given to you by your clinician, available as you begin the registration process.";
+"welcome_screen_go_to_registration_button_text" = "Register";

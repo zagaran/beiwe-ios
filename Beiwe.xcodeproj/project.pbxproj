@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1173B23E1EF4B39C998B16DD /* Pods_Beiwe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3F49D21194624D3A52EF64D /* Pods_Beiwe.framework */; };
+		59912EB3230EF09400CAF7EB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 59912EB1230EF09400CAF7EB /* Localizable.strings */; };
 		831CC5801F79AF6400CDEFB0 /* AppEventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831CC57F1F79AF6400CDEFB0 /* AppEventManager.swift */; };
 		832FFC1E1CC8506900F2E1EF /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832FFC1D1CC8506900F2E1EF /* GradientView.swift */; };
 		832FFC221CC85A7C00F2E1EF /* BWButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832FFC211CC85A7C00F2E1EF /* BWButton.swift */; };
@@ -81,6 +82,10 @@
 /* Begin PBXFileReference section */
 		17C4B8175F8CF5B5407DEA50 /* Pods-Beiwe.testflight kg.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beiwe.testflight kg.xcconfig"; path = "Pods/Target Support Files/Pods-Beiwe/Pods-Beiwe.testflight kg.xcconfig"; sourceTree = "<group>"; };
 		4D73594BB9D98FBE3AA1E023 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		59912EB2230EF09400CAF7EB /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Beiwe/Base.lproj/Localizable.strings; sourceTree = "<group>"; };
+		59912EB4230EF3D100CAF7EB /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Main.strings"; sourceTree = "<group>"; };
+		59912EB5230EF3D100CAF7EB /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		59912EB6230EF3D100CAF7EB /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "Beiwe/zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		6BE1CD8AB3101933EE9A89CE /* Pods-Beiwe.testflight internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beiwe.testflight internal.xcconfig"; path = "Pods/Target Support Files/Pods-Beiwe/Pods-Beiwe.testflight internal.xcconfig"; sourceTree = "<group>"; };
 		7804DE752C816F583949D1A4 /* Pods-Beiwe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beiwe.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Beiwe/Pods-Beiwe.debug.xcconfig"; sourceTree = "<group>"; };
 		831CC57F1F79AF6400CDEFB0 /* AppEventManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEventManager.swift; sourceTree = "<group>"; };
@@ -353,6 +358,7 @@
 		83F98C2D1C923C3600E0B64B = {
 			isa = PBXGroup;
 			children = (
+				59912EB1230EF09400CAF7EB /* Localizable.strings */,
 				83F98C381C923C3600E0B64B /* Beiwe */,
 				83F98C371C923C3600E0B64B /* Products */,
 				5EEADFF9AED027E0BE53BF6C /* Frameworks */,
@@ -439,11 +445,12 @@
 			};
 			buildConfigurationList = 83F98C311C923C3600E0B64B /* Build configuration list for PBXProject "Beiwe" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hant",
 			);
 			mainGroup = 83F98C2D1C923C3600E0B64B;
 			productRefGroup = 83F98C371C923C3600E0B64B /* Products */;
@@ -465,6 +472,7 @@
 				83AF04251CAD6FFF00A37225 /* Config-Pre1.plist in Resources */,
 				832FFC281CC86A0800F2E1EF /* Assets.xcassets in Resources */,
 				83AB51391F9FDBAF0058F3B0 /* Config-Hvd.plist in Resources */,
+				59912EB3230EF09400CAF7EB /* Localizable.strings in Resources */,
 				83F98C3F1C923C3600E0B64B /* Main.storyboard in Resources */,
 				83914CAF1D00DA4600B01C82 /* ForgotPasswordHeaderView.xib in Resources */,
 			);
@@ -671,10 +679,20 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		59912EB1230EF09400CAF7EB /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				59912EB2230EF09400CAF7EB /* Base */,
+				59912EB6230EF3D100CAF7EB /* zh-Hant */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		83F98C3D1C923C3600E0B64B /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				83F98C3E1C923C3600E0B64B /* Base */,
+				59912EB4230EF3D100CAF7EB /* zh-Hant */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -683,6 +701,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				83F98C431C923C3600E0B64B /* Base */,
+				59912EB5230EF3D100CAF7EB /* zh-Hant */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
