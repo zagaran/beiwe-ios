@@ -22,23 +22,6 @@ class OnboardingManager : NSObject, ORKTaskViewControllerDelegate {
         return instructionStep;
     }
 
-    /*
-    var SecondStep: ORKStep {
-        let instructionStep = ORKInstructionStep(identifier: "SecondStep")
-        instructionStep.title = "Blah Blah page 2!";
-        instructionStep.text = "Before registration, the learn more buttons can display custom modal content.  After the point of registration, when we move to the consent form, the learn more buttons trigger a built-in display of textual content (configurable)";
-        return instructionStep;
-    }
-
-    var PreRegisterStep: ORKStep {
-        let instructionStep = ORKInstructionStep(identifier: "PreRegisterStep")
-        instructionStep.title = "Register for study";
-        instructionStep.text = "Please have your registration user id and password handy.  It should have been provided to you by your clinician.";
-        return instructionStep;
-    }
-    */
-
-
     override init() {
         super.init();
         var steps = [ORKStep]();
