@@ -10,7 +10,7 @@ target 'Beiwe' do
   pod 'Eureka'
   pod 'SwiftValidator', :git => 'https://github.com/jpotts18/SwiftValidator.git', :branch => 'master'
   pod "PKHUD", :git => 'https://github.com/pkluz/PKHUD.git', :branch => 'swift4'
-  pod 'IDZSwiftCommonCrypto'
+  pod 'IDZSwiftCommonCrypto', '~> 0.9'
   pod 'couchbase-lite-ios'
   pod 'ResearchKit'
   pod 'ReachabilitySwift', '~>3'
@@ -18,7 +18,7 @@ target 'Beiwe' do
   pod 'PermissionScope', :git => 'https://github.com/RocketFarm/PermissionScope.git', :branch => 'master'
   pod 'Hakuba', :git => 'https://github.com/eskizyen/Hakuba.git', :branch => 'Swift3'
   pod 'XLActionController'
-  pod 'XCGLogger', '~> 5.0.1'
+  pod 'XCGLogger', '~> 7.0.0'
 
 end
 
@@ -32,7 +32,7 @@ post_install do |installer|
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
       if (target.name == 'XCGLogger' || target.name == 'PermissionScope')
-          config.build_settings['SWIFT_VERSION'] = '3.2'
+          config.build_settings['SWIFT_VERSION'] = '4.0'
       else
           config.build_settings['SWIFT_VERSION'] = '4.0'
       end

@@ -343,7 +343,26 @@ class StudyManager {
 
         /* For all active surveys that aren't complete, but have expired, submit them */
         for (id, activeSurvey) in study.activeSurveys {
-            if (!activeSurvey.isComplete && activeSurvey.expires > 0 && activeSurvey.expires <= currentTime) {
+            // THIS is basically the same thing as the else if statement below, EXCEPT we are resetting the survey.
+            // this is so that we reset the state for a permananent survey. If we do not have this,
+            // the survey stays at the "done" stage after you have completed the survey and does not allow
+            // you to go back and retake a survey.  also, every time you load the survey to the done page,
+            // it resaves a new version of the data in a file.
+            if(activeSurvey.survey?.alwaysAvailable ?? false && activeSurvey.isComplete){
+//                print("submitted 1")
+                log.info("ActiveSurvey \(id) expired.");
+                activeSurvey.isComplete = true;
+                surveyDataModified = true;
+                //  adding submitSurvey creates a new file; therefore we get 2 files of data- one when you
+                //  hit the confirm button and one when this code executes. we DO NOT KNOW why this is in the else if statement
+                //  below - however we are not keeping it in this if statement for the aforementioned problem.
+                // submitSurvey(activeSurvey)
+                activeSurvey.reset(activeSurvey.survey)
+            }
+            //TODO: we need to determine the correct exclusion logic, currently this submits ALL permanent surveys when ANY permanent survey loads.
+            // This function gets called whenever you try to display the home page, thus it happens at a very odd time.
+            else if (!activeSurvey.isComplete && activeSurvey.expires > 0 && activeSurvey.expires <= currentTime) {
+//                print("submitted 2")
                 log.info("ActiveSurvey \(id) expired.");
                 activeSurvey.isComplete = true;
                 surveyDataModified = true;
@@ -373,12 +392,22 @@ class StudyManager {
                     closestNextSurveyTime = min(closestNextSurveyTime, next);
                 }
                 allSurveyIds.append(id);
-                /* If we don't know about this survey already, add it in there */
+                /* If we don't know about this survey already, add it in there for TRIGGERONFIRSTDOWNLOAD surverys*/
                 if study.activeSurveys[id] == nil && (survey.triggerOnFirstDownload || next > 0) {
                     log.info("Adding survey  \(id) to active surveys");
                     study.activeSurveys[id] = ActiveSurvey(survey: survey);
                     /* Schedule it for the next upcoming time, or immediately if triggerOnFirstDownload is true */
                     study.activeSurveys[id]?.expires = survey.triggerOnFirstDownload ? currentTime : next;
+                    study.activeSurveys[id]?.isComplete = true;
+                    log.info("Added survey \(id), expires: \(Date(timeIntervalSince1970: study.activeSurveys[id]!.expires))");
+                    surveyDataModified = true;
+                }
+                /* We want to display permanent surveys as active, and expect to change some details below (currently identical to the actions we take on a regular active survey) */
+                else if study.activeSurveys[id] == nil && (survey.alwaysAvailable) {
+                    log.info("Adding survey  \(id) to active surveys");
+                    study.activeSurveys[id] = ActiveSurvey(survey: survey);
+                    /* Schedule it for the next upcoming time, or immediately if alwaysAvailable is true */
+                    study.activeSurveys[id]?.expires = survey.alwaysAvailable ? currentTime : next;
                     study.activeSurveys[id]?.isComplete = true;
                     log.info("Added survey \(id), expires: \(Date(timeIntervalSince1970: study.activeSurveys[id]!.expires))");
                     surveyDataModified = true;

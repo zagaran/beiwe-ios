@@ -9,7 +9,7 @@ PODS:
   - Eureka (4.1.1)
   - Fabric (1.7.7)
   - Hakuba (2.1.1)
-  - IDZSwiftCommonCrypto (0.10.0)
+  - IDZSwiftCommonCrypto (0.12.1)
   - KeychainSwift (8.0.3)
   - ObjcExceptionBridging (1.0.1):
     - ObjcExceptionBridging/ObjcExceptionBridging (= 1.0.1)
@@ -31,9 +31,9 @@ PODS:
   - ReachabilitySwift (3)
   - ResearchKit (1.5.2)
   - SwiftValidator (4.0.0)
-  - XCGLogger (5.0.5):
-    - XCGLogger/Core (= 5.0.5)
-  - XCGLogger/Core (5.0.5):
+  - XCGLogger (7.0.0):
+    - XCGLogger/Core (= 7.0.0)
+  - XCGLogger/Core (7.0.0):
     - ObjcExceptionBridging
   - XLActionController (4.0.1):
     - XLActionController/Core (= 4.0.1)
@@ -46,7 +46,7 @@ DEPENDENCIES:
   - EmitterKit (~> 5.1)
   - Eureka
   - Hakuba (from `https://github.com/eskizyen/Hakuba.git`, branch `Swift3`)
-  - IDZSwiftCommonCrypto
+  - IDZSwiftCommonCrypto (~> 0.9)
   - KeychainSwift (~> 8.0)
   - ObjectMapper (from `https://github.com/Hearst-DD/ObjectMapper.git`, branch `master`)
   - PermissionScope (from `https://github.com/RocketFarm/PermissionScope.git`, branch `master`)
@@ -55,7 +55,7 @@ DEPENDENCIES:
   - ReachabilitySwift (~> 3)
   - ResearchKit
   - SwiftValidator (from `https://github.com/jpotts18/SwiftValidator.git`, branch `master`)
-  - XCGLogger (~> 5.0.1)
+  - XCGLogger (~> 7.0.0)
   - XLActionController
 
 SPEC REPOS:
@@ -117,19 +117,19 @@ SPEC CHECKSUMS:
   Eureka: b88fb930e42c79f8c03c373d0fcdc28c1d6c50ed
   Fabric: bda89e242bce1b7b8ab264248cf3407774ce0095
   Hakuba: bc5a0422290d086c33a6424a26dd58c1a1136e94
-  IDZSwiftCommonCrypto: 4eef2c46e262dfbcbc1fd76365e066336680ad7d
+  IDZSwiftCommonCrypto: 24ded86c927e95a5d09eda0c2d76070a0c80b169
   KeychainSwift: be9554c0e5f4b1686c775930dc5c6bd9396992ed
   ObjcExceptionBridging: c30e00eb3700467e695faeea30e26e18bd445001
-  ObjectMapper: c4934ba1889f325066c736861592f48008a7dfde
+  ObjectMapper: 7a328925cbc858e25fefecaeda552dda8a33511d
   PermissionScope: a30c16e015779ba27c97c124e7539e27b5829de2
   PKHUD: 351011b853e6b942e7ee8ad335864cc84c787241
   PromiseKit: 743e497a5f505a470d3bbbf4ce0663c1268af0a4
   ReachabilitySwift: f5b9bb30a0777fac8f09ce8b067e32faeb29bb64
   ResearchKit: a5770681dd61afddd3d1f24d232b9abf00cba454
   SwiftValidator: 25ded5ca1f10c05adf57f6ac82a72d28ac8d91af
-  XCGLogger: 49bceee6dc0c738eae5d6454fdbf800d62256b74
+  XCGLogger: 0434f15e3909cdc450bb63faf638b8792ab782ab
   XLActionController: 007868251c0eed70d649d06c1625259b73b3a600
 
-PODFILE CHECKSUM: 6ad29cac26f6d248dd5bb955f7e8415cb37541c4
+PODFILE CHECKSUM: 7baa7f33368bce43105dbbda6092e9b8cc3254f9
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.7.2

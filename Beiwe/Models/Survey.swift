@@ -27,8 +27,8 @@ struct Survey : Mappable  {
     var audioSurveyType: String = "compressed"
     var audioSampleRate = 44100
     var audioBitrate = 64000
-
-
+    var alwaysAvailable = false
+    
     init?(map: Map) {
 
     }
@@ -46,6 +46,7 @@ struct Survey : Mappable  {
         audioSampleRate                    <- map["settings.sample_rate"]
         audioBitrate                       <- map["settings.bit_rate"]
         questions               <- map["content"];
+        alwaysAvailable    <- map["settings.always_available"]
     }
     
 }
