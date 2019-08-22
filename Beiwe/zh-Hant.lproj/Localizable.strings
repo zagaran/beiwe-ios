@@ -5,3 +5,26 @@
 "welcome_screen_title" = "歡迎";
 "welcome_screen_body_text" = "歡迎來到Beiwe研究平台。 在您開始註冊過程時，請提供您的臨床醫生提供的用戶ID和密碼。";
 "welcome_screen_go_to_registration_button_text" = "去註冊";
+
+"registration_screen_title" = "用戶";
+"registration_server_url_label" = "國立台灣大學人類遺傳與精神流行病學研究室:";
+"registration_server_url_hint" = " http://homepage.ntu.edu.tw/~phkuo/Index_T.html ";
+"registration_user_id_label" = "用戶帳號:";
+"registration_user_id_hint" = "用戶帳號";
+"registration_temp_password_label" = "臨時密碼:";
+"registration_temp_password_hint" = "臨時密碼";
+"registration_new_password_label" = "新密碼:";
+"registration_new_password_hint" = "至少6個字元";
+"registration_confirm_new_password_label" = "確認密碼:";
+"registration_confirm_new_password_hint" = "至少6個字元";
+"phone_number_entry_your_clinician_label" = "國立台灣大學人類遺傳與精神流行病學研究室電話:";
+"phone_number_entry_your_clinician_hint" = "(02)3366-8015";
+"phone_number_entry_research_assistant_label" = "國立台灣大學人類遺傳與精神流行病學研究室電話:";
+"phone_number_entry_research_assistant_hint" = "(02)3366-8015";
+"registration_submit" = "註冊";
+"registration_screen_cancel_button_text" = "拒絕";
+"http_message_server_not_found" = "請確認軟體網址是否正確，Beiwe無法連上伺服器";
+"couldnt_register" = "註冊失敗";
+"http_message_400" = "該設備無法透過此帳號註冊，請與研究團隊聯繫，錯誤代碼:400";
+"http_message_403_during_registration" = "很抱歉，您輸入的研究計畫網址、帳號或密碼錯誤，錯誤代碼:403";
+"http_message_405" = "很抱歉，您所使用的帳號已被註冊，請與研究團隊確認您的帳號，以利後續註冊手續，錯誤代碼:405";

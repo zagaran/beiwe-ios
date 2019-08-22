@@ -5,3 +5,26 @@
 "welcome_screen_title" = "Welcome";
 "welcome_screen_body_text" = "Welcome to the Beiwe Research Platform. Please have your user ID and password, which were given to you by your clinician, available as you begin the registration process.";
 "welcome_screen_go_to_registration_button_text" = "Register";
+
+"registration_screen_title" = "Register for Study";
+"registration_server_url_label" = "Study Server:";
+"registration_server_url_hint" = "Server Address";
+"registration_user_id_label" = "User ID:";
+"registration_user_id_hint" = "User ID";
+"registration_temp_password_label" = "Temporary Password:";
+"registration_temp_password_hint" = "Temp Password";
+"registration_new_password_label" = "New Password:";
+"registration_new_password_hint" = "New password";
+"registration_confirm_new_password_label" = "Confirm Password:";
+"registration_confirm_new_password_hint" = "Confirm Password";
+"phone_number_entry_your_clinician_label" = "Primary Researcher Phone:";
+"phone_number_entry_your_clinician_hint" = "10 digit number";
+"phone_number_entry_research_assistant_label" = "Research Asst. Phone:";
+"phone_number_entry_research_assistant_hint" = "10 digit number";
+"registration_submit" = "Register";
+"registration_screen_cancel_button_text" = "Cancel";
+"http_message_server_not_found" = "The server you are trying to register with is currently unavailable, or you have entered an incorrect server address.  Please verify the server address.";
+"couldnt_register" = "Registration failed";
+"http_message_400" = "This device could not be registered under the provided patient ID.  Please contact your study administrator";
+"http_message_403_during_registration" = "Incorrect patient ID or Password";
+"http_message_405" = "UserID already registered on another device.  Please contact your study administrator to unregister any previous devices that may have been used";

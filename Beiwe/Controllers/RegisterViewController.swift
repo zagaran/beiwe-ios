@@ -15,7 +15,7 @@ import PromiseKit
 class RegisterViewController: FormViewController {
 
     static let commErrDelay = 7.0
-    static let commErr = "The server you are trying to register with is currently unavailable, or you have entered an incorrect server address.  Please verify the server address."
+    static let commErr = NSLocalizedString("http_message_server_not_found", comment: "")
     let autoValidation = false;
     let db = Recline.shared;
     var dismiss: ((_ didRegister: Bool) -> Void)?;
@@ -43,63 +43,55 @@ class RegisterViewController: FormViewController {
             cell.detailTextLabel?.font = font;
         }
         let configServer = Configuration.sharedInstance.settings["config-server"] as? Bool ?? false;
-        var section = Section("Register for Study")
+        var section = Section(NSLocalizedString("registration_screen_title", comment: ""))
         if (configServer) {
             section = section <<< SVURLRow("server") {
-                $0.title = "Study Server:"
-                $0.placeholder = "Server Address";
+                $0.title = NSLocalizedString("registration_screen_study_server_title", comment: "")
+                $0.placeholder = NSLocalizedString("registration_screen_study_server_placeholder", comment: "")
                 $0.rules = [RequiredRule()]
                 $0.autoValidation = autoValidation
             }
         }
         section = section <<< SVAccountRow("patientId") {
-                $0.title = "User ID:"
-                $0.placeholder = "User ID";
+                $0.title = NSLocalizedString("registration_user_id_label", comment: "")
+                $0.placeholder = NSLocalizedString("registration_user_id_hint", comment: "")
                 $0.rules = [RequiredRule()]
                 $0.autoValidation = autoValidation
             }
             <<< SVPasswordRow("tempPassword") {
-                $0.title = "Temporary Password:"
-                $0.placeholder = "Temp Password";
+                $0.title = NSLocalizedString("registration_temp_password_label", comment: "")
+                $0.placeholder = NSLocalizedString("registration_temp_password_hint", comment: "")
                 $0.rules = [RequiredRule()]
                 $0.autoValidation = autoValidation
             }
-            /*
-            <<< SVSimplePhoneRow("phone") {
-                $0.title = "Phone:"
-                $0.placeholder = "Your 10 digit number";
-                $0.rules = [RequiredRule(), PhoneNumberRule()]
-                $0.autoValidation = autoValidation
-            }
-            */
             <<< SVPasswordRow("password") {
-                $0.title = "New Password:"
-                $0.placeholder = "New password";
+                $0.title = NSLocalizedString("registration_new_password_label", comment: "")
+                $0.placeholder = NSLocalizedString("registration_new_password_hint", comment: "")
                 $0.rules = [RequiredRule(), RegexRule(regex: Constants.passwordRequirementRegex, message: Constants.passwordRequirementDescription)]
                 $0.autoValidation = autoValidation
             }
             <<< SVPasswordRow("confirmPassword") {
-                $0.title = "Confirm Password:"
-                $0.placeholder = "Confirm Password";
+                $0.title = NSLocalizedString("registration_confirm_new_password_label", comment: "")
+                $0.placeholder = NSLocalizedString("registration_confirm_new_password_hint", comment: "")
                 $0.rules = [RequiredRule(), MinLengthRule(length: 1)]
                 $0.autoValidation = autoValidation
             }
             <<< SVSimplePhoneRow("clinicianPhone") {
-                $0.title = "Primary Researcher Phone:"
-                $0.placeholder = "10 digit number";
+                $0.title = NSLocalizedString("phone_number_entry_your_clinician_label", comment: "")
+                $0.placeholder = NSLocalizedString("phone_number_entry_your_clinician_hint", comment: "")
                 $0.rules = [RequiredRule(), PhoneNumberRule()]
                 $0.autoValidation = autoValidation
 
             }
             <<< SVSimplePhoneRow("raPhone") {
-                $0.title = "Research Asst. Phone:"
-                $0.placeholder = "10 digit number";
+                $0.title = NSLocalizedString("phone_number_entry_research_assistant_label", comment: "")
+                $0.placeholder = NSLocalizedString("phone_number_entry_research_assistant_hint", comment: "")
                 $0.rules = [RequiredRule(), PhoneNumberRule()]
                 $0.autoValidation = autoValidation
 
             }
             <<< ButtonRow() {
-                $0.title = "Register"
+                $0.title = NSLocalizedString("registration_submit", comment: "")
                 }
                 .onCellSelection {
                     [unowned self] cell, row in
@@ -159,12 +151,12 @@ class RegisterViewController: FormViewController {
                                 case ApiErrors.failedStatus(let code):
                                     switch code {
                                     case 403, 401:
-                                        err = .labeledError(title: "Registration failed", subtitle: "Incorrect patient ID or Password");
+                                        err = .labeledError(title: NSLocalizedString("couldnt_register", comment: ""), subtitle: NSLocalizedString("http_message_403_during_registration", comment: ""));
                                     case 405:
-                                        err = .label("UserID already registered on another device.  Please contact your study administrator to unregister any previous devices that may have been used");
+                                        err = .label(NSLocalizedString("http_message_405", comment: ""));
                                         delay = 10.0;
                                     case 400:
-                                        err = .label("This device could not be registered under the provided patient ID.  Please contact your study administrator");
+                                        err = .label(NSLocalizedString("http_message_400", comment: ""));
                                         delay = 10.0;
                                     default:
                                         err = .label(RegisterViewController.commErr);
@@ -182,7 +174,7 @@ class RegisterViewController: FormViewController {
                     }
                 }
             <<< ButtonRow() {
-                $0.title = "Cancel";
+                $0.title = NSLocalizedString("registration_screen_cancel_button_text", comment: "");
                 }.onCellSelection { [unowned self] cell, row in
                     if let dismiss = self.dismiss {
                         dismiss(false);
