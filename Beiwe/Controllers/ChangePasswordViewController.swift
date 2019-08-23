@@ -38,36 +38,36 @@ class ChangePasswordViewController: FormViewController {
                     headerView.callButton.addTarget(self, action: #selector(ChangePasswordViewController.callAssistant(_:)), for: UIControlEvents.touchUpInside)
                     // Hide call button if it's disabled in the study settings
                     if !(StudyManager.sharedInstance.currentStudy?.studySettings?.callResearchAssistantButtonEnabled)! {
-                        headerView.descriptionLabel.text = "Please contact your study's staff and provide them with your Patient ID so they can give you a temporary password."
+                        headerView.descriptionLabel.text = NSLocalizedString("forgot_password_title", comment: "")
                         headerView.callButton.isHidden = true
                     }
                 }
                 section.header = header
             } else {
-                section.header  = HeaderFooterView(stringLiteral: "Change Password")
+                section.header  = HeaderFooterView(stringLiteral: NSLocalizedString("title_activity_reset_password", comment: ""))
             }
             }
             <<< SVPasswordRow("currentPassword") {
-                $0.title = isForgotPassword ? "Temporary Password:" : "Current Password:"
+                $0.title = isForgotPassword ? NSLocalizedString("forgot_password_temporary_password_caption", comment: "") : NSLocalizedString("reset_password_current_password_caption", comment: "")
                 let placeholder: String = String($0.title!.lowercased().characters.dropLast())
                 $0.placeholder = placeholder
                 $0.rules = [RequiredRule()]
                 $0.autoValidation = autoValidation
             }
             <<< SVPasswordRow("password") {
-                $0.title = "New Password:"
-                $0.placeholder = "Enter your new password";
+                $0.title = NSLocalizedString("reset_password_new_password_caption", comment: "")
+                $0.placeholder = NSLocalizedString("reset_password_new_password_hint", comment: "")
                 $0.rules = [RequiredRule(), RegexRule(regex: Constants.passwordRequirementRegex, message: Constants.passwordRequirementDescription)]
                 $0.autoValidation = autoValidation
             }
             <<< SVPasswordRow("confirmPassword") {
-                $0.title = "Confirm Password:"
-                $0.placeholder = "Confirm your new password";
+                $0.title = NSLocalizedString("reset_password_confirm_new_password_caption", comment: "")
+                $0.placeholder = NSLocalizedString("reset_password_confirm_new_password_hint", comment: "")
                 $0.rules = [RequiredRule(), MinLengthRule(length: 1)]
                 $0.autoValidation = autoValidation
             }
             <<< ButtonRow() {
-                $0.title = "Change"
+                $0.title = NSLocalizedString("reset_password_submit", comment: "")
                 }
                 .onCellSelection {
                     [unowned self] cell, row in
@@ -98,12 +98,12 @@ class ChangePasswordViewController: FormViewController {
                                     case ApiErrors.failedStatus(let code):
                                         switch code {
                                         case 403, 401:
-                                            err = .labeledError(title: "Failed", subtitle: "Incorrect Password");
+                                            err = .labeledError(title: NSLocalizedString("reset_password_error_alert_title", comment: ""), subtitle: NSLocalizedString("invalid_old_password", comment: ""));
                                         default:
-                                            err = .labeledError(title: "Failed", subtitle: "Communication error");
+                                            err = .labeledError(title: NSLocalizedString("reset_password_error_alert_title", comment: ""), subtitle: NSLocalizedString("reset_password_communication_error", comment: ""));
                                         }
                                     default:
-                                        err = .labeledError(title: "Failed", subtitle: "Communication error");
+                                        err = .labeledError(title: NSLocalizedString("reset_password_error_alert_title", comment: ""), subtitle: NSLocalizedString("reset_password_communication_error", comment: ""));
                                     }
                                     HUD.flash(err, delay: delay)
                             }
@@ -113,7 +113,7 @@ class ChangePasswordViewController: FormViewController {
                     }
                 }
             <<< ButtonRow() {
-                $0.title = "Cancel";
+                $0.title = NSLocalizedString("cancel_button_text", comment: "");
                 }.onCellSelection { [unowned self] cell, row in
                     if let finished = self.finished {
                         finished(false);

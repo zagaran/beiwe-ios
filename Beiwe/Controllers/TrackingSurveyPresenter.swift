@@ -122,12 +122,12 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
         }
 
         let submitStep = ORKInstructionStep(identifier: "confirm");
-        submitStep.title = "Confirm Submission";
-        submitStep.text = "Thanks! You have finished answering all of the survey questions.  Pressing the submit button will now schedule your answers to be delivered";
+        submitStep.title = NSLocalizedString("survey_confirm_submit", comment: "")
+        submitStep.text = NSLocalizedString("default_survey_submit_success_message", comment: "")
         steps += [submitStep];
 
         let finishStep = ORKInstructionStep(identifier: "finished");
-        finishStep.title = "Survey Completed";
+        finishStep.title = NSLocalizedString("survey_completed", comment: "")
         finishStep.text = StudyManager.sharedInstance.currentStudy?.studySettings?.submitSurveySuccessText;
         steps += [finishStep];
 
@@ -437,8 +437,8 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
 
         currentQuestion = nil;
 
-        if stepViewController.continueButtonTitle == "Get Started" {
-            stepViewController.continueButtonTitle = "Continue";
+        if stepViewController.continueButtonTitle == NSLocalizedString("get_started", comment: "") {
+            stepViewController.continueButtonTitle = NSLocalizedString("continue_button_title", comment: "");
         }
         if let identifier = stepViewController.step?.identifier {
             switch(identifier) {
@@ -453,7 +453,7 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
                 stepViewController.cancelButtonItem = nil;
                 stepViewController.backButtonItem = nil;
             case "confirm":
-                stepViewController.continueButtonTitle = "Confirm";
+                stepViewController.continueButtonTitle = NSLocalizedString("confirm_button_title", comment: "");
             default:
                 if let question = questionIdToQuestion[identifier] {
                     currentQuestion = question;

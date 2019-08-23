@@ -45,16 +45,15 @@ class ConsentManager : NSObject, ORKTaskViewControllerDelegate {
 
     var PermissionsStep: ORKStep {
         let instructionStep = ORKInstructionStep(identifier: StepIds.Permission.rawValue)
-        instructionStep.title = "Permissions";
-        //instructionStep.text = "This app requires your access to your location at all times.  It just won't work without it.  We'd also like to notify you when it's time to fill out the next survey";
-        instructionStep.text = "Beiwe needs access to your location for the passive data gathering capabilities of this app. Beiwe will also send you notifications to notify you of new surveys.";
+        instructionStep.title = NSLocalizedString("permission_alert_title", comment: "")
+        instructionStep.text = NSLocalizedString("permission_location_and_notification_message_long", comment: "")
         return instructionStep;
     }
 
     var WarningStep: ORKStep {
         let instructionStep = ORKInstructionStep(identifier: StepIds.WarningStep.rawValue)
-        instructionStep.title = "Warning";
-        instructionStep.text = "Permission to access your location is required to correctly gather the data required for this study.  To participate in this study we highly recommend you go back and allow this application to access your location.";
+        instructionStep.title = NSLocalizedString("permission_warning_alert_title", comment: "")
+        instructionStep.text = NSLocalizedString("permission_warning_alert_text", comment: "")
         return instructionStep;
     }
 
@@ -75,7 +74,7 @@ class ConsentManager : NSObject, ORKTaskViewControllerDelegate {
         }
 
         consentDocument = ORKConsentDocument()
-        consentDocument.title = "Beiwe Consent"
+        consentDocument.title = NSLocalizedString("consent_document_title", comment: "")
 
         let studyConsentSections = StudyManager.sharedInstance.currentStudy?.studySettings?.consentSections ?? [:];
 
@@ -87,7 +86,7 @@ class ConsentManager : NSObject, ORKTaskViewControllerDelegate {
                 overviewSection.content = welcomeStudySection.more
             }
         } else {
-            overviewSection.summary = "Welcome to the study"
+            overviewSection.summary = NSLocalizedString("study_welcome_message", comment: "")
         }
 
         let consentSectionTypes: [(ORKConsentSectionType, String)] = [
@@ -127,8 +126,8 @@ class ConsentManager : NSObject, ORKTaskViewControllerDelegate {
         if (hasAdditionalConsent) {
             let reviewConsentStep = ORKConsentReviewStep(identifier: StepIds.ConsentReview.rawValue, signature: nil, in: consentDocument)
 
-            reviewConsentStep.text = "Review Consent"
-            reviewConsentStep.reasonForConsent = "Consent to join study"
+            reviewConsentStep.text = NSLocalizedString("review_consent_text", comment: "")
+            reviewConsentStep.reasonForConsent = NSLocalizedString("review_consent_reason", comment: "")
 
             steps += [reviewConsentStep]
         }
@@ -201,7 +200,7 @@ class ConsentManager : NSObject, ORKTaskViewControllerDelegate {
         // Present modal...
         let refreshAlert = UIAlertController(title: "Learning more!", message: "You're smart now", preferredStyle: UIAlertControllerStyle.alert)
 
-        refreshAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
+        refreshAlert.addAction(UIAlertAction(title: NSLocalizedString("ok_button_text", comment: ""), style: .default, handler: { (action: UIAlertAction!) in
         }))
 
 
@@ -217,7 +216,7 @@ class ConsentManager : NSObject, ORKTaskViewControllerDelegate {
     }
 
     func taskViewController(_ taskViewController: ORKTaskViewController, stepViewControllerWillAppear stepViewController: ORKStepViewController) {
-        stepViewController.cancelButtonItem!.title = "Leave Study";
+        stepViewController.cancelButtonItem!.title = NSLocalizedString("unregister_alert_title", comment: "")
 
         if let identifier = StepIds(rawValue: stepViewController.step?.identifier ?? "") {
             switch(identifier) {
@@ -232,12 +231,12 @@ class ConsentManager : NSObject, ORKTaskViewControllerDelegate {
                         stepViewController.goForward();
                 })
             case .Permission:
-                stepViewController.continueButtonTitle = "Permissions";
+                stepViewController.continueButtonTitle = NSLocalizedString("continue_to_permissions_button_title", comment: "");
             case .WarningStep:
                 if (pscope.statusLocationAlways() == .authorized) {
                     stepViewController.goForward();
                 } else {
-                    stepViewController.continueButtonTitle = "Continue";
+                    stepViewController.continueButtonTitle = NSLocalizedString("continue_button_title", comment: "");
                 }
             case .VisualConsent:
                 if (hasRequiredPermissions()) {

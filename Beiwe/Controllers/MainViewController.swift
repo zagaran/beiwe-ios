@@ -46,7 +46,7 @@ class MainViewController: UIViewController {
             .registerCell(SurveyCell) */
 
         var clinicianText: String;
-        clinicianText = StudyManager.sharedInstance.currentStudy?.studySettings?.callClinicianText ?? "Contact Clinician"
+        clinicianText = StudyManager.sharedInstance.currentStudy?.studySettings?.callClinicianText ?? NSLocalizedString("default_call_clinician_text", comment: "")
         callClinicianButton.setTitle(clinicianText, for: UIControlState())
         callClinicianButton.setTitle(clinicianText, for: UIControlState.highlighted)
         if #available(iOS 9.0, *) {
@@ -141,12 +141,12 @@ class MainViewController: UIViewController {
 
         actionController.headerData = nil;
 
-        actionController.addAction(Action(ActionData(title: "Upload Data"), style: .default) { (action) in
+        actionController.addAction(Action(ActionData(title: NSLocalizedString("upload_data_button", comment: "")), style: .default) { (action) in
             DispatchQueue.main.async {
                 self.Upload(self)
             }
             });
-        actionController.addAction(Action(ActionData(title: "Check for Surveys"), style: .default) { (action) in
+        actionController.addAction(Action(ActionData(title: NSLocalizedString("check_for_surveys_button", comment: "")), style: .default) { (action) in
             DispatchQueue.main.async {
                 self.checkSurveys(self)
             }
@@ -164,7 +164,7 @@ class MainViewController: UIViewController {
 
         actionController.headerData = nil;
 
-        actionController.addAction(Action(ActionData(title: "Change Password"), style: .default) { (action) in
+        actionController.addAction(Action(ActionData(title: NSLocalizedString("change_password_button", comment: "")), style: .default) { (action) in
             DispatchQueue.main.async {
                 self.changePassword(self);
             }
@@ -172,20 +172,20 @@ class MainViewController: UIViewController {
         
         // Only add Call button if it's enabled by the study
         if (StudyManager.sharedInstance.currentStudy?.studySettings?.callResearchAssistantButtonEnabled)! {
-            actionController.addAction(Action(ActionData(title: "Call Study Staff"), style: .default) { (action) in
+            actionController.addAction(Action(ActionData(title: NSLocalizedString("call_research_assistant_button", comment: "")), style: .default) { (action) in
                 DispatchQueue.main.async {
                     confirmAndCallClinician(self, callAssistant: true)
                 }
             });
         }
         
-        actionController.addAction(Action(ActionData(title: "Logout"), style: .default) { (action) in
+        actionController.addAction(Action(ActionData(title: NSLocalizedString("logout_button", comment: "")), style: .default) { (action) in
             DispatchQueue.main.async {
                 self.logout(self);
             }
 
         });
-        actionController.addAction(Action(ActionData(title: "Leave Study"), style: .destructive) { (action) in
+        actionController.addAction(Action(ActionData(title: NSLocalizedString("unregister_button", comment: "")), style: .destructive) { (action) in
             DispatchQueue.main.async {
                 self.leaveStudy(self);
             }
@@ -211,13 +211,13 @@ class MainViewController: UIViewController {
         StudyManager.sharedInstance.checkSurveys();
     }
     @IBAction func leaveStudy(_ sender: AnyObject) {
-        let alertController = UIAlertController(title: "Leave Study", message: "Are you sure you want to leave the current study?", preferredStyle: .alert)
+        let alertController = UIAlertController(title: NSLocalizedString("unregister_alert_title", comment: ""), message: NSLocalizedString("unregister_alert_text", comment: ""), preferredStyle: .alert)
 
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+        let cancelAction = UIAlertAction(title: NSLocalizedString("cancel_button_text", comment: ""), style: .cancel) { (action) in
         }
         alertController.addAction(cancelAction)
 
-        let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+        let OKAction = UIAlertAction(title: NSLocalizedString("ok_button_text", comment: ""), style: .default) { (action) in
             StudyManager.sharedInstance.leaveStudy().then {_ -> Void in
                 AppDelegate.sharedInstance().isLoggedIn = false;
                 AppDelegate.sharedInstance().transitionToCurrentAppState();

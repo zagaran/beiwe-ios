@@ -104,15 +104,15 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
     }
     @objc func cancelButton() {
         if (state != .initial) {
-            let alertController = UIAlertController(title: "Abandon recording?", message: "", preferredStyle: .actionSheet)
+            let alertController = UIAlertController(title: NSLocalizedString("audio_survey_abandon_recording_alert", comment: ""), message: "", preferredStyle: .actionSheet)
 
-            let leaveAction = UIAlertAction(title: "Abandon", style: .destructive) { (action) in
+            let leaveAction = UIAlertAction(title: NSLocalizedString("audio_survey_abandon_recording_alert_confirm_button", comment: ""), style: .destructive) { (action) in
                 DispatchQueue.main.async {
                     self.cleanupAndDismiss()
                 }
             }
             alertController.addAction(leaveAction)
-            let cancelAction = UIAlertAction(title: "Cancel", style: .default) { (action) in
+            let cancelAction = UIAlertAction(title: NSLocalizedString("cancel_button_text", comment: ""), style: .default) { (action) in
             }
             alertController.addAction(cancelAction)
 
@@ -126,9 +126,9 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
     }
 
     func fail() {
-        let alertController = UIAlertController(title: "Recording", message: "Unable to record.  You must allow access to the microphone to answer an audio question", preferredStyle: .alert)
+        let alertController = UIAlertController(title: NSLocalizedString("recording_alert_title", comment: ""), message: NSLocalizedString("microphone_permission_error", comment: ""), preferredStyle: .alert)
 
-        let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+        let OKAction = UIAlertAction(title: NSLocalizedString("ok_button_text", comment: ""), style: .default) { (action) in
             DispatchQueue.main.async {
                 self.cleanupAndDismiss()
             }
@@ -303,7 +303,7 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
             self.cleanupAndDismiss()
         }.catch { err in
             AppEventManager.sharedInstance.logAppEvent(event: "audio_save_fail", msg: "Save audio failed", d1: String(describing: err))
-            HUD.flash(.labeledError(title: "Error Saving", subtitle: "Audio answer not sent"), delay: 2.0) { finished in
+            HUD.flash(.labeledError(title: NSLocalizedString("audio_survey_error_saving_title", comment: ""), subtitle: NSLocalizedString("audio_survey_error_saving_text", comment: "")), delay: 2.0) { finished in
                 self.cleanupAndDismiss()
             }
         }
@@ -330,11 +330,11 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
         var text: String
         switch(state) {
         case .initial:
-            text = "Record"
+            text = NSLocalizedString("audio_survey_record_button", comment: "")
         case .playing, .recording:
-            text = "Stop"
+            text = NSLocalizedString("audio_survey_stop_button", comment: "")
         case .recorded:
-            text = "Play"
+            text = NSLocalizedString("audio_survey_play_button", comment: "")
         }
         recordPlayButton.setTitle(text, for: .highlighted)
         recordPlayButton.setTitle(text, for: UIControlState())

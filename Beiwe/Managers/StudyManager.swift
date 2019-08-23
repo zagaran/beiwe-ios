@@ -442,9 +442,9 @@ class StudyManager {
                             var body: String;
                             switch(surveyType) {
                             case .TrackingSurvey:
-                                body = "A new survey has arrived and is awaiting completion."
+                                body = NSLocalizedString("survey_notification_text", comment: "")
                             case .AudioSurvey:
-                                body = "A new audio question has arrived and is awaiting completion."
+                                body = NSLocalizedString("audio_survey_notification_text", comment: "")
                             }
 
                             localNotif.alertBody = body;

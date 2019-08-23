@@ -33,16 +33,16 @@ class SurveyCell: Cell, CellType {
 
         var desc: String;
         if let surveyType = cellmodel.activeSurvey.survey?.surveyType, surveyType == .AudioSurvey {
-            desc = "Audio Survey";
+            desc = NSLocalizedString("survey_type_audio", comment: "");
         } else {
-            desc = "Survey";
+            desc = NSLocalizedString("survey_type_tracking", comment: "");
         }
         descriptionLabel.text = desc;
         if(cellmodel.activeSurvey.survey?.alwaysAvailable ?? false){
-            newLabel.text = "available";
+            newLabel.text = NSLocalizedString("survey_status_available", comment: "");
         }
         else{
-            newLabel.text = (cellmodel.activeSurvey.bwAnswers.count > 0) ? "incomplete" : "new";
+            newLabel.text = (cellmodel.activeSurvey.bwAnswers.count > 0) ? NSLocalizedString("survey_status_incomplete", comment: "") : NSLocalizedString("survey_status_new", comment: "");
         }
         backgroundColor = UIColor.clear;
         //selectionStyle = UITableViewCellSelectionStyle.None;

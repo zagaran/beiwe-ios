@@ -21,7 +21,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         self.navigationController?.presentTransparentNavigationBar();
 
         var clinicianText: String;
-        clinicianText = StudyManager.sharedInstance.currentStudy?.studySettings?.callClinicianText ?? "Contact Clinician"
+        clinicianText = StudyManager.sharedInstance.currentStudy?.studySettings?.callClinicianText ?? NSLocalizedString("default_call_clinician_text", comment: "")
         callClinicianButton.setTitle(clinicianText, for: UIControlState())
         callClinicianButton.setTitle(clinicianText, for: UIControlState.highlighted)
         if #available(iOS 9.0, *) {

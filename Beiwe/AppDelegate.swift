@@ -77,11 +77,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
         pscope.addPermission(NotificationsPermission(notificationCategories: nil),
-                             message: "Allows Beiwe to send you survey notifications.")
+                             message: NSLocalizedString("permission_notifications_message", comment: ""))
         pscope.addPermission(LocationAlwaysPermission(),
-                             message: "Beiwe needs this for the data gathering capabilities of the application.")
+                             message: NSLocalizedString("permission_location_message", comment: ""))
         pscope.headerLabel.text = ""
-        pscope.bodyLabel.text = "Beiwe needs access to your location and notifications.";
+        pscope.bodyLabel.text = NSLocalizedString("permission_location_and_notifications_message", comment: "");
         //pscope.bodyLabel.font = pscope.bodyLabel.font.fontWithSize(10);
         //pscope.bodyLabel.sizeToFit();
 

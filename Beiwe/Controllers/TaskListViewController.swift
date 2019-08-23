@@ -13,7 +13,7 @@ import EmitterKit
 class TaskListViewController: FormViewController {
 
     let surveySelected = Event<String>();
-    let pendingSection =  Section("Pending Study Tasks");
+    let pendingSection =  Section(NSLocalizedString("pending_study_tasks_title", comment: ""));
     let dateFormatter = DateFormatter();
     var listeners: [Listener] = [];
 
@@ -47,13 +47,13 @@ class TaskListViewController: FormViewController {
                     var title: String;
                     switch(surveyType) {
                     case .TrackingSurvey:
-                        title = "Survey"
+                        title = NSLocalizedString("tracking_survey_title", comment: "")
                     case .AudioSurvey:
-                        title = "Audio Quest."
+                        title = NSLocalizedString("audio_survey_title", comment: "")
                     }
                     let dt = Date(timeIntervalSince1970: survey.received);
                     let sdt = dateFormatter.string(from: dt);
-                    title = title + " recvd. " + sdt
+                    title = title + NSLocalizedString("received_abbreviation", comment: "") + sdt
                     pendingSection    <<< ButtonRow(id) {
                         $0.title = title
                         }

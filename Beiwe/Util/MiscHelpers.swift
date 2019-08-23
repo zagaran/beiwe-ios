@@ -119,7 +119,7 @@ class Debouncer<T>: NSObject {
 }
 
 func confirmAndCallClinician(_ presenter: UIViewController, callAssistant: Bool = false) {
-    let msg = "Are you sure you wish to place a call now?"
+    let msg = NSLocalizedString("call_clinician_confirmation_text", comment: "")
     var number = StudyManager.sharedInstance.currentStudy?.clinicianPhoneNumber
     if (callAssistant) {
         //msg = "Call your study's research assistant now?"
@@ -127,12 +127,12 @@ func confirmAndCallClinician(_ presenter: UIViewController, callAssistant: Bool 
     }
     if let phoneNumber = number, AppDelegate.sharedInstance().canOpenTel {
         if let phoneUrl = URL(string: "tel:" + phoneNumber) {
-            let callAlert = UIAlertController(title: "Confirm", message: msg, preferredStyle: UIAlertControllerStyle.alert)
+            let callAlert = UIAlertController(title: NSLocalizedString("call_clinician_confirmation_title", comment: ""), message: msg, preferredStyle: UIAlertControllerStyle.alert)
 
-            callAlert.addAction(UIAlertAction(title: "Ok", style: .default) { (action: UIAlertAction!) in
+            callAlert.addAction(UIAlertAction(title: NSLocalizedString("ok_button_text", comment: ""), style: .default) { (action: UIAlertAction!) in
                 UIApplication.shared.openURL(phoneUrl)
                 })
-            callAlert.addAction(UIAlertAction(title: "Cancel", style: .default) { (action: UIAlertAction!) in
+            callAlert.addAction(UIAlertAction(title: NSLocalizedString("cancel_button_text", comment: ""), style: .default) { (action: UIAlertAction!) in
                 print("Call cancelled.");
                 })
             presenter.present(callAlert, animated: true) {

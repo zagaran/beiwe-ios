@@ -174,7 +174,7 @@ class RegisterViewController: FormViewController {
                     }
                 }
             <<< ButtonRow() {
-                $0.title = NSLocalizedString("registration_screen_cancel_button_text", comment: "");
+                $0.title = NSLocalizedString("cancel_button_text", comment: "");
                 }.onCellSelection { [unowned self] cell, row in
                     if let dismiss = self.dismiss {
                         dismiss(false);

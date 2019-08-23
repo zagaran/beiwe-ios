@@ -2,10 +2,12 @@
   Localizable.strings
 */
 
+/* Welcome screen */
 "welcome_screen_title" = "歡迎";
 "welcome_screen_body_text" = "歡迎來到Beiwe研究平台。 在您開始註冊過程時，請提供您的臨床醫生提供的用戶ID和密碼。";
 "welcome_screen_go_to_registration_button_text" = "去註冊";
 
+/* Registration screen */
 "registration_screen_title" = "用戶";
 "registration_server_url_label" = "國立台灣大學人類遺傳與精神流行病學研究室:";
 "registration_server_url_hint" = " http://homepage.ntu.edu.tw/~phkuo/Index_T.html ";
@@ -22,9 +24,88 @@
 "phone_number_entry_research_assistant_label" = "國立台灣大學人類遺傳與精神流行病學研究室電話:";
 "phone_number_entry_research_assistant_hint" = "(02)3366-8015";
 "registration_submit" = "註冊";
-"registration_screen_cancel_button_text" = "拒絕";
 "http_message_server_not_found" = "請確認軟體網址是否正確，Beiwe無法連上伺服器";
 "couldnt_register" = "註冊失敗";
 "http_message_400" = "該設備無法透過此帳號註冊，請與研究團隊聯繫，錯誤代碼:400";
 "http_message_403_during_registration" = "很抱歉，您輸入的研究計畫網址、帳號或密碼錯誤，錯誤代碼:403";
 "http_message_405" = "很抱歉，您所使用的帳號已被註冊，請與研究團隊確認您的帳號，以利後續註冊手續，錯誤代碼:405";
+
+/* Change password screen */
+"title_activity_reset_password" = "修改密碼";
+"forgot_password_title" = "請與研究團隊聯繫，以取得臨時密碼";
+"reset_password_current_password_caption" = "現行密碼:";
+"forgot_password_temporary_password_caption" = "臨時密碼:";
+"reset_password_new_password_caption" = "新密碼:";
+"reset_password_new_password_hint" = "新密碼";
+"reset_password_confirm_new_password_caption" = "確認新密碼:";
+"reset_password_confirm_new_password_hint" = "確認新密碼";
+"reset_password_submit" = "修改密碼";
+"reset_password_error_alert_title" = "修改密碼失敗";
+"invalid_old_password" = "現行密碼輸入錯誤";
+"reset_password_communication_error" = "Beiwe出現未知的錯誤訊息";
+
+"cancel_button_text" = "拒絕";
+"ok_button_text" = "好";
+"default_call_clinician_text" = "與研究團隊聯繫";
+"call_clinician_confirmation_title" = "Confirm";
+"call_clinician_confirmation_text" = "Are you sure you wish to place a call now?";
+
+/* Tracking surveys */
+"survey_confirm_submit" = "提交答案";
+"default_survey_submit_success_message" = "感謝您完成此份問卷，研究團隊無法立即更新問卷資訊，若資料上傳過程當中您有任何問題，請與研究團隊連繫。您可以透過\”與研究團隊聯繫\”鍵，向我們反應";
+"survey_completed" = "Survey Completed";
+"get_started" = "Get Started";
+"continue_button_title" = "Continue";
+"confirm_button_title" = "Confirm";
+
+/* Main view controller */
+"upload_data_button" = "Upload Data";
+"check_for_surveys_button" = "Check for Surveys";
+"change_password_button" = "Change Password";
+"call_research_assistant_button" = "Call Study Staff";
+"logout_button" = "Logout";
+"unregister_button" = "Leave Study";
+"unregister_alert_title" = "Leave Study";
+"unregister_alert_text" = "Are you sure you want to leave the current study?";
+
+/* Task list view controller */
+"pending_study_tasks_title" = "Pending Study Tasks";
+"tracking_survey_title" = "Survey";
+"audio_survey_title" = "Audio Quest.";
+"received_abbreviation" = " recvd. ";
+
+/* Audio survey */
+"audio_survey_abandon_recording_alert" = "Abandon recording?";
+"audio_survey_abandon_recording_alert_confirm_button" = "Abandon";
+"recording_alert_title" = "Recording";
+"microphone_permission_error" = "Unable to record.  You must allow access to the microphone to answer an audio question";
+"audio_survey_error_saving_title" = "Error Saving";
+"audio_survey_error_saving_text" = "Audio answer not sent";
+"audio_survey_record_button" = "Record";
+"audio_survey_stop_button" = "Stop";
+"audio_survey_play_button" = "Play";
+
+"password_length_requirement" = "Must be at least 6 characters";
+
+"survey_type_audio" = "Audio Survey";
+"survey_type_tracking" = "Survey";
+"survey_status_available" = "Available";
+"survey_status_incomplete" = "incomplete";
+"survey_status_new" = "new";
+
+"permission_alert_title" = "Permissions";
+"permission_notifications_message" = "Allows Beiwe to send you survey notifications.";
+"permission_location_message" = "Beiwe needs this for the data gathering capabilities of the application.";
+"permission_location_and_notifications_message" = "Beiwe needs access to your location and notifications.";
+"permission_location_and_notification_message_long" = "Beiwe needs access to your location for the passive data gathering capabilities of this app. Beiwe will also send you notifications to notify you of new surveys.";
+"permission_warning_alert_title" = "Warning";
+"permission_warning_alert_text" = "Permission to access your location is required to correctly gather the data required for this study.  To participate in this study we highly recommend you go back and allow this application to access your location.";
+
+"consent_document_title" = "Beiwe Consent";
+"study_welcome_message" = "Welcome to the study";
+"review_consent_text" = "Review Consent";
+"review_consent_reason" = "Consent to join study";
+"continue_to_permissions_button_title" = "Permissions";
+
+"survey_notification_text" = "A new survey has arrived and is awaiting completion.";
+"audio_survey_notification_text" = "A new audio question has arrived and is awaiting completion.";
