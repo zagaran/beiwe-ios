@@ -3,9 +3,9 @@
 */
 
 /* Welcome screen */
-"welcome_screen_title" = "歡迎";
-"welcome_screen_body_text" = "歡迎來到Beiwe研究平台。 在您開始註冊過程時，請提供您的臨床醫生提供的用戶ID和密碼。";
-"welcome_screen_go_to_registration_button_text" = "去註冊";
+"welcome_screen_title" = "歡迎登入Beiwe";
+"welcome_screen_body_text" = "歡迎來到Beiwe。 在您開始註冊過程時，請輸入研究團隊給您的用戶ID和密碼。";
+"welcome_screen_go_to_registration_button_text" = "註冊";
 
 /* Registration screen */
 "registration_screen_title" = "用戶";
@@ -47,65 +47,65 @@
 "cancel_button_text" = "拒絕";
 "ok_button_text" = "好";
 "default_call_clinician_text" = "與研究團隊聯繫";
-"call_clinician_confirmation_title" = "Confirm";
-"call_clinician_confirmation_text" = "Are you sure you wish to place a call now?";
+"call_clinician_confirmation_title" = "確認";
+"call_clinician_confirmation_text" = "您確定要現在撥打電話嗎?";
 
 /* Tracking surveys */
 "survey_confirm_submit" = "提交答案";
 "default_survey_submit_success_message" = "感謝您完成此份問卷，研究團隊無法立即更新問卷資訊，若資料上傳過程當中您有任何問題，請與研究團隊連繫。您可以透過\”與研究團隊聯繫\”鍵，向我們反應";
-"survey_completed" = "Survey Completed";
-"get_started" = "Get Started";
-"continue_button_title" = "Continue";
-"confirm_button_title" = "Confirm";
+"survey_completed" = "問卷已完成";
+"get_started" = "開始作答";
+"continue_button_title" = "繼續";
+"confirm_button_title" = "確認";
 
 /* Main view controller */
-"upload_data_button" = "Upload Data";
-"check_for_surveys_button" = "Check for Surveys";
-"change_password_button" = "Change Password";
-"call_research_assistant_button" = "Call Study Staff";
-"logout_button" = "Logout";
-"unregister_button" = "Leave Study";
-"unregister_alert_title" = "Leave Study";
-"unregister_alert_text" = "Are you sure you want to leave the current study?";
+"upload_data_button" = "上傳數據";
+"check_for_surveys_button" = "檢查問卷";
+"change_password_button" = "修改密碼";
+"call_research_assistant_button" = "與研究團隊聯繫";
+"logout_button" = "登出";
+"unregister_button" = "退出研究";
+"unregister_alert_title" = "退出研究";
+"unregister_alert_text" = "您確定要退出研究計畫嗎?";
 
 /* Task list view controller */
-"pending_study_tasks_title" = "Pending Study Tasks";
-"tracking_survey_title" = "Survey";
-"audio_survey_title" = "Audio Quest.";
-"received_abbreviation" = " recvd. ";
+"pending_study_tasks_title" = "研究計畫待審中";
+"tracking_survey_title" = "研究";
+"audio_survey_title" = "語音問卷";
+"received_abbreviation" = " 接受縮寫功能 ";
 
 /* Audio survey */
-"audio_survey_abandon_recording_alert" = "Abandon recording?";
-"audio_survey_abandon_recording_alert_confirm_button" = "Abandon";
-"recording_alert_title" = "Recording";
-"microphone_permission_error" = "Unable to record.  You must allow access to the microphone to answer an audio question";
-"audio_survey_error_saving_title" = "Error Saving";
-"audio_survey_error_saving_text" = "Audio answer not sent";
-"audio_survey_record_button" = "Record";
-"audio_survey_stop_button" = "Stop";
-"audio_survey_play_button" = "Play";
+"audio_survey_abandon_recording_alert" = "捨棄紀錄?";
+"audio_survey_abandon_recording_alert_confirm_button" = "捨棄";
+"recording_alert_title" = "紀錄";
+"microphone_permission_error" = "紀錄失敗。 您需要至設定手動開啟系統與語音功能的連結";
+"audio_survey_error_saving_title" = "儲存錯誤";
+"audio_survey_error_saving_text" = "語音紀錄未傳送";
+"audio_survey_record_button" = "紀錄";
+"audio_survey_stop_button" = "停止";
+"audio_survey_play_button" = "播放";
 
-"password_length_requirement" = "Must be at least 6 characters";
+"password_length_requirement" = "需要至少6位元";
 
-"survey_type_audio" = "Audio Survey";
-"survey_type_tracking" = "Survey";
-"survey_status_available" = "Available";
-"survey_status_incomplete" = "incomplete";
-"survey_status_new" = "new";
+"survey_type_audio" = "語音問卷";
+"survey_type_tracking" = "研究問卷";
+"survey_status_available" = "可填寫";
+"survey_status_incomplete" = "未完成";
+"survey_status_new" = "新增";
 
-"permission_alert_title" = "Permissions";
-"permission_notifications_message" = "Allows Beiwe to send you survey notifications.";
-"permission_location_message" = "Beiwe needs this for the data gathering capabilities of the application.";
-"permission_location_and_notifications_message" = "Beiwe needs access to your location and notifications.";
-"permission_location_and_notification_message_long" = "Beiwe needs access to your location for the passive data gathering capabilities of this app. Beiwe will also send you notifications to notify you of new surveys.";
-"permission_warning_alert_title" = "Warning";
-"permission_warning_alert_text" = "Permission to access your location is required to correctly gather the data required for this study.  To participate in this study we highly recommend you go back and allow this application to access your location.";
+"permission_alert_title" = "允許";
+"permission_notifications_message" = "允許Beiwe傳送研究提醒";
+"permission_location_message" = " Beiwe 需要該功能用以整合軟體的資訊內容";
+"permission_location_and_notifications_message" = " Beiwe 需要連結您的位置資訊與通知功能";
+"permission_location_and_notification_message_long" = " Beiwe 需要連結您的位置資訊，以利整合軟體的資訊內容，並且Beiwe將提供您問卷新增的提示";
+"permission_warning_alert_title" = "警告";
+"permission_warning_alert_text" = "Beiwe需要連結手機的位置資訊功能，以利正確蒐集蒐集研究資訊。為了研究目的，我們建議您至設定開啟位置資訊的允許。";
 
-"consent_document_title" = "Beiwe Consent";
-"study_welcome_message" = "Welcome to the study";
-"review_consent_text" = "Review Consent";
-"review_consent_reason" = "Consent to join study";
-"continue_to_permissions_button_title" = "Permissions";
+"consent_document_title" = "Beiwe 同意書";
+"study_welcome_message" = "歡迎參與研究計畫";
+"review_consent_text" = "查閱同意書";
+"review_consent_reason" = "同意參加研究計畫";
+"continue_to_permissions_button_title" = "允許";
 
-"survey_notification_text" = "A new survey has arrived and is awaiting completion.";
-"audio_survey_notification_text" = "A new audio question has arrived and is awaiting completion.";
+"survey_notification_text" = "近期將有一項新的研究計畫到來，正在審查中";
+"audio_survey_notification_text" = "已更新語音問卷，正在等待完成";
