@@ -46,8 +46,8 @@ class RegisterViewController: FormViewController {
         var section = Section(NSLocalizedString("registration_screen_title", comment: ""))
         if (configServer) {
             section = section <<< SVURLRow("server") {
-                $0.title = NSLocalizedString("registration_screen_study_server_title", comment: "")
-                $0.placeholder = NSLocalizedString("registration_screen_study_server_placeholder", comment: "")
+                $0.title = NSLocalizedString("registration_server_url_label", comment: "")
+                $0.placeholder = NSLocalizedString("registration_server_url_hint", comment: "")
                 $0.rules = [RequiredRule()]
                 $0.autoValidation = autoValidation
             }
