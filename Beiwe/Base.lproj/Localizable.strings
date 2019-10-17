@@ -94,9 +94,6 @@
 "survey_status_new" = "new";
 
 "permission_alert_title" = "Permissions";
-"permission_notifications_message" = "Allows Beiwe to send you survey notifications.";
-"permission_location_message" = "Beiwe needs this for the data gathering capabilities of the application.";
-"permission_location_and_notifications_message" = "Beiwe needs access to your location and notifications.";
 "permission_location_and_notification_message_long" = "Beiwe needs access to your location for the passive data gathering capabilities of this app. Beiwe will also send you notifications to notify you of new surveys.";
 "permission_warning_alert_title" = "Warning";
 "permission_warning_alert_text" = "Permission to access your location is required to correctly gather the data required for this study.  To participate in this study we highly recommend you go back and allow this application to access your location.";

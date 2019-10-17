@@ -13,7 +13,6 @@ import PromiseKit
 import CoreMotion;
 import ReachabilitySwift
 import ResearchKit;
-import PermissionScope
 import XCGLogger
 import EmitterKit
 
@@ -30,7 +29,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var currentRootView: String? = "launchScreen";
     var isLoggedIn: Bool = false;
     var timeEnteredBackground: Date?;
-    let pscope = PermissionScope()
     var canOpenTel = false;
     let debugEnabled  = _isDebugAssertConfiguration();
     let lockEvent = Event<Bool>()
@@ -74,16 +72,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         log.logAppDetails()
 
         AppEventManager.sharedInstance.didLaunch(launchOptions: launchOptions);
-
-
-        pscope.addPermission(NotificationsPermission(notificationCategories: nil),
-                             message: NSLocalizedString("permission_notifications_message", comment: ""))
-        pscope.addPermission(LocationAlwaysPermission(),
-                             message: NSLocalizedString("permission_location_message", comment: ""))
-        pscope.headerLabel.text = ""
-        pscope.bodyLabel.text = NSLocalizedString("permission_location_and_notifications_message", comment: "");
-        //pscope.bodyLabel.font = pscope.bodyLabel.font.fontWithSize(10);
-        //pscope.bodyLabel.sizeToFit();
 
         do {
             reachability = try Reachability()

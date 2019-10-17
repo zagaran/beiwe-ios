@@ -8,7 +8,6 @@
 
 import Foundation
 import ResearchKit
-import PermissionScope
 
 
 enum StepIds : String {

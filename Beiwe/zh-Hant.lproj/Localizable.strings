@@ -94,9 +94,6 @@
 "survey_status_new" = "新增";
 
 "permission_alert_title" = "允許";
-"permission_notifications_message" = "允許Beiwe傳送研究提醒";
-"permission_location_message" = " Beiwe 需要該功能用以整合軟體的資訊內容";
-"permission_location_and_notifications_message" = " Beiwe 需要連結您的位置資訊與通知功能";
 "permission_location_and_notification_message_long" = " Beiwe 需要連結您的位置資訊，以利整合軟體的資訊內容，並且Beiwe將提供您問卷新增的提示";
 "permission_warning_alert_title" = "警告";
 "permission_warning_alert_text" = "Beiwe需要連結手機的位置資訊功能，以利正確蒐集蒐集研究資訊。為了研究目的，我們建議您至設定開啟位置資訊的允許。";
