@@ -236,7 +236,7 @@ class StudyManager {
     }
 
     @objc func reachabilityChanged(_ notification: Notification){
-        Promise().then() { () -> Void in
+        Promise().done() { _ in
             log.info("Reachability changed, running periodic.");
             self.periodicNetworkTransfers();
         }
@@ -256,7 +256,7 @@ class StudyManager {
         if (currentTime > nextSurvey || (reachable && currentStudy.missedSurveyCheck)) {
             /* This will be saved because setNextUpload saves the study */
             currentStudy.missedSurveyCheck = !reachable
-            self.setNextSurveyTime().then { _ -> Void in
+            self.setNextSurveyTime().done { _ -> Void in
                 if (reachable) {
                     self.checkSurveys();
                 }
@@ -267,7 +267,7 @@ class StudyManager {
         else if (currentTime > nextUpload || (reachable && currentStudy.missedUploadCheck)) {
             /* This will be saved because setNextUpload saves the study */
             currentStudy.missedUploadCheck = !reachable
-            self.setNextUploadTime().then { _ -> Void in
+            self.setNextUploadTime().done { _ -> Void in
                 self.upload(!reachable);
                 }.catch { _ -> Void in
                     log.error("Error checking for uploads")
