@@ -379,6 +379,7 @@ class StudyManager {
             /* Find the next scheduled date that is >= now */
             outer: for day in 0..<7 {
                 let dayIdx = (day + currentDay) % 7;
+                NSLog("Survey: \(survey.timings)")
                 let timings = survey.timings[dayIdx].sorted()
 
                 for dayTime in timings {
