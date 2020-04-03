@@ -33,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let debugEnabled  = _isDebugAssertConfiguration();
     let lockEvent = Event<Bool>()
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
 
         Fabric.with([Crashlytics.self])
@@ -222,7 +222,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func checkPasswordAndLogin(_ password: String) -> Bool {
-        if let storedPassword = PersistentPasswordManager.sharedInstance.passwordForStudy(), storedPassword.characters.count > 0 {
+        if let storedPassword = PersistentPasswordManager.sharedInstance.passwordForStudy(), storedPassword.count > 0 {
             if (password == storedPassword) {
                 ApiManager.sharedInstance.password = storedPassword;
                 isLoggedIn = true;
@@ -291,13 +291,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         self.window = UIWindow(frame: UIScreen.main.bounds)
 
-        self.window?.rootViewController = storyboard!.instantiateViewController(withIdentifier: view) as UIViewController!;
+        self.window?.rootViewController = storyboard!.instantiateViewController(withIdentifier: view) as UIViewController?;
 
         self.window!.makeKeyAndVisible()
         
     }
 
-    func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         log.info("applicationWillFinishLaunchingWithOptions")
         return true;
 

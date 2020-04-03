@@ -31,7 +31,7 @@ struct OpFunction {
         if (args.count < minArgs || (maxArgs != -1 && args.count > maxArgs)) {
             return 0;
         }
-        return evalFunc(args.flatMap { return $0! } );
+        return evalFunc(args.compactMap { return $0! } );
     }
 }
 

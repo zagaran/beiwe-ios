@@ -563,7 +563,7 @@ class StudyManager {
 
         var type = ""
 
-        let pieces = pathPrefix.characters.split(separator: "_")
+        let pieces = pathPrefix.split(separator: "_")
         var timestamp: Int64 = 0
         if (pieces.count > 2) {
             type = String(pieces[1])

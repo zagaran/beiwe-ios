@@ -33,12 +33,12 @@ class ProximityManager : DataServiceProtocol {
     func startCollecting() {
         log.info("Turning \(storeType) collection on");
         UIDevice.current.isProximityMonitoringEnabled = true;
-        NotificationCenter.default.addObserver(self, selector: #selector(self.proximityStateDidChange), name: NSNotification.Name.UIDeviceProximityStateDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.proximityStateDidChange), name: UIDevice.proximityStateDidChangeNotification, object: nil)
         AppEventManager.sharedInstance.logAppEvent(event: "proximity_on", msg: "Proximity collection on")
     }
     func pauseCollecting() {
         log.info("Pausing \(storeType) collection");
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIDeviceProximityStateDidChange, object:nil)
+        NotificationCenter.default.removeObserver(self, name: UIDevice.proximityStateDidChangeNotification, object:nil)
         store!.flush();
         AppEventManager.sharedInstance.logAppEvent(event: "proximity_off", msg: "Proximity collection off")
     }

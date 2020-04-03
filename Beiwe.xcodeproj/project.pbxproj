@@ -442,7 +442,7 @@
 					83F98C351C923C3600E0B64B = {
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = WRY9L72ZUW;
-						LastSwiftMigration = 0830;
+						LastSwiftMigration = 1130;
 						ProvisioningStyle = Manual;
 					};
 				};
@@ -799,7 +799,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)${TARGET_NAME_SUFFIX}";
 				PROVISIONING_PROFILE_SPECIFIER = "Tucker Jaenicke";
 				SWIFT_OBJC_BRIDGING_HEADER = "Beiwe-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				TARGET_NAME_SUFFIX = Pre1;
 			};
@@ -938,7 +938,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "Tucker Jaenicke";
 				SWIFT_OBJC_BRIDGING_HEADER = "Beiwe-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				TARGET_NAME_SUFFIX = Dbg;
 			};
@@ -964,7 +964,7 @@
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "Tucker Jaenicke";
 				SWIFT_OBJC_BRIDGING_HEADER = "Beiwe-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				TARGET_NAME_SUFFIX = "";
 			};
@@ -1048,7 +1048,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)${TARGET_NAME_SUFFIX}";
 				PROVISIONING_PROFILE_SPECIFIER = "Tucker Jaenicke";
 				SWIFT_OBJC_BRIDGING_HEADER = "Beiwe-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				TARGET_NAME_SUFFIX = Int;
 			};
@@ -1132,7 +1132,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)${TARGET_NAME_SUFFIX}";
 				PROVISIONING_PROFILE_SPECIFIER = "Tucker Jaenicke";
 				SWIFT_OBJC_BRIDGING_HEADER = "Beiwe-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				TARGET_NAME_SUFFIX = Ext;
 			};
@@ -1211,7 +1211,7 @@
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "Tucker Jaenicke";
 				SWIFT_OBJC_BRIDGING_HEADER = "Beiwe-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				TARGET_NAME_SUFFIX = Hvd;
 			};

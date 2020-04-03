@@ -58,7 +58,7 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
         recordingSession = AVAudioSession.sharedInstance()
 
         do {
-            try recordingSession.setCategory(AVAudioSessionCategoryPlayAndRecord)
+            try recordingSession.setCategory(AVAudioSession.Category.playAndRecord)
             try recordingSession.setActive(true)
             recordingSession.requestRecordPermission() { [unowned self] (allowed: Bool) -> Void in
                 DispatchQueue.main.async {
@@ -339,7 +339,7 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
             text = NSLocalizedString("audio_survey_play_button", comment: "")
         }
         recordPlayButton.setTitle(text, for: .highlighted)
-        recordPlayButton.setTitle(text, for: UIControlState())
+        recordPlayButton.setTitle(text, for: UIControl.State())
         recordPlayButton.setTitle(text, for: .disabled)
 
     }
@@ -430,4 +430,9 @@ class AudioQuestionViewController: UIViewController, AVAudioRecorderDelegate, AV
     }
     */
 
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromAVAudioSessionCategory(_ input: AVAudioSession.Category) -> String {
+	return input.rawValue
 }

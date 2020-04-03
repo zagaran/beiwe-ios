@@ -490,7 +490,7 @@ class DataStorageManager {
                 fileHandle.closeFile()
             }
             let dataString = String(data: fileHandle.readData(ofLength: 2048), encoding: String.Encoding.utf8)
-            let dataArray = dataString?.characters.split{$0 == "\n"}.map(String.init)
+            let dataArray = dataString?.split{$0 == "\n"}.map(String.init)
             if let dataArray = dataArray, dataArray.count > 0 {
                 firstLine = dataArray[0]
             } else {

@@ -35,7 +35,7 @@ class ChangePasswordViewController: FormViewController {
                 var header = HeaderFooterView<ForgotPasswordHeaderView>(.nibFile(name: "ForgotPasswordHeaderView", bundle: nil))
                 header.onSetupView = { headerView, _ in
                     headerView.patientId.text = StudyManager.sharedInstance.currentStudy?.patientId ?? ""
-                    headerView.callButton.addTarget(self, action: #selector(ChangePasswordViewController.callAssistant(_:)), for: UIControlEvents.touchUpInside)
+                    headerView.callButton.addTarget(self, action: #selector(ChangePasswordViewController.callAssistant(_:)), for: UIControl.Event.touchUpInside)
                     // Hide call button if it's disabled in the study settings
                     if !(StudyManager.sharedInstance.currentStudy?.studySettings?.callResearchAssistantButtonEnabled)! {
                         headerView.descriptionLabel.text = NSLocalizedString("forgot_password_title", comment: "")
@@ -49,7 +49,7 @@ class ChangePasswordViewController: FormViewController {
             }
             <<< SVPasswordRow("currentPassword") {
                 $0.title = isForgotPassword ? NSLocalizedString("forgot_password_temporary_password_caption", comment: "") : NSLocalizedString("reset_password_current_password_caption", comment: "")
-                let placeholder: String = String($0.title!.lowercased().characters.dropLast())
+                let placeholder: String = String($0.title!.lowercased().dropLast())
                 $0.placeholder = placeholder
                 $0.customRules = [RequiredRule()]
                 $0.autoValidation = autoValidation

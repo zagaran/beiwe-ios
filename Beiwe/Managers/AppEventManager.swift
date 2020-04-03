@@ -30,10 +30,10 @@ class AppEventManager : DataServiceProtocol {
         return store != nil;
     }
 
-    func didLaunch(launchOptions: [UIApplicationLaunchOptionsKey: Any]?) {
+    func didLaunch(launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
         self.launchOptions = ""
         self.launchTimestamp = Date();
-        if ((launchOptions?.index(forKey: UIApplicationLaunchOptionsKey.location)) != nil) {
+        if ((launchOptions?.index(forKey: UIApplication.LaunchOptionsKey.location)) != nil) {
             self.launchOptions = "location"
             /*
             let localNotif = UILocalNotification();

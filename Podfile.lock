@@ -6,7 +6,7 @@ PODS:
   - Crashlytics (3.14.0):
     - Fabric (~> 1.10.2)
   - EmitterKit (5.2.2)
-  - Eureka (5.2.0)
+  - Eureka (5.2.1)
   - Fabric (1.10.2)
   - Hakuba (2.1.1)
   - IDZSwiftCommonCrypto (0.13.0)
@@ -104,7 +104,7 @@ SPEC CHECKSUMS:
   couchbase-lite-ios: 6b586fca2c8a59c85e31df89a2528c92c40fc4dc
   Crashlytics: 540b7e5f5da5a042647227a5e3ac51d85eed06df
   EmitterKit: e7a27b37118823d8ad413b8396f75e40d59f8cba
-  Eureka: 820a761c700f6eaab3b60758f138e0d9b99072b3
+  Eureka: c883105488e05bc65539f583246ecf9657cabbfe
   Fabric: 706c8b8098fff96c33c0db69cbf81f9c551d0d74
   Hakuba: bc5a0422290d086c33a6424a26dd58c1a1136e94
   IDZSwiftCommonCrypto: 00dd37cdfbd149312a7e5a582cf9909f8b129f44

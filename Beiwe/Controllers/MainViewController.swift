@@ -29,7 +29,7 @@ class MainViewController: UIViewController {
         
         self.navigationController?.presentTransparentNavigationBar();
         let leftImage : UIImage? = UIImage(named:"ic-user")!.withRenderingMode(.alwaysOriginal);
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: leftImage, style: UIBarButtonItemStyle.plain, target: self, action: #selector(userButton))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: leftImage, style: UIBarButtonItem.Style.plain, target: self, action: #selector(userButton))
         /*
         let rightImage : UIImage? = UIImage(named:"ic-info")!.imageWithRenderingMode(.AlwaysOriginal);
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: rightImage, style: UIBarButtonItemStyle.Plain, target: self, action: #selector(infoButton))
@@ -47,10 +47,10 @@ class MainViewController: UIViewController {
 
         var clinicianText: String;
         clinicianText = StudyManager.sharedInstance.currentStudy?.studySettings?.callClinicianText ?? NSLocalizedString("default_call_clinician_text", comment: "")
-        callClinicianButton.setTitle(clinicianText, for: UIControlState())
-        callClinicianButton.setTitle(clinicianText, for: UIControlState.highlighted)
+        callClinicianButton.setTitle(clinicianText, for: UIControl.State())
+        callClinicianButton.setTitle(clinicianText, for: UIControl.State.highlighted)
         if #available(iOS 9.0, *) {
-            callClinicianButton.setTitle(clinicianText, for: UIControlState.focused)
+            callClinicianButton.setTitle(clinicianText, for: UIControl.State.focused)
         }
         
         // Hide call button if it's disabled in the study settings

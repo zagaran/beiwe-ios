@@ -53,7 +53,7 @@ class Crypto {
     func rsaEncryptString(_ str: String, publicKey: SecKey, padding: SecPadding = defaultRSAPadding) throws -> String {
         let blockSize = SecKeyGetBlockSize(publicKey)
         let plainTextData = [UInt8](str.utf8)
-        let plainTextDataLength = Int(str.characters.count)
+        let plainTextDataLength = Int(str.count)
         var encryptedData = [UInt8](repeating: 0, count: Int(blockSize))
         var encryptedDataLength = blockSize
 

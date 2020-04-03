@@ -33,13 +33,17 @@ import ObjectiveC
 
 open class _SVFieldCell<T>: _FieldCell<T> where T: Equatable, T: InputTypeInitiable {
 
-    required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    required public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
     
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
+
+//    required public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+//        fatalError("init(style:reuseIdentifier:) has not been implemented")
+//    }
 
     lazy open var validationLabel: UILabel = {
         [unowned self] in
@@ -208,7 +212,7 @@ open class _SVTextRow<Cell: _SVFieldCell<String>>: FieldRow<Cell>, SVRow where C
 
 open class SVTextCell: _SVFieldCell<String>, CellType {
 
-    required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    required public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
     

@@ -127,7 +127,7 @@ func confirmAndCallClinician(_ presenter: UIViewController, callAssistant: Bool 
     }
     if let phoneNumber = number, AppDelegate.sharedInstance().canOpenTel {
         if let phoneUrl = URL(string: "tel:" + phoneNumber) {
-            let callAlert = UIAlertController(title: NSLocalizedString("call_clinician_confirmation_title", comment: ""), message: msg, preferredStyle: UIAlertControllerStyle.alert)
+            let callAlert = UIAlertController(title: NSLocalizedString("call_clinician_confirmation_title", comment: ""), message: msg, preferredStyle: UIAlertController.Style.alert)
 
             callAlert.addAction(UIAlertAction(title: NSLocalizedString("ok_button_text", comment: ""), style: .default) { (action: UIAlertAction!) in
                 UIApplication.shared.openURL(phoneUrl)
