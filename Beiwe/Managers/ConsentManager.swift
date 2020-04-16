@@ -8,10 +8,12 @@
 
 import Foundation
 import ResearchKit
+import CoreLocation
 
 
 enum StepIds : String {
     case Permission = "PermissionsStep"
+    case LocationPermission = "LocationPermission"
     case WaitForPermissions = "WaitForPermissions"
     case WarningStep = "WarningStep"
     case VisualConsent = "VisualConsentStep"
@@ -22,7 +24,6 @@ class WaitForPermissionsRule : ORKStepNavigationRule {
     let nextTask: ((ORKTaskResult) -> String)
     init(nextTask: @escaping ((_ taskResult: ORKTaskResult) -> String)) {
         self.nextTask = nextTask
-
         super.init(coder: NSCoder())
     }
     
@@ -34,19 +35,28 @@ class WaitForPermissionsRule : ORKStepNavigationRule {
     }
 }
 
-class ConsentManager : NSObject, ORKTaskViewControllerDelegate {
-
-
-//    let pscope = AppDelegate.sharedInstance().pscope;
+class ConsentManager : NSObject, ORKTaskViewControllerDelegate, CLLocationManagerDelegate {
+    
+    
     var retainSelf: AnyObject?;
     var consentViewController: ORKTaskViewController!;
     var consentDocument: ORKConsentDocument!;
-    var permissionsGranted: Bool = false;
-
+    var notificationPermission: Bool = false;
+    var locationPermission: Bool = false;
+    // manager needed to ask for location permissions
+    let locManager: CLLocationManager = CLLocationManager()
+    
     var PermissionsStep: ORKStep {
         let instructionStep = ORKInstructionStep(identifier: StepIds.Permission.rawValue)
         instructionStep.title = NSLocalizedString("permission_alert_title", comment: "")
         instructionStep.text = NSLocalizedString("permission_location_and_notification_message_long", comment: "")
+        return instructionStep;
+    }
+    
+    var LocationPermission: ORKStep {
+        let instructionStep = ORKInstructionStep(identifier: StepIds.LocationPermission.rawValue)
+        instructionStep.title = NSLocalizedString("location_permission_title", comment: "")
+        instructionStep.text = NSLocalizedString("location_permission_text", comment: "")
         return instructionStep;
     }
 
@@ -57,22 +67,23 @@ class ConsentManager : NSObject, ORKTaskViewControllerDelegate {
         return instructionStep;
     }
 
-
+    
 
     override init() {
         super.init();
 
         // Set up permissions
-
+        
         var steps = [ORKStep]();
 
 
         if (!hasRequiredPermissions()) {
             steps += [PermissionsStep];
+            steps += [LocationPermission];
             steps += [ORKWaitStep(identifier: StepIds.WaitForPermissions.rawValue)];
             steps += [WarningStep];
         }
-
+        
         consentDocument = ORKConsentDocument()
         consentDocument.title = NSLocalizedString("consent_document_title", comment: "")
 
@@ -88,7 +99,7 @@ class ConsentManager : NSObject, ORKTaskViewControllerDelegate {
         } else {
             overviewSection.summary = NSLocalizedString("study_welcome_message", comment: "")
         }
-
+        
         let consentSectionTypes: [(ORKConsentSectionType, String)] = [
             (.dataGathering, "data_gathering"),
             (.privacy, "privacy"),
@@ -98,8 +109,8 @@ class ConsentManager : NSObject, ORKTaskViewControllerDelegate {
             (.studyTasks, "study_tasks"),
             (.withdrawing, "withdrawing")
         ]
-
-
+        
+        
         var hasAdditionalConsent = false;
         var consentSections: [ORKConsentSection] = [overviewSection];
         for (contentSectionType, bwType) in consentSectionTypes {
@@ -113,56 +124,83 @@ class ConsentManager : NSObject, ORKTaskViewControllerDelegate {
                 consentSections.append(consentSection);
             }
         }
-
+        
         consentDocument.addSignature(ORKConsentSignature(forPersonWithTitle: nil, dateFormatString: nil, identifier: "ConsentDocumentParticipantSignature"))
-
         consentDocument.sections = consentSections        //TODO: signature
         
         let visualConsentStep = ORKVisualConsentStep(identifier: StepIds.VisualConsent.rawValue, document: consentDocument)
         steps += [visualConsentStep]
-
+        
         //let signature = consentDocument.signatures!.first!
-
+        
         if (hasAdditionalConsent) {
             let reviewConsentStep = ORKConsentReviewStep(identifier: StepIds.ConsentReview.rawValue, signature: nil, in: consentDocument)
-
+            
             reviewConsentStep.text = NSLocalizedString("review_consent_text", comment: "")
             reviewConsentStep.reasonForConsent = NSLocalizedString("review_consent_reason", comment: "")
-
+            
             steps += [reviewConsentStep]
         }
-
+        
         let task = ORKNavigableOrderedTask(identifier: "ConsentTask", steps: steps)
         //let waitForPermissionRule = WaitForPermissionsRule(coder: NSCoder())
         //task.setNavigationRule(waitForPermissionRule!, forTriggerStepIdentifier: StepIds.WaitForPermissions.rawValue)
         task.setNavigationRule(WaitForPermissionsRule() { [weak self] taskResult -> String in
-//            if (self?.pscope.statusLocationAlways() == .authorized) {
-            if (self?.permissionsGranted == true) {
-                print("Permissions granted")
+            if (self!.hasRequiredPermissions()) {
                 return StepIds.VisualConsent.rawValue
             } else {
                 return StepIds.WarningStep.rawValue
             }
-
-            }, forTriggerStepIdentifier: StepIds.WaitForPermissions.rawValue)
+        }, forTriggerStepIdentifier: StepIds.WaitForPermissions.rawValue)
         consentViewController = ORKTaskViewController(task: task, taskRun: nil);
         consentViewController.showsProgressInNavigationBar = false;
         consentViewController.delegate = self;
         retainSelf = self;
     }
-
+    
+    // this function gets called when CLAuthorization status changes
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        switch status {
+        case .notDetermined:
+            // If status has not yet been determied, ask for authorization
+            manager.requestAlwaysAuthorization()
+//            while CLLocationManager.authorizationStatus() == .notDetermined {
+//                sleep(1)
+//            }
+//            locationManager(manager, didChangeAuthorization: CLLocationManager.authorizationStatus())
+            break
+        case .authorizedWhenInUse:
+            // If authorized when in use
+            locationPermission = false
+            break
+        case .authorizedAlways:
+            // If always authorized
+            locationPermission = true
+            break
+        case .restricted:
+            // If restricted by e.g. parental controls. User can't enable Location Services
+            locationPermission = false
+            break
+        case .denied:
+            // If user denied your app access to Location Services, but can grant access from Settings.app
+            locationPermission = false
+            break
+        default:
+            break
+        }
+    }
+    
     func closeOnboarding() {
         AppDelegate.sharedInstance().transitionToCurrentAppState();
         retainSelf = nil;
     }
-
+    
     func hasRequiredPermissions() -> Bool {
-//        return (pscope.statusNotifications() == .authorized && pscope.statusLocationAlways() == .authorized);
-        return false
+        return notificationPermission && locationPermission;
     }
-
+    
     /* ORK Delegates */
-
+    
     func taskViewController(_ taskViewController: ORKTaskViewController, didFinishWith reason: ORKTaskViewControllerFinishReason, error: Error?) {
         //Handle results with taskViewController.result
         //taskViewController.dismissViewControllerAnimated(true, completion: nil)
@@ -176,85 +214,88 @@ class ConsentManager : NSObject, ORKTaskViewControllerDelegate {
             }
         }
     }
-
+    
     func taskViewController(_ taskViewController: ORKTaskViewController, didChange result: ORKTaskResult) {
-
+        
         return;
     }
-
+    
     func taskViewController(_ taskViewController: ORKTaskViewController, shouldPresent step: ORKStep) -> Bool {
         /*
-        if let identifier = StepIds(rawValue: step.identifier) {
-            switch(identifier) {
-            case .WarningStep:
-                if (pscope.statusLocationAlways() == .Authorized) {
-                    taskViewController.goForward();
-                    return false;
-                }
-            default: break
-            }
-        }
-        */
+         if let identifier = StepIds(rawValue: step.identifier) {
+         switch(identifier) {
+         case .WarningStep:
+         if (pscope.statusLocationAlways() == .Authorized) {
+         taskViewController.goForward();
+         return false;
+         }
+         default: break
+         }
+         }
+         */
         return true;
-
+        
     }
-
+    
     func taskViewController(_ taskViewController: ORKTaskViewController, learnMoreForStep stepViewController: ORKStepViewController) {
         // Present modal...
         let refreshAlert = UIAlertController(title: "Learning more!", message: "You're smart now", preferredStyle: UIAlertController.Style.alert)
-
+        
         refreshAlert.addAction(UIAlertAction(title: NSLocalizedString("ok_button_text", comment: ""), style: .default, handler: { (action: UIAlertAction!) in
         }))
-
-
+        
+        
         consentViewController.present(refreshAlert, animated: true, completion: nil)
     }
-
+    
     func taskViewController(_ taskViewController: ORKTaskViewController, hasLearnMoreFor step: ORKStep) -> Bool {
         return false;
     }
-
+    
     func taskViewController(_ taskViewController: ORKTaskViewController, viewControllerFor step: ORKStep) -> ORKStepViewController? {
         return nil;
     }
-
+    
     func taskViewController(_ taskViewController: ORKTaskViewController, stepViewControllerWillAppear stepViewController: ORKStepViewController) {
         stepViewController.cancelButtonItem!.title = NSLocalizedString("unregister_alert_title", comment: "")
-
+        
         if let identifier = StepIds(rawValue: stepViewController.step?.identifier ?? "") {
             switch(identifier) {
-            case .WaitForPermissions:
-                print("Waiting for Permissions")
-                stepViewController.goForward();
-//                pscope.show({ finished, results in
-//                    log.info("Permissions granted");
-//                    if (self.hasRequiredPermissions()) {
-//                        stepViewController.goForward();
-//                    }
-//                    }, cancelled: { (results) in
-//                        log.info("Permissions cancelled");
-//                        stepViewController.goForward();
-//                })
             case .Permission:
-                print("In permission step")
                 stepViewController.continueButtonTitle = NSLocalizedString("continue_to_permissions_button_title", comment: "");
+            case .LocationPermission:
+//                let locManager = CLLocationManager()
+                locManager.delegate = self
+                // function runs asynchronously
+                locManager.requestAlwaysAuthorization()
+                // since it is asynchronous, need continue button to halt flow until permissions are granted
+                stepViewController.continueButtonTitle = NSLocalizedString("continue_button_title", comment: "")
+            case .WaitForPermissions:
+                let center = UNUserNotificationCenter.current()
+                center.requestAuthorization(options: [.sound, .alert, .badge]) { (granted, error) in  // TODO: .sound may be unnecessary
+                    if error == nil {
+                        center.getNotificationSettings { settings in
+                            if settings.authorizationStatus == .authorized {
+                                self.notificationPermission = true
+                            } else {
+                                self.notificationPermission = false
+                            }
+                            stepViewController.goForward();
+                        }
+                    } else {
+                        stepViewController.goForward();
+                    }
+                }
             case .WarningStep:
-                print("Warning Step")
-                stepViewController.goForward();
-//                if (pscope.statusLocationAlways() == .authorized) {
-//                    stepViewController.goForward();
-//                } else {
-//                    stepViewController.continueButtonTitle = NSLocalizedString("continue_button_title", comment: "");
-//                }
+                stepViewController.continueButtonTitle = NSLocalizedString("continue_button_title", comment: "");
             case .VisualConsent:
-                print("in visual consent step")
                 if (hasRequiredPermissions()) {
                     stepViewController.backButtonItem = nil;
                 }
             default: break;
             }
         }
-
+        
         //stepViewController.continueButtonTitle = "Go!"
     }
 }
