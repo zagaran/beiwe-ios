@@ -264,7 +264,6 @@ class ConsentManager : NSObject, ORKTaskViewControllerDelegate, CLLocationManage
             case .Permission:
                 stepViewController.continueButtonTitle = NSLocalizedString("continue_to_permissions_button_title", comment: "");
             case .LocationPermission:
-//                let locManager = CLLocationManager()
                 locManager.delegate = self
                 // function runs asynchronously
                 locManager.requestAlwaysAuthorization()
@@ -280,10 +279,16 @@ class ConsentManager : NSObject, ORKTaskViewControllerDelegate, CLLocationManage
                             } else {
                                 self.notificationPermission = false
                             }
-                            stepViewController.goForward();
+                            // this makes the goForward() call happen on the main thread
+                            // app crashes otherwise
+                            DispatchQueue.main.async {
+                                stepViewController.goForward();
+                            }
                         }
                     } else {
-                        stepViewController.goForward();
+                        DispatchQueue.main.async {
+                            stepViewController.goForward();
+                        }
                     }
                 }
             case .WarningStep:
