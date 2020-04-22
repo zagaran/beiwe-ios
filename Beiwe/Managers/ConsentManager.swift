@@ -35,16 +35,13 @@ class WaitForPermissionsRule : ORKStepNavigationRule {
     }
 }
 
-class ConsentManager : NSObject, ORKTaskViewControllerDelegate, CLLocationManagerDelegate {
+class ConsentManager : NSObject, ORKTaskViewControllerDelegate {
     
     
     var retainSelf: AnyObject?;
     var consentViewController: ORKTaskViewController!;
     var consentDocument: ORKConsentDocument!;
     var notificationPermission: Bool = false;
-    var locationPermission: Bool = false;
-    // manager needed to ask for location permissions
-    let locManager: CLLocationManager = CLLocationManager()
     
     var PermissionsStep: ORKStep {
         let instructionStep = ORKInstructionStep(identifier: StepIds.Permission.rawValue)
@@ -158,45 +155,13 @@ class ConsentManager : NSObject, ORKTaskViewControllerDelegate, CLLocationManage
         retainSelf = self;
     }
     
-    // this function gets called when CLAuthorization status changes
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        switch status {
-        case .notDetermined:
-            // If status has not yet been determied, ask for authorization
-            manager.requestAlwaysAuthorization()
-//            while CLLocationManager.authorizationStatus() == .notDetermined {
-//                sleep(1)
-//            }
-//            locationManager(manager, didChangeAuthorization: CLLocationManager.authorizationStatus())
-            break
-        case .authorizedWhenInUse:
-            // If authorized when in use
-            locationPermission = false
-            break
-        case .authorizedAlways:
-            // If always authorized
-            locationPermission = true
-            break
-        case .restricted:
-            // If restricted by e.g. parental controls. User can't enable Location Services
-            locationPermission = false
-            break
-        case .denied:
-            // If user denied your app access to Location Services, but can grant access from Settings.app
-            locationPermission = false
-            break
-        default:
-            break
-        }
-    }
-    
     func closeOnboarding() {
         AppDelegate.sharedInstance().transitionToCurrentAppState();
         retainSelf = nil;
     }
     
     func hasRequiredPermissions() -> Bool {
-        return notificationPermission && locationPermission;
+        return notificationPermission && AppDelegate.sharedInstance().locationPermission;
     }
     
     /* ORK Delegates */
@@ -264,9 +229,10 @@ class ConsentManager : NSObject, ORKTaskViewControllerDelegate, CLLocationManage
             case .Permission:
                 stepViewController.continueButtonTitle = NSLocalizedString("continue_to_permissions_button_title", comment: "");
             case .LocationPermission:
-                locManager.delegate = self
+                // setting the location manager delegate to be AppDelegate
+                AppDelegate.sharedInstance().locManager.delegate = AppDelegate.sharedInstance()
                 // function runs asynchronously
-                locManager.requestAlwaysAuthorization()
+                AppDelegate.sharedInstance().locManager.requestAlwaysAuthorization()
                 // since it is asynchronous, need continue button to halt flow until permissions are granted
                 stepViewController.continueButtonTitle = NSLocalizedString("continue_button_title", comment: "")
             case .WaitForPermissions:

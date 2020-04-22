@@ -19,7 +19,7 @@ import EmitterKit
 let log = XCGLogger(identifier: "advancedLogger", includeDefaultDestinations: false)
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
 
     var window: UIWindow?
     var storyboard: UIStoryboard?;
@@ -32,9 +32,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var canOpenTel = false;
     let debugEnabled  = _isDebugAssertConfiguration();
     let lockEvent = Event<Bool>()
+    
+    var locationPermission: Bool = false;
+    // manager needed to ask for location permissions
+    let locManager: CLLocationManager = CLLocationManager()
+    
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        
 
         Fabric.with([Crashlytics.self])
 
@@ -327,6 +334,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func crash() {
         Crashlytics.sharedInstance().crash()
+    }
+    
+    // this function gets called when CLAuthorization status changes
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        switch status {
+        case .notDetermined:
+            // If status has not yet been determied, ask for authorization
+            manager.requestAlwaysAuthorization()
+            break
+        case .authorizedWhenInUse:
+            // If authorized when in use
+            locationPermission = false
+            break
+        case .authorizedAlways:
+            // If always authorized
+            locationPermission = true
+            break
+        case .restricted:
+            // If restricted by e.g. parental controls. User can't enable Location Services
+            locationPermission = false
+            break
+        case .denied:
+            // If user denied your app access to Location Services, but can grant access from Settings.app
+            locationPermission = false
+            break
+        default:
+            break
+        }
     }
 
 
