@@ -27,6 +27,9 @@ PODS:
     - PromiseKit/CorePromise
   - ReachabilitySwift (3)
   - ResearchKit (1.5.2)
+  - Sentry (5.0.0-beta.5):
+    - Sentry/Core (= 5.0.0-beta.5)
+  - Sentry/Core (5.0.0-beta.5)
   - SwiftValidator (4.0.0)
   - XCGLogger (7.0.1):
     - XCGLogger/Core (= 7.0.1)
@@ -50,6 +53,7 @@ DEPENDENCIES:
   - PromiseKit (~> 6)
   - ReachabilitySwift (~> 3)
   - ResearchKit
+  - Sentry (from `https://github.com/getsentry/sentry-cocoa.git`, tag `5.0.0-beta.5`)
   - SwiftValidator (from `https://github.com/jpotts18/SwiftValidator.git`, branch `master`)
   - XCGLogger (~> 7.0.0)
   - XLActionController (~> 5.0.1)
@@ -81,6 +85,9 @@ EXTERNAL SOURCES:
   PKHUD:
     :branch: swift4
     :git: https://github.com/pkluz/PKHUD.git
+  Sentry:
+    :git: https://github.com/getsentry/sentry-cocoa.git
+    :tag: 5.0.0-beta.5
   SwiftValidator:
     :branch: master
     :git: https://github.com/jpotts18/SwiftValidator.git
@@ -95,6 +102,9 @@ CHECKOUT OPTIONS:
   PKHUD:
     :commit: 4d8fbf70ae912dd72280cde0a5c1440ada9a7306
     :git: https://github.com/pkluz/PKHUD.git
+  Sentry:
+    :git: https://github.com/getsentry/sentry-cocoa.git
+    :tag: 5.0.0-beta.5
   SwiftValidator:
     :commit: d370353b7a0ce758a53b189c81e485dcd53c99a4
     :git: https://github.com/jpotts18/SwiftValidator.git
@@ -115,10 +125,11 @@ SPEC CHECKSUMS:
   PromiseKit: 28fda91c973cc377875d8c0ea4f973013c05b6db
   ReachabilitySwift: f5b9bb30a0777fac8f09ce8b067e32faeb29bb64
   ResearchKit: a5770681dd61afddd3d1f24d232b9abf00cba454
+  Sentry: 6ce9c7a52c78eaaeaf305211651f8b7f7760513e
   SwiftValidator: 249b6b3ae3b294266c5b9de134d94f18f2d5aa47
   XCGLogger: 1943831ef907df55108b0b18657953f868de973b
   XLActionController: f1f2226d2c6629db197d4a41f2da907085a4cb9d
 
-PODFILE CHECKSUM: fedc7d4ac80f74c19b8a4e5bde809c6d21494f8f
+PODFILE CHECKSUM: 923c86c723dbdc711483641c57dfab2a7d8919a8
 
 COCOAPODS: 1.9.1

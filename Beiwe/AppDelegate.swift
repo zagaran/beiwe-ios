@@ -6,6 +6,7 @@
 //  Copyright © 2016 Rocketfarm Studios. All rights reserved.
 //
 
+import Sentry
 import UIKit
 import Fabric
 import Crashlytics
@@ -31,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     var timeEnteredBackground: Date?;
     var canOpenTel = false;
     let debugEnabled  = _isDebugAssertConfiguration();
-    let lockEvent = Event<Bool>()
+    let lockEvent = EmitterKit.Event<Bool>();
     
     var locationPermission: Bool = false;
     // manager needed to ask for location permissions
@@ -40,8 +41,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        
-        
 
         Fabric.with([Crashlytics.self])
 
@@ -150,6 +149,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
 
         }
         */
+        
+        // initialize Sentry
+        SentrySDK.start(options: [
+            "dsn": "https://de8e178559cf4b08a838c3a3af92c73a@o62336.ingest.sentry.io/5202977",
+            "debug": true // Enabled debug when first installing is always helpful
+        ])
 
 
         return true

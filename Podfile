@@ -18,6 +18,7 @@ target 'Beiwe' do
   pod 'Hakuba', :git => 'https://github.com/eskizyen/Hakuba.git', :branch => 'Swift3'
   pod 'XLActionController', '~>5.0.1'
   pod 'XCGLogger', '~> 7.0.0'
+  pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '5.0.0-beta.5'
 
 end
 
