@@ -152,7 +152,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         // initialize Sentry
         SentrySDK.start(options: [
-            "dsn": "https://de8e178559cf4b08a838c3a3af92c73a@o62336.ingest.sentry.io/5202977",
+            "dsn": "https://8494f3bb03474b3ba7e467bcf1a46940@o62336.ingest.sentry.io/5211457",
             "debug": true // Enabled debug when first installing is always helpful
         ])
 
