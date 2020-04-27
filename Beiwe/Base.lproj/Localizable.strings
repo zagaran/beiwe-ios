@@ -108,4 +108,4 @@
 "audio_survey_notification_text" = "A new audio question has arrived and is awaiting completion.";
 
 "location_permission_title" = "Location Permissions";
-"location_permission_text" = "If you don't see a pop up asking for permissions, please go to Settings->Biewe2->Location and select Always.";
+"location_permission_text" = "If you don't see a pop up asking for permissions, please go to Settings -> Beiwe2 -> Location and select 'Always'.";
