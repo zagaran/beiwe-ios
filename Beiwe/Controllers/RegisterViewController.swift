@@ -11,6 +11,7 @@ import Eureka
 import SwiftValidator
 import PKHUD
 import PromiseKit
+import Sentry
 
 class RegisterViewController: FormViewController {
 
@@ -117,6 +118,10 @@ class RegisterViewController: FormViewController {
                         }
                         if let patientId = patientId, let phoneNumber = phoneNumber, let newPassword = newPassword, let clinicianPhone = clinicianPhone, let raPhone = raPhone {
                             let registerStudyRequest = RegisterStudyRequest(patientId: patientId, phoneNumber: phoneNumber, newPassword: newPassword)
+                            
+                            // sets tags for Sentry
+                            Client.shared?.tags = ["user_id": patientId, "server_url": customApiUrl ?? "Not Registered"]
+                            
                             ApiManager.sharedInstance.password = tempPassword ?? "";
                             ApiManager.sharedInstance.patientId = patientId;
                             ApiManager.sharedInstance.customApiUrl = customApiUrl;

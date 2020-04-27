@@ -11,6 +11,7 @@ import ResearchKit
 import EmitterKit
 import Hakuba
 import XLActionController
+import Sentry
 
 class MainViewController: UIViewController {
 

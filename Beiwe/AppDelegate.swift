@@ -151,10 +151,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         */
         
         // initialize Sentry
-        SentrySDK.start(options: [
-            "dsn": "https://8494f3bb03474b3ba7e467bcf1a46940@o62336.ingest.sentry.io/5211457",
-            "debug": true // Enabled debug when first installing is always helpful
-        ])
+        do {
+            Client.shared = try Client(dsn: "DSN_PLACEHOLDER")
+            try Client.shared?.startCrashHandler()
+        } catch let error {
+            print("\(error)")
+        }
 
 
         return true
