@@ -33,14 +33,13 @@
 		83914CAD1D00DA1100B01C82 /* ForgotPasswordHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83914CAC1D00DA1100B01C82 /* ForgotPasswordHeaderView.swift */; };
 		83914CAF1D00DA4600B01C82 /* ForgotPasswordHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83914CAE1D00DA4600B01C82 /* ForgotPasswordHeaderView.xib */; };
 		83914CB11D01462800B01C82 /* XCGLogger+Crashlytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83914CB01D01462800B01C82 /* XCGLogger+Crashlytics.swift */; };
-		83AB51391F9FDBAF0058F3B0 /* Config-Hvd.plist in Resources */ = {isa = PBXBuildFile; fileRef = 83AB51381F9FDBAF0058F3B0 /* Config-Hvd.plist */; };
+		83AB51391F9FDBAF0058F3B0 /* Config-Prod2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 83AB51381F9FDBAF0058F3B0 /* Config-Prod2.plist */; };
 		83AF04131CAADE6200A37225 /* StudyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83AF04121CAADE6200A37225 /* StudyManager.swift */; };
 		83AF04151CAB556800A37225 /* GPSManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83AF04141CAB556800A37225 /* GPSManager.swift */; };
 		83AF04171CAB777200A37225 /* DataStorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83AF04161CAB777200A37225 /* DataStorageManager.swift */; };
 		83AF04191CAB843D00A37225 /* SwiftyRSA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83AF04181CAB843D00A37225 /* SwiftyRSA.swift */; };
 		83AF041F1CACBCC600A37225 /* ParamUploadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83AF041E1CACBCC600A37225 /* ParamUploadRequest.swift */; };
 		83AF04211CACC1C900A37225 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83AF04201CACC1C900A37225 /* MainViewController.swift */; };
-		83AF04251CAD6FFF00A37225 /* Config-Pre1.plist in Resources */ = {isa = PBXBuildFile; fileRef = 83AF04241CAD6FFF00A37225 /* Config-Pre1.plist */; };
 		83AF04271CADA02A00A37225 /* AccelerometerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83AF04261CADA02A00A37225 /* AccelerometerManager.swift */; };
 		83AF04291CAF748C00A37225 /* PowerStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83AF04281CAF748C00A37225 /* PowerStateManager.swift */; };
 		83AF042B1CAF7F7F00A37225 /* ProximityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83AF042A1CAF7F7F00A37225 /* ProximityManager.swift */; };
@@ -115,7 +114,7 @@
 		83914CAC1D00DA1100B01C82 /* ForgotPasswordHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotPasswordHeaderView.swift; sourceTree = "<group>"; };
 		83914CAE1D00DA4600B01C82 /* ForgotPasswordHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ForgotPasswordHeaderView.xib; sourceTree = "<group>"; };
 		83914CB01D01462800B01C82 /* XCGLogger+Crashlytics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCGLogger+Crashlytics.swift"; sourceTree = "<group>"; };
-		83AB51381F9FDBAF0058F3B0 /* Config-Hvd.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Config-Hvd.plist"; sourceTree = "<group>"; };
+		83AB51381F9FDBAF0058F3B0 /* Config-Prod2.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Config-Prod2.plist"; sourceTree = "<group>"; };
 		83AF04111CAA083400A37225 /* Beiwe-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Beiwe-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		83AF04121CAADE6200A37225 /* StudyManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudyManager.swift; sourceTree = "<group>"; };
 		83AF04141CAB556800A37225 /* GPSManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GPSManager.swift; sourceTree = "<group>"; };
@@ -123,7 +122,6 @@
 		83AF04181CAB843D00A37225 /* SwiftyRSA.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyRSA.swift; sourceTree = "<group>"; };
 		83AF041E1CACBCC600A37225 /* ParamUploadRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParamUploadRequest.swift; sourceTree = "<group>"; };
 		83AF04201CACC1C900A37225 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
-		83AF04241CAD6FFF00A37225 /* Config-Pre1.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Config-Pre1.plist"; sourceTree = "<group>"; };
 		83AF04261CADA02A00A37225 /* AccelerometerManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccelerometerManager.swift; sourceTree = "<group>"; };
 		83AF04281CAF748C00A37225 /* PowerStateManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PowerStateManager.swift; sourceTree = "<group>"; };
 		83AF042A1CAF7F7F00A37225 /* ProximityManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProximityManager.swift; sourceTree = "<group>"; };
@@ -157,8 +155,7 @@
 		83E3DE751CA3967A00EB5349 /* StudySettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudySettings.swift; sourceTree = "<group>"; };
 		83E3DE7B1CA3A37E00EB5349 /* Config-Dbg.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Config-Dbg.plist"; sourceTree = "<group>"; };
 		83E3DE7D1CA3A3A200EB5349 /* Config-Default.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Config-Default.plist"; sourceTree = "<group>"; };
-		83E3DE7F1CA3A3AC00EB5349 /* Config-Ext.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Config-Ext.plist"; sourceTree = "<group>"; };
-		83E3DE811CA3A3B900EB5349 /* Config-Int.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Config-Int.plist"; sourceTree = "<group>"; };
+		83E3DE811CA3A3B900EB5349 /* Config-Dbg2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Config-Dbg2.plist"; sourceTree = "<group>"; };
 		83E3DE831CA3A3C200EB5349 /* Config-Prod.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Config-Prod.plist"; sourceTree = "<group>"; };
 		83E3DE871CA3A75F00EB5349 /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		83E3DE8B1CA4600500EB5349 /* RegisterStudyRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterStudyRequest.swift; sourceTree = "<group>"; };
@@ -292,13 +289,11 @@
 		83E3DE781CA3A2C100EB5349 /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
-				83AF04241CAD6FFF00A37225 /* Config-Pre1.plist */,
 				83E3DE7B1CA3A37E00EB5349 /* Config-Dbg.plist */,
 				83E3DE7D1CA3A3A200EB5349 /* Config-Default.plist */,
-				83E3DE7F1CA3A3AC00EB5349 /* Config-Ext.plist */,
-				83E3DE811CA3A3B900EB5349 /* Config-Int.plist */,
+				83E3DE811CA3A3B900EB5349 /* Config-Dbg2.plist */,
 				83E3DE831CA3A3C200EB5349 /* Config-Prod.plist */,
-				83AB51381F9FDBAF0058F3B0 /* Config-Hvd.plist */,
+				83AB51381F9FDBAF0058F3B0 /* Config-Prod2.plist */,
 			);
 			path = Configuration;
 			sourceTree = "<group>";
@@ -484,9 +479,8 @@
 			files = (
 				832FFC331CC9C3CD00F2E1EF /* BWXLCell.xib in Resources */,
 				83F98C441C923C3600E0B64B /* LaunchScreen.storyboard in Resources */,
-				83AF04251CAD6FFF00A37225 /* Config-Pre1.plist in Resources */,
 				832FFC281CC86A0800F2E1EF /* Assets.xcassets in Resources */,
-				83AB51391F9FDBAF0058F3B0 /* Config-Hvd.plist in Resources */,
+				83AB51391F9FDBAF0058F3B0 /* Config-Prod2.plist in Resources */,
 				59912EB3230EF09400CAF7EB /* Localizable.strings in Resources */,
 				83F98C3F1C923C3600E0B64B /* Main.storyboard in Resources */,
 				59912EB92311A33A00CAF7EB /* InfoPlist.strings in Resources */,
@@ -735,7 +729,7 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		83AF04221CAD6CE700A37225 /* TestFlight KG */ = {
+		32756629245A1D7000299A04 /* Debug2 */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -785,21 +779,22 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "${PRODUCT_NAME}${BUNDLE_DISPLAY_NAME_SUFFIX}";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
-			name = "TestFlight KG";
+			name = Debug2;
 		};
-		83AF04231CAD6CE700A37225 /* TestFlight KG */ = {
+		3275662A245A1D7000299A04 /* Debug2 */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 17C4B8175F8CF5B5407DEA50 /* Pods-Beiwe.testflight kg.xcconfig */;
+			baseConfigurationReference = 7804DE752C816F583949D1A4 /* Pods-Beiwe.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				BUNDLE_ID_SUFFIX = kgint;
+				BUNDLE_ID_SUFFIX = debug;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = WRY9L72ZUW;
@@ -808,16 +803,17 @@
 				INFOPLIST_PREPROCESS = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.zagaran.beiweios;
 				PRODUCT_NAME = "$(TARGET_NAME)${TARGET_NAME_SUFFIX}";
+				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "Tucker Jaenicke";
 				SWIFT_OBJC_BRIDGING_HEADER = "Beiwe-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
-				TARGET_NAME_SUFFIX = Pre1;
+				TARGET_NAME_SUFFIX = Dbg2;
 			};
-			name = "TestFlight KG";
+			name = Debug2;
 		};
 		83F98C461C923C3600E0B64B /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -984,175 +980,7 @@
 			};
 			name = Release;
 		};
-		83F98C4B1C9243A800E0B64B /* TestFlight Internal */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				ENABLE_BITCODE = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_NAME = "${PRODUCT_NAME}${BUNDLE_DISPLAY_NAME_SUFFIX}";
-				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = "TestFlight Internal";
-		};
-		83F98C4C1C9243A800E0B64B /* TestFlight Internal */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6BE1CD8AB3101933EE9A89CE /* Pods-Beiwe.testflight internal.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				BUNDLE_ID_SUFFIX = tfint;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = WRY9L72ZUW;
-				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = Beiwe/Info.plist;
-				INFOPLIST_PREPROCESS = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.zagaran.beiweios;
-				PRODUCT_NAME = "$(TARGET_NAME)${TARGET_NAME_SUFFIX}";
-				PROVISIONING_PROFILE_SPECIFIER = "Tucker Jaenicke";
-				SWIFT_OBJC_BRIDGING_HEADER = "Beiwe-Bridging-Header.h";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
-				TARGET_NAME_SUFFIX = Int;
-			};
-			name = "TestFlight Internal";
-		};
-		83F98C4D1C9243BB00E0B64B /* TestFlight External */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				ENABLE_BITCODE = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_NAME = "${PRODUCT_NAME}${BUNDLE_DISPLAY_NAME_SUFFIX}";
-				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = "TestFlight External";
-		};
-		83F98C4E1C9243BB00E0B64B /* TestFlight External */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = F69132CC13AD41995B997EEB /* Pods-Beiwe.testflight external.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				BUNDLE_ID_SUFFIX = tfext;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = WRY9L72ZUW;
-				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = Beiwe/Info.plist;
-				INFOPLIST_PREPROCESS = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.zagaran.beiweios;
-				PRODUCT_NAME = "$(TARGET_NAME)${TARGET_NAME_SUFFIX}";
-				PROVISIONING_PROFILE_SPECIFIER = "Tucker Jaenicke";
-				SWIFT_OBJC_BRIDGING_HEADER = "Beiwe-Bridging-Header.h";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
-				TARGET_NAME_SUFFIX = Ext;
-			};
-			name = "TestFlight External";
-		};
-		83FCB39B1F99485B0039366A /* Harvard */ = {
+		83FCB39B1F99485B0039366A /* Release2 */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -1203,9 +1031,9 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
-			name = Harvard;
+			name = Release2;
 		};
-		83FCB39C1F99485B0039366A /* Harvard */ = {
+		83FCB39C1F99485B0039366A /* Release2 */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 94A69B255EC17D5859DD273C /* Pods-Beiwe.harvard.xcconfig */;
 			buildSettings = {
@@ -1227,9 +1055,9 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "Beiwe-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
-				TARGET_NAME_SUFFIX = Hvd;
+				TARGET_NAME_SUFFIX = Prod2;
 			};
-			name = Harvard;
+			name = Release2;
 		};
 /* End XCBuildConfiguration section */
 
@@ -1238,11 +1066,9 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83F98C461C923C3600E0B64B /* Debug */,
-				83F98C4B1C9243A800E0B64B /* TestFlight Internal */,
-				83AF04221CAD6CE700A37225 /* TestFlight KG */,
-				83F98C4D1C9243BB00E0B64B /* TestFlight External */,
+				32756629245A1D7000299A04 /* Debug2 */,
 				83F98C471C923C3600E0B64B /* Release */,
-				83FCB39B1F99485B0039366A /* Harvard */,
+				83FCB39B1F99485B0039366A /* Release2 */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1251,11 +1077,9 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83F98C491C923C3600E0B64B /* Debug */,
-				83F98C4C1C9243A800E0B64B /* TestFlight Internal */,
-				83AF04231CAD6CE700A37225 /* TestFlight KG */,
-				83F98C4E1C9243BB00E0B64B /* TestFlight External */,
+				3275662A245A1D7000299A04 /* Debug2 */,
 				83F98C4A1C923C3600E0B64B /* Release */,
-				83FCB39C1F99485B0039366A /* Harvard */,
+				83FCB39C1F99485B0039366A /* Release2 */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

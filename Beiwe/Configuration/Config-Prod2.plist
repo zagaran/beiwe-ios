@@ -9,6 +9,6 @@
 	<key>sentry-dsn</key>
 	<string>release</string>
 	<key>a</key>
-	<string>Hvd</string>
+	<string>Prod2</string>
 </dict>
 </plist>

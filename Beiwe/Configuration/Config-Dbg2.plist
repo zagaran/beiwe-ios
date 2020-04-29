@@ -2,11 +2,13 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>config-server</key>
+	<true/>
 	<key>server-url</key>
-	<string>https://staging.beiwe.org</string>
+	<string>https://studies.beiwe.org</string>
 	<key>sentry-dsn</key>
 	<string>dev</string>
 	<key>a</key>
-	<string>Int</string>
+	<string>Dbg2</string>
 </dict>
 </plist>
