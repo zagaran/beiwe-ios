@@ -16,6 +16,7 @@ import ReachabilitySwift
 import ResearchKit;
 import XCGLogger
 import EmitterKit
+import Foundation
 
 let log = XCGLogger(identifier: "advancedLogger", includeDefaultDestinations: false)
 
@@ -152,7 +153,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         // initialize Sentry
         do {
-            Client.shared = try Client(dsn: "DSN_PLACEHOLDER")
+            print("Tuck: config is \(Configuration.sharedInstance.settings["a"])")
+            let dsn = Configuration.sharedInstance.settings["sentry-dsn"] as? String ?? "dev"
+            if dsn == "release" {
+                print("Tuck: dsn is \(SentryKeys.release_dsn)")
+                Client.shared = try Client(dsn: SentryKeys.release_dsn)
+            }
+            else if dsn == "dev" {
+                print("Tuck: dsn is \(SentryKeys.development_dsn)")
+                Client.shared = try Client(dsn: SentryKeys.development_dsn)
+            } else {
+                throw "Invalid Sentry configuration"
+            }
             try Client.shared?.startCrashHandler()
         } catch let error {
             print("\(error)")
@@ -373,5 +385,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
 
 
 
+}
+
+extension String: LocalizedError {
+    public var errorDescription: String? { return self }
 }
 

@@ -4,5 +4,9 @@
 <dict>
 	<key>server-url</key>
 	<string>https://studies.beiwe.org</string>
+	<key>sentry-dsn</key>
+	<string>dev</string>
+	<key>a</key>
+	<string>Ext</string>
 </dict>
 </plist>

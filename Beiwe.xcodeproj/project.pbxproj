@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1173B23E1EF4B39C998B16DD /* Pods_Beiwe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3F49D21194624D3A52EF64D /* Pods_Beiwe.framework */; };
+		32756627245876CC00299A04 /* Private.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32756626245876CC00299A04 /* Private.swift */; };
 		59912EB3230EF09400CAF7EB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 59912EB1230EF09400CAF7EB /* Localizable.strings */; };
 		59912EB92311A33A00CAF7EB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 59912EBB2311A33A00CAF7EB /* InfoPlist.strings */; };
 		831CC5801F79AF6400CDEFB0 /* AppEventManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831CC57F1F79AF6400CDEFB0 /* AppEventManager.swift */; };
@@ -82,6 +83,7 @@
 
 /* Begin PBXFileReference section */
 		17C4B8175F8CF5B5407DEA50 /* Pods-Beiwe.testflight kg.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beiwe.testflight kg.xcconfig"; path = "Pods/Target Support Files/Pods-Beiwe/Pods-Beiwe.testflight kg.xcconfig"; sourceTree = "<group>"; };
+		32756626245876CC00299A04 /* Private.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Private.swift; sourceTree = "<group>"; };
 		4D73594BB9D98FBE3AA1E023 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		59912EB2230EF09400CAF7EB /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Beiwe/Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		59912EB4230EF3D100CAF7EB /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Main.strings"; sourceTree = "<group>"; };
@@ -188,6 +190,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		327566282458801B00299A04 /* Private */ = {
+			isa = PBXGroup;
+			children = (
+				32756626245876CC00299A04 /* Private.swift */,
+			);
+			path = Private;
+			sourceTree = "<group>";
+		};
 		4424C1B68D81046E90E74510 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -380,6 +390,7 @@
 		83F98C381C923C3600E0B64B /* Beiwe */ = {
 			isa = PBXGroup;
 			children = (
+				327566282458801B00299A04 /* Private */,
 				832FFC271CC86A0800F2E1EF /* Assets.xcassets */,
 				83B2BDF51CC1DC58007FAE91 /* RK */,
 				83C7D37E1CB593D500BC7285 /* ObjC */,
@@ -630,6 +641,7 @@
 				83FDCFD81CBC8E4700AFF716 /* TrackingSurveyPresenter.swift in Sources */,
 				83AF043F1CB360F300A37225 /* ConsentManager.swift in Sources */,
 				83C7D3831CB5943B00BC7285 /* BWBorderedButton.m in Sources */,
+				32756627245876CC00299A04 /* Private.swift in Sources */,
 				83C295F81CBA048F0016DD95 /* ActiveSurvey.swift in Sources */,
 				8337656E1DED321C00E1B883 /* BWSkipStepNavigationRule.swift in Sources */,
 				83AF04151CAB556800A37225 /* GPSManager.swift in Sources */,

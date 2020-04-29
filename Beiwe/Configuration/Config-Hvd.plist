@@ -6,5 +6,9 @@
 	<true/>
 	<key>server-url</key>
 	<string>https://studies.beiwe.org</string>
+	<key>sentry-dsn</key>
+	<string>release</string>
+	<key>a</key>
+	<string>Hvd</string>
 </dict>
 </plist>
