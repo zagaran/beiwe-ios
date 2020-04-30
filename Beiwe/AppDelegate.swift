@@ -153,14 +153,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         // initialize Sentry
         do {
-            print("Tuck: config is \(Configuration.sharedInstance.settings["a"])")
             let dsn = Configuration.sharedInstance.settings["sentry-dsn"] as? String ?? "dev"
             if dsn == "release" {
-                print("Tuck: dsn is \(SentryKeys.release_dsn)")
                 Client.shared = try Client(dsn: SentryKeys.release_dsn)
             }
             else if dsn == "dev" {
-                print("Tuck: dsn is \(SentryKeys.development_dsn)")
                 Client.shared = try Client(dsn: SentryKeys.development_dsn)
             } else {
                 throw "Invalid Sentry configuration"

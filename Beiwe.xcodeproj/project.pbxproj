@@ -884,7 +884,7 @@
 		};
 		3275662C245B238B00299A04 /* Release2 */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D16F300F4AD663617AEF4916 /* Pods-Beiwe.release.xcconfig */;
+			baseConfigurationReference = D6B924335A1F89A473626002 /* Pods-Beiwe.release2.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				BUNDLE_ID_SUFFIX = "";
