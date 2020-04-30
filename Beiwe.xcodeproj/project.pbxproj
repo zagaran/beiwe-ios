@@ -82,6 +82,7 @@
 
 /* Begin PBXFileReference section */
 		17C4B8175F8CF5B5407DEA50 /* Pods-Beiwe.testflight kg.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beiwe.testflight kg.xcconfig"; path = "Pods/Target Support Files/Pods-Beiwe/Pods-Beiwe.testflight kg.xcconfig"; sourceTree = "<group>"; };
+		1DD32838997EF40FA5A94129 /* Pods-Beiwe.debug2.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beiwe.debug2.xcconfig"; path = "Pods/Target Support Files/Pods-Beiwe/Pods-Beiwe.debug2.xcconfig"; sourceTree = "<group>"; };
 		32756626245876CC00299A04 /* Private.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Private.swift; sourceTree = "<group>"; };
 		4D73594BB9D98FBE3AA1E023 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		59912EB2230EF09400CAF7EB /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Beiwe/Base.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -115,7 +116,7 @@
 		83914CAE1D00DA4600B01C82 /* ForgotPasswordHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ForgotPasswordHeaderView.xib; sourceTree = "<group>"; };
 		83914CB01D01462800B01C82 /* XCGLogger+Crashlytics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCGLogger+Crashlytics.swift"; sourceTree = "<group>"; };
 		83AB51381F9FDBAF0058F3B0 /* Config-Prod2.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Config-Prod2.plist"; sourceTree = "<group>"; };
-		83AF04111CAA083400A37225 /* Beiwe-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Beiwe-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
+		83AF04111CAA083400A37225 /* Beiwe-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Beiwe-Bridging-Header.h"; path = "Beiwe/Beiwe-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		83AF04121CAADE6200A37225 /* StudyManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudyManager.swift; sourceTree = "<group>"; };
 		83AF04141CAB556800A37225 /* GPSManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GPSManager.swift; sourceTree = "<group>"; };
 		83AF04161CAB777200A37225 /* DataStorageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataStorageManager.swift; sourceTree = "<group>"; };
@@ -172,6 +173,7 @@
 		94A69B255EC17D5859DD273C /* Pods-Beiwe.harvard.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beiwe.harvard.xcconfig"; path = "Pods/Target Support Files/Pods-Beiwe/Pods-Beiwe.harvard.xcconfig"; sourceTree = "<group>"; };
 		A3F49D21194624D3A52EF64D /* Pods_Beiwe.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Beiwe.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D16F300F4AD663617AEF4916 /* Pods-Beiwe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beiwe.release.xcconfig"; path = "Pods/Target Support Files/Pods-Beiwe/Pods-Beiwe.release.xcconfig"; sourceTree = "<group>"; };
+		D6B924335A1F89A473626002 /* Pods-Beiwe.release2.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beiwe.release2.xcconfig"; path = "Pods/Target Support Files/Pods-Beiwe/Pods-Beiwe.release2.xcconfig"; sourceTree = "<group>"; };
 		F69132CC13AD41995B997EEB /* Pods-Beiwe.testflight external.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beiwe.testflight external.xcconfig"; path = "Pods/Target Support Files/Pods-Beiwe/Pods-Beiwe.testflight external.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -204,6 +206,8 @@
 				F69132CC13AD41995B997EEB /* Pods-Beiwe.testflight external.xcconfig */,
 				D16F300F4AD663617AEF4916 /* Pods-Beiwe.release.xcconfig */,
 				94A69B255EC17D5859DD273C /* Pods-Beiwe.harvard.xcconfig */,
+				1DD32838997EF40FA5A94129 /* Pods-Beiwe.debug2.xcconfig */,
+				D6B924335A1F89A473626002 /* Pods-Beiwe.release2.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -385,12 +389,12 @@
 		83F98C381C923C3600E0B64B /* Beiwe */ = {
 			isa = PBXGroup;
 			children = (
+				83AF04111CAA083400A37225 /* Beiwe-Bridging-Header.h */,
 				327566282458801B00299A04 /* Private */,
 				832FFC271CC86A0800F2E1EF /* Assets.xcassets */,
 				83B2BDF51CC1DC58007FAE91 /* RK */,
 				83C7D37E1CB593D500BC7285 /* ObjC */,
 				83C7D37B1CB5927600BC7285 /* Views */,
-				83AF04111CAA083400A37225 /* Beiwe-Bridging-Header.h */,
 				83B4D6751CAA04DA001BF283 /* Recline */,
 				83E3DE8A1CA45F2400EB5349 /* API */,
 				83E3DE781CA3A2C100EB5349 /* Configuration */,
@@ -777,6 +781,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"non-recursive",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -784,12 +792,13 @@
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "${PODS_ROOT} recursive";
 			};
 			name = Debug2;
 		};
 		3275662A245A1D7000299A04 /* Debug2 */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7804DE752C816F583949D1A4 /* Pods-Beiwe.debug.xcconfig */;
+			baseConfigurationReference = 1DD32838997EF40FA5A94129 /* Pods-Beiwe.debug2.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				BUNDLE_ID_SUFFIX = debug;
@@ -807,13 +816,97 @@
 				PRODUCT_NAME = "$(TARGET_NAME)${TARGET_NAME_SUFFIX}";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "Tucker Jaenicke";
-				SWIFT_OBJC_BRIDGING_HEADER = "Beiwe-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "./Beiwe/Beiwe-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				TARGET_NAME_SUFFIX = Dbg2;
 			};
 			name = Debug2;
+		};
+		3275662B245B238B00299A04 /* Release2 */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_BITCODE = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"non-recursive",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "${PRODUCT_NAME}${BUNDLE_DISPLAY_NAME_SUFFIX}";
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "${PODS_ROOT} recursive";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release2;
+		};
+		3275662C245B238B00299A04 /* Release2 */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D16F300F4AD663617AEF4916 /* Pods-Beiwe.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				BUNDLE_ID_SUFFIX = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = WRY9L72ZUW;
+				ENABLE_BITCODE = NO;
+				INFOPLIST_FILE = Beiwe/Info.plist;
+				INFOPLIST_PREPROCESS = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.zagaran.beiweios;
+				PRODUCT_NAME = Beiwe2;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "Tucker Jaenicke";
+				SWIFT_OBJC_BRIDGING_HEADER = "./Beiwe/Beiwe-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TARGET_NAME_SUFFIX = Prod2;
+			};
+			name = Release2;
 		};
 		83F98C461C923C3600E0B64B /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -863,6 +956,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"non-recursive",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -870,6 +967,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "${PODS_ROOT} recursive";
 			};
 			name = Debug;
 		};
@@ -916,12 +1014,17 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"non-recursive",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "${PRODUCT_NAME}${BUNDLE_DISPLAY_NAME_SUFFIX}";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "${PODS_ROOT} recursive";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -946,7 +1049,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)${TARGET_NAME_SUFFIX}";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "Tucker Jaenicke";
-				SWIFT_OBJC_BRIDGING_HEADER = "Beiwe-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "./Beiwe/Beiwe-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -973,91 +1076,12 @@
 				PRODUCT_NAME = "$(TARGET_NAME)${TARGET_NAME_SUFFIX}";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "Tucker Jaenicke";
-				SWIFT_OBJC_BRIDGING_HEADER = "Beiwe-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "./Beiwe/Beiwe-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				TARGET_NAME_SUFFIX = "";
 			};
 			name = Release;
-		};
-		83FCB39B1F99485B0039366A /* Release2 */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_BITCODE = NO;
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = "${PRODUCT_NAME}${BUNDLE_DISPLAY_NAME_SUFFIX}";
-				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release2;
-		};
-		83FCB39C1F99485B0039366A /* Release2 */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 94A69B255EC17D5859DD273C /* Pods-Beiwe.harvard.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				BUNDLE_ID_SUFFIX = "";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = WRY9L72ZUW;
-				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = Beiwe/Info.plist;
-				INFOPLIST_PREPROCESS = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.zagaran.beiweios;
-				PRODUCT_NAME = Beiwe2;
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "Tucker Jaenicke";
-				SWIFT_OBJC_BRIDGING_HEADER = "Beiwe-Bridging-Header.h";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
-				TARGET_NAME_SUFFIX = Prod2;
-			};
-			name = Release2;
 		};
 /* End XCBuildConfiguration section */
 
@@ -1068,7 +1092,7 @@
 				83F98C461C923C3600E0B64B /* Debug */,
 				32756629245A1D7000299A04 /* Debug2 */,
 				83F98C471C923C3600E0B64B /* Release */,
-				83FCB39B1F99485B0039366A /* Release2 */,
+				3275662B245B238B00299A04 /* Release2 */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1079,7 +1103,7 @@
 				83F98C491C923C3600E0B64B /* Debug */,
 				3275662A245A1D7000299A04 /* Debug2 */,
 				83F98C4A1C923C3600E0B64B /* Release */,
-				83FCB39C1F99485B0039366A /* Release2 */,
+				3275662C245B238B00299A04 /* Release2 */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

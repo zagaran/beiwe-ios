@@ -1,4 +1,4 @@
-platform :ios, '9.3'
+platform :ios, '12.0'
 
 target 'Beiwe' do
   use_frameworks!
