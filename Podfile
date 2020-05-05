@@ -12,7 +12,7 @@ target 'Beiwe' do
   pod "PKHUD", :git => 'https://github.com/pkluz/PKHUD.git', :branch => 'swift4'
   pod 'IDZSwiftCommonCrypto', '~> 0.13.0'
   pod 'couchbase-lite-ios'
-  pod 'ResearchKit'
+  pod 'ResearchKit', :git => 'https://github.com/ResearchKit/ResearchKit.git', :commit => 'b50e1d7'
   pod 'ReachabilitySwift', '~>3'
   pod 'EmitterKit', '~> 5.1'
   pod 'Hakuba', :git => 'https://github.com/eskizyen/Hakuba.git', :branch => 'Swift3'

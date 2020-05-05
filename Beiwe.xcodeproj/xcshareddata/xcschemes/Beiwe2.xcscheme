@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "83F98C351C923C3600E0B64B"
-               BuildableName = "Beiwe.app"
+               BuildableName = "Beiwe2.app"
                BlueprintName = "Beiwe"
                ReferencedContainer = "container:Beiwe.xcodeproj">
             </BuildableReference>
@@ -31,7 +31,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "83F98C351C923C3600E0B64B"
-            BuildableName = "Beiwe.app"
+            BuildableName = "Beiwe2.app"
             BlueprintName = "Beiwe"
             ReferencedContainer = "container:Beiwe.xcodeproj">
          </BuildableReference>
@@ -54,7 +54,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "83F98C351C923C3600E0B64B"
-            BuildableName = "Beiwe.app"
+            BuildableName = "Beiwe2.app"
             BlueprintName = "Beiwe"
             ReferencedContainer = "container:Beiwe.xcodeproj">
          </BuildableReference>
@@ -71,7 +71,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "83F98C351C923C3600E0B64B"
-            BuildableName = "Beiwe.app"
+            BuildableName = "Beiwe2.app"
             BlueprintName = "Beiwe"
             ReferencedContainer = "container:Beiwe.xcodeproj">
          </BuildableReference>

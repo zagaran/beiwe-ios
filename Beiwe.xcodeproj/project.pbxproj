@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1173B23E1EF4B39C998B16DD /* Pods_Beiwe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3F49D21194624D3A52EF64D /* Pods_Beiwe.framework */; };
 		32756627245876CC00299A04 /* Private.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32756626245876CC00299A04 /* Private.swift */; };
 		59912EB3230EF09400CAF7EB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 59912EB1230EF09400CAF7EB /* Localizable.strings */; };
 		59912EB92311A33A00CAF7EB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 59912EBB2311A33A00CAF7EB /* InfoPlist.strings */; };
@@ -78,12 +77,14 @@
 		83F98C441C923C3600E0B64B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83F98C421C923C3600E0B64B /* LaunchScreen.storyboard */; };
 		83FDCFD81CBC8E4700AFF716 /* TrackingSurveyPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FDCFD71CBC8E4700AFF716 /* TrackingSurveyPresenter.swift */; };
 		83FDCFDA1CBCB6D300AFF716 /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FDCFD91CBCB6D300AFF716 /* ChangePasswordViewController.swift */; };
+		ED3081F77ECC8C876F5EF53A /* Pods_Beiwe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A42DC84D7FED35C57E1B1EE0 /* Pods_Beiwe.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		17C4B8175F8CF5B5407DEA50 /* Pods-Beiwe.testflight kg.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beiwe.testflight kg.xcconfig"; path = "Pods/Target Support Files/Pods-Beiwe/Pods-Beiwe.testflight kg.xcconfig"; sourceTree = "<group>"; };
-		1DD32838997EF40FA5A94129 /* Pods-Beiwe.debug2.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beiwe.debug2.xcconfig"; path = "Pods/Target Support Files/Pods-Beiwe/Pods-Beiwe.debug2.xcconfig"; sourceTree = "<group>"; };
+		086E88BE2560D96A5CD25F49 /* Pods-Beiwe.debug2.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beiwe.debug2.xcconfig"; path = "Target Support Files/Pods-Beiwe/Pods-Beiwe.debug2.xcconfig"; sourceTree = "<group>"; };
+		1DD23C0F14E88B456D1D8C0A /* Pods-Beiwe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beiwe.debug.xcconfig"; path = "Target Support Files/Pods-Beiwe/Pods-Beiwe.debug.xcconfig"; sourceTree = "<group>"; };
 		32756626245876CC00299A04 /* Private.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Private.swift; sourceTree = "<group>"; };
+		42A952CE64A464FDCA28DEBD /* Pods-Beiwe.release2.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beiwe.release2.xcconfig"; path = "Target Support Files/Pods-Beiwe/Pods-Beiwe.release2.xcconfig"; sourceTree = "<group>"; };
 		4D73594BB9D98FBE3AA1E023 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		59912EB2230EF09400CAF7EB /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Beiwe/Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		59912EB4230EF3D100CAF7EB /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Main.strings"; sourceTree = "<group>"; };
@@ -91,8 +92,6 @@
 		59912EB6230EF3D100CAF7EB /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "Beiwe/zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		59912EBA2311A33A00CAF7EB /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		59912EBD2311A66B00CAF7EB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		6BE1CD8AB3101933EE9A89CE /* Pods-Beiwe.testflight internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beiwe.testflight internal.xcconfig"; path = "Pods/Target Support Files/Pods-Beiwe/Pods-Beiwe.testflight internal.xcconfig"; sourceTree = "<group>"; };
-		7804DE752C816F583949D1A4 /* Pods-Beiwe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beiwe.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Beiwe/Pods-Beiwe.debug.xcconfig"; sourceTree = "<group>"; };
 		831CC57F1F79AF6400CDEFB0 /* AppEventManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEventManager.swift; sourceTree = "<group>"; };
 		832FFC1D1CC8506900F2E1EF /* GradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		832FFC211CC85A7C00F2E1EF /* BWButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BWButton.swift; sourceTree = "<group>"; };
@@ -170,11 +169,8 @@
 		83F98C451C923C3600E0B64B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		83FDCFD71CBC8E4700AFF716 /* TrackingSurveyPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingSurveyPresenter.swift; sourceTree = "<group>"; };
 		83FDCFD91CBCB6D300AFF716 /* ChangePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewController.swift; sourceTree = "<group>"; };
-		94A69B255EC17D5859DD273C /* Pods-Beiwe.harvard.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beiwe.harvard.xcconfig"; path = "Pods/Target Support Files/Pods-Beiwe/Pods-Beiwe.harvard.xcconfig"; sourceTree = "<group>"; };
-		A3F49D21194624D3A52EF64D /* Pods_Beiwe.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Beiwe.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D16F300F4AD663617AEF4916 /* Pods-Beiwe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beiwe.release.xcconfig"; path = "Pods/Target Support Files/Pods-Beiwe/Pods-Beiwe.release.xcconfig"; sourceTree = "<group>"; };
-		D6B924335A1F89A473626002 /* Pods-Beiwe.release2.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beiwe.release2.xcconfig"; path = "Pods/Target Support Files/Pods-Beiwe/Pods-Beiwe.release2.xcconfig"; sourceTree = "<group>"; };
-		F69132CC13AD41995B997EEB /* Pods-Beiwe.testflight external.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beiwe.testflight external.xcconfig"; path = "Pods/Target Support Files/Pods-Beiwe/Pods-Beiwe.testflight external.xcconfig"; sourceTree = "<group>"; };
+		A42DC84D7FED35C57E1B1EE0 /* Pods_Beiwe.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Beiwe.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B58A34E5862CE908C83EB133 /* Pods-Beiwe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beiwe.release.xcconfig"; path = "Target Support Files/Pods-Beiwe/Pods-Beiwe.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -182,7 +178,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1173B23E1EF4B39C998B16DD /* Pods_Beiwe.framework in Frameworks */,
+				ED3081F77ECC8C876F5EF53A /* Pods_Beiwe.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -197,26 +193,23 @@
 			path = Private;
 			sourceTree = "<group>";
 		};
-		4424C1B68D81046E90E74510 /* Pods */ = {
+		506B561F9639814CC6BFB89F /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				7804DE752C816F583949D1A4 /* Pods-Beiwe.debug.xcconfig */,
-				6BE1CD8AB3101933EE9A89CE /* Pods-Beiwe.testflight internal.xcconfig */,
-				17C4B8175F8CF5B5407DEA50 /* Pods-Beiwe.testflight kg.xcconfig */,
-				F69132CC13AD41995B997EEB /* Pods-Beiwe.testflight external.xcconfig */,
-				D16F300F4AD663617AEF4916 /* Pods-Beiwe.release.xcconfig */,
-				94A69B255EC17D5859DD273C /* Pods-Beiwe.harvard.xcconfig */,
-				1DD32838997EF40FA5A94129 /* Pods-Beiwe.debug2.xcconfig */,
-				D6B924335A1F89A473626002 /* Pods-Beiwe.release2.xcconfig */,
+				1DD23C0F14E88B456D1D8C0A /* Pods-Beiwe.debug.xcconfig */,
+				086E88BE2560D96A5CD25F49 /* Pods-Beiwe.debug2.xcconfig */,
+				B58A34E5862CE908C83EB133 /* Pods-Beiwe.release.xcconfig */,
+				42A952CE64A464FDCA28DEBD /* Pods-Beiwe.release2.xcconfig */,
 			);
 			name = Pods;
+			path = Pods;
 			sourceTree = "<group>";
 		};
 		5EEADFF9AED027E0BE53BF6C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				4D73594BB9D98FBE3AA1E023 /* Pods.framework */,
-				A3F49D21194624D3A52EF64D /* Pods_Beiwe.framework */,
+				A42DC84D7FED35C57E1B1EE0 /* Pods_Beiwe.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -373,8 +366,8 @@
 				83F98C381C923C3600E0B64B /* Beiwe */,
 				5EEADFF9AED027E0BE53BF6C /* Frameworks */,
 				59912EB1230EF09400CAF7EB /* Localizable.strings */,
-				4424C1B68D81046E90E74510 /* Pods */,
 				83F98C371C923C3600E0B64B /* Products */,
+				506B561F9639814CC6BFB89F /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -420,7 +413,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 83F98C481C923C3600E0B64B /* Build configuration list for PBXNativeTarget "Beiwe" */;
 			buildPhases = (
-				3117C101E3641DF554EA5CF8 /* [CP] Check Pods Manifest.lock */,
+				DA7F1D3865E08DD8AEB9DB00 /* [CP] Check Pods Manifest.lock */,
 				83F98C321C923C3600E0B64B /* Sources */,
 				83F98C331C923C3600E0B64B /* Frameworks */,
 				83F98C341C923C3600E0B64B /* Resources */,
@@ -428,7 +421,7 @@
 				83F98C501C925F2500E0B64B /* Run Script */,
 				83F98C511C925F6F00E0B64B /* ShellScript */,
 				83F98C4F1C9250A600E0B64B /* Run Script */,
-				A0946EA2265200164FEAE555 /* [CP] Embed Pods Frameworks */,
+				C7A5541B51E06493BA1A7A86 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -495,28 +488,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		3117C101E3641DF554EA5CF8 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Beiwe-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 		83E3DE861CA3A41E00EB5349 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -571,7 +542,7 @@
 			shellPath = /bin/sh;
 			shellScript = "# Skip icon badging for now...\nexit 0\nif [[ \"$CONFIGURATION\" == \"Release\" ]]; then\n  exit 0\nfi\nIFS=$'\\n'\n#VERSION=`git describe --dirty |sed -e \"s/^[^0-9]*//\"`\nBUILD=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\")\nVERSION=$(/usr/libexec/PlistBuddy -c \"Print CFBundleShortVersionString\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\")\n#VERSION=\"0.1.2-243-abcdefg\"\nPATH=${PATH}:/usr/local/bin\necho \"Ver: $VERSION, build: $BUILD\"\n\nfunction generateIcon () {\n    BASE_IMAGE_NAME=$1\n\n    TARGET_PATH=\"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/${BASE_IMAGE_NAME}\"\n    echo $TARGET_PATH\n    echo $SRCROOT\n    echo $(find ${SRCROOT} -name \"AppIcon60x60@2x.png\")\n    BASE_IMAGE_PATH=$(find ${SRCROOT} -name ${BASE_IMAGE_NAME})\n    WIDTH=$(identify -format %w ${BASE_IMAGE_PATH})\n    NAME_FONT_SIZE=$(echo \"$WIDTH * .20\" | bc -l)\n    VERSION_FONT_SIZE=$(echo \"$WIDTH * .12\" | bc -l)\n    echo \"font size $NAME_FONT_SIZE, $VERSION_FONT_SIZE\"\n\n\n    convert ${BASE_IMAGE_PATH} -fill white -font Times-Bold -pointsize ${NAME_FONT_SIZE} -gravity north -annotate +0+3 ${TARGET_NAME_SUFFIX} -gravity south -pointsize ${VERSION_FONT_SIZE} -annotate +0+5 \"${BUILD}\" ${TARGET_PATH}\n}\n\ngenerateIcon \"AppIcon60x60@2x.png\"\n#generateIcon \"AppIcon60x60@3x.png\"\n#generateIcon \"AppIcon76x76~ipad.png\"\n#generateIcon \"AppIcon76x76@2x~ipad.png\"\n";
 		};
-		A0946EA2265200164FEAE555 /* [CP] Embed Pods Frameworks */ = {
+		C7A5541B51E06493BA1A7A86 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -617,6 +588,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Beiwe/Pods-Beiwe-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DA7F1D3865E08DD8AEB9DB00 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Beiwe-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -798,7 +791,7 @@
 		};
 		3275662A245A1D7000299A04 /* Debug2 */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1DD32838997EF40FA5A94129 /* Pods-Beiwe.debug2.xcconfig */;
+			baseConfigurationReference = 086E88BE2560D96A5CD25F49 /* Pods-Beiwe.debug2.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				BUNDLE_ID_SUFFIX = debug;
@@ -884,7 +877,7 @@
 		};
 		3275662C245B238B00299A04 /* Release2 */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D6B924335A1F89A473626002 /* Pods-Beiwe.release2.xcconfig */;
+			baseConfigurationReference = 42A952CE64A464FDCA28DEBD /* Pods-Beiwe.release2.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				BUNDLE_ID_SUFFIX = "";
@@ -1031,7 +1024,7 @@
 		};
 		83F98C491C923C3600E0B64B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7804DE752C816F583949D1A4 /* Pods-Beiwe.debug.xcconfig */;
+			baseConfigurationReference = 1DD23C0F14E88B456D1D8C0A /* Pods-Beiwe.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				BUNDLE_ID_SUFFIX = debug;
@@ -1059,7 +1052,7 @@
 		};
 		83F98C4A1C923C3600E0B64B /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D16F300F4AD663617AEF4916 /* Pods-Beiwe.release.xcconfig */;
+			baseConfigurationReference = B58A34E5862CE908C83EB133 /* Pods-Beiwe.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				BUNDLE_ID_SUFFIX = "";
