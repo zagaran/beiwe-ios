@@ -16,7 +16,8 @@ class OnboardingManager : NSObject, ORKTaskViewControllerDelegate {
 
     var WelcomeStep: ORKStep {
         let instructionStep = ORKInstructionStep(identifier: "WelcomeStep")
-        instructionStep.image = UIImage(named: "welcome-image")
+        // image is commented out since the new ResearchKit changes the imagedimensions
+//        instructionStep.image = UIImage(named: "welcome-image")
         instructionStep.title = NSLocalizedString("welcome_screen_title", comment: "");
         instructionStep.text = NSLocalizedString("welcome_screen_body_text", comment: "");
         return instructionStep;
