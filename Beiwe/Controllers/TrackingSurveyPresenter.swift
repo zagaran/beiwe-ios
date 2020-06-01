@@ -32,6 +32,7 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
     var task: ORKTask?;
     var valueChangeHandler: Debouncer<String>?
     let timingsName: String;
+    var lastQuestion: [String: Bool] = [:]
 
     var currentQuestion: GenericSurveyQuestion? = nil;
 
@@ -113,18 +114,13 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
                     }
                 }
                 if let step = step {
-                    step.title = ""; //"Question"
+                    lastQuestion[question.questionId] = (i == numQuestions - 1)
                     step.text =  question.prompt
                     steps += [step];
                     questionIdToQuestion[question.questionId] = question;
                 }
             }
         }
-
-        let submitStep = ORKInstructionStep(identifier: "confirm");
-        submitStep.title = NSLocalizedString("survey_confirm_submit", comment: "")
-        submitStep.text = NSLocalizedString("default_survey_submit_success_message", comment: "")
-        steps += [submitStep];
 
         let finishStep = ORKInstructionStep(identifier: "finished");
         finishStep.title = NSLocalizedString("survey_completed", comment: "")
@@ -452,8 +448,6 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
                 StudyManager.sharedInstance.updateActiveSurveys(true);
                 stepViewController.cancelButtonItem = nil;
                 stepViewController.backButtonItem = nil;
-            case "confirm":
-                stepViewController.continueButtonTitle = NSLocalizedString("confirm_button_title", comment: "");
             default:
                 if let question = questionIdToQuestion[identifier] {
                     currentQuestion = question;
@@ -474,6 +468,9 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
                             }
                         }
                     }
+                }
+                if lastQuestion[identifier] ?? false {
+                    stepViewController.continueButtonTitle = NSLocalizedString("submit_survey_title", comment: "")
                 }
             }
         }

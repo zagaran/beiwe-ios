@@ -53,10 +53,11 @@
 /* Tracking surveys */
 "survey_confirm_submit" = "Confirm Submission";
 "default_survey_submit_success_message" = "Thanks! You have finished answering all of the survey questions.  Pressing the submit button will now schedule your answers to be delivered";
-"survey_completed" = "Survey Completed";
+"survey_completed" = "Survey Submitted";
 "get_started" = "Get Started";
 "continue_button_title" = "Continue";
 "confirm_button_title" = "Confirm";
+"submit_survey_title" = "Submit Survey";
 
 /* Main view controller */
 "upload_data_button" = "Upload Data";
