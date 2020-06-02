@@ -201,7 +201,6 @@
 				B58A34E5862CE908C83EB133 /* Pods-Beiwe.release.xcconfig */,
 				42A952CE64A464FDCA28DEBD /* Pods-Beiwe.release2.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -795,7 +794,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				BUNDLE_ID_SUFFIX = debug;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -884,16 +883,16 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = WRY9L72ZUW;
+				DEVELOPMENT_TEAM = UHX83HR959;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Beiwe/Info.plist;
 				INFOPLIST_PREPROCESS = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.zagaran.beiweios;
+				PRODUCT_BUNDLE_IDENTIFIER = harvard.lab.onnela.beiwe.ios;
 				PRODUCT_NAME = Beiwe2;
 				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "Beiwe Distribution 5/4/20";
+				PROVISIONING_PROFILE_SPECIFIER = "Beiwe Distribution 5/12/20";
 				SWIFT_OBJC_BRIDGING_HEADER = "./Beiwe/Beiwe-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;

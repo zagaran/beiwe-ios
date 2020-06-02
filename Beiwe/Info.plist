@@ -61,6 +61,8 @@
 	<string>Beiwe needs access to your sensors to properly conduct medical research.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>For medical research</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Beiwe needs to analyze the voice recordings you make in audio surveys for medical research</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>
@@ -83,7 +85,5 @@
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
-	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>Beiwe needs to analyze the voice recordings you make in audio surveys for medical research</string>
 </dict>
 </plist>

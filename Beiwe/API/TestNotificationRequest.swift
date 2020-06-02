@@ -1,0 +1,28 @@
+//
+//  TestNotificationRequest.swift
+//  Beiwe
+//
+//  Created by Tucker Jaenicke on 5/18/20.
+//  Copyright © 2020 Rocketfarm Studios. All rights reserved.
+//
+
+import Foundation
+import ObjectMapper
+
+struct TestNotificationRequest : Mappable, ApiRequest {
+
+    static let apiEndpoint = "/send_survey_notification"
+    typealias ApiReturnType = Survey;
+
+    init() {
+    }
+
+    init?(map: Map) {
+
+    }
+
+    // Mappable
+    mutating func mapping(map: Map) {
+    }
+
+}
