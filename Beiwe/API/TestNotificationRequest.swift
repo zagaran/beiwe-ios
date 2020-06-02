@@ -14,11 +14,12 @@ struct TestNotificationRequest : Mappable, ApiRequest {
     static let apiEndpoint = "/send_survey_notification"
     typealias ApiReturnType = Survey;
 
+    var surveyID: String?;
+
     init() {
     }
 
     init?(map: Map) {
-
     }
 
     // Mappable
