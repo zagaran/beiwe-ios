@@ -354,7 +354,7 @@ class StudyManager {
             // it resaves a new version of the data in a file.
             if(activeSurvey.survey?.alwaysAvailable ?? false && activeSurvey.isComplete){
                 log.info("ActiveSurvey \(id) expired.");
-                activeSurvey.isComplete = true;
+//                activeSurvey.isComplete = true;
                 surveyDataModified = true;
                 //  adding submitSurvey creates a new file; therefore we get 2 files of data- one when you
                 //  hit the confirm button and one when this code executes. we DO NOT KNOW why this is in the else if statement
@@ -376,7 +376,7 @@ class StudyManager {
         var allSurveyIds: [String] = [ ];
         /* Now for each survey from the server, check on the scheduling */
         for survey in study.surveys {
-            var next: Double = 0;
+//            var next: Double = 0;
             /* Find the next scheduled date that is >= now */
 //            outer: for day in 0..<7 {
 //                let dayIdx = (day + currentDay) % 7;

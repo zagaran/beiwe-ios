@@ -462,13 +462,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             log.error("Could not find study")
             return
         }
-        let getSurveyRequest = GetSurveysRequest()
-        log.info("Requesting surveys")
-        ApiManager.sharedInstance.arrayPostRequest(getSurveyRequest).then {
+        Recline.shared.save(study).then { _ -> Promise<([Survey], Int)> in
+            let surveyRequest = GetSurveysRequest();
+            log.info("Requesting surveys")
+            return ApiManager.sharedInstance.arrayPostRequest(surveyRequest)
+        }.then {
             (surveys, _) -> Promise<Void> in
             study.surveys = surveys
             return Recline.shared.save(study).asVoid();
-        } .map { _ in
+        } .done { _ in
             self.setActiveSurveys(surveyIds: surveyIds, sentTime: sentTime)
         } .catch {
             (error) in
@@ -477,27 +479,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
     
     func setActiveSurveys(surveyIds: [String], sentTime: TimeInterval = 0) {
-        for surveyId in surveyIds {
-            if let study = StudyManager.sharedInstance.currentStudy, let survey = study.getSurvey(surveyId: surveyId) {
-                let activeSurvey = ActiveSurvey(survey: survey)
-                activeSurvey.received = sentTime
-                activeSurvey.reset(survey)
-                if let surveyType = survey.surveyType {
-                    switch (surveyType) {
-                    case .AudioSurvey:
-                        study.receivedAudioSurveys = (study.receivedAudioSurveys) + 1;
-                    case .TrackingSurvey:
-                        study.receivedTrackingSurveys = (study.receivedTrackingSurveys) + 1;
+        if let study = StudyManager.sharedInstance.currentStudy {
+            for surveyId in surveyIds {
+                if let survey = study.getSurvey(surveyId: surveyId) {
+                    let activeSurvey = ActiveSurvey(survey: survey)
+                    activeSurvey.reset(survey)
+                    activeSurvey.received = sentTime
+                    if let surveyType = survey.surveyType {
+                        switch (surveyType) {
+                        case .AudioSurvey:
+                            study.receivedAudioSurveys = (study.receivedAudioSurveys) + 1;
+                        case .TrackingSurvey:
+                            study.receivedTrackingSurveys = (study.receivedTrackingSurveys) + 1;
+                        }
                     }
+                    study.activeSurveys[surveyId] = activeSurvey
                 }
-                StudyManager.sharedInstance.currentStudy?.activeSurveys[surveyId] = activeSurvey
             }
+            // Emits a surveyUpdated event to the listener
+            StudyManager.sharedInstance.surveysUpdatedEvent.emit(0);
+             Recline.shared.save(study).catch { _ in
+                 log.error("Failed to save study after processing surveys");
+             }
+            
+            // set badge number
+            UIApplication.shared.applicationIconBadgeNumber = study.activeSurveys.count as! Int
         }
-        // Emits a surveyUpdated event to the listener
-        StudyManager.sharedInstance.surveysUpdatedEvent.emit(0);
-        
-        // set badge number
-        UIApplication.shared.applicationIconBadgeNumber = StudyManager.sharedInstance.currentStudy?.activeSurveys.count as! Int
     }
     
 }
