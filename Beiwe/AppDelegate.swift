@@ -483,7 +483,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             for surveyId in surveyIds {
                 if let survey = study.getSurvey(surveyId: surveyId) {
                     let activeSurvey = ActiveSurvey(survey: survey)
-                    activeSurvey.reset(survey)
                     activeSurvey.received = sentTime
                     if let surveyType = survey.surveyType {
                         switch (surveyType) {

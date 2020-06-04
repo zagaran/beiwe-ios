@@ -22,6 +22,7 @@ class ActiveSurvey : Mappable {
 
     init(survey: Survey) {
         self.survey = survey;
+        self.reset(survey)
     }
 
     required init?(map: Map) {

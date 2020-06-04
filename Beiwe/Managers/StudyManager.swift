@@ -400,7 +400,6 @@ class StudyManager {
                 if study.activeSurveys[id] == nil && (survey.triggerOnFirstDownload /* || next > 0 */) {
                     log.info("Adding survey  \(id) to active surveys");
                     let newActiveSurvey = ActiveSurvey(survey: survey)
-                    newActiveSurvey.reset(survey)
                     study.activeSurveys[id] = newActiveSurvey
 //                    study.activeSurveys[id] = ActiveSurvey(survey: survey);
                     /* Schedule it for the next upcoming time, or immediately if triggerOnFirstDownload is true */
@@ -413,7 +412,6 @@ class StudyManager {
                 else if study.activeSurveys[id] == nil && (survey.alwaysAvailable) {
                     log.info("Adding survey  \(id) to active surveys");
                     let newActiveSurvey = ActiveSurvey(survey: survey)
-                    newActiveSurvey.reset(survey)
                     study.activeSurveys[id] = newActiveSurvey
 //                    study.activeSurveys[id] = ActiveSurvey(survey: survey);
                     /* Schedule it for the next upcoming time, or immediately if alwaysAvailable is true */
