@@ -16,6 +16,10 @@ import Firebase
 
 class RegisterViewController: FormViewController {
 
+    enum RegistrationError: Error {
+        case incorrectServer
+    }
+    
     static let commErrDelay = 7.0
     static let commErr = NSLocalizedString("http_message_server_not_found", comment: "")
     let autoValidation = false;
@@ -144,6 +148,11 @@ class RegisterViewController: FormViewController {
                             
                             ApiManager.sharedInstance.makePostRequest(registerStudyRequest).then {
                                 (studySettings, _) -> Promise<Study> in
+                                // testing three arbitrary response body values to ensure we hit the correct server and not some random server
+                                // that happened to return a 200
+                                guard studySettings.clientPublicKey != nil, studySettings.wifiLogFrequencySeconds != nil, studySettings.callClinicianButtonEnabled != nil else {
+                                    throw RegistrationError.incorrectServer
+                                }
                                 PersistentPasswordManager.sharedInstance.storePassword(newPassword);
                                 let study = Study(patientPhone: phoneNumber, patientId: patientId, studySettings: studySettings, apiUrl: customApiUrl);
                                 study.clinicianPhoneNumber = clinicianPhone

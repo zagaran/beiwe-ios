@@ -55,6 +55,7 @@ class TrackingSurveyPresenter : NSObject, ORKTaskViewControllerDelegate {
         // TODO: handle if stepOrder is null, throw error if it is not valid
         //       if it is valid, figure out why and under what conditions
         guard  let stepOrder = activeSurvey.stepOrder /*where questions.count > 0 */ else {
+            log.error("Active survey has no stepOrder")
             return;
         }
 

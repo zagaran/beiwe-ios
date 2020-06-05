@@ -41,6 +41,7 @@ class ActiveSurvey : Mappable {
         stepOrder   <- map["stepOrder"];
     }
 
+    // resets the survey to its original configuration
     func reset(_ survey: Survey? = nil) {
         if let survey = survey {
             self.survey = survey;
