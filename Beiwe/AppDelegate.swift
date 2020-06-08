@@ -394,26 +394,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
         // If you are receiving a notification message while your app is in the background,
         // this callback will not be fired till the user taps on the notification launching the application.
-        // TODO: Handle data of notification
         
-        print("Tuck: recieved notification 1")
-        // Print message ID.
-        if let messageID = userInfo[gcmMessageIDKey] {
-            print("Message ID: \(messageID)")
-        }
-        
-        // Print full message.
-        print(userInfo)
-    }
-    
-    // called when recieving notification while app is in foreground
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any],
-                     fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        // If you are receiving a notification message while your app is in the background,
-        // this callback will not be fired till the user taps on the notification launching the application.
-        // TODO: Handle data of notification
-        
-        print("Tuck: recieved notification 2")
         log.info("Push notification recieved")
         // Print message ID.
         if let messageID = userInfo[gcmMessageIDKey] {
@@ -422,30 +403,66 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         // Print full message.
         print(userInfo)
-        if let survey_ids = userInfo["survey_ids"] {
-            let surveyIdsString = survey_ids as! String
-            // converts json string to an array of strings
-            let surveyIds = try! JSONDecoder().decode([String].self, from:Data(surveyIdsString.utf8))
-            for surveyId in surveyIds {
-                if !(StudyManager.sharedInstance.currentStudy?.surveyExists(surveyId: surveyId) ?? false) {
-                    log.info("Recieved notification for new survey \(surveyId)")
-                } else {
-                    log.info("Recieved notification for survey \(surveyId)")
-                }
-            }
-            // converting sent_time string into a TimeInterval
-            if let sentTimeString = userInfo["sent_time"] as! String?{
-                let dateFormatter = DateFormatter()
-                dateFormatter.locale = Locale(identifier: "en_US_POSIX") // set locale to reliable US_POSIX
-                dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-                let sentTime = dateFormatter.date(from:sentTimeString)!
-                downloadSurveys(surveyIds: surveyIds, sentTime: sentTime.timeIntervalSince1970)
-            } else {
-                downloadSurveys(surveyIds: surveyIds)
-            }
+        
+        // if the notification is for a survey
+        if userInfo["survey_ids"] != nil {
+            handleSurveyNotification(userInfo: userInfo)
+        }
+    }
+    
+    // called when recieving notification while app is in foreground
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any],
+                     fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        // If you are receiving a notification message while your app is in the background,
+        // this callback will not be fired till the user taps on the notification launching the application.
+        
+        log.info("Push notification recieved")
+        // Print message ID.
+        if let messageID = userInfo[gcmMessageIDKey] {
+            print("Message ID: \(messageID)")
+        }
+        
+        // Print full message.
+        print(userInfo)
+        
+        // if the notification is for a survey
+        if userInfo["survey_ids"] != nil {
+            handleSurveyNotification(userInfo: userInfo)
         }
         
         completionHandler(UIBackgroundFetchResult.newData)
+    }
+
+    func handleSurveyNotification(userInfo: Dictionary<AnyHashable, Any>) {
+        let surveyIdsString = userInfo["survey_ids"] as! String
+        let surveyIds = jsonToSurveyIdArray(json: surveyIdsString)
+        if let sentTimeString = userInfo["sent_time"] as! String?{
+            downloadSurveys(surveyIds: surveyIds, sentTime: stringToTimeInterval(timeString: sentTimeString))
+        } else {
+            downloadSurveys(surveyIds: surveyIds)
+        }
+    }
+
+    // converting sent_time string into a TimeInterval
+    func stringToTimeInterval(timeString: String) -> TimeInterval {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX") // set locale to reliable US_POSIX
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        let sentTime = dateFormatter.date(from: timeString)!
+        return sentTime.timeIntervalSince1970
+    }
+    
+    // converts json string to an array of strings
+    func jsonToSurveyIdArray(json: String) -> [String] {
+        let surveyIds = try! JSONDecoder().decode([String].self, from:Data(json.utf8))
+        for surveyId in surveyIds {
+            if !(StudyManager.sharedInstance.currentStudy?.surveyExists(surveyId: surveyId) ?? false) {
+                log.info("Recieved notification for new survey \(surveyId)")
+            } else {
+                log.info("Recieved notification for survey \(surveyId)")
+            }
+        }
+        return surveyIds
     }
     
     func sendFCMToken(fcmToken: String) {
@@ -517,12 +534,12 @@ extension String: LocalizedError {
 extension AppDelegate : UNUserNotificationCenterDelegate {
     
     // Receive displayed notifications for iOS 10 devices.
-    // Is called when recieving a notifcation while app is in foreground
+    // Is called when receiving a notifcation while app is in foreground
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        log.info("Push notification recieved")
         let userInfo = notification.request.content.userInfo
-        print("Tuck: recieved notificaiton 3: \(notification.request.content)")
         
         // Print message ID.
         if let messageID = userInfo[gcmMessageIDKey] {
@@ -531,17 +548,22 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
         
         // Print full message.
         print(userInfo)
+        
+        // if the notification is for a survey
+        if userInfo["survey_ids"] != nil {
+            handleSurveyNotification(userInfo: userInfo)
+        }
         
         // Change this to your preferred presentation option
         completionHandler([])
     }
     
-    // Is caleld when tapping on notification when app is in background
+    // Is called when tapping on notification when app is in background
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
+        log.info("Push notification recieved")
         let userInfo = response.notification.request.content.userInfo
-        print("Tuck: recieved notificaiton 4: \(response.notification.request.content)")
         // Print message ID.
         if let messageID = userInfo[gcmMessageIDKey] {
             print("Message ID: \(messageID)")
@@ -549,6 +571,11 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
         
         // Print full message.
         print(userInfo)
+        
+        // if the notification is for a survey
+        if userInfo["survey_ids"] != nil {
+            handleSurveyNotification(userInfo: userInfo)
+        }
         
         completionHandler()
     }
@@ -558,7 +585,6 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
 extension AppDelegate : MessagingDelegate {
     // [START refresh_token]
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
-        print("Tuck: Firebase registration token: \(fcmToken)")
         
         let dataDict:[String: String] = ["token": fcmToken]
         NotificationCenter.default.post(name: Notification.Name("FCMToken"), object: nil, userInfo: dataDict)
