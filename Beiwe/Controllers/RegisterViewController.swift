@@ -138,6 +138,16 @@ class RegisterViewController: FormViewController {
                                 guard studySettings.clientPublicKey != nil, studySettings.wifiLogFrequencySeconds != nil, studySettings.callClinicianButtonEnabled != nil else {
                                     throw RegistrationError.incorrectServer
                                 }
+                                
+                                // initialize Firebase
+                                let options = FirebaseOptions(googleAppID: studySettings.googleAppID, gcmSenderID: studySettings.gcmSenderID)
+                                options.bundleID = studySettings.bundleID
+                                options.trackingID = "UA-12345678-1"
+                                options.clientID = studySettings.clientID
+                                options.databaseURL = studySettings.databaseURL
+                                options.storageBucket = studySettings.storageBucket
+                                FirebaseApp.configure(options: options)
+                                
                                 PersistentPasswordManager.sharedInstance.storePassword(newPassword);
                                 let study = Study(patientPhone: phoneNumber, patientId: patientId, studySettings: studySettings, apiUrl: customApiUrl);
                                 study.clinicianPhoneNumber = clinicianPhone

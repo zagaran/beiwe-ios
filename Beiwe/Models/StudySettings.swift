@@ -99,6 +99,21 @@ struct StudySettings : Mappable {
     var fuzzGps = false;
     var callClinicianButtonEnabled = true;
     var callResearchAssistantButtonEnabled = true;
+    var clientID = "";
+    var reversedClientID = "";
+    var apiKey = "";
+    var gcmSenderID = "";
+    var plistVersion = 1;
+    var bundleID = "";
+    var projectID = "";
+    var storageBucket = "";
+    var isAdsEnabled = false;
+    var isAnalyticsEnabled = false;
+    var isAppInviteEnabled = true;
+    var isGcmEnabled = true;
+    var isSignInEnabled = true;
+    var googleAppID = "";
+    var databaseURL = "";
     
     init?(map: Map) {
 
@@ -147,6 +162,21 @@ struct StudySettings : Mappable {
         fuzzGps                        <- map["device_settings.use_gps_fuzzing"]
         callClinicianButtonEnabled     <- map["device_settings.call_clinician_button_enabled"]
         callResearchAssistantButtonEnabled  <- map["device_settings.call_research_assistant_button_enabled"]
+        clientID                        <- map["ios_plist.CLIENT_ID"]
+        reversedClientID                <- map["ios_plist.REVERSED_CLIENT_ID"]
+        apiKey                          <- map["ios_plist.API_KEY"]
+        gcmSenderID                     <- map["ios_plist.GCM_SENDER_ID"]
+        plistVersion                    <- map["ios_plist.PLIST_VERSION"]
+        bundleID                        <- map["ios_plist.BUNDLE_ID"]
+        projectID                       <- map["ios_plist.PROJECT_ID"]
+        storageBucket                   <- map["ios_plist.STORAGE_BUCKET"]
+        isAdsEnabled                    <- map["ios_plist.IS_ADS_ENABLED"]
+        isAnalyticsEnabled              <- map["ios_plist.IS_ANALYTICS_ENABLED"]
+        isAppInviteEnabled              <- map["ios_plist.IS_APPINVITE_ENABLED"]
+        isGcmEnabled                    <- map["ios_plist.IS_GCM_ENABLED"]
+        isSignInEnabled                 <- map["ios_plist.IS_SIGNIN_ENABLED"]
+        googleAppID                     <- map["ios_plist.GOOGLE_APP_ID"]
+        databaseURL                     <- map["ios_plist.DATABASE_URL"]
     }
     
 }

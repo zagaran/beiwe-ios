@@ -170,9 +170,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
         
         // initialize Firebase
-        FirebaseApp.configure()
-        UNUserNotificationCenter.current().delegate = self
         Messaging.messaging().delegate = self
+        UNUserNotificationCenter.current().delegate = self
+//        FirebaseApp.configure()
         application.registerForRemoteNotifications()
         
         return true
@@ -388,14 +388,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        print("Failed to register for notifications: \(error.localizedDescription)")
+        log.error("Failed to register for notifications: \(error.localizedDescription)")
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
         // If you are receiving a notification message while your app is in the background,
         // this callback will not be fired till the user taps on the notification launching the application.
         
-        log.info("Push notification recieved")
+        log.info("Background push notification recieved")
         // Print message ID.
         if let messageID = userInfo[gcmMessageIDKey] {
             print("Message ID: \(messageID)")
@@ -416,7 +416,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         // If you are receiving a notification message while your app is in the background,
         // this callback will not be fired till the user taps on the notification launching the application.
         
-        log.info("Push notification recieved")
+        log.info("Foreground push notification recieved")
         // Print message ID.
         if let messageID = userInfo[gcmMessageIDKey] {
             print("Message ID: \(messageID)")
@@ -510,6 +510,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                         }
                     }
                     study.activeSurveys[surveyId] = activeSurvey
+                } else {
+                    log.error("Could not get survey")
                 }
             }
             // Emits a surveyUpdated event to the listener
@@ -538,7 +540,7 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        log.info("Push notification recieved")
+        log.info("Foreground push notification recieved in extension")
         let userInfo = notification.request.content.userInfo
         
         // Print message ID.
@@ -562,7 +564,7 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
-        log.info("Push notification recieved")
+        log.info("Background push notification recieved in extension")
         let userInfo = response.notification.request.content.userInfo
         // Print message ID.
         if let messageID = userInfo[gcmMessageIDKey] {
@@ -581,6 +583,10 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
     }
 }
 // [END ios_10_message_handling]
+
+func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+    Messaging.messaging().apnsToken = deviceToken
+}
 
 extension AppDelegate : MessagingDelegate {
     // [START refresh_token]
