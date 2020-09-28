@@ -138,15 +138,19 @@ class RegisterViewController: FormViewController {
                                 guard studySettings.clientPublicKey != nil, studySettings.wifiLogFrequencySeconds != nil, studySettings.callClinicianButtonEnabled != nil else {
                                     throw RegistrationError.incorrectServer
                                 }
-                                
-                                // initialize Firebase
-                                let options = FirebaseOptions(googleAppID: studySettings.googleAppID, gcmSenderID: studySettings.gcmSenderID)
-                                options.bundleID = studySettings.bundleID
-                                options.trackingID = "UA-12345678-1"
-                                options.clientID = studySettings.clientID
-                                options.databaseURL = studySettings.databaseURL
-                                options.storageBucket = studySettings.storageBucket
-                                FirebaseApp.configure(options: options)
+                                if (FirebaseApp.app() == nil) {
+                                    let options = FirebaseOptions(googleAppID: studySettings.googleAppID, gcmSenderID: studySettings.gcmSenderID)
+                                    options.apiKey = studySettings.apiKey
+                                    options.projectID = studySettings.projectID
+                                    options.bundleID = studySettings.bundleID
+                                    options.clientID = studySettings.clientID
+                                    options.databaseURL = studySettings.databaseURL
+                                    options.storageBucket = studySettings.storageBucket
+                                    // initialize Firebase on the main thread
+                                    DispatchQueue.main.async {
+                                        FirebaseApp.configure(options: options)
+                                    }
+                                }
                                 
                                 PersistentPasswordManager.sharedInstance.storePassword(newPassword);
                                 let study = Study(patientPhone: phoneNumber, patientId: patientId, studySettings: studySettings, apiUrl: customApiUrl);
