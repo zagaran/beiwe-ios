@@ -35,6 +35,8 @@
 			</dict>
 		</array>
 	</dict>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<true/>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>
@@ -85,9 +87,5 @@
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
-	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>Beiwe needs to analyze the voice recordings you make in audio surveys for medical research</string>
-	<key>FirebaseAppDelegateProxyEnabled</key>
-	<string>YES</string>
 </dict>
 </plist>

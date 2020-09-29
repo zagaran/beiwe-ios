@@ -139,17 +139,7 @@ class RegisterViewController: FormViewController {
                                     throw RegistrationError.incorrectServer
                                 }
                                 if (FirebaseApp.app() == nil) {
-                                    let options = FirebaseOptions(googleAppID: studySettings.googleAppID, gcmSenderID: studySettings.gcmSenderID)
-                                    options.apiKey = studySettings.apiKey
-                                    options.projectID = studySettings.projectID
-                                    options.bundleID = studySettings.bundleID
-                                    options.clientID = studySettings.clientID
-                                    options.databaseURL = studySettings.databaseURL
-                                    options.storageBucket = studySettings.storageBucket
-                                    // initialize Firebase on the main thread
-                                    DispatchQueue.main.async {
-                                        FirebaseApp.configure(options: options)
-                                    }
+                                    AppDelegate.sharedInstance().configureFirebase(studySettings: studySettings)
                                 }
                                 
                                 PersistentPasswordManager.sharedInstance.storePassword(newPassword);

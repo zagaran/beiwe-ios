@@ -175,19 +175,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                 log.error("Unable to configure Firebase App")
                 return true
             }
-            let options = FirebaseOptions(googleAppID: studySettings.googleAppID, gcmSenderID: studySettings.gcmSenderID)
-            options.apiKey = studySettings.apiKey
-            options.projectID = studySettings.projectID
-            options.bundleID = studySettings.bundleID
-            options.clientID = studySettings.clientID
-            options.databaseURL = studySettings.databaseURL
-            options.storageBucket = studySettings.storageBucket
-            FirebaseApp.configure(options: options)
+            configureFirebase(studySettings: studySettings)
             AppEventManager.sharedInstance.logAppEvent(event: "push_notification", msg: "Registered for push notifications with Firebase")
-        } else if (ApiManager.sharedInstance.patientId == "") {
-            print("ERROR: not registered")
-        } else {
-            print("App already exists")
         }
         
         // these lines need to be called after FirebaseApp.configure(), so we wait
@@ -555,6 +544,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
     }
     
+    func configureFirebase(studySettings: StudySettings) {
+        let options = FirebaseOptions(googleAppID: studySettings.googleAppID, gcmSenderID: studySettings.gcmSenderID)
+        options.apiKey = studySettings.apiKey
+        options.projectID = studySettings.projectID
+        options.bundleID = studySettings.bundleID
+        options.clientID = studySettings.clientID
+        options.databaseURL = studySettings.databaseURL
+        options.storageBucket = studySettings.storageBucket
+        // initialize Firebase on the main thread
+        DispatchQueue.main.async {
+            FirebaseApp.configure(options: options)
+        }
+    }
+    
 }
 
 extension String: LocalizedError {
@@ -613,10 +616,6 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
     }
 }
 // [END ios_10_message_handling]
-
- func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-     Messaging.messaging().apnsToken = deviceToken
- }
 
 extension AppDelegate : MessagingDelegate {
     // [START refresh_token]
