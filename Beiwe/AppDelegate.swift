@@ -484,11 +484,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
     
     func sendFCMToken(fcmToken: String) {
-        let fcmTokenRequest = FCMTokenRequest(fcmToken: fcmToken)
         print("FCM Token: \(fcmToken)")
-        ApiManager.sharedInstance.makePostRequest(fcmTokenRequest).catch {
-            (error) in
-            log.error("Error registering FCM token: \(error)")
+        if (fcmToken != "") {
+            let fcmTokenRequest = FCMTokenRequest(fcmToken: fcmToken)
+            ApiManager.sharedInstance.makePostRequest(fcmTokenRequest).catch {
+                (error) in
+                log.error("Error registering FCM token: \(error)")
+            }
         }
     }
     
