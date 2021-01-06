@@ -26,13 +26,13 @@ end
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|
-    next unless (target.name == 'PromiseKit')
+    next unless (target.name == 'PromiseKit' || target.name == 'ResearchKit')
     target.build_configurations.each do |config|
       config.build_settings['SWIFT_OPTIMIZATION_LEVEL'] = '-Onone'
     end
   end
   installer.pods_project.targets.each do |target|
-    if target.name == 'Eureka' || target.name == 'XLActionController'
+    if target.name == 'Eureka' || target.name == 'XLActionController' || target.name == 'ResearchKit'
       target.build_configurations.each do |config|
         config.build_settings['SWIFT_VERSION'] = '4.2'
         config.build_settings['ENABLE_BITCODE'] = 'NO'
