@@ -190,6 +190,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             // App crashes if this isn't called on main thread
             DispatchQueue.main.async {
                 application.registerForRemoteNotifications()
+                let token = Messaging.messaging().fcmToken
+                if (token != nil) {
+                    self.sendFCMToken(fcmToken: token ?? "")
+                }
             }
         }
         
@@ -303,6 +307,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         log.info("applicationDidBecomeActive")
         AppEventManager.sharedInstance.logAppEvent(event: "foreground", msg: "Application entered foreground")
+        
+        // Send FCM Token everytime the app launches
+        if (ApiManager.sharedInstance.patientId != ""/* && FirebaseApp.app() != nil*/) {
+            let token = Messaging.messaging().fcmToken
+            if (token != nil) {
+                sendFCMToken(fcmToken: token ?? "")
+            }
+        }
     }
     
     func applicationWillTerminate(_ application: UIApplication) {

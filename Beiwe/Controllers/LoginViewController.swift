@@ -9,6 +9,7 @@
 import UIKit
 import PKHUD
 import ResearchKit
+import Firebase
 
 class LoginViewController: UIViewController, UITextFieldDelegate {
 
@@ -53,6 +54,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         if let password = password.text, password.count > 0 {
             if (AppDelegate.sharedInstance().checkPasswordAndLogin(password)) {
                 HUD.flash(.success, delay: 0.5);
+                let token = Messaging.messaging().fcmToken
+                if (token != nil) {
+                    AppDelegate.sharedInstance().sendFCMToken(fcmToken: token ?? "")
+                }
                 AppDelegate.sharedInstance().transitionToCurrentAppState();
             } else {
                 HUD.flash(.error, delay: 1);
