@@ -11,6 +11,7 @@ import PromiseKit
 import ReachabilitySwift
 import EmitterKit
 import Crashlytics
+import Firebase
 
 class StudyManager {
     static let sharedInstance = StudyManager();
@@ -229,6 +230,12 @@ class StudyManager {
                 }
                 
                 self.currentStudy = nil;
+                ApiManager.sharedInstance.patientId = "";
+                let instance = InstanceID.instanceID()
+                instance.deleteID { (error) in
+                    print(error.debugDescription)
+                    log.error(error.debugDescription)
+                }
                 
                 return .value(true)
                 
