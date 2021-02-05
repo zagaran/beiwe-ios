@@ -419,13 +419,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         log.error("Failed to register for notifications: \(error.localizedDescription)")
+        AppEventManager.sharedInstance.logAppEvent(event: "push_notification", msg: "Failed to register for notifications: \(error.localizedDescription)")
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
         // If you are receiving a notification message while your app is in the background,
         // this callback will not be fired till the user taps on the notification launching the application.
         
-        log.info("Background push notification recieved")
+        log.info("Background push notification received")
+        AppEventManager.sharedInstance.logAppEvent(event: "push_notification", msg: "Background push notification received")
         // Print message ID.
         if let messageID = userInfo[gcmMessageIDKey] {
             print("Message ID: \(messageID)")
@@ -440,13 +442,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
     }
     
-    // called when recieving notification while app is in foreground
+    // called when receiving notification while app is in foreground
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any],
                      fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         // If you are receiving a notification message while your app is in the background,
         // this callback will not be fired till the user taps on the notification launching the application.
         
-        log.info("Foreground push notification recieved")
+        log.info("Foreground push notification received")
+        AppEventManager.sharedInstance.logAppEvent(event: "push_notification", msg: "Foreground push notification received")
         // Print message ID.
         if let messageID = userInfo[gcmMessageIDKey] {
             print("Message ID: \(messageID)")
@@ -487,9 +490,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         let surveyIds = try! JSONDecoder().decode([String].self, from:Data(json.utf8))
         for surveyId in surveyIds {
             if !(StudyManager.sharedInstance.currentStudy?.surveyExists(surveyId: surveyId) ?? false) {
-                log.info("Recieved notification for new survey \(surveyId)")
+                log.info("Received notification for new survey \(surveyId)")
+                AppEventManager.sharedInstance.logAppEvent(event: "push_notification", msg: "Received notification for new survey \(surveyId)")
             } else {
-                log.info("Recieved notification for survey \(surveyId)")
+                log.info("Received notification for survey \(surveyId)")
+                AppEventManager.sharedInstance.logAppEvent(event: "push_notification", msg: "Received notification for survey \(surveyId)")
             }
         }
         return surveyIds
@@ -502,6 +507,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             ApiManager.sharedInstance.makePostRequest(fcmTokenRequest).catch {
                 (error) in
                 log.error("Error registering FCM token: \(error)")
+                AppEventManager.sharedInstance.logAppEvent(event: "push_notification", msg: "Error registering FCM token: \(error)")
             }
         }
     }
@@ -525,6 +531,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         } .catch {
             (error) in
             log.error("Error downloading surveys: \(error)")
+            AppEventManager.sharedInstance.logAppEvent(event: "survey_download", msg: "Error downloading surveys: \(error)")
         }
     }
     
@@ -587,7 +594,8 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        log.info("Foreground push notification recieved in extension")
+        log.info("Foreground push notification received in extension")
+        AppEventManager.sharedInstance.logAppEvent(event: "push_notification", msg: "Foreground push notification received")
         let userInfo = notification.request.content.userInfo
         
         // Print message ID.
@@ -611,7 +619,8 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
-        log.info("Background push notification recieved in extension")
+        log.info("Background push notification received in extension")
+        AppEventManager.sharedInstance.logAppEvent(event: "push_notification", msg: "Background push notification received")
         let userInfo = response.notification.request.content.userInfo
         // Print message ID.
         if let messageID = userInfo[gcmMessageIDKey] {
