@@ -138,6 +138,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             print("Database opened");
             return StudyManager.sharedInstance.loadDefaultStudy();
         }.done { _ -> Void in
+            // if notification was received while app was in killed state, there will be launch options
+            if launchOptions != nil{
+                let userInfo = launchOptions?[UIApplication.LaunchOptionsKey.remoteNotification] as? Dictionary<AnyHashable, Any>
+                if userInfo != nil {
+                    self.handleSurveyNotification(userInfo: userInfo!)
+                }
+            }
             self.transitionToCurrentAppState();
         }.catch { err -> Void in
             print("Database open failed.");
@@ -173,6 +180,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         if (ApiManager.sharedInstance.patientId != "" && FirebaseApp.app() == nil) {
             guard let studySettings = StudyManager.sharedInstance.currentStudy?.studySettings else {
                 log.error("Unable to configure Firebase App")
+                AppEventManager.sharedInstance.logAppEvent(event: "push_notification", msg: "Unable to configure Firebase App")
                 return true
             }
             configureFirebase(studySettings: studySettings)
@@ -467,8 +475,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
 
     func handleSurveyNotification(userInfo: Dictionary<AnyHashable, Any>) {
-        let surveyIdsString = userInfo["survey_ids"] as! String
-        let surveyIds = jsonToSurveyIdArray(json: surveyIdsString)
+        guard let surveyIdsString = userInfo["survey_ids"] else {
+            log.error("no surveyIds found")
+            return
+        }
+        AppEventManager.sharedInstance.logAppEvent(event: "push_notification", msg: "Received notification while app was killed")
+        let surveyIds = jsonToSurveyIdArray(json: surveyIdsString as! String)
         if let sentTimeString = userInfo["sent_time"] as! String?{
             downloadSurveys(surveyIds: surveyIds, sentTime: stringToTimeInterval(timeString: sentTimeString))
         } else {
@@ -552,6 +564,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                     study.activeSurveys[surveyId] = activeSurvey
                 } else {
                     log.error("Could not get survey")
+                    AppEventManager.sharedInstance.logAppEvent(event: "survey_download", msg: "Could not get obtain survey for ActiveSurvey")
                 }
             }
             // Emits a surveyUpdated event to the listener
