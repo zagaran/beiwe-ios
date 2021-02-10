@@ -544,6 +544,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             (error) in
             log.error("Error downloading surveys: \(error)")
             AppEventManager.sharedInstance.logAppEvent(event: "survey_download", msg: "Error downloading surveys: \(error)")
+            // try setting the active surveys anyway, even if download failed, can still use previously downloaded surveys
+            self.setActiveSurveys(surveyIds: surveyIds, sentTime: sentTime)
         }
     }
     

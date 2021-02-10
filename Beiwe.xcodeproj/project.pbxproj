@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3248853A2465DD70002F0F81 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 324885392465DD70002F0F81 /* GoogleService-Info.plist */; };
 		3248853C2469ADC3002F0F81 /* FCMTokenRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3248853B2469ADC2002F0F81 /* FCMTokenRequest.swift */; };
 		32756627245876CC00299A04 /* Private.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32756626245876CC00299A04 /* Private.swift */; };
 		32CEA436246F2579000EBF69 /* GetSingleSurveyRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32CEA435246F2579000EBF69 /* GetSingleSurveyRequest.swift */; };
@@ -87,7 +86,6 @@
 /* Begin PBXFileReference section */
 		086E88BE2560D96A5CD25F49 /* Pods-Beiwe.debug2.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beiwe.debug2.xcconfig"; path = "Target Support Files/Pods-Beiwe/Pods-Beiwe.debug2.xcconfig"; sourceTree = "<group>"; };
 		1DD23C0F14E88B456D1D8C0A /* Pods-Beiwe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beiwe.debug.xcconfig"; path = "Target Support Files/Pods-Beiwe/Pods-Beiwe.debug.xcconfig"; sourceTree = "<group>"; };
-		324885392465DD70002F0F81 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3248853B2469ADC2002F0F81 /* FCMTokenRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FCMTokenRequest.swift; sourceTree = "<group>"; };
 		32756626245876CC00299A04 /* Private.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Private.swift; sourceTree = "<group>"; };
 		32CEA435246F2579000EBF69 /* GetSingleSurveyRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSingleSurveyRequest.swift; sourceTree = "<group>"; };
@@ -400,7 +398,6 @@
 				32D25F83246EE294005286EB /* Beiwe2Release.entitlements */,
 				32D25F82246EE28F005286EB /* Beiwe2Release2.entitlements */,
 				32D25F81246EE23E005286EB /* Beiwe2Debug2.entitlements */,
-				324885392465DD70002F0F81 /* GoogleService-Info.plist */,
 				83AF04111CAA083400A37225 /* Beiwe-Bridging-Header.h */,
 				327566282458801B00299A04 /* Private */,
 				832FFC271CC86A0800F2E1EF /* Assets.xcassets */,
@@ -463,7 +460,7 @@
 				TargetAttributes = {
 					83F98C351C923C3600E0B64B = {
 						CreatedOnToolsVersion = 7.2;
-						DevelopmentTeam = WRY9L72ZUW;
+						DevelopmentTeam = UHX83HR959;
 						LastSwiftMigration = 1130;
 						ProvisioningStyle = Manual;
 					};
@@ -495,7 +492,6 @@
 			files = (
 				832FFC331CC9C3CD00F2E1EF /* BWXLCell.xib in Resources */,
 				83F98C441C923C3600E0B64B /* LaunchScreen.storyboard in Resources */,
-				3248853A2465DD70002F0F81 /* GoogleService-Info.plist in Resources */,
 				832FFC281CC86A0800F2E1EF /* Assets.xcassets in Resources */,
 				83AB51391F9FDBAF0058F3B0 /* Config-Prod2.plist in Resources */,
 				59912EB3230EF09400CAF7EB /* Localizable.strings in Resources */,
@@ -787,6 +783,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1.8.0;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -810,6 +807,7 @@
 					"non-recursive",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 1.8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "${PRODUCT_NAME}${BUNDLE_DISPLAY_NAME_SUFFIX}";
@@ -830,17 +828,20 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = "1.0
+";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = WRY9L72ZUW;
+				DEVELOPMENT_TEAM = UHX83HR959;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Beiwe/Info.plist;
 				INFOPLIST_PREPROCESS = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.zagaran.beiweios;
+				MARKETING_VERSION = 2.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = harvard.lab.onnela.beiwe.ios;
 				PRODUCT_NAME = Beiwe2;
 				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "Tucker Jaenicke";
+				PROVISIONING_PROFILE_SPECIFIER = "Tucker Development";
 				SWIFT_OBJC_BRIDGING_HEADER = "./Beiwe/Beiwe-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -880,6 +881,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1.8.0;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -897,6 +899,7 @@
 					"non-recursive",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 1.8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "${PRODUCT_NAME}${BUNDLE_DISPLAY_NAME_SUFFIX}";
 				SDKROOT = iphoneos;
@@ -916,6 +919,8 @@
 				CODE_SIGN_ENTITLEMENTS = Beiwe/Beiwe2Release2.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = "1.0
+";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = UHX83HR959;
 				ENABLE_BITCODE = NO;
@@ -923,10 +928,11 @@
 				INFOPLIST_PREPROCESS = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = harvard.lab.onnela.beiwe.ios;
 				PRODUCT_NAME = Beiwe2;
 				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "Beiwe Distribution 5/12/20";
+				PROVISIONING_PROFILE_SPECIFIER = "Beiwe2 Distribution 7/20/20";
 				SWIFT_OBJC_BRIDGING_HEADER = "./Beiwe/Beiwe-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -964,6 +970,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1.8.0;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -987,6 +994,7 @@
 					"non-recursive",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 1.8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "${PRODUCT_NAME}${BUNDLE_DISPLAY_NAME_SUFFIX}";
@@ -1028,6 +1036,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1.8.0;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -1045,6 +1054,7 @@
 					"non-recursive",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 1.8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "${PRODUCT_NAME}${BUNDLE_DISPLAY_NAME_SUFFIX}";
 				SDKROOT = iphoneos;
@@ -1062,20 +1072,23 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				BUNDLE_ID_SUFFIX = debug;
 				CODE_SIGN_ENTITLEMENTS = Beiwe/Beiwe2Debug.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = "1.0
+";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = WRY9L72ZUW;
+				DEVELOPMENT_TEAM = UHX83HR959;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Beiwe/Info.plist;
 				INFOPLIST_PREPROCESS = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.zagaran.beiweios;
+				MARKETING_VERSION = 2.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = harvard.lab.onnela.beiwe.ios;
 				PRODUCT_NAME = Beiwe2;
 				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "Tucker Jaenicke";
+				PROVISIONING_PROFILE_SPECIFIER = "Beiwe2 Distribution 7/20/20";
 				SWIFT_OBJC_BRIDGING_HEADER = "./Beiwe/Beiwe-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -1093,6 +1106,8 @@
 				CODE_SIGN_ENTITLEMENTS = Beiwe/Beiwe2Release.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = "1.0
+";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = WRY9L72ZUW;
 				ENABLE_BITCODE = NO;
@@ -1100,6 +1115,7 @@
 				INFOPLIST_PREPROCESS = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.zagaran.beiweios;
 				PRODUCT_NAME = Beiwe2;
 				PROVISIONING_PROFILE = "";
