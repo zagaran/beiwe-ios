@@ -531,20 +531,6 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Fabric/run\" e39144f1f340beaea740ae45276af72b2f8d2708 61ae03d66f3516dcaa9f0ffaf3c9db9dc49037fdc0e38105a7f5a48ac0f466a1\n";
 		};
-		83F98C501C925F2500E0B64B /* Run Script */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 8;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Run Script";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-			shellPath = /bin/sh;
-			shellScript = "IFS=$'\\n'\nVERSION=`git describe --abbrev=0 |sed -e \"s/^[^0-9]*//\"`\nif [[ $VERSION =~ ^[0-9]*\\.[0-9]*\\.[0-9]*$ ]]; then\n    echo \"Base version: $VERSION\"\nelse\n    VERSION=\"${VERSION%.*}\"\n\n    if [[ $VERSION =~ ^[0-9]*\\.[0-9]*\\.[0-9]*$ ]]; then\n        echo \"Base version: $VERSION\"\n    else\n        echo \"Illegal version: $VERSION\"\n    exit -1\n    fi\nfi\nEPOCH=`date +%s`\nTAGDATE=`git log -1 --format=%at`\nDIFF=`expr $EPOCH - $TAGDATE`\nBUILD=\"${VERSION}.`expr $DIFF / 60`\"\ngit tag \"$BUILD\" -a -m \"$BUILD\"\n\necho \"Updating Info.plist version to Ver: ${VERSION}, Build: $BUILD\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion ${BUILD}\" -c \"Set :CFBundleShortVersionString ${VERSION}\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n#/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion ${BUILD}\" -c \"Set :CFBundleShortVersionString ${VERSION}\" \"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Info.plist\"\n#/usr/bin/plutil -convert ${INFOPLIST_OUTPUT_FORMAT}1 \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n";
-		};
 		83F98C511C925F6F00E0B64B /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
