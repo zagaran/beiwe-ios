@@ -183,8 +183,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                 AppEventManager.sharedInstance.logAppEvent(event: "push_notification", msg: "Unable to configure Firebase App")
                 return true
             }
-            configureFirebase(studySettings: studySettings)
-            AppEventManager.sharedInstance.logAppEvent(event: "push_notification", msg: "Registered for push notifications with Firebase")
+            // if an existing user has does not have the credentials, get them
+            if (studySettings.googleAppID == "") {
+                let registerStudyRequest = RegisterStudyRequest(patientId: ApiManager.sharedInstance.patientId, phoneNumber: "NOT_SUPPLIED", newPassword: "")
+                ApiManager.sharedInstance.makePostRequest(registerStudyRequest).then {
+                    (studySettings, _) -> Promise<Void> in
+                    // testing three arbitrary response body values to ensure we hit the correct server and not some random server
+                    // that happened to return a 200
+                    guard studySettings.clientPublicKey != nil, studySettings.wifiLogFrequencySeconds != nil, studySettings.callClinicianButtonEnabled != nil else {
+                        throw RegisterViewController.RegistrationError.incorrectServer
+                    }
+                    if (FirebaseApp.app() == nil) {
+                        self.configureFirebase(studySettings: studySettings)
+                        AppEventManager.sharedInstance.logAppEvent(event: "push_notification", msg: "Registered for push notifications with Firebase")
+                    }
+                    return Promise()
+                }.done { _ in
+                    let token = Messaging.messaging().fcmToken
+                    AppDelegate.sharedInstance().sendFCMToken(fcmToken: token ?? "")
+                }
+            } else {
+                configureFirebase(studySettings: studySettings)
+                AppEventManager.sharedInstance.logAppEvent(event: "push_notification", msg: "Registered for push notifications with Firebase")
+            }
         }
         
         // these lines need to be called after FirebaseApp.configure(), so we wait
