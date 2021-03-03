@@ -178,34 +178,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         // initialize Firebase only if it hasn't been initialized before and is after registration
         if (ApiManager.sharedInstance.patientId != "" && FirebaseApp.app() == nil) {
-            guard let studySettings = StudyManager.sharedInstance.currentStudy?.studySettings else {
-                log.error("Unable to configure Firebase App")
-                AppEventManager.sharedInstance.logAppEvent(event: "push_notification", msg: "Unable to configure Firebase App")
-                return true
-            }
-            // if an existing user has does not have the credentials, get them
-            if (studySettings.googleAppID == "") {
-                let registerStudyRequest = RegisterStudyRequest(patientId: ApiManager.sharedInstance.patientId, phoneNumber: "NOT_SUPPLIED", newPassword: "")
-                ApiManager.sharedInstance.makePostRequest(registerStudyRequest).then {
-                    (studySettings, _) -> Promise<Void> in
-                    // testing three arbitrary response body values to ensure we hit the correct server and not some random server
-                    // that happened to return a 200
-                    guard studySettings.clientPublicKey != nil, studySettings.wifiLogFrequencySeconds != nil, studySettings.callClinicianButtonEnabled != nil else {
-                        throw RegisterViewController.RegistrationError.incorrectServer
-                    }
-                    if (FirebaseApp.app() == nil) {
-                        self.configureFirebase(studySettings: studySettings)
-                        AppEventManager.sharedInstance.logAppEvent(event: "push_notification", msg: "Registered for push notifications with Firebase")
-                    }
-                    return Promise()
-                }.done { _ in
-                    let token = Messaging.messaging().fcmToken
-                    AppDelegate.sharedInstance().sendFCMToken(fcmToken: token ?? "")
-                }
-            } else {
-                configureFirebase(studySettings: studySettings)
-                AppEventManager.sharedInstance.logAppEvent(event: "push_notification", msg: "Registered for push notifications with Firebase")
-            }
+            checkFirebaseCredentials()
+            let token = Messaging.messaging().fcmToken
+            AppDelegate.sharedInstance().sendFCMToken(fcmToken: token ?? "")
         }
         
         // these lines need to be called after FirebaseApp.configure(), so we wait
@@ -493,6 +468,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
         
         completionHandler(UIBackgroundFetchResult.newData)
+    }
+    
+    func checkFirebaseCredentials() {
+        guard let studySettings = StudyManager.sharedInstance.currentStudy?.studySettings else {
+            log.error("Study not found")
+            AppEventManager.sharedInstance.logAppEvent(event: "push_notification", msg: "Unable to configure Firebase App. No study found.")
+            return
+        }
+        if (studySettings.googleAppID == "") {
+            let registerStudyRequest = RegisterStudyRequest(patientId: ApiManager.sharedInstance.patientId, phoneNumber: "NOT_SUPPLIED", newPassword: "")
+            ApiManager.sharedInstance.makePostRequest(registerStudyRequest).then {
+                (studySettings, _) -> Promise<Void> in
+                print(studySettings)
+                // testing response body values to ensure we hit the correct server and not some random server
+                // that happened to return a 200
+                guard studySettings.clientPublicKey != nil else {
+                    throw RegisterViewController.RegistrationError.incorrectServer
+                }
+                if (FirebaseApp.app() == nil && studySettings.googleAppID != "") {
+                    self.configureFirebase(studySettings: studySettings)
+                    AppEventManager.sharedInstance.logAppEvent(event: "push_notification", msg: "Registered for push notifications with Firebase")
+                }
+                return Promise()
+            }
+        } else {
+            configureFirebase(studySettings: studySettings)
+            AppEventManager.sharedInstance.logAppEvent(event: "push_notification", msg: "Registered for push notifications with Firebase")
+        }
     }
 
     func handleSurveyNotification(userInfo: Dictionary<AnyHashable, Any>) {

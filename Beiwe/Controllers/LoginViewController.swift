@@ -54,6 +54,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         if let password = password.text, password.count > 0 {
             if (AppDelegate.sharedInstance().checkPasswordAndLogin(password)) {
                 HUD.flash(.success, delay: 0.5);
+                AppDelegate.sharedInstance().checkFirebaseCredentials()
                 let token = Messaging.messaging().fcmToken
                 if (token != nil) {
                     AppDelegate.sharedInstance().sendFCMToken(fcmToken: token ?? "")

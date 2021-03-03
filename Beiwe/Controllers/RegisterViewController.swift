@@ -138,7 +138,7 @@ class RegisterViewController: FormViewController {
                                 guard studySettings.clientPublicKey != nil, studySettings.wifiLogFrequencySeconds != nil, studySettings.callClinicianButtonEnabled != nil else {
                                     throw RegistrationError.incorrectServer
                                 }
-                                if (FirebaseApp.app() == nil) {
+                                if (FirebaseApp.app() == nil && studySettings.googleAppID != "") {
                                     AppDelegate.sharedInstance().configureFirebase(studySettings: studySettings)
                                 }
                                 
@@ -154,20 +154,8 @@ class RegisterViewController: FormViewController {
                                     return self.db.save(study)
                                 }
                             }.then { _ -> Promise<Bool> in
-                                // [START log_fcm_reg_token]
                                 let token = Messaging.messaging().fcmToken
                                 AppDelegate.sharedInstance().sendFCMToken(fcmToken: token ?? "")
-                                // [END log_fcm_reg_token]
-
-                                // [START log_iid_reg_token]
-                                InstanceID.instanceID().instanceID { (result, error) in
-                                  if let error = error {
-                                    print("Error fetching remote instance ID: \(error)")
-                                  } else if let result = result {
-                                    print("Remote instance ID token: \(result.token)")
-                                  }
-                                }
-                                // [END log_iid_reg_token]
                                 HUD.flash(.success, delay: 1);
                                 return StudyManager.sharedInstance.loadDefaultStudy();
                             }.done { _ -> Void in
