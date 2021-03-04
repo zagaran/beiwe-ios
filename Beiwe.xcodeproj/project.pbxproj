@@ -434,7 +434,6 @@
 				83F98C331C923C3600E0B64B /* Frameworks */,
 				83F98C341C923C3600E0B64B /* Resources */,
 				83E3DE861CA3A41E00EB5349 /* ShellScript */,
-				83F98C501C925F2500E0B64B /* Run Script */,
 				83F98C511C925F6F00E0B64B /* ShellScript */,
 				83F98C4F1C9250A600E0B64B /* Run Script */,
 				C7A5541B51E06493BA1A7A86 /* [CP] Embed Pods Frameworks */,
@@ -814,8 +813,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = "1.0
-";
+				CURRENT_PROJECT_VERSION = "2.0.1.0\n";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = UHX83HR959;
 				ENABLE_BITCODE = NO;
@@ -823,7 +821,7 @@
 				INFOPLIST_PREPROCESS = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 2.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = harvard.lab.onnela.beiwe.ios;
 				PRODUCT_NAME = Beiwe2;
 				PROVISIONING_PROFILE = "";
@@ -905,8 +903,7 @@
 				CODE_SIGN_ENTITLEMENTS = Beiwe/Beiwe2Release2.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = "1.0
-";
+				CURRENT_PROJECT_VERSION = "2.0.1.0\n";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = UHX83HR959;
 				ENABLE_BITCODE = NO;
@@ -914,7 +911,7 @@
 				INFOPLIST_PREPROCESS = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 2.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = harvard.lab.onnela.beiwe.ios;
 				PRODUCT_NAME = Beiwe2;
 				PROVISIONING_PROFILE = "";
@@ -1061,8 +1058,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = "1.0
-";
+				CURRENT_PROJECT_VERSION = "2.0.1.0\n";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = UHX83HR959;
 				ENABLE_BITCODE = NO;
@@ -1070,7 +1066,7 @@
 				INFOPLIST_PREPROCESS = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 2.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = harvard.lab.onnela.beiwe.ios;
 				PRODUCT_NAME = Beiwe2;
 				PROVISIONING_PROFILE = "";
@@ -1092,8 +1088,7 @@
 				CODE_SIGN_ENTITLEMENTS = Beiwe/Beiwe2Release.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = "1.0
-";
+				CURRENT_PROJECT_VERSION = "2.0.1.0\n";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = WRY9L72ZUW;
 				ENABLE_BITCODE = NO;
@@ -1101,7 +1096,7 @@
 				INFOPLIST_PREPROCESS = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 2.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.zagaran.beiweios;
 				PRODUCT_NAME = Beiwe2;
 				PROVISIONING_PROFILE = "";
