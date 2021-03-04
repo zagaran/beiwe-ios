@@ -110,6 +110,36 @@ class ApiManager {
                             var returnObject: T.ApiReturnType?;
                             if (T.ApiReturnType.self == BodyResponse.self) {
                                 returnObject = BodyResponse(body: response.result.value) as? T.ApiReturnType;
+                            } else if (T.ApiReturnType.self == StudySettings.self) {
+                                do {
+                                    var json = try JSONSerialization.jsonObject(with: Data(response.result.value?.utf8 ?? "".utf8)) as? [String:Any]
+                                    if (json?["ios_plist"] is NSNull || json?["ios_plist"] == nil) {
+                                        json?["ios_plist"] = [
+                                            "CLIENT_ID": "",
+                                            "REVERSED_CLIENT_ID": "",
+                                            "API_KEY": "",
+                                            "GCM_SENDER_ID": "",
+                                            "PLIST_VERSION": "1",
+                                            "BUNDLE_ID": "",
+                                            "PROJECT_ID": "",
+                                            "STORAGE_BUCKET": "",
+                                            "IS_ADS_ENABLED": false,
+                                            "IS_ANALYTICS_ENABLED": false,
+                                            "IS_APPINVITE_ENABLED": true,
+                                            "IS_GCM_ENABLED": true,
+                                            "IS_SIGNIN_ENABLED": true,
+                                            "GOOGLE_APP_ID": "",
+                                            "DATABASE_URL": "",
+                                        ]
+                                    }
+                                    let jsonObject = try? JSONSerialization.data(withJSONObject: json, options: [])
+                                    if let jsonString = String(data: jsonObject!, encoding: .utf8) {
+                                        returnObject = Mapper<T.ApiReturnType>().map(JSONString: jsonString);
+                                    }
+                                } catch {
+                                    log.error("Unable to create default firebase credentials plist")
+                                    AppEventManager.sharedInstance.logAppEvent(event: "push_notification", msg: "Unable to create default firebase credentials plist")
+                                }
                             } else {
                                 returnObject = Mapper<T.ApiReturnType>().map(JSONString: response.result.value ?? "");
                             }
