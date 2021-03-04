@@ -477,7 +477,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             return
         }
         if (studySettings.googleAppID == "") {
-            let registerStudyRequest = RegisterStudyRequest(patientId: ApiManager.sharedInstance.patientId, phoneNumber: "NOT_SUPPLIED", newPassword: "")
+            guard let password = PersistentPasswordManager.sharedInstance.passwordForStudy() else {
+                log.error("could not retrieve password")
+                return
+            }
+            let registerStudyRequest = RegisterStudyRequest(patientId: ApiManager.sharedInstance.patientId, phoneNumber: "NOT_SUPPLIED", newPassword: password)
             ApiManager.sharedInstance.makePostRequest(registerStudyRequest).then {
                 (studySettings, _) -> Promise<Void> in
                 print(studySettings)
