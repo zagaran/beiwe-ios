@@ -618,7 +618,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         options.storageBucket = studySettings.storageBucket
         // initialize Firebase on the main thread
         DispatchQueue.main.async {
-            FirebaseApp.configure(options: options)
+            let isBeiwe2 = Configuration.sharedInstance.settings["config-server"] as? Bool ?? false;
+            if (isBeiwe2) {
+                FirebaseApp.configure(options: options)
+            } else {
+                FirebaseApp.configure()
+            }
         }
     }
     
