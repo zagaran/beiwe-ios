@@ -100,37 +100,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         canOpenTel = UIApplication.shared.canOpenURL(URL(string: "tel:6175551212")!);
         
         
-        /* Colors */
-        
-        //let rkAppearance = UIView.my_appearanceWhenContained(in: ORKTaskViewController.self)
         let rkAppearance = UIView.appearance(whenContainedInInstancesOf: [ORKTaskViewController.self])
         rkAppearance.tintColor = AppColors.tintColor;
-        //rkAppearance.backgroundColor = UIColor.clearColor() // AppColors.gradientBottom;
-        
-        /*
-         let stepAppearance = UIView.my_appearanceWhenContainedIn(ORKStepViewController.self)
-         stepAppearance.tintColor = AppColors.tintColor;
-         stepAppearance.backgroundColor = UIColor.clearColor() // AppColors.gradientBottom;
-         */
-        
-        /*
-         UIView.appearanceWhenContainedInInstancesOfClasses([ORKTaskViewController.self]).tintColor = AppColors.tintColor
-         */
-        
-        //UIView.appearance().tintColor = AppColors.tintColor;
         
         storyboard = UIStoryboard(name: "Main", bundle: Bundle.main);
         
         self.window = UIWindow(frame: UIScreen.main.bounds);
         self.window?.rootViewController = UIStoryboard(name: "LaunchScreen", bundle: Bundle.main).instantiateViewController(withIdentifier: "launchScreen");
-        /* Gradient background so we can use "clear" RK views */
-        /*
-         let backView = GradientView(frame: UIScreen.mainScreen().bounds)
-         backView.topColor = AppColors.gradientBottom
-         backView.bottomColor = UIColor.whiteColor()
-         self.window?.insertSubview(backView, atIndex: 0)
-         */
-        
         
         self.window!.makeKeyAndVisible()
         
@@ -145,20 +121,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                     self.handleSurveyNotification(userInfo: userInfo!)
                 }
             }
+            UNUserNotificationCenter.current().getDeliveredNotifications { (notifications) in
+                for notification in notifications {
+                    self.handleSurveyNotification(userInfo: notification.request.content.userInfo)
+                }
+            }
             self.transitionToCurrentAppState();
         }.catch { err -> Void in
             print("Database open failed.");
         }
-        //launchScreen
-        /*
-         //self.window!.backgroundColor = UIColor.whiteColor()
-         
-         self.window?.rootViewController = OnboardViewController();
-         
-         
-         
-         }
-         */
         
         // initialize Sentry
         do {
@@ -295,6 +266,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         log.info("applicationWillEnterForeground")
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
         print("ApplicationWillEnterForeground");
+
+        UNUserNotificationCenter.current().getDeliveredNotifications { (notifications) in
+            for notification in notifications {
+                self.handleSurveyNotification(userInfo: notification.request.content.userInfo)
+            }
+        }
         if let timeEnteredBackground = timeEnteredBackground, let currentStudy = StudyManager.sharedInstance.currentStudy, let studySettings = currentStudy.studySettings, isLoggedIn == true {
             let loginExpires = timeEnteredBackground.addingTimeInterval(Double(studySettings.secondsBeforeAutoLogout));
             if (loginExpires.compare(Date()) == ComparisonResult.orderedAscending) {
@@ -496,7 +473,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                 }
                 return Promise()
             }
-        } else {
+        } else if (FirebaseApp.app() == nil) {
             configureFirebase(studySettings: studySettings)
             AppEventManager.sharedInstance.logAppEvent(event: "push_notification", msg: "Registered for push notifications with Firebase")
         }
@@ -638,7 +615,7 @@ extension String: LocalizedError {
 extension AppDelegate : UNUserNotificationCenterDelegate {
     
     // Receive displayed notifications for iOS 10 devices.
-    // Is called when receiving a notifcation while app is in foreground
+    // Is called when receiving a notification while app is in foreground
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
