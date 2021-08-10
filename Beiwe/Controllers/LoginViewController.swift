@@ -96,21 +96,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
 
     @IBAction func forgotPassword(_ sender: AnyObject) {
-        /*
-        var steps = [ORKStep]();
-
-        let instructionStep = ORKInstructionStep(identifier: "forgotpassword")
-        instructionStep.title = "Forgot Password";
-        instructionStep.text = "To reset your password, please contact your clincians research assistant at " + (StudyManager.sharedInstance.currentStudy?.raPhoneNumber ?? "") + ".  Once you have called and received a temporary password, click on continue to set a new password.  Your patient ID is " + (StudyManager.sharedInstance.currentStudy?.patientId ?? "")
-        steps += [instructionStep];
-        steps += [ORKWaitStep(identifier: "wait")];
-
-        let task = ORKOrderedTask(identifier: "ForgotPasswordTask", steps: steps)
-        let vc = ORKTaskViewController(task: task, taskRunUUID: nil);
-        vc.showsProgressInNavigationBar = false;
-        vc.delegate = self;
-        presentViewController(vc, animated: true, completion: nil);
-        */
         let vc = ChangePasswordViewController();
         vc.isForgotPassword = true;
         vc.finished = { _ in
@@ -119,24 +104,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         present(vc, animated: true, completion: nil);
 
     }
-
-    /*
-    @IBAction func leaveStudyPressed(sender: AnyObject) {
-        StudyManager.sharedInstance.leaveStudy().then {_ -> Void in
-            AppDelegate.sharedInstance().isLoggedIn = false;
-            AppDelegate.sharedInstance().transitionToCurrentAppState();
-        }
-    }
-    */
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
     @IBAction func callClinician(_ sender: AnyObject) {
         confirmAndCallClinician(self);

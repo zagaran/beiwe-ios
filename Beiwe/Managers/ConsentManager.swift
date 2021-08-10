@@ -186,18 +186,6 @@ class ConsentManager : NSObject, ORKTaskViewControllerDelegate {
     }
     
     func taskViewController(_ taskViewController: ORKTaskViewController, shouldPresent step: ORKStep) -> Bool {
-        /*
-         if let identifier = StepIds(rawValue: step.identifier) {
-         switch(identifier) {
-         case .WarningStep:
-         if (pscope.statusLocationAlways() == .Authorized) {
-         taskViewController.goForward();
-         return false;
-         }
-         default: break
-         }
-         }
-         */
         return true;
         
     }
@@ -266,7 +254,5 @@ class ConsentManager : NSObject, ORKTaskViewControllerDelegate {
             default: break;
             }
         }
-        
-        //stepViewController.continueButtonTitle = "Go!"
     }
 }
