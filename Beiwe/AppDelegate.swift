@@ -409,7 +409,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         // If you are receiving a notification message while your app is in the background,
         // this callback will not be fired till the user taps on the notification launching the application.
         
-        log.info("FFFFFF: Background push notification received")
+        log.info("Background push notification received")
         AppEventManager.sharedInstance.logAppEvent(event: "push_notification", msg: "Background push notification received")
         // Print message ID.
         if let messageID = userInfo[gcmMessageIDKey] {
@@ -431,7 +431,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         // If you are receiving a notification message while your app is in the background,
         // this callback will not be fired till the user taps on the notification launching the application.
         
-        log.info("FFFFFF: Foreground push notification received")
+        log.info("Foreground push notification received")
         AppEventManager.sharedInstance.logAppEvent(event: "push_notification", msg: "Foreground push notification received")
         // Print message ID.
         if let messageID = userInfo[gcmMessageIDKey] {
@@ -603,7 +603,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             } else {
                 FirebaseApp.configure()
             }
-            log.info("FFFFFF: Configured Firebase")
+            log.info("Configured Firebase")
         }
     }
     
@@ -622,7 +622,7 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        log.info("FFFFFF: Foreground push notification received in extension")
+        log.info("Foreground push notification received in extension")
         AppEventManager.sharedInstance.logAppEvent(event: "push_notification", msg: "Foreground push notification received")
         let userInfo = notification.request.content.userInfo
         
@@ -647,7 +647,7 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
-        log.info("FFFFFF: Background push notification received in extension")
+        log.info("Background push notification received in extension")
         AppEventManager.sharedInstance.logAppEvent(event: "push_notification", msg: "Background push notification received")
         let userInfo = response.notification.request.content.userInfo
         // Print message ID.
