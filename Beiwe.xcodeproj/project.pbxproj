@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3238F4C726B9DEBE00B73671 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 3238F4C626B9DEBE00B73671 /* Podfile */; };
 		3248853C2469ADC3002F0F81 /* FCMTokenRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3248853B2469ADC2002F0F81 /* FCMTokenRequest.swift */; };
 		32756627245876CC00299A04 /* Private.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32756626245876CC00299A04 /* Private.swift */; };
 		329DD4D426011335006E517F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 329DD4D326011334006E517F /* GoogleService-Info.plist */; };
@@ -87,6 +88,7 @@
 /* Begin PBXFileReference section */
 		086E88BE2560D96A5CD25F49 /* Pods-Beiwe.debug2.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beiwe.debug2.xcconfig"; path = "Target Support Files/Pods-Beiwe/Pods-Beiwe.debug2.xcconfig"; sourceTree = "<group>"; };
 		1DD23C0F14E88B456D1D8C0A /* Pods-Beiwe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beiwe.debug.xcconfig"; path = "Target Support Files/Pods-Beiwe/Pods-Beiwe.debug.xcconfig"; sourceTree = "<group>"; };
+		3238F4C626B9DEBE00B73671 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; };
 		3248853B2469ADC2002F0F81 /* FCMTokenRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FCMTokenRequest.swift; sourceTree = "<group>"; };
 		32756626245876CC00299A04 /* Private.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Private.swift; sourceTree = "<group>"; };
 		329DD4D326011334006E517F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -208,6 +210,7 @@
 		506B561F9639814CC6BFB89F /* Pods */ = {
 			isa = PBXGroup;
 			children = (
+				3238F4C626B9DEBE00B73671 /* Podfile */,
 				1DD23C0F14E88B456D1D8C0A /* Pods-Beiwe.debug.xcconfig */,
 				086E88BE2560D96A5CD25F49 /* Pods-Beiwe.debug2.xcconfig */,
 				B58A34E5862CE908C83EB133 /* Pods-Beiwe.release.xcconfig */,
@@ -492,6 +495,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3238F4C726B9DEBE00B73671 /* Podfile in Resources */,
 				832FFC331CC9C3CD00F2E1EF /* BWXLCell.xib in Resources */,
 				83F98C441C923C3600E0B64B /* LaunchScreen.storyboard in Resources */,
 				329DD4D426011335006E517F /* GoogleService-Info.plist in Resources */,
@@ -811,22 +815,22 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 086E88BE2560D96A5CD25F49 /* Pods-Beiwe.debug2.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = Beiwe2;
 				BUNDLE_ID_SUFFIX = debug;
 				CODE_SIGN_ENTITLEMENTS = Beiwe/Beiwe2Debug2.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = "2.0.2.0\n";
+				CURRENT_PROJECT_VERSION = "2.0.4.1\n";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = UHX83HR959;
 				ENABLE_BITCODE = NO;
-				EXCLUDED_ARCHS = arm64;
+				EXCLUDED_ARCHS = "";
 				INFOPLIST_FILE = Beiwe/Info.plist;
 				INFOPLIST_PREPROCESS = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.0.2;
+				MARKETING_VERSION = 2.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = harvard.lab.onnela.beiwe.ios;
 				PRODUCT_NAME = Beiwe2;
 				PROVISIONING_PROFILE = "";
@@ -903,25 +907,25 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 42A952CE64A464FDCA28DEBD /* Pods-Beiwe.release2.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = Beiwe2;
 				BUNDLE_ID_SUFFIX = "";
 				CODE_SIGN_ENTITLEMENTS = Beiwe/Beiwe2Release2.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = "2.0.2.0\n";
+				CURRENT_PROJECT_VERSION = "2.0.4.1\n";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = UHX83HR959;
 				ENABLE_BITCODE = NO;
-				EXCLUDED_ARCHS = arm64;
+				EXCLUDED_ARCHS = "";
 				INFOPLIST_FILE = Beiwe/Info.plist;
 				INFOPLIST_PREPROCESS = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.0.2;
+				MARKETING_VERSION = 2.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = harvard.lab.onnela.beiwe.ios;
 				PRODUCT_NAME = Beiwe2;
 				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "Beiwe2 Distribution 7/20/20";
+				PROVISIONING_PROFILE_SPECIFIER = "Beiwe Distribution 7/27/21";
 				SWIFT_OBJC_BRIDGING_HEADER = "./Beiwe/Beiwe-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1058,22 +1062,22 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1DD23C0F14E88B456D1D8C0A /* Pods-Beiwe.debug.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = Beiwe;
 				BUNDLE_ID_SUFFIX = debug;
 				CODE_SIGN_ENTITLEMENTS = Beiwe/Beiwe2Debug.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = "2.0.2.0\n";
+				CURRENT_PROJECT_VERSION = "2.0.4.1\n";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 6M52R5C7FT;
 				ENABLE_BITCODE = NO;
-				EXCLUDED_ARCHS = arm64;
+				EXCLUDED_ARCHS = "";
 				INFOPLIST_FILE = Beiwe/Info.plist;
 				INFOPLIST_PREPROCESS = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.0.2;
+				MARKETING_VERSION = 2.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = lab.onnela.beiwe.ios;
 				PRODUCT_NAME = Beiwe2;
 				PROVISIONING_PROFILE = "";
@@ -1090,25 +1094,25 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B58A34E5862CE908C83EB133 /* Pods-Beiwe.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = Beiwe;
 				BUNDLE_ID_SUFFIX = "";
 				CODE_SIGN_ENTITLEMENTS = Beiwe/Beiwe2Release.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = "2.0.2.0\n";
+				CURRENT_PROJECT_VERSION = "2.0.4.1\n";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 6M52R5C7FT;
 				ENABLE_BITCODE = NO;
-				EXCLUDED_ARCHS = arm64;
+				EXCLUDED_ARCHS = "";
 				INFOPLIST_FILE = Beiwe/Info.plist;
 				INFOPLIST_PREPROCESS = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.0.2;
+				MARKETING_VERSION = 2.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = lab.onnela.beiwe.ios;
 				PRODUCT_NAME = Beiwe2;
 				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "Beiwe iOS Development";
+				PROVISIONING_PROFILE_SPECIFIER = "Beiwe Distribution 8/17/21";
 				SWIFT_OBJC_BRIDGING_HEADER = "./Beiwe/Beiwe-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
