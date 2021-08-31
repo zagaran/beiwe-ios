@@ -322,17 +322,6 @@ class StudyManager {
         cleanupSurvey(activeSurvey);
     }
 
-//    func removeNotificationForSurvey(_ survey: ActiveSurvey) {
-//        guard let notification = survey.notification else {
-//            return;
-//        }
-//
-//        log.info("Cancelling notification: \(notification.alertBody), \(notification.userInfo)")
-//
-//        UIApplication.shared.cancelLocalNotification(notification);
-//        survey.notification = nil;
-//    }
-
     func updateActiveSurveys(_ forceSave: Bool = false) -> TimeInterval {
         log.info("Updating active surveys...")
         let currentDate = Date();
@@ -383,36 +372,13 @@ class StudyManager {
         var allSurveyIds: [String] = [ ];
         /* Now for each survey from the server, check on the scheduling */
         for survey in study.surveys {
-//            var next: Double = 0;
-            /* Find the next scheduled date that is >= now */
-//            outer: for day in 0..<7 {
-//                let dayIdx = (day + currentDay) % 7;
-//                NSLog("Survey: \(survey.timings)")
-//                let timings = survey.timings[dayIdx].sorted()
-//
-//                for dayTime in timings {
-//                    let possibleNxt = dayBegin.addingTimeInterval((Double(day) * 24.0 * 60.0 * 60.0) + Double(dayTime)).timeIntervalSince1970;
-//                    if (possibleNxt > currentTime ) {
-//                        next = possibleNxt;
-//                        break outer
-//                    }
-//                }
-//            }
             if let id = survey.surveyId  {
-//                if (next > 0) {
-//                    closestNextSurveyTime = min(closestNextSurveyTime, next);
-//                }
                 allSurveyIds.append(id);
                 /* If we don't know about this survey already, add it in there for TRIGGERONFIRSTDOWNLOAD surverys*/
                 if study.activeSurveys[id] == nil && (survey.triggerOnFirstDownload /* || next > 0 */) {
                     log.info("Adding survey  \(id) to active surveys");
                     let newActiveSurvey = ActiveSurvey(survey: survey)
                     study.activeSurveys[id] = newActiveSurvey
-//                    study.activeSurveys[id] = ActiveSurvey(survey: survey);
-                    /* Schedule it for the next upcoming time, or immediately if triggerOnFirstDownload is true */
-//                    study.activeSurveys[id]?.nextScheduledTime = survey.triggerOnFirstDownload ? currentTime : next;
-//                    study.activeSurveys[id]?.isComplete = true;
-//                    log.info("Added survey \(id), expires: \(Date(timeIntervalSince1970: study.activeSurveys[id]!.nextScheduledTime))");
                     surveyDataModified = true;
                 }
                 /* We want to display permanent surveys as active, and expect to change some details below (currently identical to the actions we take on a regular active survey) */
@@ -420,68 +386,8 @@ class StudyManager {
                     log.info("Adding survey  \(id) to active surveys");
                     let newActiveSurvey = ActiveSurvey(survey: survey)
                     study.activeSurveys[id] = newActiveSurvey
-//                    study.activeSurveys[id] = ActiveSurvey(survey: survey);
-                    /* Schedule it for the next upcoming time, or immediately if alwaysAvailable is true */
-//                    study.activeSurveys[id]?.nextScheduledTime = survey.alwaysAvailable ? currentTime : next;
-//                    study.activeSurveys[id]?.isComplete = true;
-//                    log.info("Added survey \(id), expires: \(Date(timeIntervalSince1970: study.activeSurveys[id]!.nextScheduledTime))");
                     surveyDataModified = true;
                 }
-                /*
-                if let activeSurvey = study.activeSurveys[id] {
-                    /* If it's complete (including surveys we force-completed above) and it's expired, it's time for the next one */
-                    if (activeSurvey.isComplete && activeSurvey.nextScheduledTime <= currentTime && activeSurvey.nextScheduledTime > 0) {
-                        activeSurvey.reset(survey);
-                        activeSurvey.received = activeSurvey.nextScheduledTime;
-                        /*
-                        let trackingSurvey: TrackingSurveyPresenter = TrackingSurveyPresenter(surveyId: id, activeSurvey: activeSurvey, survey: survey)
-                        trackingSurvey.addTimingsEvent("notified", question: nil)
-                        */
-                        TrackingSurveyPresenter.addTimingsEvent(id, event: "notified");
-
-                        surveyDataModified = true;
-
-                        /* Local notification goes here */
-
-                        if let surveyType = survey.surveyType {
-                            switch (surveyType) {
-                            case .AudioSurvey:
-                                currentStudy?.receivedAudioSurveys = (currentStudy?.receivedAudioSurveys ?? 0) + 1;
-                            case .TrackingSurvey:
-                                currentStudy?.receivedTrackingSurveys = (currentStudy?.receivedTrackingSurveys ?? 0) + 1;
-                                
-                            }
-
-                            let localNotif = UILocalNotification();
-                            localNotif.fireDate = currentDate;
-
-                            var body: String;
-                            switch(surveyType) {
-                            case .TrackingSurvey:
-                                body = NSLocalizedString("survey_notification_text", comment: "")
-                            case .AudioSurvey:
-                                body = NSLocalizedString("audio_survey_notification_text", comment: "")
-                            }
-
-                            localNotif.alertBody = body;
-                            localNotif.soundName = UILocalNotificationDefaultSoundName;
-                            localNotif.userInfo = [
-                                "type": "survey",
-                                "survey_type": surveyType.rawValue,
-                                "survey_id": id
-                            ];
-                            log.info("Sending Survey notif: \(body), \(localNotif.userInfo)")
-                            UIApplication.shared.scheduleLocalNotification(localNotif);
-                            activeSurvey.notification = localNotif;
-
-                        }
-
-                    }
-                    if (activeSurvey.nextScheduledTime != next) {
-                        activeSurvey.nextScheduledTime = next;
-                        surveyDataModified = true;
-                    }
-                } */
             }
         }
 
@@ -501,16 +407,6 @@ class StudyManager {
             }
         }
         log.info("Badge Cnt: \(badgeCnt)");
-        /*
-        if (badgeCnt != study.lastBadgeCnt) {
-            study.lastBadgeCnt = badgeCnt;
-            surveyDataModified = true;
-            let localNotif = UILocalNotification();
-            localNotif.applicationIconBadgeNumber = badgeCnt;
-            localNotif.fireDate = currentDate;
-            UIApplication.sharedApplication().scheduleLocalNotification(localNotif);
-        }
-        */
         UIApplication.shared.applicationIconBadgeNumber = badgeCnt
 
         if (surveyDataModified || forceSave ) {

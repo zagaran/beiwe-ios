@@ -190,56 +190,6 @@ class ApiManager {
         }
     }
 
-
-    /*
-    func makeUploadRequest<T: ApiRequest>(_ requestObject: T, file: URL) -> Promise<(T.ApiReturnType, Int)> where T: Mappable {
-        var parameters = requestObject.toJSON();
-        parameters["password"] = hashedPassword;
-        parameters["device_id"] = PersistentAppUUID.sharedInstance.uuid;
-        parameters["patient_id"] = patientId;
-        //parameters.removeValueForKey("password");
-        //parameters.removeValueForKey("device_id");
-        //parameters.removeValueForKey("patient_id");
-
-        let headers = generateHeaders();
-
-        var request = NSMutableURLRequest(url: URL(string: baseApiUrl + T.apiEndpoint)!);
-        request.httpMethod = "POST";
-        for (k,v) in headers {
-            request.addValue(v, forHTTPHeaderField: k);
-        }
-        let encoding = Alamofire.ParameterEncoding.URLEncodedInURL;
-        (request, _) = encoding.encode(request, parameters: parameters)
-        return Promise { resolve, reject in
-            Alamofire.upload(file, to: request)
-                .responseString { response in
-                    switch response.result {
-                    case .failure(let error):
-                        reject(error);
-                    case .success:
-                        let statusCode = response.response?.statusCode;
-                        if let statusCode = statusCode, statusCode < 200 || statusCode >= 400 {
-                            reject(ApiErrors.FailedStatus(code: statusCode));
-                        } else {
-                            var returnObject: T.ApiReturnType?;
-                            if (T.ApiReturnType.self == BodyResponse.self) {
-                                returnObject = BodyResponse(body: response.result.value) as? T.ApiReturnType;
-                            } else {
-                                returnObject = Mapper<T.ApiReturnType>().map(JSONString: response.result.value ?? "");
-                            }
-                            if let returnObject = returnObject {
-                                resolve((returnObject, statusCode ?? 0));
-                            } else {
-                                reject(APIManager.serialErr());
-                            }
-                        }
-                    }
-
-            }
-        }
-    }
- */
-
     func makeMultipartUploadRequest<T: ApiRequest>(_ requestObject: T, file: URL) -> Promise<(T.ApiReturnType, Int)> where T: Mappable {
         var parameters = requestObject.toJSON();
         parameters["password"] = hashedPassword;
@@ -250,15 +200,6 @@ class ApiManager {
         //parameters.removeValueForKey("patient_id");
 
         let headers = generateHeaders();
-        /*
-        var request = NSMutableURLRequest(URL: NSURL(string: baseApiUrl + T.apiEndpoint)!);
-        request.HTTPMethod = "POST";
-        for (k,v) in headers {
-            request.addValue(v, forHTTPHeaderField: k);
-        }
-        let encoding = Alamofire.ParameterEncoding.URLEncodedInURL;
-        (request, _) = encoding.encode(request, parameters: parameters)
-        */
         let url = baseApiUrl + T.apiEndpoint;
         return Promise { seal in
             Alamofire.upload(multipartFormData: { multipartFormData in
