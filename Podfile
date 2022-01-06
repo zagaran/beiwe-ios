@@ -9,7 +9,7 @@ target 'Beiwe' do
   pod 'ObjectMapper', :git => 'https://github.com/Hearst-DD/ObjectMapper.git', :branch => 'master'
   pod 'Eureka'
   pod 'SwiftValidator', :git => 'https://github.com/jpotts18/SwiftValidator.git', :branch => 'master'
-  pod "PKHUD", :git => 'https://github.com/pkluz/PKHUD.git', :branch => 'swift4'
+  pod 'PKHUD', :git => 'https://github.com/pkluz/PKHUD.git', :branch => 'release/swift4'
   pod 'IDZSwiftCommonCrypto', '~> 0.13.0'
   pod 'couchbase-lite-ios'
   pod 'ResearchKit', :git => 'https://github.com/ResearchKit/ResearchKit.git', :commit => 'b50e1d7'
@@ -20,7 +20,7 @@ target 'Beiwe' do
   pod 'XCGLogger', '~> 7.0.0'
   pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '4.5.0'
   pod 'Firebase/Analytics'
-  pod 'Firebase/Messaging'
+  pod 'Firebase/Messaging', '~>6'
 
 end
 
@@ -44,9 +44,9 @@ post_install do |installer|
       end
     end
   end
-  installer.pods_project.build_configurations.each do |config|
-      config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
+    end
   end
 end
-
-
