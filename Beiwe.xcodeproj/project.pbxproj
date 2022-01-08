@@ -176,7 +176,7 @@
 		83E3DE8D1CA477D200EB5349 /* ApiManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiManager.swift; sourceTree = "<group>"; };
 		83F6C9671CA0F6CF00B85914 /* PersistentPasswordManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentPasswordManager.swift; sourceTree = "<group>"; };
 		83F6C9691CA0F6D900B85914 /* PersistentAppUUID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentAppUUID.swift; sourceTree = "<group>"; };
-		83F98C361C923C3600E0B64B /* Beiwe2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Beiwe2.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		83F98C361C923C3600E0B64B /* Beiwe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Beiwe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		83F98C391C923C3600E0B64B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		83F98C3E1C923C3600E0B64B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		83F98C431C923C3600E0B64B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -393,7 +393,7 @@
 		83F98C371C923C3600E0B64B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				83F98C361C923C3600E0B64B /* Beiwe2.app */,
+				83F98C361C923C3600E0B64B /* Beiwe.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -452,7 +452,7 @@
 			);
 			name = Beiwe;
 			productName = Beiwe;
-			productReference = 83F98C361C923C3600E0B64B /* Beiwe2.app */;
+			productReference = 83F98C361C923C3600E0B64B /* Beiwe.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1081,7 +1081,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 2.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = lab.onnela.beiwe.ios;
-				PRODUCT_NAME = Beiwe2;
+				PRODUCT_NAME = Beiwe;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "Beiwe iOS Development";
 				SWIFT_OBJC_BRIDGING_HEADER = "./Beiwe/Beiwe-Bridging-Header.h";
@@ -1112,7 +1112,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 2.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = lab.onnela.beiwe.ios;
-				PRODUCT_NAME = Beiwe2;
+				PRODUCT_NAME = Beiwe;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "Beiwe Distribution 8/17/21";
 				SWIFT_OBJC_BRIDGING_HEADER = "./Beiwe/Beiwe-Bridging-Header.h";
