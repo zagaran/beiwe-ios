@@ -538,7 +538,9 @@ class DataStorageManager {
                     }
                 }
                 /* Need to flush again, because there is (very slim) one of those files was created after the flush */
-                return self._flushAll()
+            // commenting out because this is the best candidate for data corruption
+//                return self._flushAll()
+            return Promise()  // I don't actually know if this is correct.
             }.then(on: prepQ) { _ -> Promise<Void> in
                 for filename in filesToUpload {
                     let src = DataStorageManager.currentDataDirectory().appendingPathComponent(filename);
