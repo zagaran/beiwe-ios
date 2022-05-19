@@ -143,6 +143,7 @@ class RegisterViewController: FormViewController {
                                 }
                                 
                                 PersistentPasswordManager.sharedInstance.storePassword(newPassword);
+                                ApiManager.sharedInstance.password = newPassword
                                 let study = Study(patientPhone: phoneNumber, patientId: patientId, studySettings: studySettings, apiUrl: customApiUrl);
                                 study.clinicianPhoneNumber = clinicianPhone
                                 study.raPhoneNumber = raPhone
