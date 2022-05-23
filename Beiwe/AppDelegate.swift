@@ -118,12 +118,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             if launchOptions != nil{
                 let userInfo = launchOptions?[UIApplication.LaunchOptionsKey.remoteNotification] as? Dictionary<AnyHashable, Any>
                 if userInfo != nil {
-                    self.handleSurveyNotification(userInfo: userInfo!)
+                    self.handlePushNotification(userInfo: userInfo!)
                 }
             }
             UNUserNotificationCenter.current().getDeliveredNotifications { (notifications) in
                 for notification in notifications {
-                    self.handleSurveyNotification(userInfo: notification.request.content.userInfo)
+                    self.handlePushNotification(userInfo: notification.request.content.userInfo)
                 }
             }
             UNUserNotificationCenter.current().removeAllDeliveredNotifications()
@@ -270,7 +270,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
 
         UNUserNotificationCenter.current().getDeliveredNotifications { (notifications) in
             for notification in notifications {
-                self.handleSurveyNotification(userInfo: notification.request.content.userInfo)
+                self.handlePushNotification(userInfo: notification.request.content.userInfo)
             }
         }
         UNUserNotificationCenter.current().removeAllDeliveredNotifications()
@@ -421,7 +421,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         // if the notification is for a survey
         if userInfo["survey_ids"] != nil {
-            handleSurveyNotification(userInfo: userInfo)
+            handlePushNotification(userInfo: userInfo)
         }
     }
     
@@ -443,7 +443,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         // if the notification is for a survey
         if userInfo["survey_ids"] != nil {
-            handleSurveyNotification(userInfo: userInfo)
+            handlePushNotification(userInfo: userInfo)
         }
         
         completionHandler(UIBackgroundFetchResult.newData)
@@ -480,15 +480,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             AppEventManager.sharedInstance.logAppEvent(event: "push_notification", msg: "Registered for push notifications with Firebase")
         }
     }
+    
+    func handlePushNotification(userInfo: Dictionary<AnyHashable, Any>) {
+        if let notificationType = userInfo["type"] {
+            if String(describing: notificationType) == "message" {
+                handleMessagePushNotification(messageContent: String(describing: userInfo["message"]))
+            } else {
+                handleSurveyPushNotification(pushNotificationData: userInfo)
+            }
+        }
+    }
+    
+    func handleMessagePushNotification(messageContent: String) {
+        print(messageContent)
+    }
 
-    func handleSurveyNotification(userInfo: Dictionary<AnyHashable, Any>) {
-        guard let surveyIdsString = userInfo["survey_ids"] else {
+    func handleSurveyPushNotification(pushNotificationData: Dictionary<AnyHashable, Any>) {
+        guard let surveyIdsString = pushNotificationData["survey_ids"] else {
             log.error("no surveyIds found")
             return
         }
         AppEventManager.sharedInstance.logAppEvent(event: "push_notification", msg: "Received notification while app was killed")
         let surveyIds = jsonToSurveyIdArray(json: surveyIdsString as! String)
-        if let sentTimeString = userInfo["sent_time"] as! String?{
+        if let sentTimeString = pushNotificationData["sent_time"] as! String?{
             downloadSurveys(surveyIds: surveyIds, sentTime: stringToTimeInterval(timeString: sentTimeString))
         } else {
             downloadSurveys(surveyIds: surveyIds)
@@ -636,7 +650,7 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
         
         // if the notification is for a survey
         if userInfo["survey_ids"] != nil {
-            handleSurveyNotification(userInfo: userInfo)
+            handlePushNotification(userInfo: userInfo)
         }
         
         // Change this to your preferred presentation option
@@ -660,7 +674,7 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
         
         // if the notification is for a survey
         if userInfo["survey_ids"] != nil {
-            handleSurveyNotification(userInfo: userInfo)
+            handlePushNotification(userInfo: userInfo)
         }
         
         completionHandler()

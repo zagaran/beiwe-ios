@@ -56,8 +56,8 @@ class ActiveSurvey : Mappable {
         var steps = [Int](0..<survey.questions.count)
         if (survey.randomize) {
             shuffle(&steps);
+            log.info("shuffle steps \(steps)");
         }
-        log.info("shuffle steps \(steps)");
 
         let numQuestions = survey.randomize ? min(survey.questions.count, survey.numberOfRandomQuestions ?? 999) : survey.questions.count;
         if var order = stepOrder, survey.randomizeWithMemory && numQuestions > 0 {
