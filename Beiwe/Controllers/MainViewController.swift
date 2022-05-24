@@ -13,20 +13,38 @@ import Hakuba
 import XLActionController
 import Sentry
 
-class MainViewController: UIViewController {
+class MainViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     var listeners: [Listener] = [];
     var hakuba: Hakuba!;
     var selectedSurvey: ActiveSurvey?
+
+    let cellReuseIdentifier = "cell"
 
     @IBOutlet weak var haveAQuestionLabel: UILabel!
     @IBOutlet weak var callClinicianButton: UIButton!
     @IBOutlet weak var footerSeperator: UIView!
     @IBOutlet var activeSurveyHeader: UIView!
     @IBOutlet var emptySurveyHeader: UIView!
-    @IBOutlet weak var surveyTableView: UITableView!
+    @IBOutlet weak var surveysAndMessagesTableView: UITableView!
+    
+    struct TableSectionData {
+        var title: String
+        var items: [String]
+    }
+    
+    struct TableData {
+        var sections: [TableSectionData]
+    }
+
+    let listOfMessages = TableSectionData(title: "Messages", items: ["Message 1", "Message 2"])
+    var listOfSurveys = TableSectionData(title: "Active Surveys", items: [])
+    var surveysAndMessageTableData = TableData(sections: [])
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.surveysAndMessageTableData = TableData(sections: [listOfMessages, listOfSurveys])
         
         self.navigationController?.presentTransparentNavigationBar();
         let leftImage : UIImage? = UIImage(named:"ic-user")!.withRenderingMode(.alwaysOriginal);
@@ -40,9 +58,14 @@ class MainViewController: UIViewController {
 
         // Do any additional setup after loading the view.
 
-        hakuba = Hakuba(tableView: surveyTableView);
-        surveyTableView.backgroundView = nil;
-        surveyTableView.backgroundColor = UIColor.clear;
+        // hakuba = Hakuba(tableView: surveyTableView);
+
+        self.surveysAndMessagesTableView.register(UITableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
+
+        surveysAndMessagesTableView.delegate = self
+        surveysAndMessagesTableView.dataSource = self
+        surveysAndMessagesTableView.backgroundView = nil;
+        surveysAndMessagesTableView.backgroundColor = UIColor.clear;
         /*hakuba
             .registerCell(SurveyCell) */
 
@@ -61,17 +84,59 @@ class MainViewController: UIViewController {
         }
         
         listeners += StudyManager.sharedInstance.surveysUpdatedEvent.on { [weak self] data in
-            self?.refreshSurveys();
+            self?.reloadSurveysList();
         }
 
         if (AppDelegate.sharedInstance().debugEnabled) {
             addDebugMenu();
         }
 
-        refreshSurveys();
+        reloadSurveysList();
 
     }
 
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return self.surveysAndMessageTableData.sections.count
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.surveysAndMessageTableData.sections[section].items.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = self.surveysAndMessagesTableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath)
+          
+        cell.textLabel?.text = self.surveysAndMessageTableData.sections[indexPath.section].items[indexPath.row]
+          
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return self.surveysAndMessageTableData.sections[section].title
+    }
+    
+    func reloadSurveysList() {
+        self.listOfSurveys.items = []
+        if let activeSurveys = StudyManager.sharedInstance.currentStudy?.activeSurveys {
+            let sortedSurveys = activeSurveys.sorted { (s1, s2) -> Bool in
+                return s1.1.received > s2.1.received;
+            }
+
+            // because surveys do not have their state cleared when the done button is pressed, the buttons retain
+            // the incomplete label and tapping on a finished always available survey results in loading to the "done" buttton on that survey.
+            // (and creating a new file. see comments in StudyManager.swift for explination of this behavior.)
+            
+            for (_,active_survey) in sortedSurveys {
+                if (!active_survey.isComplete || active_survey.survey?.alwaysAvailable ?? false) {
+                    self.listOfSurveys.items.append((active_survey.survey?.surveyId)!)
+                }
+            }
+        }
+        self.surveysAndMessageTableData.sections[1] = self.listOfSurveys
+        self.surveysAndMessagesTableView.reloadSections([1], with: UITableView.RowAnimation.fade)
+    }
+
+    // TODO: delete this function
     func refreshSurveys() {
         hakuba.removeAll();
         let section = Section() // create a new section
@@ -106,12 +171,12 @@ class MainViewController: UIViewController {
         }
         if (cnt > 0) {
             footerSeperator.isHidden = false
-            surveyTableView.tableHeaderView = activeSurveyHeader;
-            surveyTableView.isScrollEnabled = true
+            surveysAndMessagesTableView.tableHeaderView = activeSurveyHeader;
+            surveysAndMessagesTableView.isScrollEnabled = true
         } else {
             footerSeperator.isHidden = true
-            surveyTableView.tableHeaderView = emptySurveyHeader;
-            surveyTableView.isScrollEnabled = false
+            surveysAndMessagesTableView.tableHeaderView = emptySurveyHeader;
+            surveysAndMessagesTableView.isScrollEnabled = false
         }
 
     }
@@ -135,7 +200,7 @@ class MainViewController: UIViewController {
             return
         }
 
-        refreshSurveys();
+        reloadSurveysList();
 
         let actionController = BWXLActionController()
         actionController.settings.cancelView.backgroundColor = AppColors.highlightColor
