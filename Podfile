@@ -15,7 +15,6 @@ target 'Beiwe' do
   pod 'ResearchKit', :git => 'https://github.com/ResearchKit/ResearchKit.git', :commit => 'b50e1d7'
   pod 'ReachabilitySwift', '~>3'
   pod 'EmitterKit', '~> 5.1'
-  pod 'Hakuba', :git => 'https://github.com/eskizyen/Hakuba.git', :branch => 'Swift3'
   pod 'XLActionController', '~>5.0.1'
   pod 'XCGLogger', '~> 7.0.0'
   pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '4.5.0'

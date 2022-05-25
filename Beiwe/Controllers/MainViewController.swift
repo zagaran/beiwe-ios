@@ -9,14 +9,12 @@
 import UIKit
 import ResearchKit
 import EmitterKit
-import Hakuba
 import XLActionController
 import Sentry
 
 class MainViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     var listeners: [Listener] = [];
-    var hakuba: Hakuba!;
     var selectedSurvey: ActiveSurvey?
 
     let cellReuseIdentifier = "cell"
@@ -28,23 +26,17 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet var emptySurveyHeader: UIView!
     @IBOutlet weak var surveysAndMessagesTableView: UITableView!
     
-    struct TableSectionData {
-        var title: String
-        var items: [String]
-    }
-    
     struct TableData {
-        var sections: [TableSectionData]
+        var messages: [String]
+        var surveys: [ActiveSurvey]
     }
 
-    let listOfMessages = TableSectionData(title: "Messages", items: ["Message 1", "Message 2"])
-    var listOfSurveys = TableSectionData(title: "Active Surveys", items: [])
-    var surveysAndMessageTableData = TableData(sections: [])
+    var tableData = TableData(messages: [], surveys: [])
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.surveysAndMessageTableData = TableData(sections: [listOfMessages, listOfSurveys])
+        self.tableData.messages = ["Hello there!", "Second message."]
         
         self.navigationController?.presentTransparentNavigationBar();
         let leftImage : UIImage? = UIImage(named:"ic-user")!.withRenderingMode(.alwaysOriginal);
@@ -57,17 +49,12 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.navigationItem.rightBarButtonItem = nil;
 
         // Do any additional setup after loading the view.
-
-        // hakuba = Hakuba(tableView: surveyTableView);
-
         self.surveysAndMessagesTableView.register(UITableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
 
         surveysAndMessagesTableView.delegate = self
         surveysAndMessagesTableView.dataSource = self
         surveysAndMessagesTableView.backgroundView = nil;
         surveysAndMessagesTableView.backgroundColor = UIColor.clear;
-        /*hakuba
-            .registerCell(SurveyCell) */
 
         var clinicianText: String;
         clinicianText = StudyManager.sharedInstance.currentStudy?.studySettings?.callClinicianText ?? NSLocalizedString("default_call_clinician_text", comment: "")
@@ -92,31 +79,56 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
 
         reloadSurveysList();
-
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return self.surveysAndMessageTableData.sections.count
+        return 2
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.surveysAndMessageTableData.sections[section].items.count
+        if section == 0 {
+            return self.tableData.messages.count
+        } else if section == 1 {
+            return self.tableData.surveys.count
+        } else {
+            return 0
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = self.surveysAndMessagesTableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath)
-          
-        cell.textLabel?.text = self.surveysAndMessageTableData.sections[indexPath.section].items[indexPath.row]
-          
-        return cell
+        if indexPath.section == 0 {
+            let cell = self.surveysAndMessagesTableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath)
+            cell.textLabel?.text = self.tableData.messages[indexPath.row]
+            return cell
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "SurveyCell", for: indexPath) as! SurveyCell
+            let activeSurvey = self.tableData.surveys[indexPath.row]
+            cell.configure(activeSurvey: activeSurvey)
+            return cell
+        }
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return self.surveysAndMessageTableData.sections[section].title
+        if section == 0 {
+            return "Messages"
+        } else if section == 1 {
+            return "Active Surveys"
+        } else {
+            return ""
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.section == 0 {
+            print("Selected a message row")
+        } else if indexPath.section == 1 {
+            let surveyId = self.tableData.surveys[indexPath.row].survey?.surveyId
+            self.presentSurvey(surveyId!)
+        }
     }
     
     func reloadSurveysList() {
-        self.listOfSurveys.items = []
+        self.tableData.surveys = []
         if let activeSurveys = StudyManager.sharedInstance.currentStudy?.activeSurveys {
             let sortedSurveys = activeSurveys.sorted { (s1, s2) -> Bool in
                 return s1.1.received > s2.1.received;
@@ -128,58 +140,57 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
             
             for (_,active_survey) in sortedSurveys {
                 if (!active_survey.isComplete || active_survey.survey?.alwaysAvailable ?? false) {
-                    self.listOfSurveys.items.append((active_survey.survey?.surveyId)!)
+                    self.tableData.surveys.append(active_survey)
                 }
             }
         }
-        self.surveysAndMessageTableData.sections[1] = self.listOfSurveys
         self.surveysAndMessagesTableView.reloadSections([1], with: UITableView.RowAnimation.fade)
     }
 
     // TODO: delete this function
-    func refreshSurveys() {
-        hakuba.removeAll();
-        let section = Section() // create a new section
-
-        hakuba
-            .insert(section, atIndex: 0)
-            .bump()
-
-        var cnt = 0;
-        if let activeSurveys = StudyManager.sharedInstance.currentStudy?.activeSurveys {
-            let sortedSurveys = activeSurveys.sorted { (s1, s2) -> Bool in
-                return s1.1.received > s2.1.received;
-            }
-
-            // because surveys do not have their state cleared when the done button is pressed, the buttons retain
-            // the incomplete label and tapping on a finished always available survey results in loading to the "done" buttton on that survey.
-            // (and creating a new file. see comments in StudyManager.swift for explination of this behavior.)
-            
-            for (_,active_survey) in sortedSurveys {
-                if (!active_survey.isComplete || active_survey.survey?.alwaysAvailable ?? false) {
-                    let cellmodel = SurveyCellModel(activeSurvey: active_survey) { [weak self] cell in
-                        cell.isSelected = false;
-                        if let strongSelf = self, let surveyCell = cell as? SurveyCell, let surveyId = surveyCell.cellmodel?.activeSurvey.survey?.surveyId {
-                            strongSelf.presentSurvey(surveyId)
-                        }
-                    }
-                    hakuba[0].append(cellmodel)
-                    cnt += 1;
-                }
-            }
-            hakuba[0].bump();
-        }
-        if (cnt > 0) {
-            footerSeperator.isHidden = false
-            surveysAndMessagesTableView.tableHeaderView = activeSurveyHeader;
-            surveysAndMessagesTableView.isScrollEnabled = true
-        } else {
-            footerSeperator.isHidden = true
-            surveysAndMessagesTableView.tableHeaderView = emptySurveyHeader;
-            surveysAndMessagesTableView.isScrollEnabled = false
-        }
-
-    }
+//    func refreshSurveys() {
+//        hakuba.removeAll();
+//        let section = Section() // create a new section
+//
+//        hakuba
+//            .insert(section, atIndex: 0)
+//            .bump()
+//
+//        var cnt = 0;
+//        if let activeSurveys = StudyManager.sharedInstance.currentStudy?.activeSurveys {
+//            let sortedSurveys = activeSurveys.sorted { (s1, s2) -> Bool in
+//                return s1.1.received > s2.1.received;
+//            }
+//
+//            // because surveys do not have their state cleared when the done button is pressed, the buttons retain
+//            // the incomplete label and tapping on a finished always available survey results in loading to the "done" buttton on that survey.
+//            // (and creating a new file. see comments in StudyManager.swift for explination of this behavior.)
+//
+//            for (_,active_survey) in sortedSurveys {
+//                if (!active_survey.isComplete || active_survey.survey?.alwaysAvailable ?? false) {
+//                    let cellmodel = SurveyCellModel(activeSurvey: active_survey) { [weak self] cell in
+//                        cell.isSelected = false;
+//                        if let strongSelf = self, let surveyCell = cell as? SurveyCell, let surveyId = surveyCell.cellmodel?.activeSurvey.survey?.surveyId {
+//                            strongSelf.presentSurvey(surveyId)
+//                        }
+//                    }
+//                    hakuba[0].append(cellmodel)
+//                    cnt += 1;
+//                }
+//            }
+//            hakuba[0].bump();
+//        }
+//        if (cnt > 0) {
+//            footerSeperator.isHidden = false
+//            surveysAndMessagesTableView.tableHeaderView = activeSurveyHeader;
+//            surveysAndMessagesTableView.isScrollEnabled = true
+//        } else {
+//            footerSeperator.isHidden = true
+//            surveysAndMessagesTableView.tableHeaderView = emptySurveyHeader;
+//            surveysAndMessagesTableView.isScrollEnabled = false
+//        }
+//
+//    }
 
 
     override func didReceiveMemoryWarning() {

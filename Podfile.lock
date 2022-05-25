@@ -81,7 +81,6 @@ PODS:
     - GoogleUtilities/Logger
   - GoogleUtilities/UserDefaults (6.7.2):
     - GoogleUtilities/Logger
-  - Hakuba (2.1.1)
   - IDZSwiftCommonCrypto (0.13.0)
   - KeychainSwift (8.0.3)
   - nanopb (1.30906.0):
@@ -127,7 +126,6 @@ DEPENDENCIES:
   - Eureka
   - Firebase/Analytics
   - Firebase/Messaging (~> 6)
-  - Hakuba (from `https://github.com/eskizyen/Hakuba.git`, branch `Swift3`)
   - IDZSwiftCommonCrypto (~> 0.13.0)
   - KeychainSwift (~> 8.0)
   - ObjectMapper (from `https://github.com/Hearst-DD/ObjectMapper.git`, branch `master`)
@@ -170,9 +168,6 @@ SPEC REPOS:
     - XLActionController
 
 EXTERNAL SOURCES:
-  Hakuba:
-    :branch: Swift3
-    :git: https://github.com/eskizyen/Hakuba.git
   ObjectMapper:
     :branch: master
     :git: https://github.com/Hearst-DD/ObjectMapper.git
@@ -190,9 +185,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/jpotts18/SwiftValidator.git
 
 CHECKOUT OPTIONS:
-  Hakuba:
-    :commit: 9d748747369671e162b4f088402eacbfa997121a
-    :git: https://github.com/eskizyen/Hakuba.git
   ObjectMapper:
     :commit: a593b4d647a970b3d184d046f8f52b945083ccf9
     :git: https://github.com/Hearst-DD/ObjectMapper.git
@@ -226,7 +218,6 @@ SPEC CHECKSUMS:
   GoogleAppMeasurement: a6a3a066369828db64eda428cb2856dc1cdc7c4e
   GoogleDataTransport: f56af7caa4ed338dc8e138a5d7c5973e66440833
   GoogleUtilities: 7f2f5a07f888cdb145101d6042bc4422f57e70b3
-  Hakuba: bc5a0422290d086c33a6424a26dd58c1a1136e94
   IDZSwiftCommonCrypto: 00dd37cdfbd149312a7e5a582cf9909f8b129f44
   KeychainSwift: be9554c0e5f4b1686c775930dc5c6bd9396992ed
   nanopb: 59317e09cf1f1a0af72f12af412d54edf52603fc
@@ -243,6 +234,6 @@ SPEC CHECKSUMS:
   XCGLogger: 1943831ef907df55108b0b18657953f868de973b
   XLActionController: f1f2226d2c6629db197d4a41f2da907085a4cb9d
 
-PODFILE CHECKSUM: 85b1f2fdba5d4215327efc6039d3cc14e84a1f95
+PODFILE CHECKSUM: f6c352f8b3d8774c61e49199e118f2efc508f3d6
 
 COCOAPODS: 1.11.3
