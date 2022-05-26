@@ -16,6 +16,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
 
     var listeners: [Listener] = [];
     var selectedSurvey: ActiveSurvey?
+    var selectedMessage: String?
 
     @IBOutlet weak var haveAQuestionLabel: UILabel!
     @IBOutlet weak var callClinicianButton: UIButton!
@@ -134,7 +135,8 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 0 {
-            print("Selected a message row")
+            self.selectedMessage = self.tableData.messages[indexPath.row]
+            performSegue(withIdentifier: "viewMessageSegue", sender: self)
         } else if indexPath.section == 1 {
             let surveyId = self.tableData.surveys[indexPath.row].survey?.surveyId
             self.presentSurvey(surveyId!)
@@ -313,9 +315,9 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         if (segue.identifier == "audioQuestionSegue") {
             let questionController: AudioQuestionViewController = segue.destination as! AudioQuestionViewController
             questionController.activeSurvey = selectedSurvey
+        } else if segue.identifier == "viewMessageSegue" {
+            let messageViewController: MessageViewController = segue.destination as! MessageViewController
+            messageViewController.message = selectedMessage
         }
     }
-
-
-
 }

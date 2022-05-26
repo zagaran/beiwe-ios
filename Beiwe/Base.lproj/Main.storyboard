@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -256,6 +257,7 @@
                         <outlet property="haveAQuestionLabel" destination="qJ3-Yl-UQJ" id="MFl-Lf-meg"/>
                         <outlet property="surveysAndMessagesTableView" destination="jMT-1I-Per" id="ogx-3F-s7M"/>
                         <segue destination="3pR-tX-e0X" kind="show" identifier="audioQuestionSegue" id="ObB-m6-2fe"/>
+                        <segue destination="o77-vG-U27" kind="show" identifier="viewMessageSegue" id="Zp3-9i-Qkz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -419,10 +421,44 @@
             </objects>
             <point key="canvasLocation" x="1031" y="1220"/>
         </scene>
+        <!--Message View Controller-->
+        <scene sceneID="DIa-iz-aSH">
+            <objects>
+                <viewController id="o77-vG-U27" customClass="MessageViewController" customModule="Beiwe" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="cn9-T7-jVF"/>
+                        <viewControllerLayoutGuide type="bottom" id="LPq-LY-I2V"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="xL1-Rb-7Fl">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Message content" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kfO-zx-ve9">
+                                <rect key="frame" x="16" y="8" width="343" height="594"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="Aum-le-Dsi"/>
+                    <connections>
+                        <outlet property="messageContent" destination="kfO-zx-ve9" id="EZn-iv-vIJ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3LY-Vq-VFC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1852" y="457.42128935532236"/>
+        </scene>
     </scenes>
     <resources>
         <image name="ic-info" width="22.5" height="22.5"/>
         <image name="ic-user" width="22.5" height="22.5"/>
         <image name="main-image" width="126" height="125"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

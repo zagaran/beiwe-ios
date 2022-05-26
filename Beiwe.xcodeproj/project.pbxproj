@@ -83,6 +83,7 @@
 		83FDCFD81CBC8E4700AFF716 /* TrackingSurveyPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FDCFD71CBC8E4700AFF716 /* TrackingSurveyPresenter.swift */; };
 		83FDCFDA1CBCB6D300AFF716 /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FDCFD91CBCB6D300AFF716 /* ChangePasswordViewController.swift */; };
 		842F01A42840176B00C684F5 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842F01A32840176B00C684F5 /* MessageCell.swift */; };
+		84ADD6EB28402C7700587BDF /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84ADD6EA28402C7700587BDF /* MessageViewController.swift */; };
 		84CACB8E2835A44B00663065 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 84CACB8D2835A44B00663065 /* GoogleService-Info.plist */; };
 		ED3081F77ECC8C876F5EF53A /* Pods_Beiwe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A42DC84D7FED35C57E1B1EE0 /* Pods_Beiwe.framework */; };
 /* End PBXBuildFile section */
@@ -186,6 +187,7 @@
 		83FDCFD71CBC8E4700AFF716 /* TrackingSurveyPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingSurveyPresenter.swift; sourceTree = "<group>"; };
 		83FDCFD91CBCB6D300AFF716 /* ChangePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewController.swift; sourceTree = "<group>"; };
 		842F01A32840176B00C684F5 /* MessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
+		84ADD6EA28402C7700587BDF /* MessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
 		84CACB8D2835A44B00663065 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A42DC84D7FED35C57E1B1EE0 /* Pods_Beiwe.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Beiwe.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B58A34E5862CE908C83EB133 /* Pods-Beiwe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beiwe.release.xcconfig"; path = "Target Support Files/Pods-Beiwe/Pods-Beiwe.release.xcconfig"; sourceTree = "<group>"; };
@@ -379,6 +381,7 @@
 				833482F61CA2EF7E00A37B35 /* RegisterViewController.swift */,
 				83C7D3881CB5F43400BC7285 /* TaskListViewController.swift */,
 				83FDCFD71CBC8E4700AFF716 /* TrackingSurveyPresenter.swift */,
+				84ADD6EA28402C7700587BDF /* MessageViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -666,6 +669,7 @@
 				83C7D37A1CB4E30C00BC7285 /* UploadRequest.swift in Sources */,
 				83C295F61CB8AF160016DD95 /* OneSelection.swift in Sources */,
 				83AF04131CAADE6200A37225 /* StudyManager.swift in Sources */,
+				84ADD6EB28402C7700587BDF /* MessageViewController.swift in Sources */,
 				32E1436324869B38009FAE5A /* TestNotificationRequest.swift in Sources */,
 				83F6C9681CA0F6CF00B85914 /* PersistentPasswordManager.swift in Sources */,
 				83AF20DA1CA310B100D3DF02 /* EurekaSwiftValidatorComponents.swift in Sources */,
