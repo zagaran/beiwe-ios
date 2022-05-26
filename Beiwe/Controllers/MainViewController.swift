@@ -22,8 +22,6 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var haveAQuestionLabel: UILabel!
     @IBOutlet weak var callClinicianButton: UIButton!
     @IBOutlet weak var footerSeperator: UIView!
-    @IBOutlet var activeSurveyHeader: UIView!
-    @IBOutlet var emptySurveyHeader: UIView!
     @IBOutlet weak var surveysAndMessagesTableView: UITableView!
     
     struct TableData {
@@ -112,9 +110,15 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == 0 {
+            // Messages section header
             return "Messages"
         } else if section == 1 {
-            return "Active Surveys"
+            // Surveys section header
+            if self.tableData.surveys.count == 0 {
+                return "Active Surveys: no active surveys"
+            } else {
+                return "Active Surveys"
+            }
         } else {
             return ""
         }
@@ -122,6 +126,8 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 0 && self.tableData.messages.count == 0 {
+            // If there are no messages, hide the "Messages" section header
+            // because messages are a new feature
             return 0
         } else {
             return self.surveysAndMessagesTableView.sectionHeaderHeight
@@ -161,52 +167,6 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
         self.surveysAndMessagesTableView.reloadSections([1], with: UITableView.RowAnimation.fade)
     }
-
-    // TODO: delete this function
-//    func refreshSurveys() {
-//        hakuba.removeAll();
-//        let section = Section() // create a new section
-//
-//        hakuba
-//            .insert(section, atIndex: 0)
-//            .bump()
-//
-//        var cnt = 0;
-//        if let activeSurveys = StudyManager.sharedInstance.currentStudy?.activeSurveys {
-//            let sortedSurveys = activeSurveys.sorted { (s1, s2) -> Bool in
-//                return s1.1.received > s2.1.received;
-//            }
-//
-//            // because surveys do not have their state cleared when the done button is pressed, the buttons retain
-//            // the incomplete label and tapping on a finished always available survey results in loading to the "done" buttton on that survey.
-//            // (and creating a new file. see comments in StudyManager.swift for explination of this behavior.)
-//
-//            for (_,active_survey) in sortedSurveys {
-//                if (!active_survey.isComplete || active_survey.survey?.alwaysAvailable ?? false) {
-//                    let cellmodel = SurveyCellModel(activeSurvey: active_survey) { [weak self] cell in
-//                        cell.isSelected = false;
-//                        if let strongSelf = self, let surveyCell = cell as? SurveyCell, let surveyId = surveyCell.cellmodel?.activeSurvey.survey?.surveyId {
-//                            strongSelf.presentSurvey(surveyId)
-//                        }
-//                    }
-//                    hakuba[0].append(cellmodel)
-//                    cnt += 1;
-//                }
-//            }
-//            hakuba[0].bump();
-//        }
-//        if (cnt > 0) {
-//            footerSeperator.isHidden = false
-//            surveysAndMessagesTableView.tableHeaderView = activeSurveyHeader;
-//            surveysAndMessagesTableView.isScrollEnabled = true
-//        } else {
-//            footerSeperator.isHidden = true
-//            surveysAndMessagesTableView.tableHeaderView = emptySurveyHeader;
-//            surveysAndMessagesTableView.isScrollEnabled = false
-//        }
-//
-//    }
-
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

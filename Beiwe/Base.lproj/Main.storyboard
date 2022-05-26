@@ -132,36 +132,8 @@
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="separatorColor" red="0.98823529409999999" green="1" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <inset key="separatorInset" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                <view key="tableHeaderView" contentMode="scaleToFill" id="7Ol-rl-pK7" userLabel="Header">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="42"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Active Surveys" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cuf-UH-0CW">
-                                            <rect key="frame" x="15" y="0.0" width="101" height="41"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                            <color key="textColor" red="0.023529412224888802" green="0.19607843458652496" blue="0.19215686619281769" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nSk-A4-ZkD" userLabel="Header Seperator">
-                                            <rect key="frame" x="0.0" y="41" width="375" height="1"/>
-                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="1" id="6Fi-q5-T1J"/>
-                                            </constraints>
-                                        </view>
-                                    </subviews>
-                                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <constraints>
-                                        <constraint firstItem="nSk-A4-ZkD" firstAttribute="leading" secondItem="7Ol-rl-pK7" secondAttribute="leading" id="5hA-zo-Bnz"/>
-                                        <constraint firstItem="cuf-UH-0CW" firstAttribute="leading" secondItem="7Ol-rl-pK7" secondAttribute="leading" constant="15" id="Gsb-Q4-YiO"/>
-                                        <constraint firstAttribute="trailing" secondItem="nSk-A4-ZkD" secondAttribute="trailing" id="UPj-L0-qXn"/>
-                                        <constraint firstItem="nSk-A4-ZkD" firstAttribute="top" secondItem="cuf-UH-0CW" secondAttribute="bottom" id="iVq-F6-ofY"/>
-                                        <constraint firstAttribute="bottom" secondItem="nSk-A4-ZkD" secondAttribute="bottom" id="mwz-dF-T4s"/>
-                                        <constraint firstItem="cuf-UH-0CW" firstAttribute="top" secondItem="7Ol-rl-pK7" secondAttribute="top" id="pEr-Zi-r2s"/>
-                                    </constraints>
-                                </view>
                                 <view key="tableFooterView" contentMode="scaleToFill" id="xIm-e8-oOD" userLabel="Footer">
-                                    <rect key="frame" x="0.0" y="153" width="600" height="81"/>
+                                    <rect key="frame" x="0.0" y="111" width="600" height="81"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kQY-M2-eeq" userLabel="Footer Seperator">
@@ -200,7 +172,7 @@
                                 </view>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SurveyCell" id="Ch3-JX-o9i" customClass="SurveyCell" customModule="Beiwe" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="86.5" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="44.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ch3-JX-o9i" id="nkM-In-taj">
                                             <rect key="frame" x="0.0" y="0.0" width="575.5" height="44"/>
@@ -258,9 +230,7 @@
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="activeSurveyHeader" destination="7Ol-rl-pK7" id="kQw-oI-1Jl"/>
                         <outlet property="callClinicianButton" destination="2Mg-Ad-WGs" id="N9e-d8-bq3"/>
-                        <outlet property="emptySurveyHeader" destination="N0x-11-GBl" id="daA-k0-VHZ"/>
                         <outlet property="footerSeperator" destination="kQY-M2-eeq" id="2C7-fo-KTF"/>
                         <outlet property="haveAQuestionLabel" destination="qJ3-Yl-UQJ" id="MFl-Lf-meg"/>
                         <outlet property="surveysAndMessagesTableView" destination="jMT-1I-Per" id="ogx-3F-s7M"/>
@@ -268,35 +238,6 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
-                <view contentMode="scaleToFill" id="N0x-11-GBl" userLabel="No Survey Header">
-                    <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PhO-1y-84V">
-                            <rect key="frame" x="70" y="10" width="100.5" height="23"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="19"/>
-                            <color key="textColor" red="0.98823529409999999" green="1" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="There are no active surveys to take at this time" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1nA-oJ-wkq">
-                            <rect key="frame" x="20.5" y="38" width="200" height="60.5"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="240" id="0Yc-dt-FRS"/>
-                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="60" id="zeO-ov-Hib"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <color key="textColor" red="0.98823529409999999" green="1" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                    </subviews>
-                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                    <constraints>
-                        <constraint firstItem="PhO-1y-84V" firstAttribute="top" secondItem="N0x-11-GBl" secondAttribute="top" constant="10" id="0Le-kk-QaF"/>
-                        <constraint firstItem="PhO-1y-84V" firstAttribute="centerX" secondItem="N0x-11-GBl" secondAttribute="centerX" id="4Wy-ji-LL8"/>
-                        <constraint firstItem="1nA-oJ-wkq" firstAttribute="centerX" secondItem="N0x-11-GBl" secondAttribute="centerX" id="Hip-mU-dBG"/>
-                        <constraint firstItem="1nA-oJ-wkq" firstAttribute="top" secondItem="PhO-1y-84V" secondAttribute="bottom" constant="5" id="tXR-kG-sbu"/>
-                    </constraints>
-                </view>
             </objects>
             <point key="canvasLocation" x="1083" y="459"/>
         </scene>
