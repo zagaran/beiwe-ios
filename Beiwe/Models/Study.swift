@@ -34,7 +34,7 @@ class Study : ReclineObject {
 
     var surveys: [Survey] = [ ];
     var activeSurveys: [String:ActiveSurvey] = [:]
-
+    var messages: [String] = [];
 
     var participantConsented: Bool = false;
 
@@ -67,6 +67,7 @@ class Study : ReclineObject {
         nextUploadCheck <- (map["nextUploadCheck"], TransformOf<Int64, NSNumber>(fromJSON: { $0?.int64Value }, toJSON: { $0.map { NSNumber(value: $0) } }))
         surveys    <- map["surveys"];
         activeSurveys   <- map["active_surveys"]
+        messages <- map["messages"]
         registerDate <- (map["registerDate"], TransformOf<Int64, NSNumber>(fromJSON: { $0?.int64Value }, toJSON: { $0.map { NSNumber(value: $0) } }))
         receivedAudioSurveys <- map["receivedAudioSurveys"]
         receivedTrackingSurveys <- map["receivedTrackingSurveys"]

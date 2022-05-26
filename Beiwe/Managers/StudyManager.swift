@@ -25,6 +25,7 @@ class StudyManager {
     var gpsManager: GPSManager?;
     var isUploading = false;
     let surveysUpdatedEvent: Event<Int> = Event<Int>();
+    let messagesUpdatedEvent: Event<Int> = Event<Int>();
     var isStudyLoaded: Bool {
         return currentStudy != nil;
     }

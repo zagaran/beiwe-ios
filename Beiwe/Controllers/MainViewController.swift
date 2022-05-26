@@ -36,8 +36,6 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.tableData.messages = ["Hello there!", "Second message."]
-        
         self.navigationController?.presentTransparentNavigationBar();
         let leftImage : UIImage? = UIImage(named:"ic-user")!.withRenderingMode(.alwaysOriginal);
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: leftImage, style: UIBarButtonItem.Style.plain, target: self, action: #selector(userButton))
@@ -73,12 +71,16 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         listeners += StudyManager.sharedInstance.surveysUpdatedEvent.on { [weak self] data in
             self?.reloadSurveysList();
         }
+        listeners += StudyManager.sharedInstance.messagesUpdatedEvent.on { [weak self] data in
+            self?.reloadMessagesList();
+        }
 
         if (AppDelegate.sharedInstance().debugEnabled) {
             addDebugMenu();
         }
 
-        reloadSurveysList();
+        reloadSurveysList()
+        reloadMessagesList()
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -127,6 +129,11 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
+    func reloadMessagesList() {
+        self.tableData.messages = StudyManager.sharedInstance.currentStudy?.messages ?? []
+        self.surveysAndMessagesTableView.reloadSections([0], with: UITableView.RowAnimation.fade)
+    }
+
     func reloadSurveysList() {
         self.tableData.surveys = []
         if let activeSurveys = StudyManager.sharedInstance.currentStudy?.activeSurveys {

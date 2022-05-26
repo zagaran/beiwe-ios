@@ -419,10 +419,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         // Print full message.
         print(userInfo)
         
-        // if the notification is for a survey
-        if userInfo["survey_ids"] != nil {
-            handlePushNotification(userInfo: userInfo)
-        }
+        handlePushNotification(userInfo: userInfo)
     }
     
     // called when receiving notification while app is in foreground
@@ -441,11 +438,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         // Print full message.
         print(userInfo)
         
-        // if the notification is for a survey
-        if userInfo["survey_ids"] != nil {
-            handlePushNotification(userInfo: userInfo)
-        }
-        
+        handlePushNotification(userInfo: userInfo)
+
         completionHandler(UIBackgroundFetchResult.newData)
     }
     
@@ -485,14 +479,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         if let notificationType = userInfo["type"] {
             if String(describing: notificationType) == "message" {
                 handleMessagePushNotification(messageContent: String(describing: userInfo["message"]))
-            } else {
+            } else if String(describing: notificationType) == "survey" {
                 handleSurveyPushNotification(pushNotificationData: userInfo)
             }
         }
     }
     
     func handleMessagePushNotification(messageContent: String) {
-        print(messageContent)
+        log.info(messageContent)
+        if let study = StudyManager.sharedInstance.currentStudy {
+            study.messages.append(messageContent)
+            Recline.shared.save(study).done {_ in
+                log.info("Saved a new message to the study.");
+                StudyManager.sharedInstance.messagesUpdatedEvent.emit(0);
+            }.catch {_ in
+                log.error("Error saving a new message to the study.");
+            }
+        } else {
+            log.error("Could not find study")
+        }
     }
 
     func handleSurveyPushNotification(pushNotificationData: Dictionary<AnyHashable, Any>) {
@@ -597,7 +602,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
              }
             
             // set badge number
-            UIApplication.shared.applicationIconBadgeNumber = study.activeSurveys.count
+            UIApplication.shared.applicationIconBadgeNumber = study.activeSurveys.count + study.messages.count
         }
     }
     
@@ -648,10 +653,7 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
         // Print full message.
         print(userInfo)
         
-        // if the notification is for a survey
-        if userInfo["survey_ids"] != nil {
-            handlePushNotification(userInfo: userInfo)
-        }
+        handlePushNotification(userInfo: userInfo)
         
         // Change this to your preferred presentation option
         completionHandler([])
@@ -672,10 +674,7 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
         // Print full message.
         print(userInfo)
         
-        // if the notification is for a survey
-        if userInfo["survey_ids"] != nil {
-            handlePushNotification(userInfo: userInfo)
-        }
+        handlePushNotification(userInfo: userInfo)
         
         completionHandler()
     }
