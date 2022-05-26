@@ -478,7 +478,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func handlePushNotification(userInfo: Dictionary<AnyHashable, Any>) {
         if let notificationType = userInfo["type"] {
             if String(describing: notificationType) == "message" {
-                handleMessagePushNotification(messageContent: String(describing: userInfo["message"]))
+                let messageContent: String = userInfo["message"] as? String ?? "[no message]"
+                handleMessagePushNotification(messageContent: messageContent)
             } else if String(describing: notificationType) == "survey" {
                 handleSurveyPushNotification(pushNotificationData: userInfo)
             }
