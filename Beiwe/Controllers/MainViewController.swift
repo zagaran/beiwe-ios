@@ -120,6 +120,14 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 0 && self.tableData.messages.count == 0 {
+            return 0
+        } else {
+            return self.surveysAndMessagesTableView.sectionHeaderHeight
+        }
+    }
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 0 {
             print("Selected a message row")
