@@ -82,6 +82,7 @@
 		83F98C441C923C3600E0B64B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83F98C421C923C3600E0B64B /* LaunchScreen.storyboard */; };
 		83FDCFD81CBC8E4700AFF716 /* TrackingSurveyPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FDCFD71CBC8E4700AFF716 /* TrackingSurveyPresenter.swift */; };
 		83FDCFDA1CBCB6D300AFF716 /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FDCFD91CBCB6D300AFF716 /* ChangePasswordViewController.swift */; };
+		842F01A42840176B00C684F5 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842F01A32840176B00C684F5 /* MessageCell.swift */; };
 		84CACB8E2835A44B00663065 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 84CACB8D2835A44B00663065 /* GoogleService-Info.plist */; };
 		ED3081F77ECC8C876F5EF53A /* Pods_Beiwe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A42DC84D7FED35C57E1B1EE0 /* Pods_Beiwe.framework */; };
 /* End PBXBuildFile section */
@@ -184,6 +185,7 @@
 		83F98C451C923C3600E0B64B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		83FDCFD71CBC8E4700AFF716 /* TrackingSurveyPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingSurveyPresenter.swift; sourceTree = "<group>"; };
 		83FDCFD91CBCB6D300AFF716 /* ChangePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewController.swift; sourceTree = "<group>"; };
+		842F01A32840176B00C684F5 /* MessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
 		84CACB8D2835A44B00663065 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A42DC84D7FED35C57E1B1EE0 /* Pods_Beiwe.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Beiwe.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B58A34E5862CE908C83EB133 /* Pods-Beiwe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beiwe.release.xcconfig"; path = "Target Support Files/Pods-Beiwe/Pods-Beiwe.release.xcconfig"; sourceTree = "<group>"; };
@@ -271,6 +273,7 @@
 				832FFC2C1CC889DB00F2E1EF /* SurveyCell.swift */,
 				83914CAC1D00DA1100B01C82 /* ForgotPasswordHeaderView.swift */,
 				83914CAE1D00DA4600B01C82 /* ForgotPasswordHeaderView.xib */,
+				842F01A32840176B00C684F5 /* MessageCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -651,6 +654,7 @@
 				83B2BDF01CC1C068007FAE91 /* BWORKTaskViewController.swift in Sources */,
 				83E3DE761CA3967A00EB5349 /* StudySettings.swift in Sources */,
 				83FDCFD81CBC8E4700AFF716 /* TrackingSurveyPresenter.swift in Sources */,
+				842F01A42840176B00C684F5 /* MessageCell.swift in Sources */,
 				83AF043F1CB360F300A37225 /* ConsentManager.swift in Sources */,
 				83C7D3831CB5943B00BC7285 /* BWBorderedButton.m in Sources */,
 				32756627245876CC00299A04 /* Private.swift in Sources */,

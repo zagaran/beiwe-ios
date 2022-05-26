@@ -17,8 +17,6 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     var listeners: [Listener] = [];
     var selectedSurvey: ActiveSurvey?
 
-    let cellReuseIdentifier = "cell"
-
     @IBOutlet weak var haveAQuestionLabel: UILabel!
     @IBOutlet weak var callClinicianButton: UIButton!
     @IBOutlet weak var footerSeperator: UIView!
@@ -45,8 +43,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.navigationItem.rightBarButtonItem = nil;
 
         // Do any additional setup after loading the view.
-        self.surveysAndMessagesTableView.register(UITableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
-
+//        self.surveysAndMessagesTableView.register(UITableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
         surveysAndMessagesTableView.delegate = self
         surveysAndMessagesTableView.dataSource = self
         surveysAndMessagesTableView.backgroundView = nil;
@@ -97,8 +94,9 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            let cell = self.surveysAndMessagesTableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath)
-            cell.textLabel?.text = self.tableData.messages[indexPath.row]
+            let cell = tableView.dequeueReusableCell(withIdentifier: "MessageCell", for: indexPath) as! MessageCell
+            let message = self.tableData.messages[indexPath.row]
+            cell.configure(message: message)
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "SurveyCell", for: indexPath) as! SurveyCell
